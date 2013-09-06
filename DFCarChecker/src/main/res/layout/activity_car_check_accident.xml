@@ -91,11 +91,12 @@
                         android:layout_weight="5"
                         style="@style/CodeFont"
                         android:text="@string/ac_items_check" />
-                <Button
+                <Button android:id="@+id/ac_collect_data_button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/ac_collect"/>
+                        android:text="@string/ac_collect"
+                        android:onClick="CollectData"/>
             </LinearLayout>
 
             <View
@@ -104,7 +105,8 @@
                     android:background="?android:attr/listDivider"/>
 
             <TableLayout android:layout_width="match_parent"
-                         android:layout_height="wrap_content">
+                         android:layout_height="wrap_content"
+                         android:paddingBottom="5dp">
                 <TableRow>
                     <Switch android:id="@+id/ac_prob1_switch"
                             android:layout_width="wrap_content"

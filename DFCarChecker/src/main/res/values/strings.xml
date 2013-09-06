@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="set_light_theme">浅色主题</string>
     <string name="set_dark_theme">深色主题</string>
     <string name="app_name">车易拍检测客户端</string>
@@ -16,7 +17,6 @@
 
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
-
     <string name="choose">选择</string>
     <string name="prompt">请选择</string>
 
@@ -302,9 +302,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_car_check_inside_fragment">MainActivity</string>
     <string name="title_activity_car_check_mix_fragment">MainActivity</string>
-
     <string name="car_waiting_list_refresh">刷新</string>
-
     <string name="title_section1">基本信息</string>
     <string name="title_section2">事故排查</string>
     <string name="title_section3">车身检查</string>
@@ -322,22 +320,20 @@
     <string name="bi_run">表显里程：</string>
     <string name="bi_kilometer">万公里</string>
     <string name="bi_engine_number">发动机号：</string>
-
     <string name="csi">车辆配置信息</string>
     <string name="csi_add">添加</string>
     <string name="csi_volumn">排量</string>
-
     <string name="cbi">车型基本信息</string>
     <string name="cbi_lwh">长宽高</string>
-
     <string name="cbi_camera">拍摄其他组照片</string>
+
     <string-array name="cbi_camera_cato_item">
         <item>协议</item>
         <item>钥匙</item>
         <item>车牌</item>
     </string-array>
-    <string name="cbi_comment">过户要求的备注说明：</string>
 
+    <string name="cbi_comment">过户要求的备注说明：</string>
 
     <!-- 事故排查 -->
     <string name="ac_car_top">覆盖件视图</string>
@@ -379,13 +375,14 @@
     <string name="ac_prob32">取下左侧B柱门框的密封胶条，察看其边缘是否整齐，无钣金修复痕迹（重点察看可能的切割更换部件）</string>
     <string name="ac_prob33">取下左侧A柱门框的密封胶条，察看其边缘是否整齐，无钣金修复痕迹（重点察看可能的切割更换部件）</string>
     <string name="ac_collect">采集数据</string>
-
     <string name="ac_other_check">其他查勘项</string>
     <string name="ac_glass">前后风挡玻璃年份晚于车辆出厂年份的有：</string>
+
     <string-array name="ac_glass_item">
         <item>前挡风玻璃</item>
         <item>后挡风玻璃</item>
     </string-array>
+
     <string name="ac_glass_front">前挡风玻璃</string>
     <string name="ac_glass_rear">后挡风玻璃</string>
     <string name="ac_screw">车身覆盖件固定螺栓存有松动痕迹的部位：</string>
@@ -397,6 +394,7 @@
     <string name="ac_h">行李箱盖</string>
     <string name="ac_j">右后门</string>
     <string name="ac_k">右前门</string>
+
     <string-array name="ac_screw_item">
         <item>右前翼子板</item>
         <item>引擎盖</item>
@@ -407,12 +405,49 @@
         <item>右后门</item>
         <item>右前门</item>
     </string-array>
+
     <string name="ac_camera">拍摄机舱组照片</string>
+
     <string-array name="ac_camera_cato_item">
         <item>左前</item>
         <item>右前</item>
         <item>左减震座</item>
         <item>右减震座</item>
     </string-array>
+
     <string name="ac_comment">事故排查的备注说明：</string>
+    <string name="title_activity_car_check_collect_data">采集数据</string>
+    <string name="huanh">\n</string>
+    <string name="send">发送</string>
+    <string name="not_connected">你没有连接到一个设备</string>
+    <string name="bt_not_enabled_leaving">蓝牙未启用,请启动</string>
+    <string name="title_connecting">正在连接...</string>
+    <string name="title_connected_to">已连接: </string>
+    <string name="title_not_connected">未连接</string>
+    <string name="button_clean">清屏</string>
+    <string name="button_break">连接</string>
+    <string name="checkBox_sixteen">十六进制显示</string>
+    <string name="radioMale">十六进制输出</string>
+    <string name="checkBox_line_feed">换行输出</string>
+    <string name="button_cleantwo">清除输入框</string>
+    <string name="duankai">断开</string>
+    <string name="prompt_message">没有数据可供查看</string>
+
+    <!--  DeviceListActivity -->
+    <string name="scanning">扫描未知设备...</string>
+    <string name="select_device">选择一个设备连接</string>
+    <string name="none_paired">没有已配对设备</string>
+    <string name="none_found">没有建立连接</string>
+    <string name="paired_devices">已配对的设备</string>
+    <string name="scanned_devices">扫描到的设备</string>
+    <string name="button_scan">扫描设备</string>
+    <string name="button_full_screen">全屏</string>
+    <string name="button_return">返回</string>
+    <!-- Options Menu -->
+    <!-- Options Menu -->
+    <string name="secure_connect">连接一个设备</string>
+    <string name="insecure_connect">开始连接</string>
+    <string name="discoverable">设置蓝牙可见</string>
+    <string name="clenr">程序退出</string>
+    <string name="pair_device">设备配对</string>
 </resources>

@@ -2,11 +2,10 @@ package com.df.dfcarchecker;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import java.net.NoRouteToHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +23,8 @@ public class CarCheckAccidentFragment extends Fragment implements View.OnClickLi
     private LayoutInflater inflater;
     private List<Integer> glassArrayIndex;
     private List<Integer> screwArrayIndex;
-    private List<Integer> switchButtonIDs;
-    private List<Integer> imageButtonIDs;
+    private Switch[] switchButtons;
+    private ImageView[] imageViewButtons;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,39 +39,17 @@ public class CarCheckAccidentFragment extends Fragment implements View.OnClickLi
         screwButton.setOnClickListener(this);
         Button cameraButton = (Button) rootView.findViewById(R.id.ac_start_camera_button);
         cameraButton.setOnClickListener(this);
+        Button collectDataButton = (Button) rootView.findViewById(R.id.ac_collect_data_button);
+        collectDataButton.setOnClickListener(this);
 
         glassArrayIndex = new ArrayList<Integer>();
         screwArrayIndex = new ArrayList<Integer>();
-        switchButtonIDs = new ArrayList<Integer>();
-        imageButtonIDs = new ArrayList<Integer>();
 
-        for(int i = 0; i < 20; i++) {
-            int id = 0x7f0a0004 + i * 2;
-            switchButtonIDs.add(id);
-            Switch switchButton = (Switch)rootView.findViewById(id);
-            switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if(b) {
-                        ImageView imageView = (ImageView)rootView.findViewById(compoundButton.getId() + 1);
-                        imageView.setVisibility(View.VISIBLE);
-                    } else {
-                        ImageView imageView = (ImageView)rootView.findViewById(compoundButton.getId() + 1);
-                        imageView.setVisibility(View.INVISIBLE);
-                    }
+        // 为所有Switch绑定事件
+        HandleSwitchButtons();
 
-                }
-            });
-        }
-
-        for(int i = 0; i < 20; i++) {
-            int id = 0x7f0a0005 + i * 2;
-            imageButtonIDs.add(id);
-            ImageView imageView = (ImageView)rootView.findViewById(id);
-            imageView.setVisibility(View.INVISIBLE);
-        }
-
-
+        // 为所有ImageView初始化为不可见，并绑定事件
+        HandleImageViewButtons();
 
         return rootView;
     }
@@ -90,7 +66,44 @@ public class CarCheckAccidentFragment extends Fragment implements View.OnClickLi
             case R.id.ac_start_camera_button:
                 ac_start_camera(v);
                 break;
+            case R.id.ac_collect_data_button:
+                CollectData(v);
+                break;
         }
+    }
+
+    private void HandleSwitchButtons() {
+        switchButtons = new Switch[20];
+        for (int i = 0; i < 20; i++) {
+            int id = getResources().getIdentifier("ac_prob" + (i + 1) + "_switch", "id", rootView.getContext().getPackageName());
+            switchButtons[i] = (Switch) rootView.findViewById(id);
+            switchButtons[i].setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if(isChecked) {
+                        ImageView imageView = (ImageView)rootView.findViewById(buttonView.getId() + 1);
+                        imageView.setVisibility(View.VISIBLE);
+                    } else {
+                        ImageView imageView = (ImageView)rootView.findViewById(buttonView.getId() + 1);
+                        imageView.setVisibility(View.INVISIBLE);
+                    }
+                }
+            });
+        }
+    }
+
+    private void HandleImageViewButtons() {
+        imageViewButtons = new ImageView[20];
+        for (int i = 0; i < 20; i++) {
+            int id = getResources().getIdentifier("ac_prob" + (i + 1) + "_image", "id", rootView.getContext().getPackageName());
+            imageViewButtons[i] = (ImageView) rootView.findViewById(id);
+            imageViewButtons[i].setVisibility(View.INVISIBLE);
+        }
+    }
+
+
+    public void CollectData(View view) {
+        Intent intent = new Intent(rootView.getContext(), CarCheckCollectDataActivity.class);
+        startActivity(intent);
     }
 
     public void ChooseGlass(View view) {
