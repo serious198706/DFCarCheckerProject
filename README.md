@@ -1,0 +1,2 @@
+DFCarCheck System
+20130906:添加了事故排查页面的查勘项中，点击switchbutton时在右方显示拍照按钮的功能
