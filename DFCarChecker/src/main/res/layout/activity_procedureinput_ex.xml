@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <ScrollView android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp">
+        <TableLayout android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_margin="5dp">
+            <TableRow>
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ex_exchange_type"
+                        android:layout_weight="2"
+                        android:textSize="18sp"/>
+                <Spinner
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:hint="请输入"
+                        android:layout_weight="4"
+                        android:entries="@array/ex_exchange_types"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ex_city_presell_money"
+                        android:layout_weight="2"
+                        android:textSize="18sp"/>
+                <EditText
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:hint="请输入"
+                        android:layout_weight="4"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ex_outcity_presell_money"
+                        android:layout_weight="2"
+                        android:textSize="18sp"/>
+                <EditText
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:hint="请输入"
+                        android:layout_weight="4"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ex_exchange_time"
+                        android:layout_weight="2"
+                        android:textSize="18sp"/>
+                <Spinner
+                         android:id="@+id/ex_exchange_time_type_spinner"
+                         android:layout_height="wrap_content"
+                         android:layout_width="0dp"
+                         android:layout_weight="4"
+                         android:entries="@array/ex_exchange_time_type"/>
+            </TableRow>
+            <TableRow android:id="@+id/ex_exchange_time_area1">
+                <Spinner
+                         android:layout_height="wrap_content"
+                         android:layout_width="0dp"
+                         android:layout_weight="1"/>
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ex_month"
+                        android:layout_weight="1"
+                        android:textSize="18sp"/>
+                <Spinner
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"/>
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ex_day"
+                        android:layout_weight="1"
+                        android:textSize="18sp"/>
+                <Spinner
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:entries="@array/ex_ampm"/>
+                <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ex_exchange"
+                        android:layout_weight="1"
+                        android:textSize="18sp"/>
+            </TableRow>
+            <TableRow android:id="@+id/ex_exchange_time_area2">
+                <EditText android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"/>
+                <TextView android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:text="@string/ex_ex1"
+                          android:textSize="18sp"/>
+            </TableRow>
+        </TableLayout>
+    </ScrollView>
+</LinearLayout>

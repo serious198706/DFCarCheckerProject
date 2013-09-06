@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="手续录入"
+            android:onClick="EnterProcedureInput"></Button>
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="待检车辆"
+            android:onClick="EnterCarWaitingList"></Button>
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="已检车辆"></Button>
+    <Button android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="退出系统"></Button>
+</LinearLayout>
