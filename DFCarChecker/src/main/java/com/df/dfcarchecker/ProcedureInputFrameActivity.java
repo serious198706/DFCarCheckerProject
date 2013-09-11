@@ -1,10 +1,7 @@
 package com.df.dfcarchecker;
 
 import android.app.ActionBar;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,24 +11,14 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-
-import java.util.List;
 
 /**
  * Created by  on 13-9-2.
  */
-public class ProcedureCollectionActivity extends FragmentActivity {
+public class ProcedureInputFrameActivity extends FragmentActivity {
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide fragments representing
      * each object in a collection. We use a {@link android.support.v4.app.FragmentStatePagerAdapter}
@@ -48,7 +35,7 @@ public class ProcedureCollectionActivity extends FragmentActivity {
     public void onCreate(Bundle savedInstanceState) {
         // setTheme(R.style.DarkTheme);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_collection);
+        setContentView(R.layout.activity_procedureinput_frame);
 
         // Create an adapter that when requested, will return a fragment representing an object in
         // the collection.
@@ -57,11 +44,7 @@ public class ProcedureCollectionActivity extends FragmentActivity {
         // getSupportFragmentManager.
         mDemoCollectionPagerAdapter = new DemoCollectionPagerAdapter(this, getSupportFragmentManager());
 
-        // Set up action bar.
         final ActionBar actionBar = getActionBar();
-
-        // Specify that the Home button should show an "Up" caret, indicating that touching the
-        // button will take the user one step up in the application's hierarchy.
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         // Set up the ViewPager, attaching the adapter.
@@ -73,24 +56,9 @@ public class ProcedureCollectionActivity extends FragmentActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu items for use in the action bar
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
+        inflater.inflate(R.menu.procedure_input, menu);
         return super.onCreateOptionsMenu(menu);
     }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle presses on the action bar items
-//        switch (item.getItemId()) {
-//            case R.id.action_set_light_theme:
-//                //setTheme(android.R.style.Theme_Black);
-//                return true;
-//            case R.id.action_set_dark_theme:
-//                //setTheme(android.R.style.Theme_Light);
-//                return true;
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -114,11 +82,19 @@ public class ProcedureCollectionActivity extends FragmentActivity {
                     NavUtils.navigateUpTo(this, upIntent);
                 }
                 return true;
-            case R.id.action_set_light_theme:
-                //setTheme(android.R.style.Theme_Black);
+            case R.id.action_cancel:
+                finish();
                 return true;
-            case R.id.action_set_dark_theme:
-                //setTheme(android.R.style.Theme_Light);
+            case R.id.action_done:
+                // UploadProcedure();
+                setProgressBarVisibility(true);
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+
+                }
+                setProgressBarVisibility(false);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

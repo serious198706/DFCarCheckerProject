@@ -20,6 +20,8 @@
     <string name="choose">选择</string>
     <string name="prompt">请选择</string>
 
+    <string name="upload_procedure">提交</string>
+
     <!-- 手续录入 -->
     <string name="procedure_input">手续录入</string>
 
@@ -322,7 +324,7 @@
     <string name="bi_engine_number">发动机号：</string>
     <string name="csi">车辆配置信息</string>
     <string name="csi_add">添加</string>
-    <string name="csi_volumn">排量</string>
+    <string name="csi_volume">排量</string>
     <string name="cbi">车型基本信息</string>
     <string name="cbi_lwh">长宽高</string>
     <string name="cbi_camera">拍摄其他组照片</string>
@@ -426,7 +428,6 @@
         <item>"引擎盖内侧"</item>
         <item>"行李箱盖内侧"</item>
     </string-array>
-
     <string-array name="ac_screw_item">
         <item>右前翼子板</item>
         <item>引擎盖</item>
@@ -439,7 +440,6 @@
     </string-array>
 
     <string name="ac_camera">拍摄机舱组照片</string>
-
     <string-array name="ac_camera_cato_item">
         <item>左前</item>
         <item>右前</item>
@@ -465,7 +465,7 @@
     <string name="duankai">断开</string>
     <string name="prompt_message">没有数据可供查看</string>
 
-    <!--  DeviceListActivity -->
+    <!-- DeviceListActivity -->
     <string name="scanning">扫描未知设备...</string>
     <string name="select_device">选择一个设备连接</string>
     <string name="none_paired">没有已配对设备</string>
@@ -482,10 +482,72 @@
     <string name="discoverable">设置蓝牙可见</string>
     <string name="clenr">程序退出</string>
     <string name="pair_device">设备配对</string>
-
     <string name="action_cancel">取消</string>
     <string name="action_done">完成</string>
     <string name="action_connect">连接设备</string>
     <string name="action_disconnect">断开连接</string>
     <string name="action_transfer_data">传输数据</string>
+
+    <!-- 车身检查 -->
+    <string name="out">车身检查</string>
+    <string name="out_color_diff">  色差</string>
+    <string name="out_scratch">  划痕</string>
+    <string name="out_trans">  变形</string>
+    <string name="out_scrape">  刮蹭</string>
+    <string name="out_broken">表面有破损的零部件：</string>
+    <string-array name="out_broken_parts">
+        <item>前保险杠</item>
+        <item>后保险杠</item>
+        <item>左前门拉手</item>
+        <item>右前门拉手</item>
+        <item>左后门拉手</item>
+        <item>右后门拉手</item>
+        <item>左反光镜</item>
+        <item>右反光镜</item>
+        <item>左前照灯总成</item>
+        <item>右前照灯总成</item>
+        <item>左前转向灯总成</item>
+        <item>右前转向灯总成</item>
+        <item>左后组合灯</item>
+        <item>右后组合灯</item>
+        <item>左侧边灯总成</item>
+        <item>右侧边灯总成</item>
+        <item>前风挡玻璃</item>
+        <item>后风挡玻璃</item>
+        <item>左前门玻璃</item>
+        <item>右前门玻璃</item>
+        <item>左后门玻璃</item>
+        <item>右后门玻璃</item>
+        <item>后三角窗玻璃总成</item>
+        <item>左前门门锁</item>
+        <item>右前门门锁</item>
+        <item>后备箱销</item>
+        <item>进气格栅</item>
+        <item>车门防护条</item>
+        <item>天线</item>
+        <item>轮毂盖</item>
+        <item>左前雾灯</item>
+        <item>右前雾灯</item>
+        <item>左后雾灯</item>
+        <item>右后雾灯</item>
+    </string-array>
+    <string name="out_paint">车辆漆面光洁度：</string>
+    <string-array name="out_paint_level">
+        <item>很好</item>
+        <item>一般</item>
+        <item>较差</item>
+        <item>很差</item>
+    </string-array>
+    <string name="out_camera">拍摄外观组照片</string>
+    <string-array name="out_camera_cato_item">
+        <item>左前45°</item>
+        <item>右前45°</item>
+        <item>左侧</item>
+        <item>右侧</item>
+        <item>左后45°</item>
+        <item>右后45°</item>
+    </string-array>
+    <string name="out_comment">车身检查的备注说明：</string>
+    <string name="title_activity_popup">MainActivity</string>
+
 </resources>

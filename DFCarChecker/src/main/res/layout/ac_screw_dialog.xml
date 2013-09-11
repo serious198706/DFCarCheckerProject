@@ -10,43 +10,51 @@
             <CheckBox android:layout_width="0dp"
                       android:layout_height="wrap_content"
                       android:layout_weight="1"
-                      android:text="@string/ac_l"/>
+                      android:text="@string/ac_l"
+                      android:textSize="18sp"/>
             <CheckBox android:layout_width="0dp"
                       android:layout_height="wrap_content"
                       android:layout_weight="1"
-                      android:text="@string/ac_m"/>
+                      android:text="@string/ac_m"
+                      android:textSize="18sp"/>
             <CheckBox android:layout_width="0dp"
                       android:layout_height="wrap_content"
                       android:layout_weight="1"
-                      android:text="@string/ac_d"/>
+                      android:text="@string/ac_d"
+                      android:textSize="18sp"/>
         </TableRow>
         <TableRow>
             <CheckBox android:layout_width="0dp"
                       android:layout_height="wrap_content"
                       android:layout_weight="1"
-                      android:text="@string/ac_e"/>
+                      android:text="@string/ac_e"
+                      android:textSize="18sp"/>
             <CheckBox android:layout_width="0dp"
                       android:layout_height="wrap_content"
                       android:layout_weight="1"
-                      android:text="@string/ac_f"/>
+                      android:text="@string/ac_f"
+                      android:textSize="18sp"/>
             <CheckBox android:layout_width="0dp"
                       android:layout_height="wrap_content"
                       android:layout_weight="1"
-                      android:text="@string/ac_h"/>
+                      android:text="@string/ac_h"
+                      android:textSize="18sp"/>
         </TableRow>
         <TableRow>
             <CheckBox android:layout_width="0dp"
                       android:layout_height="wrap_content"
                       android:layout_weight="1"
-                      android:text="@string/ac_j"/>
+                      android:text="@string/ac_j"
+                      android:textSize="18sp"/>
             <CheckBox android:layout_width="0dp"
                       android:layout_height="wrap_content"
                       android:layout_weight="1"
-                      android:text="@string/ac_k"/>
+                      android:text="@string/ac_k"
+                      android:textSize="18sp"/>
             <TextView android:layout_width="0dp"
                       android:layout_height="wrap_content"
                       android:layout_weight="1"
-                      />
+                      android:textSize="18sp"/>
         </TableRow>
     </TableLayout>
 </LinearLayout>

@@ -112,7 +112,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textOff="是"
-                            android:textOn="否"/>
+                            android:textOn="否"
+                            android:textSize="20sp"/>
                     <TextView android:layout_width="0dp"
                               android:layout_height="wrap_content"
                               android:layout_weight="1"
@@ -543,7 +544,7 @@
                             android:layout_weight="1"
                             android:inputType="textMultiLine"
                             android:ems="10"
-                            android:hint="请输入"
+                            android:hint="@string/ac_comment"
                             android:id="@+id/editText"/>
                 </TableRow>
             </TableLayout>

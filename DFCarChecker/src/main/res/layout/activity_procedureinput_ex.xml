@@ -21,7 +21,7 @@
                 <Spinner
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:hint="请输入"
+                        android:hint="@string/ex_exchange_type"
                         android:layout_weight="4"
                         android:entries="@array/ex_exchange_types"/>
             </TableRow>
@@ -35,7 +35,7 @@
                 <EditText
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:hint="请输入"
+                        android:hint="@string/ex_city_presell_money"
                         android:layout_weight="4"/>
             </TableRow>
             <TableRow>
@@ -48,7 +48,7 @@
                 <EditText
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:hint="请输入"
+                        android:hint="@string/ex_outcity_presell_money"
                         android:layout_weight="4"/>
             </TableRow>
             <TableRow>

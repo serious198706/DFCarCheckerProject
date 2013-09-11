@@ -31,7 +31,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.ProcedureCollectionActivity"
+            android:name=".ProcedureInputFrameActivity"
             android:label="@string/procedure_input"
             android:windowSoftInputMode="stateHidden" >
         </activity>
@@ -51,7 +51,11 @@
         </activity>
         <activity
             android:name="com.df.service.BluetoothDeviceListActivity"
-            android:label="@string/pair_device">
+            android:label="@string/pair_device" >
+        </activity>
+        <activity
+            android:name="com.df.dfcarchecker.PopupActivity"
+            android:label="@string/title_activity_popup" >
         </activity>
     </application>
 

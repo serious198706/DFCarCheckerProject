@@ -191,8 +191,9 @@
                 <EditText
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:hint="请输入"
-                        android:layout_weight="1"/>
+                        android:hint="@string/ct_business_insurance_money"
+                        android:layout_weight="1"
+                        android:phoneNumber="true"/>
                 <TextView android:layout_height="wrap_content"
                           android:layout_width="0dp"
                           android:text="@string/ci_money"

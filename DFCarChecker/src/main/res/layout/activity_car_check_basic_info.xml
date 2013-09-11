@@ -40,7 +40,7 @@
                         android:id="@+id/bi_vin_number_edit"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:hint="请输入"
+                        android:hint="@string/bi_vin_number"
                         android:layout_weight="2"
                         android:descendantFocusability="beforeDescendants"
                         android:focusableInTouchMode="true"/>
@@ -73,7 +73,7 @@
                         android:id="@+id/bi_log_time_edit"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:hint="请输入"
+                        android:hint="@string/bi_log_time"
                         android:layout_weight="2"/>
             </TableRow>
             <TableRow>
@@ -87,7 +87,7 @@
                         android:id="@+id/bi_manufacture_time_edit"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:hint="请输入"
+                        android:hint="@string/bi_manufacture_time"
                         android:layout_weight="2"/>
             </TableRow>
             <TableRow>
@@ -125,7 +125,7 @@
                         android:id="@+id/bi_run_edit"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:hint="请输入"
+                        android:hint="@string/bi_run"
                         android:layout_weight="1"/>
                 <TextView
                         android:layout_height="wrap_content"
@@ -145,7 +145,7 @@
                         android:id="@+id/bi_engine_number_edit"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:hint="请输入"
+                        android:hint="@string/bi_engine_number"
                         android:layout_weight="2"/>
             </TableRow>
 
@@ -176,14 +176,14 @@
                 <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:text="@string/csi_volumn"
+                        android:text="@string/csi_volume"
                         android:layout_weight="1"
                         android:textSize="18sp"/>
                 <EditText
                         android:id="@+id/csi_volumn_edit"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:hint="请输入"
+                        android:hint="@string/csi_volume"
                         android:layout_weight="2"/>
             </TableRow>
 
@@ -214,7 +214,7 @@
                         android:id="@+id/cbi_lwh_edit"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:hint="请输入"
+                        android:hint="@string/cbi_lwh"
                         android:layout_weight="2"/>
             </TableRow>
             <TableRow>
@@ -238,7 +238,7 @@
                         android:layout_weight="1"
                         android:inputType="textMultiLine"
                         android:ems="10"
-                        android:hint="请输入"
+                        android:hint="@string/cbi_comment"
                         android:id="@+id/editText"/>
             </TableRow>
         </TableLayout>

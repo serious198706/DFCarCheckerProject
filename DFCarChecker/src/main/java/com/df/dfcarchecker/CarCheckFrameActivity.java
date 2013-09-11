@@ -20,6 +20,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.df.service.CustomViewPager;
+
 public class CarCheckFrameActivity extends FragmentActivity implements ActionBar.TabListener {
 
     /**
@@ -35,7 +37,7 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
     /**
      * The {@link ViewPager} that will host the section contents.
      */
-    ViewPager mViewPager;
+    CustomViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +53,9 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager = (CustomViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+        mViewPager.setPagingEnabled(false);
         actionBar.setDisplayHomeAsUpEnabled(true);
         // When swiping between different sections, select the corresponding
         // tab. We can also use ActionBar.Tab#select() to do this if we have

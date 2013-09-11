@@ -160,7 +160,7 @@ public class CarCheckAccidentFragment extends Fragment implements View.OnClickLi
         LayoutInflater inflater = this.inflater;
 
         builder.setTitle(R.string.ac_screw);
-        builder.setView(inflater.inflate(R.layout.screw_dialog, null));
+        builder.setView(inflater.inflate(R.layout.ac_screw_dialog, null));
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // 取消
@@ -170,11 +170,11 @@ public class CarCheckAccidentFragment extends Fragment implements View.OnClickLi
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // 确定
-                String[] glassArray = rootView.getResources().getStringArray(R.array.ac_screw_item);
+                String[] screwArray = rootView.getResources().getStringArray(R.array.ac_screw_item);
                 String screwText = "";
 
                 for(int j = 0; j < screwArrayIndex.size(); j++) {
-                    screwText += glassArray[screwArrayIndex.get(j)];
+                    screwText += screwArray[screwArrayIndex.get(j)];
                     screwText += "，";
                 }
 
