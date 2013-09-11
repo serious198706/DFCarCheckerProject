@@ -25,7 +25,6 @@ import java.util.List;
 public class ProcedureInputCarInfoFragment extends Fragment implements View.OnClickListener {
     private static View rootView;
     private static LayoutInflater inflater;
-    private Dialog dialog;
     private boolean match;
 
     @Override
@@ -44,9 +43,6 @@ public class ProcedureInputCarInfoFragment extends Fragment implements View.OnCl
 
         Button button = (Button) rootView.findViewById(R.id.picture_match_button);
         button.setOnClickListener(this);
-
-        dialog = new Dialog(rootView.getContext(), R.style.Theme_Dialog);
-        dialog.setContentView(R.layout.ci_dialog);
 
         Spinner ci_violated_spinner = (Spinner) rootView.findViewById(R.id.ci_violated_spinner);
         ci_violated_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

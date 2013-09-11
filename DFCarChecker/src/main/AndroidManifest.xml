@@ -38,7 +38,7 @@
         <activity
             android:name="com.df.dfcarchecker.CarCheckFrameActivity"
             android:label="@string/title_activity_car_check_frame"
-            android:windowSoftInputMode="stateHidden" >
+            android:windowSoftInputMode="stateHidden">
         </activity>
         <activity
             android:name="com.df.dfcarchecker.CarWaitingListActivity"
