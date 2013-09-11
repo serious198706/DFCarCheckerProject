@@ -1,10 +1,14 @@
 package com.df.service;
 
+import android.util.Log;
+
 import com.df.dfcarchecker.CarCheckCollectDataActivity;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
@@ -13,6 +17,12 @@ import java.util.regex.PatternSyntaxException;
 
 public class CodeFormat {
     static String dataOne;
+    private static final String TAG = "BluetoothChat";
+    private static boolean D = true;
+    private static boolean readOver = false;
+
+    private static final String P_START = "AA0A";
+    private static final String P_PARA = "0111";
     /*
      * 16进制数字字符集
      */
@@ -51,36 +61,45 @@ public class CodeFormat {
 
     }
 
-    public static String[] strback(String str) {
-        int nums = 0;
-        // all[0]为部位名称、all[1] 为数值 、all[2] 为长度
+    public static String[] parsePackage(String str) {
+        int count = 0;
 
-        String all[] = new String[3];
+        // data[0]为部位名称、data[1] 为数值 、data[2] 为长度
+        String data[] = new String[3];
         int len = str.length();
-        if (!CarCheckCollectDataActivity.HAS_RESQUEST_STR && str.length() >= 14) {
-            StringBuffer sb1 = new StringBuffer(str.substring(8, 10));
-            StringBuffer sb2 = new StringBuffer(str.substring(10, 12));
-            StringBuffer sb = new StringBuffer(str.substring(8, 12));
-            int int_sb1 = Integer.parseInt(String.valueOf(sb1), 16);
-            int int_sb2 = Integer.parseInt(String.valueOf(sb2), 16);
-            int int_sb3 = Integer.parseInt(str.substring(4, 8), 16);
-            String and = Integer
-                    .toHexString((198 + int_sb1 + int_sb2 + int_sb3));
-            if (and.length() < 4) {
-                for (int i = 4; i > and.length(); i--) {
-                    and = "0" + and;
+
+        if (!CarCheckCollectDataActivity.hasRequestCmd && len >= 14) {
+            String requestCmd = P_START;
+
+            String serialNumber = GetSerialNumber(str);
+            requestCmd += serialNumber;
+            requestCmd += P_PARA;
+
+            String checkSum = GetCheckSum(requestCmd);
+
+            if(checkSum.length() < 4) {
+                // 填充零位
+                for(int i = 0; i < 4 - checkSum.length(); i++) {
+                    checkSum = "0" + checkSum;
                 }
             }
-            CarCheckCollectDataActivity.RESQUEST_STR = "aa0a" + str.substring(4, 8) + sb
-                    + "0111" + and;
+
+            requestCmd += checkSum;
+
+            CarCheckCollectDataActivity.requestCmd = requestCmd;
+
             return null;
         }
+
         if (str.startsWith("AA") || str.startsWith("aa")) {
             if (str.length() >= 14) {
-                // all[0]指的是什么部位数据
-                all[0] = str.substring(12, 14);
+                // data[0]指的是什么部位数据
+                data[0] = str.substring(12, 14);
+
                 StringBuffer str1 = new StringBuffer(str.substring(14, len - 4));
                 StringBuffer str2 = new StringBuffer();
+
+                // 如果部位数据长度大于4,表示为真正的数据
                 if (str1.length() >= 4) {
                     int arraylen = str1.length() / 4;
                     String[] array = new String[arraylen];
@@ -94,31 +113,40 @@ public class CodeFormat {
                         } else {
                             a = a / 10;
                         }
-                        nums++;
+                        count++;
                         str2.append(String.valueOf(a) + "  ");
-
                     }
 
-                    all[1] = String.valueOf(str2);
-                    all[2] = String.valueOf(nums);
+                    data[1] = String.valueOf(str2);
+                    data[2] = String.valueOf(count);
                 }
-                return all;
+                // 如果部位数据的小于4，表示此为完结包，可以通知主界面更新界面了
+                else {
+                    data[1] = "";
+                    data[2] = "";
+                }
+                return data;
             }
-            return all;
+            return data;
 
         }
         return null;
     }
 
-    public static String StringFilter(String str) throws PatternSyntaxException {
-        // 只允许字母和数字
-        // String regEx = "[^a-zA-Z0-9]";
-        // 清除掉所有特殊字符
-        String regEx = "[`~!@#$%^&*()+=|{}':;',//[//].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-        Pattern p = Pattern.compile(regEx);
-        Matcher m = p.matcher(str);
-        return m.replaceAll("").trim();
+    private static String GetSerialNumber(String str) {
+        return str.substring(4, 12); // 00830009
     }
+
+    private static String GetCheckSum(String str) {
+        int serial = 0;
+
+        for(int i = 0; i < str.length(); i+=2) {
+            serial += Integer.parseInt(str.substring(i, i + 2), 16);
+        }
+
+        return  Integer.toHexString(serial);
+    }
+
 
     /**
      * 　　* Convert byte[] to hex
@@ -145,23 +173,6 @@ public class CodeFormat {
         }
     }
 
-    public static String bytesToHexString(byte[] src) {
-        StringBuilder stringBuilder = new StringBuilder("");
-        if (src == null || src.length <= 0) {
-            return null;
-        }
-        for (int i = 0; i < 20; i++) {
-            int v = src[i] & 0xFF;
-            String hv = Integer.toHexString(v);
-            if (hv.length() < 2) {
-                stringBuilder.append(0);
-                // System.out.println(stringBuilder);
-            }
-            stringBuilder.append(hv);
-        }
-        return stringBuilder.toString();
-    }
-
     /** */
     /**
      * 把字节数组转换成16进制字符串
@@ -169,7 +180,7 @@ public class CodeFormat {
      * @param bArray
      * @return
      */
-    public static final String bytesToHexStringTwo(byte[] bArray, int count) {
+    public static final String bytesToHexString(byte[] bArray, int count) {
         StringBuffer sb = new StringBuffer(bArray.length);
 
         String sTemp;
@@ -180,72 +191,5 @@ public class CodeFormat {
             sb.append(sTemp.toUpperCase());
         }
         return sb.toString();
-    }
-
-    // 分割字符串
-    public static String Stringspace(String str) {
-
-        String temp = "";
-        String temp2 = "";
-        for (int i = 0; i < str.length(); i++) {
-
-            if (i % 2 == 0) {
-                temp = str.charAt(i) + "";
-                temp2 += temp;
-                // System.out.println(temp);
-            } else {
-                temp2 += str.charAt(i) + " ";
-            }
-
-        }
-        return temp2;
-    }
-
-    /**
-     * Byte -> Hex
-     *
-     * @param bytes
-     * @return
-     */
-    public static String byteToHex(byte[] bytes, int count) {
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < count; i++) {
-            String hex = Integer.toHexString(bytes[i] & 0xFF);
-            if (hex.length() == 1) {
-                hex = '0' + hex;
-            }
-            sb.append(hex).append(" ");
-        }
-        return sb.toString();
-    }
-
-    /**
-     * String -> Hex
-     *
-     * @param s
-     * @return
-     */
-    public static String stringToHex(String s) {
-        String str = "";
-        for (int i = 0; i < s.length(); i++) {
-            int ch = (int) s.charAt(i);
-            String s4 = Integer.toHexString(ch);
-            if (s4.length() == 1) {
-                s4 = '0' + s4;
-            }
-            str = str + s4 + " ";
-        }
-        return str;
-    }
-
-    public static String changeCharset(String str, String newCharset)
-            throws UnsupportedEncodingException {
-        if (str != null) {
-            // 用默认字符编码解码字符串。
-            byte[] bs = str.getBytes();
-            // 用新的字符编码生成字符串
-            return new String(bs, newCharset);
-        }
-        return null;
     }
 }

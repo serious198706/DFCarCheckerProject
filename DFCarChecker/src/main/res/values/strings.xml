@@ -395,6 +395,38 @@
     <string name="ac_j">右后门</string>
     <string name="ac_k">右前门</string>
 
+    <string-array name="ac_part_name">
+        <item>"右前翼子板"</item>
+        <item>"引擎盖"</item>
+        <item>"左前翼子板"</item>
+        <item>"左A柱"</item>
+        <item>"左前门"</item>
+        <item>"左B柱"</item>
+        <item>"左后门"</item>
+        <item>"左C柱"</item>
+        <item>"左后翼子板"</item>
+        <item>"行李箱盖"</item>
+        <item>"右后翼子板"</item>
+        <item>"右C柱"</item>
+        <item>"右后门"</item>
+        <item>"右B柱"</item>
+        <item>"右前门"</item>
+        <item>"右A柱"</item>
+        <item>"车顶"</item>
+        <item>"右前减震器"</item>
+        <item>"左前减震器"</item>
+        <item>"右前翼子板内衬"</item>
+        <item>"左前翼子板内衬"</item>
+        <item>"右后门锁下方"</item>
+        <item>"左后门锁下方"</item>
+        <item>"右前纵梁"</item>
+        <item>"左前纵梁"</item>
+        <item>"水箱上支架"</item>
+        <item>"钱防火墙"</item>
+        <item>"引擎盖内侧"</item>
+        <item>"行李箱盖内侧"</item>
+    </string-array>
+
     <string-array name="ac_screw_item">
         <item>右前翼子板</item>
         <item>引擎盖</item>
@@ -450,4 +482,10 @@
     <string name="discoverable">设置蓝牙可见</string>
     <string name="clenr">程序退出</string>
     <string name="pair_device">设备配对</string>
+
+    <string name="action_cancel">取消</string>
+    <string name="action_done">完成</string>
+    <string name="action_connect">连接设备</string>
+    <string name="action_disconnect">断开连接</string>
+    <string name="action_transfer_data">传输数据</string>
 </resources>

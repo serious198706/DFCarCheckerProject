@@ -8,14 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -35,103 +32,135 @@ public class CarCheckCollectDataActivity extends Activity {
     public static final int MESSAGE_WRITE = 3;
     public static final int MESSAGE_DEVICE_NAME = 4;
     public static final int MESSAGE_TOAST = 5;
+    public static final int MESSAGE_READ_OVER = 6;
+    public static final int MESSAGE_GET_SERIAL = 10;
 
     // 从BluetoothService处理程序收到的键名字
     public static final String DEVICE_NAME = "device_name";
     public static final String TOAST = "toast";
 
     // 29个部位的名称
-    private static String[] partOfName = { "右前翼子板", "引擎盖", "左前翼子板", "左A柱",
-            "左前门", "左B柱", "左后门", "左C柱", "左后翼子板", "行李箱盖", "右后翼子板", "右C柱", "右后门",
-            "右B柱", "右前门", "右A柱", "车顶", "右前减震器", "左前减震器", "右前翼子板内衬", "左前翼子板内衬",
-            "右后门锁下方", "左后门锁下方", "右前纵梁", "左前纵梁", "水箱上支架", "钱防火墙", "引擎盖内侧",
-            "行李箱盖内侧" };
+    private static String[] partOfName;
 
-    // private static final UUID MY_UUID = UUID
-    // .fromString("00001101-0000-1000-8000-00805F9B34FB");
-    // Intent需要 编码
+    // 提供给系统蓝牙activity的标志值
     public static final int REQUEST_CONNECT_DEVICE = 1;
-    private static final int REQUEST_ENABLE_BT = 2;
-    public static final int MESSAGE_BACK_RESQUES = 10;
-    public static String RESQUEST_STR;
-    public static boolean HAS_RESQUEST_STR;
-    // 布局控件
-    // private TextView mTitle;
-    // private EditText mOutEditText;
-    private Button breakButton;
+    public static final int REQUEST_ENABLE_BT = 2;
 
-    // 名字的连接装置
-    private String mConnectedDeviceName = null;
-    // 传出消息的字符串缓冲区
-    private StringBuffer mOutStringBuffer;
+    // 要写入设备的字符串
+    public static String requestCmd;
+
+    public static boolean hasRequestCmd;
+    public static String getSerialCmd = "aa057f012e";
+
     // 蓝牙适配器
     private BluetoothAdapter mBluetoothAdapter = null;
+
     // 蓝牙服务
     private BluetoothService mBluetoothService = null;
-    // 设置标识符，选择用户接受的数据格式
-    private boolean first;
-    private boolean isBreak;
-    // 第一次输入加入-->变量
-    private int sum = 1;
-    // private int UTF = 1;
+
+    // 是否需要获取序列号
+    private boolean hasSerial;
+    private boolean isConnected;
+
+    // 当前是否可以读取
+    private boolean canRead;
+
     // 名社民党记录当创建服务器套接字
-    String mmsg = "";
     private Thread t = null;
 
+    Menu menu;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_blue_tooth);
-        initET();
-        breakButton = (Button) findViewById(R.id.no_2_2_18_btn_break);
-        isBreak = false;
-        D = false;
-        first = true;
+        setContentView(R.layout.activity_car_check_collect_data);
 
-        // 得到当地的蓝牙适配器
+        initEditTextCtrls();
+
+        isConnected = false;
+        D = false;
+        hasSerial = false;
+        partOfName = getResources().getStringArray(R.array.ac_part_name);
+
+        // set action bar
+        final ActionBar actionBar = getActionBar();
+        if(actionBar != null)
+            actionBar.setDisplayHomeAsUpEnabled(true);
+
+        // 使用默认蓝牙适配器
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         if (getWindow().getAttributes().softInputMode == WindowManager.LayoutParams.SOFT_INPUT_STATE_UNSPECIFIED) {
             // 隐藏软键盘
             getWindow().setSoftInputMode(
                     WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         }
+
         // 初始化Socket
         if (mBluetoothAdapter == null) {
             Toast.makeText(this, R.string.not_connected, Toast.LENGTH_LONG)
                     .show();
             finish();
-            return;
         }
+    }
 
-        final ActionBar actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.car_check_collect_data, menu);
+        super.onCreateOptionsMenu(menu);
+
+        this.menu = menu;
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // This is called when the Home (Up) button is pressed in the action bar.
-                // Create a simple intent that starts the hierarchical parent activity and
-                // use NavUtils in the Support Package to ensure proper handling of Up.
-                Intent upIntent = new Intent(this, CarCheckFrameActivity.class);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    // This activity is not part of the application's task, so create a new task
-                    // with a synthesized back stack.
-                    TaskStackBuilder.from(this)
-                            // If there are ancestor activities, they should be added here.
-                            .addNextIntent(upIntent)
-                            .startActivities();
-                    finish();
-                } else {
-                    // This activity is part of the application's task, so simply
-                    // navigate up to the hierarchical parent activity.
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
-                return true;
+                finish();
+                break;
+            case R.id.action_cancel:
+                finish();
+                break;
+            case R.id.action_done:
+                finish();
+                break;
+            case R.id.action_show_devices:
+                onConnectButtonClicked();
+                break;
+            case R.id.action_transfer_data:
+                clearEditTexts();
+                sendRequestMessage(requestCmd);
+                break;
         }
+
         return super.onOptionsItemSelected(item);
+    }
+
+    private void UpdateShowDevicesMenu(boolean b) {
+        MenuItem showDevicesMenuItem = menu.findItem(R.id.action_show_devices);
+
+        if(b) {
+            if(showDevicesMenuItem != null) {
+                showDevicesMenuItem.setIcon(R.drawable.disconnect);
+                showDevicesMenuItem.setTitle(R.string.action_disconnect);
+            }
+        } else {
+            if(showDevicesMenuItem != null) {
+                showDevicesMenuItem.setIcon(R.drawable.show_device_list);
+                showDevicesMenuItem.setTitle(R.string.action_connect);
+            }
+        }
+    }
+
+    private void UpdateTransferDataMenuItem(boolean b) {
+        MenuItem transferDataMenuItem = menu.findItem(R.id.action_transfer_data);
+
+        if(transferDataMenuItem != null)
+            transferDataMenuItem.setVisible(b);
+    }
+
+    private void EnableMenuItem(int id, boolean b) {
+        MenuItem item = menu.findItem(id);
+        item.setEnabled(b);
     }
 
     @Override
@@ -139,36 +168,33 @@ public class CarCheckCollectDataActivity extends Activity {
         super.onStart();
 
         if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableIntent = new Intent(
-                    BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
-            // 否则，设置聊天会话
-        } else {
+        }
+        else {
             if (mBluetoothService == null)
                 setupChat();
         }
     }
 
-    // 连接按键响应函数
-    public void onConnectButtonClicked(View v) {
 
-        if (breakButton.getText().equals("连接")
-                || breakButton.getText().equals("connect")) {
-            Intent serverIntent = new Intent(this, BluetoothDeviceListActivity.class); // 跳转程序设置
-            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE); // 设置返回宏定义
-
+    public void onConnectButtonClicked() {
+        if(!isConnected) {
+            Intent serverIntent = new Intent(this, BluetoothDeviceListActivity.class);
+            startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
         } else {
-            // 关闭连接socket
-            try {
-                isBreak = false;
-                // 关闭蓝牙
-                breakButton.setText(R.string.button_break);
-                mBluetoothService.stop();
+            isConnected = false;
+            UpdateShowDevicesMenu(false);
+            UpdateTransferDataMenuItem(false);
 
+            try {
+                // 关闭蓝牙
+                mBluetoothService.stop();
             } catch (Exception e) {
+                if (D)
+                    Log.d(TAG, "bluetooth stop() failed");
             }
         }
-        return;
     }
 
     @Override
@@ -184,147 +210,147 @@ public class CarCheckCollectDataActivity extends Activity {
         }
     }
 
+    // 初始化BluetoothService
     private void setupChat() {
-
-        // 初始化BluetoothService执行蓝牙连接
         mBluetoothService = new BluetoothService(this, mHandler);
-
-        // 缓冲区初始化传出消息
-        mOutStringBuffer = new StringBuffer("");
-    }
-
-    public void click(View view) {
-        switch (view.getId()) {
-            case R.id.no_2_2_18_btn_break:
-                onConnectButtonClicked(breakButton);
-                break;
-            case R.id.no_2_2_18_btn_cancle:
-                mBluetoothService.stop();
-                finish();
-                break;
-            case R.id.no_2_2_18_btn_really:
-
-        }
-
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        if (mBluetoothService != null)
+        if (mBluetoothService != null) {
             mBluetoothService.stop();
-
+        }
     }
 
-    private void sendResquestMessage(String message) {
-        // 检查我们实际上在任何连接
+    private void sendRequestMessage(String message) {
+        // 是否已经连接到设备
         if (mBluetoothService.getState() != BluetoothService.STATE_CONNECTED) {
             Toast.makeText(this, R.string.not_connected, Toast.LENGTH_SHORT)
                     .show();
             return;
         }
 
-        // 检查实际上有东西寄到
+        // 发送数据
         if (!TextUtils.isEmpty(message) && message.length() > 0) {
-            // 得到消息字节和告诉BluetoothService写
             byte[] send = CodeFormat.hexStr2Bytes(message);
-            mBluetoothService.write(send);
 
+            // 向设备写数据
+            mBluetoothService.write(send);
+            EnableMenuItem(R.id.action_show_devices, false);
+            EnableMenuItem(R.id.action_transfer_data, false);
         }
     }
 
-    // 处理程序，获取信息的BluetoothService回来
     private final Handler mHandler = new Handler() {
 
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what) {
+                // 状态发生改变
                 case MESSAGE_STATE_CHANGE:
                     if (D)
                         Log.i(TAG, "MESSAGE_STATE_CHANGE: " + msg.arg1);
                     switch (msg.arg1) {
                         case BluetoothService.STATE_CONNECTED:
-                            for (int i = 0; i < 17; i++) {
-                                ets[i].setText("");
-                            }
+                            clearEditTexts();
                             break;
                         case BluetoothService.STATE_CONNECTING:
-                            // mTitle.setText(R.string.title_connecting);
                             break;
                         case BluetoothService.STATE_LISTEN:
                             break;
                         case BluetoothService.STATE_NONE:
-                            // mTitle.setText(R.string.title_not_connected);
+                            break;
+                        case BluetoothService.STATE_CONNECTION_LOST:
+                            isConnected = false;
+                            UpdateShowDevicesMenu(false);
+                            UpdateTransferDataMenuItem(false);
+                            // 关闭蓝牙
+                            mBluetoothService.stop();
                             break;
                     }
                     break;
+                // 写数据
                 case MESSAGE_WRITE:
-                    byte[] writeBuf = (byte[]) msg.obj;
-                    // 构建一个字符串缓冲区
-                    String writeMessage = new String(writeBuf);
-                    sum = 1;
-                    mmsg += writeMessage;
-
                     break;
+                // 读数据
                 case MESSAGE_READ:
                     String array[] = (String[]) msg.obj;
-                    if (!TextUtils.isEmpty(array[1])
-                            && !TextUtils.isEmpty(array[0])) {
 
+                    // 将接受的数据填入EditText
+                    if (!TextUtils.isEmpty(array[1]) && !TextUtils.isEmpty(array[0])) {
                         int name = Integer.parseInt(array[0], 16);
                         if (partOfName.length >= name) {
-                            ets[name - 1].append(array[1]);
+                            ets[name - 1].setText(array[1]);
                         }
                     }
-
                     break;
+                // 数据读取完毕
+                case MESSAGE_READ_OVER:
+                    Toast.makeText(getApplicationContext(), "数据传输完毕", Toast.LENGTH_SHORT).show();
+
+                    EnableMenuItem(R.id.action_show_devices, true);
+                    EnableMenuItem(R.id.action_transfer_data, true);
+                    break;
+                // 获取设备名称
                 case MESSAGE_DEVICE_NAME:
-                    // 保存该连接装置的名字
-                    mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
-                    Toast.makeText(getApplicationContext(),
-                            "已连接 " + mConnectedDeviceName, Toast.LENGTH_SHORT)
-                            .show();
-                    breakButton.setText(R.string.duankai);
-                    if (!isBreak) {
+                    // 保存设备的名称
+                    String mConnectedDeviceName = msg.getData().getString(DEVICE_NAME);
+                    Toast.makeText(getApplicationContext(), "已连接 " + mConnectedDeviceName, Toast.LENGTH_SHORT).show();
+
+                    UpdateShowDevicesMenu(true);
+                    UpdateTransferDataMenuItem(true);
+                    EnableMenuItem(R.id.action_show_devices, true);
+                    EnableMenuItem(R.id.action_transfer_data, true);
+
+                    if (!isConnected) {
                         if (t == null) {
                             t = new Thread() {
                                 public void run() {
                                     try {
                                         sleep(700);
                                         Message msg = Message.obtain();
-                                        msg.what = MESSAGE_BACK_RESQUES;
+                                        msg.what = MESSAGE_GET_SERIAL;
                                         sendMessage(msg);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
 
-                                };
+                                }
                             };
                             t.start();
                         }
                     }
-                    isBreak = true;
+
+                    isConnected = true;
                     break;
+                // 显示失败信息
                 case MESSAGE_TOAST:
-                    Toast.makeText(getApplicationContext(),
-                            msg.getData().getString(TOAST), Toast.LENGTH_SHORT)
-                            .show();
-                    HAS_RESQUEST_STR = false;
-                    if (isBreak) {
-                        t = null;
-                        breakButton.performClick();
-                    }
-                    first = true;
+                    Toast.makeText(getApplicationContext(), msg.getData().getString(TOAST), Toast.LENGTH_SHORT).show();
+
+                    hasRequestCmd = false;
+                    hasSerial = false;
                     t = null;
-                    isBreak = false;
-                    RESQUEST_STR = null;
+                    isConnected = false;
+                    UpdateTransferDataMenuItem(false);
+                    UpdateShowDevicesMenu(false);
+                    EnableMenuItem(R.id.action_show_devices, true);
+                    EnableMenuItem(R.id.action_transfer_data, true);
                     break;
-                case MESSAGE_BACK_RESQUES:
-                    if (first) {
-                        sendResquestMessage("aa057f012e");
-                        first = false;
-                    } else
-                        sendResquestMessage(RESQUEST_STR);
+                // 获取序列号
+                case MESSAGE_GET_SERIAL:
+                    if (!hasSerial) {
+                        sendRequestMessage(getSerialCmd);
+                        hasSerial = true;
+                    }
+                    // 已经获取了序列号
+                    else {
+                        UpdateShowDevicesMenu(true);
+                        UpdateTransferDataMenuItem(true);
+                        EnableMenuItem(R.id.action_show_devices, true);
+                        EnableMenuItem(R.id.action_transfer_data, true);
+                    }
+
                     break;
             }
         }
@@ -335,25 +361,32 @@ public class CarCheckCollectDataActivity extends Activity {
             Log.d(TAG, "onActivityResult " + resultCode);
         switch (requestCode) {
             case REQUEST_CONNECT_DEVICE:
-                // 当devicelistactivity返回连接装置
+                // 查找成功
                 if (resultCode == Activity.RESULT_OK) {
-                    // 获得设备地址
-                    String address = data.getExtras().getString(
-                            BluetoothDeviceListActivity.EXTRA_DEVICE_ADDRESS);
-                    // 把蓝牙设备对象
-                    BluetoothDevice device = mBluetoothAdapter
-                            .getRemoteDevice(address);
-                    // 试图连接到装置
-                    mBluetoothService.connect(device);
+                    try{
+                        Bundle bundle = data.getExtras();
+                        if(bundle != null) {
+                            String address = bundle.getString(BluetoothDeviceListActivity.EXTRA_DEVICE_ADDRESS);
+                            if(address != null) {
+                                // 根据设备地址连接设备
+                                BluetoothDevice device = mBluetoothAdapter.getRemoteDevice(address);
+                                mBluetoothService.connect(device);
+                            }
+                        }
+                    }
+                    catch(NullPointerException ex) {
+                        if (D)
+                            Log.d(TAG, "address error");
+                    }
                 }
                 break;
             case REQUEST_ENABLE_BT:
-                // 当请求启用蓝牙返回
+                // 如果允许打开蓝牙
                 if (resultCode == Activity.RESULT_OK) {
-                    // 蓝牙已启用，所以建立一个聊天会话
                     setupChat();
-                } else {
-                    // 用户未启用蓝牙或发生错误
+                }
+                // 不允许打开蓝牙（真是有病。。）
+                else {
                     Log.d(TAG, "BT not enabled");
                     Toast.makeText(this, R.string.bt_not_enabled_leaving,
                             Toast.LENGTH_SHORT).show();
@@ -362,13 +395,19 @@ public class CarCheckCollectDataActivity extends Activity {
         }
     }
 
-    // 初始化17个EditText
-    private void initET() {
+    // 初始化所有EditText
+    private void initEditTextCtrls() {
         ets = new EditText[17];
         for (int i = 0; i < 17; i++) {
-            int id = getResources().getIdentifier("no_2_2_" + (i + 1) + "_et", "id", getPackageName());
+            int id = getResources().getIdentifier("ac_area_" + (i + 1) + "_edit", "id", getPackageName());
             ets[i] = (EditText) findViewById(id);
+        }
+    }
 
+    // 清除所有EditText的数据
+    private void clearEditTexts() {
+        for (int i = 0; i < 17; i++) {
+            ets[i].setText("");
         }
     }
 }
