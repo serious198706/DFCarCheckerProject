@@ -81,8 +81,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="721d7231-0a31-4f76-bb3a-78a7d95e63b1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/MainActivity.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/MainActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/values/styles.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/values/styles.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DFCarChecker.iws" />
@@ -892,7 +890,11 @@
       <created>1378890946853</created>
       <updated>1378890946853</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="20130906">
+      <created>1378892116263</created>
+      <updated>1378892116263</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -951,7 +953,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
-    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_NEW_TODO" value="true" />
     <option name="myTodoPanelSettings">
       <value>
