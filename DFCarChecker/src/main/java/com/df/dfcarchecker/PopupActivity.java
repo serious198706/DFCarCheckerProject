@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.df.service.Common;
 
 public class PopupActivity extends Activity {
     private TableLayout root;
+    private String RESULT_TYPE = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,13 +28,18 @@ public class PopupActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String value = extras.getString("POPUP_TYPE");
-            if(value.equals("GLASS")) {
-                SetGlassLayout();
-            } else if(value.equals("SCREW")) {
-                SetScrewLayout();
-            } else if(value.equals("BROKEN")) {
-                SetBrokenLayout();
+            if(value.equals("OUT_GLASS")) {
+                SetOutGlassLayout();
+            } else if(value.equals("OUT_SCREW")) {
+                SetOutScrewLayout();
+            } else if(value.equals("OUT_BROKEN")) {
+                SetOutBrokenLayout();
+            } else if(value.equals("IN_BROKEN")) {
+                SetInBrokenLayout();
+            } else if(value.equals("IN_DIRTY")) {
+                SetInDirtyLayout();
             }
+
         }
 
         final ActionBar actionBar = getActionBar();
@@ -65,19 +72,50 @@ public class PopupActivity extends Activity {
     }
 
 
-    private void SetGlassLayout() {
-
+    private void SetOutGlassLayout() {
+        RESULT_TYPE = Common.OUT_GLASS_RESULT;
     }
 
-    private void SetScrewLayout() {
-
+    private void SetOutScrewLayout() {
+        RESULT_TYPE = Common.OUT_SCREW_RESULT;
     }
 
-    private void SetBrokenLayout() {
-        setTitle(getResources().getString(R.string.out_broken));
-        root = (TableLayout)findViewById(R.id.root);
+    // 车身检查 - 破损
+    private void SetOutBrokenLayout() {
+        RESULT_TYPE = Common.OUT_BROKEN_RESULT;
+
+        setTitle(getResources().getString(R.string.out_broken_parts));
 
         String[] checkBoxTextArray = getResources().getStringArray(R.array.out_broken_parts);
+
+        RenderChildTree(checkBoxTextArray);
+    }
+
+    // 内饰检查 - 破损
+    private void SetInBrokenLayout() {
+        RESULT_TYPE = Common.IN_BROKEN_RESULT;
+
+        setTitle(getResources().getString(R.string.in_broken_parts));
+
+        String[] checkBoxTextArray = getResources().getStringArray(R.array.in_broken_parts_item);
+
+        RenderChildTree(checkBoxTextArray);
+    }
+
+    // 内饰检查 - 脏污
+    private void SetInDirtyLayout() {
+        RESULT_TYPE = Common.IN_DIRTY_RESULT;
+
+        setTitle(getResources().getString(R.string.in_dirty_parts));
+
+        String[] checkBoxTextArray = getResources().getStringArray(R.array.in_dirty_parts_item);
+
+        RenderChildTree(checkBoxTextArray);
+    }
+
+
+    private void RenderChildTree(String[] checkBoxTextArray) {
+        root = (TableLayout)findViewById(R.id.root);
 
         int length = checkBoxTextArray.length;
 
@@ -112,8 +150,17 @@ public class PopupActivity extends Activity {
             lastRow.addView(checkBox);
         }
 
+        // 为了保持最后一行的整齐，要填充多余的TextView
+        for(int i = 0; i < (3 - (length - (row - 1) * 3)); i++) {
+            TextView textView = new TextView(this);
+            TableRow.LayoutParams params = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
+            textView.setLayoutParams(params);
+            lastRow.addView(textView);
+        }
+
         root.addView(lastRow);
     }
+
 
     private String CollectCheckedCheckBoxText() {
         String result = "";
@@ -151,7 +198,7 @@ public class PopupActivity extends Activity {
     private void ReturnResult(String result) {
         // 创建结果意图和包括地址
         Intent intent = new Intent();
-        intent.putExtra(Common.BROKEN_RESULT, result);
+        intent.putExtra(RESULT_TYPE, result);
 
         // 结果，完成这项活动
         setResult(Activity.RESULT_OK, intent);

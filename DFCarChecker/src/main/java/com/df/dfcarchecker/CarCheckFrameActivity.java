@@ -159,7 +159,7 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
                     fragment = new CarCheckInsideFragment();
                     break;
                 case 4:
-                    fragment = new CarCheckMixFragment();
+                    fragment = new CarCheckIntergratedFragment();
                     break;
             }
             return fragment;

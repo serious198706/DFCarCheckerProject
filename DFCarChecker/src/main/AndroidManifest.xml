@@ -31,14 +31,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ProcedureInputFrameActivity"
+            android:name="com.df.dfcarchecker.ProcedureInputFrameActivity"
             android:label="@string/procedure_input"
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="com.df.dfcarchecker.CarCheckFrameActivity"
             android:label="@string/title_activity_car_check_frame"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="com.df.dfcarchecker.CarWaitingListActivity"
@@ -56,6 +56,10 @@
         <activity
             android:name="com.df.dfcarchecker.PopupActivity"
             android:label="@string/title_activity_popup" >
+        </activity>
+        <activity
+            android:name="com.df.dfcarchecker.CarCheckWaterActivity"
+            android:label="@string/title_activity_car_check_water" >
         </activity>
     </application>
 

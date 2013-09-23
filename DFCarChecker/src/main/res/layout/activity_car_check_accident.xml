@@ -478,7 +478,7 @@
                         android:layout_marginTop="10dp"
                         android:layout_weight="5"
                         style="@style/CodeFont"
-                        android:text="@string/ac_other_check" />
+                        android:text="@string/other_check" />
 
                 <View
                         android:layout_width="match_parent"
@@ -507,7 +507,7 @@
                 <TableRow>
                     <TextView android:layout_width="0dp"
                               android:layout_height="wrap_content"
-                              android:text="@string/ac_screw"
+                              android:text="@string/ac_screw_parts"
                               android:textSize="18sp"
                               android:layout_weight="2"
                               android:layout_gravity="center"/>
@@ -523,6 +523,17 @@
                               android:layout_weight="3"
                               android:editable="false"/>
                 </TableRow>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        style="@style/CodeFont"
+                        android:text="@string/camera" />
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:background="?android:attr/listDivider"/>
                 <TableRow>
                     <Button android:id="@+id/ac_start_camera_button"
                             android:layout_width="wrap_content"
@@ -531,6 +542,17 @@
                             android:drawableRight="@drawable/camera"
                             android:onClick="ac_start_camera"/>
                 </TableRow>
+                <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        style="@style/CodeFont"
+                        android:text="@string/comment" />
+
+                <View
+                        android:layout_width="match_parent"
+                        android:layout_height="3px"
+                        android:background="?android:attr/listDivider"/>
                 <TableRow>
                     <TextView
                             android:layout_height="wrap_content"

@@ -5,14 +5,13 @@
     android:orientation="vertical"
     tools:context=".CarWaitingListActivity">
 
-
-
     <ScrollView android:layout_height="wrap_content"
                 android:layout_width="match_parent"
                 android:layout_marginBottom="10dp">
         <TableLayout android:layout_width="match_parent"
                  android:layout_height="wrap_content"
-                 android:layout_margin="5dp">
+                 android:layout_marginLeft="5dp"
+                 android:layout_marginRight="5dp">
             <TableRow>
                 <TextView
                         android:layout_width="wrap_content"
@@ -100,7 +99,8 @@
                 <EditText android:id="@+id/bi_car_color_edit"
                          android:layout_height="wrap_content"
                          android:layout_width="0dp"
-                         android:layout_weight="2"/>
+                         android:layout_weight="2"
+                         android:hint="@string/bi_car_color"/>
             </TableRow>
             <TableRow>
                 <TextView
@@ -112,7 +112,8 @@
                 <EditText android:id="@+id/bi_car_number_edit"
                           android:layout_height="wrap_content"
                           android:layout_width="0dp"
-                          android:layout_weight="2"/>
+                          android:layout_weight="2"
+                          android:hint="@string/bi_car_number"/>
             </TableRow>
             <TableRow>
                 <TextView
@@ -217,6 +218,17 @@
                         android:hint="@string/cbi_lwh"
                         android:layout_weight="2"/>
             </TableRow>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    style="@style/CodeFont"
+                    android:text="@string/camera" />
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3px"
+                    android:background="?android:attr/listDivider"/>
             <TableRow>
                 <Button android:id="@+id/cbi_start_camera_button"
                         android:layout_width="wrap_content"
@@ -225,6 +237,17 @@
                         android:drawableRight="@drawable/camera"
                         android:onClick="cbi_start_camera"/>
             </TableRow>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    style="@style/CodeFont"
+                    android:text="@string/comment" />
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3px"
+                    android:background="?android:attr/listDivider"/>
             <TableRow>
                 <TextView
                         android:layout_height="wrap_content"

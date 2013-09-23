@@ -159,7 +159,7 @@ public class CarCheckAccidentFragment extends Fragment implements View.OnClickLi
         AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
         LayoutInflater inflater = this.inflater;
 
-        builder.setTitle(R.string.ac_screw);
+        builder.setTitle(R.string.ac_screw_parts);
         builder.setView(inflater.inflate(R.layout.ac_screw_dialog, null));
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {

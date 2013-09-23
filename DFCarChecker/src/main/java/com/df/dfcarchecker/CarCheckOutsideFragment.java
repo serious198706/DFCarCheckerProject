@@ -1,22 +1,18 @@
 package com.df.dfcarchecker;
 
 import android.app.AlertDialog;
-import android.bluetooth.BluetoothDevice;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.df.service.BluetoothDeviceListActivity;
 import com.df.service.Common;
 
 import java.util.List;
@@ -55,8 +51,8 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
 
     public void ChooseBroken(View v) {
         Intent intent = new Intent(rootView.getContext(), PopupActivity.class);
-        intent.putExtra("POPUP_TYPE", "BROKEN");
-        startActivityForResult(intent, Common.CHOOSE_BROKEN);
+        intent.putExtra("POPUP_TYPE", "OUT_BROKEN");
+        startActivityForResult(intent, Common.CHOOSE_OUT_BROKEN);
     }
 
     public void out_start_camera(View v) {
@@ -89,13 +85,13 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case Common.CHOOSE_BROKEN:
+            case Common.CHOOSE_OUT_BROKEN:
                 // 查找成功
                 if (resultCode == Activity.RESULT_OK) {
                     try{
                         Bundle bundle = data.getExtras();
                         if(bundle != null) {
-                            String brokenPart = bundle.getString(Common.BROKEN_RESULT);
+                            String brokenPart = bundle.getString(Common.OUT_BROKEN_RESULT);
                             if(brokenPart != null) {
                                 EditText editText = (EditText)rootView.findViewById(R.id.out_broken_edit);
                                 editText.setText(brokenPart);

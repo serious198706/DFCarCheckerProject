@@ -11,15 +11,14 @@
         <item>有</item>
     </string-array>
     <string-array name="yesorno">
-        <item>否</item>
         <item>是</item>
+        <item>否</item>
     </string-array>
 
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="choose">选择</string>
     <string name="prompt">请选择</string>
-
     <string name="upload_procedure">提交</string>
 
     <!-- 手续录入 -->
@@ -295,15 +294,13 @@
     <string name="title_activity_car_waiting_list">待检测车辆</string>
 
     <!-- 车辆检测 -->
+    <string name="other_check">其他查勘项</string>
+    <string name="camera">拍摄照片</string>
+    <string name="comment">备注</string>
     <string name="car_number">车牌号码</string>
     <string name="car_type">行驶本车型</string>
     <string name="car_color">颜色</string>
     <string name="car_date">车辆提交日期</string>
-    <string name="title_activity_car_check_accident_fragment">MainActivity</string>
-    <string name="title_activity_car_check_outside_fragment">MainActivity</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="title_activity_car_check_inside_fragment">MainActivity</string>
-    <string name="title_activity_car_check_mix_fragment">MainActivity</string>
     <string name="car_waiting_list_refresh">刷新</string>
     <string name="title_section1">基本信息</string>
     <string name="title_section2">事故排查</string>
@@ -377,7 +374,6 @@
     <string name="ac_prob32">取下左侧B柱门框的密封胶条，察看其边缘是否整齐，无钣金修复痕迹（重点察看可能的切割更换部件）</string>
     <string name="ac_prob33">取下左侧A柱门框的密封胶条，察看其边缘是否整齐，无钣金修复痕迹（重点察看可能的切割更换部件）</string>
     <string name="ac_collect">采集数据</string>
-    <string name="ac_other_check">其他查勘项</string>
     <string name="ac_glass">前后风挡玻璃年份晚于车辆出厂年份的有：</string>
 
     <string-array name="ac_glass_item">
@@ -387,7 +383,7 @@
 
     <string name="ac_glass_front">前挡风玻璃</string>
     <string name="ac_glass_rear">后挡风玻璃</string>
-    <string name="ac_screw">车身覆盖件固定螺栓存有松动痕迹的部位：</string>
+    <string name="ac_screw_parts">车身覆盖件固定螺栓存有松动痕迹的部位：</string>
     <string name="ac_l">右前翼子板</string>
     <string name="ac_m">引擎盖</string>
     <string name="ac_d">左前翼子板</string>
@@ -440,6 +436,7 @@
     </string-array>
 
     <string name="ac_camera">拍摄机舱组照片</string>
+
     <string-array name="ac_camera_cato_item">
         <item>左前</item>
         <item>右前</item>
@@ -453,7 +450,7 @@
     <string name="send">发送</string>
     <string name="not_connected">你没有连接到一个设备</string>
     <string name="bt_not_enabled_leaving">蓝牙未启用,请启动</string>
-    <string name="title_connecting">正在连接...</string>
+    <string name="title_connecting">正在连接………</string>
     <string name="title_connected_to">已连接: </string>
     <string name="title_not_connected">未连接</string>
     <string name="button_clean">清屏</string>
@@ -466,7 +463,7 @@
     <string name="prompt_message">没有数据可供查看</string>
 
     <!-- DeviceListActivity -->
-    <string name="scanning">扫描未知设备...</string>
+    <string name="scanning">扫描未知设备………</string>
     <string name="select_device">选择一个设备连接</string>
     <string name="none_paired">没有已配对设备</string>
     <string name="none_found">没有建立连接</string>
@@ -489,12 +486,13 @@
     <string name="action_transfer_data">传输数据</string>
 
     <!-- 车身检查 -->
-    <string name="out">车身检查</string>
+    <string name="out">车身表面检查</string>
     <string name="out_color_diff">  色差</string>
     <string name="out_scratch">  划痕</string>
     <string name="out_trans">  变形</string>
     <string name="out_scrape">  刮蹭</string>
-    <string name="out_broken">表面有破损的零部件：</string>
+    <string name="out_broken_parts">表面有破损的零部件：</string>
+
     <string-array name="out_broken_parts">
         <item>前保险杠</item>
         <item>后保险杠</item>
@@ -531,14 +529,18 @@
         <item>左后雾灯</item>
         <item>右后雾灯</item>
     </string-array>
+
     <string name="out_paint">车辆漆面光洁度：</string>
+
     <string-array name="out_paint_level">
         <item>很好</item>
         <item>一般</item>
         <item>较差</item>
         <item>很差</item>
     </string-array>
+
     <string name="out_camera">拍摄外观组照片</string>
+
     <string-array name="out_camera_cato_item">
         <item>左前45°</item>
         <item>右前45°</item>
@@ -547,7 +549,164 @@
         <item>左后45°</item>
         <item>右后45°</item>
     </string-array>
+
     <string name="out_comment">车身检查的备注说明：</string>
     <string name="title_activity_popup">MainActivity</string>
+
+    <!-- 内饰检查 -->
+    <string name="in">内饰检查</string>
+    <string name="in_dirty">脏污</string>
+    <string name="in_broken">破损</string>
+    <string name="in_camera">拍摄内饰组照片</string>
+
+    <string-array name="in_camera_cato_item">
+        <item>工作台</item>
+        <item>方向盘</item>
+        <item>仪表盘</item>
+        <item>左门+方向盘</item>
+        <item>后排座椅</item>
+        <item>副驾座椅</item>
+        <item>其他</item>
+    </string-array>
+
+    <string name="in_broken_parts">车内部件破损部位：</string>
+
+    <string-array name="in_broken_parts_item">
+        <item>仪表台</item>
+        <item>方向盘</item>
+        <item>车内后视镜</item>
+        <item>前遮阳板</item>
+        <item>手套箱</item>
+        <item>车顶篷</item>
+        <item>车内地胶（毯）</item>
+        <item>司机座椅</item>
+        <item>副驾座椅</item>
+        <item>后排座椅</item>
+        <item>座椅调整手柄</item>
+        <item>左前门内饰板</item>
+        <item>右前门内饰板</item>
+        <item>左后门内饰板</item>
+        <item>右后门内饰板</item>
+        <item>排档把手柄防护罩</item>
+        <item>排档把手柄</item>
+        <item>扶手箱</item>
+        <item>点烟器</item>
+        <item>A柱饰板</item>
+        <item>B柱饰板</item>
+        <item>C术饰板</item>
+        <item>左前门扶手</item>
+        <item>左后门扶手</item>
+        <item>右前门扶手</item>
+        <item>右后门扶手</item>
+        <item>左前门扣手</item>
+        <item>左后门扣手</item>
+        <item>右前门扣手</item>
+        <item>右后门扣手</item>
+    </string-array>
+
+    <string name="in_dirty_parts">车内部件脏污部位：</string>
+
+    <string-array name="in_dirty_parts_item">
+        <item>仪表台</item>
+        <item>方向盘</item>
+        <item>车内后视镜</item>
+        <item>前遮阳板</item>
+        <item>手套箱</item>
+        <item>车顶篷</item>
+        <item>车内地胶（毯）</item>
+        <item>司机座椅</item>
+        <item>副驾座椅</item>
+        <item>后排座椅</item>
+        <item>左前门内饰板</item>
+        <item>右前门内饰板</item>
+        <item>左后门内饰板</item>
+        <item>右后门内饰板</item>
+        <item>排档把手柄防护罩</item>
+        <item>排档把手柄</item>
+        <item>扶手箱</item>
+        <item>A柱饰板</item>
+        <item>B柱饰板</item>
+        <item>C柱饰板</item>
+    </string-array>
+
+    <string name="in_seal">门窗密封条良好无老化、破损：</string>
+    <string name="in_comment">内饰检查的备注说明：</string>
+
+    <!-- 综合检查 -->
+    <string name="it">综合检查</string>
+    <string name="it_function">功能检查</string>
+
+    <string-array name="it_function_item">
+        <item>正常</item>
+        <item>故障</item>
+        <item>无</item>
+    </string-array>
+
+    <string name="it_abs_indicator">ABS灯</string>
+    <string name="it_gasbag_indicator">气囊灯</string>
+    <string name="it_oil_indicator">机油灯</string>
+    <string name="it_revolution_counter">转数表</string>
+    <string name="it_handbreak_indicator">手刹灯</string>
+    <string name="it_audio">音响</string>
+    <string name="it_skylight">天窗</string>
+    <string name="it_ele_windows">电窗</string>
+    <string name="it_ele_seats">电动座椅</string>
+    <string name="it_ele_rel_mirror">电动反光镜</string>
+    <string name="it_engine">发动机检查</string>
+    <string name="it_engine_start">车辆是否可正常启动：</string>
+    <string name="it_engine_steady">怠速工况下运转平稳：</string>
+    <string name="it_engine_sound">发动机没有明显异响：</string>
+    <string name="it_engine_gas_color">目测发动机排气颜色：</string>
+
+    <string-array name="it_engint_gas_color_item">
+        <item>无</item>
+        <item>黑</item>
+        <item>蓝</item>
+    </string-array>
+
+    <string name="it_engine_oil_leak">发动机无机油渗漏：</string>
+    <string name="it_engine_pipe">舱内的线路及管路无老化的现象：</string>
+    <string name="it_gear">变速箱检查</string>
+    <string name="it_gear_clear">档位是否清晰、不松晃：</string>
+    <string name="it_gear_push_sound">离合器踩下是否有异响：</string>
+    <string name="it_gear_release_sound">离合器松开是否有异响：</string>
+    <string name="it_gear_oil_leak">变速箱漏油：</string>
+    <string name="it_comment">综合检查的备注说明：</string>
+    <string name="it_other">其他检查</string>
+    <string name="it_other_water">泡水车检查</string>
+    <string name="it_other_fire">火烧车检查</string>
+    <string name="it_other_electricity">电控单元检测</string>
+    <string name="it_other_tire">轮胎与表显里程</string>
+    <string name="it_water">泡水检查</string>
+    <string name="it_water_cabin">车舱检查</string>
+    <string name="it_water_cabin_sound">音响的纸盆喇叭是否有水印：</string>
+    <string name="it_water_cabin_smoke">点烟器底座是否有锈迹：</string>
+    <string name="it_water_cabin_belt">安全带底部是否有水印：</string>
+    <string name="it_water_cabin_slide">座椅滑轨内是否有泥沙：</string>
+    <string name="it_water_cabin_ashtray">取下烟灰缸后查看底座是否有泥沙：</string>
+    <string name="it_water_cabin_cushion">掀开后排座椅的座垫，查看底部是否有水印或泥沙：</string>
+    <string name="it_water_cabin_ecu">细查车辆ECU接口处是否有水印或泥沙：</string>
+    <string name="it_water_cabin_top">顶棚是否有水印痕迹：</string>
+    <string name="it_water_back">后备箱检查：</string>
+    <string name="it_water_back_tire">备胎槽的四角是否有泥沙：</string>
+    <string name="it_water_back_corner">后备箱的四边是否有泥沙：</string>
+    <string name="it_water_back_disc">放置后置碟盒的部位是否有泥沙：</string>
+    <string name="it_water_back_storage">后备箱两侧储物空间的四边是否有泥沙：</string>
+    <string name="it_water_engine">发动机舱检查：</string>
+    <string name="it_water_engine_fuse_new">查看保险盒是否为新换：</string>
+    <string name="it_water_engine_fuse">查看保险盒内是否有泥沙或存有清理的痕迹：</string>
+    <string name="it_water_engine_clean">发动机舱内是否格外清洁：</string>
+    <string name="it_tire_run">表显里程：</string>
+    <string name="it_tire_year">轮胎生产年份：</string>
+
+    <string-array name="it_tire_wear_item">
+        <item>磨损</item>
+        <item>正常</item>
+        <item>看不见</item>
+    </string-array>
+
+    <string name="title_activity_car_check_water">MainActivity</string>
+    <string name="title_activity_asdfs">MainActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
