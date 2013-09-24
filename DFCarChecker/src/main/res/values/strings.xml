@@ -703,6 +703,7 @@
     <string name="it_water_engine_fuse_new">查看保险盒是否为新换：</string>
     <string name="it_water_engine_fuse">查看保险盒内是否有泥沙或存有清理的痕迹：</string>
     <string name="it_water_engine_clean">发动机舱内是否格外清洁：</string>
+    <string name="title_activity_car_check_tire">表显里程与轮胎</string>
     <string name="it_tire_run">表显里程：</string>
     <string name="it_tire_kilo">公里</string>
     <string name="it_tire_year">轮胎生产年份：</string>
@@ -712,12 +713,8 @@
         <item>磨损</item>
     </string-array>
 
-    <string name="title_activity_car_check_water">MainActivity</string>
-    <string name="title_activity_car_check_tire">MainActivity</string>
-    <string name="title_activity_car_checked_list">MainActivity</string>
-    <string name="hello_world">Hello world!</string>
-
     <!-- 已检车辆 -->
+    <string name="title_activity_car_checked_list">已检车辆</string>
     <string name="action_print">打印鉴定报告</string>
     <string name="action_import">导入平台</string>
     <string name="action_modify">修改信息</string>
