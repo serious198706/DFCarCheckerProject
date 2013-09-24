@@ -330,19 +330,23 @@
     <string name="csi_add">添加</string>
     <string name="csi_volume">排量：</string>
     <string name="csi_drive_type">驱动方式：</string>
+
     <string-array name="csi_drive_type_item">
         <item>两驱</item>
         <item>四驱</item>
         <item>全时四驱</item>
         <item>智能四驱</item>
     </string-array>
+
     <string name="csi_gear_type">变速器形式：</string>
+
     <string-array name="csi_gear_type_item">
         <item>手动</item>
         <item>自动</item>
         <item>手自一体</item>
         <item>CVT</item>
     </string-array>
+
     <string name="cbi">车型基本信息</string>
     <string name="cbi_lwh">长宽高：</string>
     <string name="cbi_camera">拍摄其他组照片</string>
@@ -733,15 +737,45 @@
     <string name="action_platform">导入平台</string>
     <string name="action_modify">修改信息</string>
     <string name="action_refresh">刷新</string>
+
+    <!-- 鉴定报告 -->
     <string name="title_activity_car_report">鉴定报告</string>
-    <string name="title_activity_car_report_basic_info_fragment">MainActivity</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="cr_basic_info">基本信息</string>
+    <string name="cr_first_log_time">初次登记：</string>
+    <string name="cr_manufacture_type">厂牌型号：</string>
+    <string name="cr_color">车身颜色：</string>
+    <string name="cr_volume">排量：</string>
+    <string name="cr_manufacture_time">出厂日期：</string>
+    <string name="cr_run">表显里程：</string>
+    <string name="cr_kilo">万公里</string>
+    <string name="cr_drive_type">驱动方式：</string>
+    <string name="cr_gear_type">变速箱形式：</string>
+    <string name="cr_set_info">配置信息</string>
+    <string name="cr_audio">音响</string>
+    <string name="cr_skylight">天窗</string>
+    <string name="cr_ele_windows">电窗</string>
+    <string name="cr_ele_seats">电动座椅</string>
+    <string name="cr_ele_rel_mirror">电动反光镜</string>
+    <string name="cr_accident">事故排查</string>
+    <string name="cr_car_top">车辆剖面图：</string>
+    <string name="cr_ac_level">事故等级：B</string>
+    <string name="cr_ac_level_comment">全车结构件及加强件无任何损伤，允许覆盖件有修复</string>
+    <string name="cr_tip">图示</string>
+    <string name="cr_paint_result">覆盖件漆面检查结果（异常部位）：</string>
+    <string name="cr_paint_data">"·右前翼子板\n·引擎盖\n·左前翼子板\n·左A柱"</string>
+    <string name="cr_path_result">痕迹查勘结果：</string>
+    <string name="cr_base_point_data">基准点数据：</string>
+    <string name="cr_part">部位</string>
+    <string name="cr_part_data">数值</string>
+    <string name="cr_result">技术状况及鉴定结果</string>
+    <string name="cr_outside_check">车身检查：</string>
+    <string name="cr_outside_check_result">车身检查结果：</string>
+    <string name="cr_inside_check_result">车内检查结果：</string>
+    <string name="cr_engine_check_result">发动机检查结果：</string>
+    <string name="cr_function_check_result">功能检查结果：</string>
+    <string name="cr_total_level">综合车况级别：</string>
+    <string name="cr_total_level_comment">车辆现状综合状况较好</string>
+    <string name="cr_level">车辆级别：</string>
 
-    <string name="cc_basic_info">基本信息</string>
-    <string name="cc_set_info">配置信息</string>
-
-
-    <string name="cc_accident">事故排查</string>
-    <string name="cc_result">技术状况及鉴定结果</string>
 
 </resources>

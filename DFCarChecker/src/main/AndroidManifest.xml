@@ -73,10 +73,7 @@
             android:name="com.df.dfcarchecker.CarReportFrameActivity"
             android:label="@string/title_activity_car_report" >
         </activity>
-        <activity
-            android:name="com.df.dfcarchecker.CarReportBasicInfoFragment"
-            android:label="@string/title_activity_car_report_basic_info_fragment" >
-        </activity>
+
     </application>
 
 </manifest>

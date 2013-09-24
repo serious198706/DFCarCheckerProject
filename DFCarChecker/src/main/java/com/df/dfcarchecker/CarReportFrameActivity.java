@@ -3,17 +3,15 @@ package com.df.dfcarchecker;
 import java.util.Locale;
 
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
+import android.view.MenuItem;
 
 public class CarReportFrameActivity extends FragmentActivity {
 
@@ -46,16 +44,26 @@ public class CarReportFrameActivity extends FragmentActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        final ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.car_report, menu);
         return true;
     }
-    
-    
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     /**
      * A {@link FragmentPagerAdapter} that returns a fragment corresponding to
@@ -76,10 +84,10 @@ public class CarReportFrameActivity extends FragmentActivity {
                     fragment = new CarReportBasicInfoFragment();
                     break;
                 case 1:
-                    fragment = new CarCheckAccidentFragment();
+                    fragment = new CarReportAccidentFragment();
                     break;
                 case 2:
-                    fragment = new CarCheckOutsideFragment();
+                    fragment = new CarReportResultFragment();
                     break;
             }
             return fragment;
@@ -95,38 +103,13 @@ public class CarReportFrameActivity extends FragmentActivity {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.cc_basic_info).toUpperCase(l);
+                    return getString(R.string.cr_basic_info).toUpperCase(l);
                 case 1:
-                    return getString(R.string.cc_accident).toUpperCase(l);
+                    return getString(R.string.cr_accident).toUpperCase(l);
                 case 2:
-                    return getString(R.string.cc_result).toUpperCase(l);
+                    return getString(R.string.cr_result).toUpperCase(l);
             }
             return null;
         }
     }
-
-    /**
-     * A dummy fragment representing a section of the app, but that simply
-     * displays dummy text.
-     */
-    public static class DummySectionFragment extends Fragment {
-        /**
-         * The fragment argument representing the section number for this
-         * fragment.
-         */
-        public static final String ARG_SECTION_NUMBER = "section_number";
-
-        public DummySectionFragment() {
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_car_report_dummy, container, false);
-            TextView dummyTextView = (TextView) rootView.findViewById(R.id.section_label);
-            dummyTextView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
-            return rootView;
-        }
-    }
-
 }
