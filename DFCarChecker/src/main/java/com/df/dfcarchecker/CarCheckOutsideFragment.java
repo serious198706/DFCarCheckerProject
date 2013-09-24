@@ -27,7 +27,7 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.inflater = inflater;
-        rootView = inflater.inflate(R.layout.activity_car_check_outside, container, false);
+        rootView = inflater.inflate(R.layout.fragment_car_check_outside, container, false);
 
         Button brokenButton = (Button)rootView.findViewById(R.id.out_choose_broken_button);
         brokenButton.setOnClickListener(this);

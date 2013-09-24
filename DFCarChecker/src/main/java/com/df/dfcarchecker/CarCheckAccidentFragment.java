@@ -31,7 +31,7 @@ public class CarCheckAccidentFragment extends Fragment implements View.OnClickLi
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.inflater = inflater;
-        rootView = inflater.inflate(R.layout.activity_car_check_accident, container, false);
+        rootView = inflater.inflate(R.layout.fragment_car_check_accident, container, false);
 
         Button glassButton = (Button)rootView.findViewById(R.id.ac_choose_glass_button);
         glassButton.setOnClickListener(this);

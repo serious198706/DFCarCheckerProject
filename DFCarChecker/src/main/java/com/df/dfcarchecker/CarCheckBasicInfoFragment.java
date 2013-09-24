@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickListener {
@@ -20,7 +19,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                             Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.inflater = inflater;
-        rootView = inflater.inflate(R.layout.activity_car_check_basic_info, container, false);
+        rootView = inflater.inflate(R.layout.fragment_car_check_basic_info, container, false);
 
         Button button = (Button) rootView.findViewById(R.id.cbi_start_camera_button);
         button.setOnClickListener(this);

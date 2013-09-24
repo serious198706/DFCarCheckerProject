@@ -9,8 +9,8 @@
           android:icon="@drawable/modify"
           android:orderInCategory="100"
           android:showAsAction="ifRoom" />
-    <item android:id="@+id/action_import"
-          android:title="@string/action_import"
+    <item android:id="@+id/action_platform"
+          android:title="@string/action_platform"
           android:icon="@drawable/platform"
           android:orderInCategory="100"
           android:showAsAction="ifRoom" />

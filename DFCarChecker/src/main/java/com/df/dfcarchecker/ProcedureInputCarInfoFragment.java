@@ -1,7 +1,6 @@
 package com.df.dfcarchecker;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -31,7 +30,7 @@ public class ProcedureInputCarInfoFragment extends Fragment implements View.OnCl
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.inflater = inflater;
-        rootView = inflater.inflate(R.layout.activity_procedureinput_ci, container, false);
+        rootView = inflater.inflate(R.layout.fragment_procedureinput_ci, container, false);
 
         SetCarTypeSpinner();
         SetFirstLogTimeSpinner();

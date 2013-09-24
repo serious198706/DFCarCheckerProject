@@ -20,7 +20,7 @@ public class CarCheckIntergratedFragment extends Fragment implements View.OnClic
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.inflater = inflater;
-        rootView = inflater.inflate(R.layout.activity_car_check_intergrated, container, false);
+        rootView = inflater.inflate(R.layout.fragment_car_check_intergrated, container, false);
 
         Button waterButton = (Button)rootView.findViewById(R.id.it_other_water_button);
         waterButton.setOnClickListener(this);

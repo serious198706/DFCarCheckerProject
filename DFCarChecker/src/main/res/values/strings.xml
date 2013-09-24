@@ -328,9 +328,23 @@
     <string name="bi_engine_number">发动机号：</string>
     <string name="csi">车辆配置信息</string>
     <string name="csi_add">添加</string>
-    <string name="csi_volume">排量</string>
+    <string name="csi_volume">排量：</string>
+    <string name="csi_drive_type">驱动方式：</string>
+    <string-array name="csi_drive_type_item">
+        <item>两驱</item>
+        <item>四驱</item>
+        <item>全时四驱</item>
+        <item>智能四驱</item>
+    </string-array>
+    <string name="csi_gear_type">变速器形式：</string>
+    <string-array name="csi_gear_type_item">
+        <item>手动</item>
+        <item>自动</item>
+        <item>手自一体</item>
+        <item>CVT</item>
+    </string-array>
     <string name="cbi">车型基本信息</string>
-    <string name="cbi_lwh">长宽高</string>
+    <string name="cbi_lwh">长宽高：</string>
     <string name="cbi_camera">拍摄其他组照片</string>
 
     <string-array name="cbi_camera_cato_item">
@@ -716,8 +730,18 @@
     <!-- 已检车辆 -->
     <string name="title_activity_car_checked_list">已检车辆</string>
     <string name="action_print">打印鉴定报告</string>
-    <string name="action_import">导入平台</string>
+    <string name="action_platform">导入平台</string>
     <string name="action_modify">修改信息</string>
     <string name="action_refresh">刷新</string>
+    <string name="title_activity_car_report">鉴定报告</string>
+    <string name="title_activity_car_report_basic_info_fragment">MainActivity</string>
+    <string name="hello_world">Hello world!</string>
+
+    <string name="cc_basic_info">基本信息</string>
+    <string name="cc_set_info">配置信息</string>
+
+
+    <string name="cc_accident">事故排查</string>
+    <string name="cc_result">技术状况及鉴定结果</string>
 
 </resources>

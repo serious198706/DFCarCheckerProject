@@ -17,7 +17,7 @@ public class ProcedureInputExchangeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        rootView = inflater.inflate(R.layout.activity_procedureinput_ex, container, false);
+        rootView = inflater.inflate(R.layout.fragment_procedureinput_ex, container, false);
 
         Spinner ci_violated_spinner = (Spinner) rootView.findViewById(R.id.ex_exchange_time_type_spinner);
         ci_violated_spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

@@ -24,7 +24,7 @@ public class CarCheckInsideFragment extends Fragment implements View.OnClickList
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.inflater = inflater;
-        rootView = inflater.inflate(R.layout.activity_car_check_inside, container, false);
+        rootView = inflater.inflate(R.layout.fragment_car_check_inside, container, false);
 
         Button brokenButton = (Button)rootView.findViewById(R.id.in_choose_broken_button);
         brokenButton.setOnClickListener(this);
