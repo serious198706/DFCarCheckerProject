@@ -58,7 +58,7 @@ public class CarCheckIntergratedFragment extends Fragment implements View.OnClic
     }
 
     private void CheckTire(View v) {
-        Intent intent = new Intent(rootView.getContext(), CarCheckWaterActivity.class);
+        Intent intent = new Intent(rootView.getContext(), CarCheckTireActivity.class);
         startActivityForResult(intent, Common.IT_TIRE);
     }
 

@@ -1,22 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-
-    <Button android:layout_width="match_parent"
+    <TableLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="手续录入"
-            android:onClick="EnterProcedureInput"></Button>
-    <Button android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="待检车辆"
-            android:onClick="EnterCarWaitingList"></Button>
-    <Button android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="已检车辆"></Button>
-    <Button android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="退出系统"></Button>
-</LinearLayout>
+            android:layout_centerInParent="true">
+        <TableRow>
+            <Button android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:drawableTop="@drawable/procedure"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="手续录入"
+                    android:onClick="EnterProcedureInput"/>
+            <Button android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginBottom="15dp"
+                    android:drawableTop="@drawable/waiting"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="待检车辆"
+                    android:onClick="EnterCarWaitingList"/>
+        </TableRow>
+        <TableRow>
+            <Button android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="15dp"
+                    android:drawableTop="@drawable/checked"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="已检车辆"
+                    android:onClick="EnterCarCheckedList"/>
+            <Button android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="15dp"
+                    android:drawableTop="@drawable/quit"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="退出系统"
+                    android:onClick="Quit"/>
+        </TableRow>
+    </TableLayout>
+</RelativeLayout>

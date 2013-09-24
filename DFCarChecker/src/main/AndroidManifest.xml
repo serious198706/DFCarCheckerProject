@@ -59,7 +59,15 @@
         </activity>
         <activity
             android:name="com.df.dfcarchecker.CarCheckWaterActivity"
-            android:label="@string/title_activity_car_check_water" >
+            android:label="@string/it_water" >
+        </activity>
+        <activity
+            android:name="com.df.dfcarchecker.CarCheckTireActivity"
+            android:label="@string/title_activity_car_check_tire" >
+        </activity>
+        <activity
+            android:name="com.df.dfcarchecker.CarCheckedListActivity"
+            android:label="@string/title_activity_car_checked_list" >
         </activity>
     </application>
 

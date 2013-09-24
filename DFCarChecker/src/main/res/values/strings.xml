@@ -5,14 +5,21 @@
     <string name="set_dark_theme">深色主题</string>
     <string name="app_name">车易拍检测客户端</string>
     <string name="action_settings">Settings</string>
+    <string name="quit">确定退出？</string>
+    <string name="quit_title">提示</string>
 
     <string-array name="existornot">
         <item>无</item>
         <item>有</item>
     </string-array>
-    <string-array name="yesorno">
+    <string-array name="yes_no">
         <item>是</item>
         <item>否</item>
+    </string-array>
+    <string-array name="no_yes">
+        <item>否</item>
+        <item>是</item>
+        <item>看不见</item>
     </string-array>
 
     <string name="ok">确定</string>
@@ -697,16 +704,23 @@
     <string name="it_water_engine_fuse">查看保险盒内是否有泥沙或存有清理的痕迹：</string>
     <string name="it_water_engine_clean">发动机舱内是否格外清洁：</string>
     <string name="it_tire_run">表显里程：</string>
+    <string name="it_tire_kilo">公里</string>
     <string name="it_tire_year">轮胎生产年份：</string>
 
     <string-array name="it_tire_wear_item">
-        <item>磨损</item>
         <item>正常</item>
-        <item>看不见</item>
+        <item>磨损</item>
     </string-array>
 
     <string name="title_activity_car_check_water">MainActivity</string>
-    <string name="title_activity_asdfs">MainActivity</string>
+    <string name="title_activity_car_check_tire">MainActivity</string>
+    <string name="title_activity_car_checked_list">MainActivity</string>
     <string name="hello_world">Hello world!</string>
+
+    <!-- 已检车辆 -->
+    <string name="action_print">打印鉴定报告</string>
+    <string name="action_import">导入平台</string>
+    <string name="action_modify">修改信息</string>
+    <string name="action_refresh">刷新</string>
 
 </resources>

@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/action_print"
+          android:title="@string/action_print"
+          android:icon="@drawable/print"
+          android:orderInCategory="100"
+          android:showAsAction="ifRoom" />
+    <item android:id="@+id/action_modify"
+          android:title="@string/action_modify"
+          android:icon="@drawable/modify"
+          android:orderInCategory="100"
+          android:showAsAction="ifRoom" />
+    <item android:id="@+id/action_import"
+          android:title="@string/action_import"
+          android:icon="@drawable/platform"
+          android:orderInCategory="100"
+          android:showAsAction="ifRoom" />
+</menu>

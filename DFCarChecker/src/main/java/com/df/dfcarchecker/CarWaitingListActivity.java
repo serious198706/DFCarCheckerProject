@@ -19,6 +19,7 @@ import java.util.HashMap;
 
 public class CarWaitingListActivity extends Activity {
     private ArrayList<HashMap<String, String>> mylist;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,10 +42,13 @@ public class CarWaitingListActivity extends Activity {
             mylist.add(map);
         }
 
-        SimpleAdapter mSchedule = new SimpleAdapter(this, mylist, R.layout.car_waiting_list_row,
+        SimpleAdapter adapter = new SimpleAdapter(
+                this,
+                mylist,
+                R.layout.car_waiting_list_row,
                 new String[] {"car_number", "car_type", "car_color", "car_date"},
                 new int[] {R.id.car_number, R.id.car_type, R.id.car_color, R.id.car_date});
-        list.setAdapter(mSchedule);
+        list.setAdapter(adapter);
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

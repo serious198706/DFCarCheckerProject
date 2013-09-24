@@ -1,0 +1,103 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".CarCheckTireActivity">
+
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/it_tire_run"
+                android:textSize="25sp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="33201"
+                android:textSize="25sp"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/it_tire_kilo"
+                android:textSize="25sp"/>
+    </LinearLayout>
+
+    <RelativeLayout android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ImageView android:id="@+id/tire_image"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_centerHorizontal="true"
+                   android:layout_marginTop="30dp"
+                   android:src="@drawable/out_base_image"/>
+        <!-- 左前 -->
+        <Spinner android:id="@+id/lf_tire_spinner"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_toLeftOf="@id/tire_image"
+                 android:layout_alignTop="@id/tire_image"
+                 android:layout_marginTop="90dp"
+                 android:entries="@array/it_tire_wear_item"/>
+        <EditText android:id="@+id/lf_tire_edit"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@id/lf_tire_spinner"
+                  android:layout_alignLeft="@id/lf_tire_spinner"
+                  android:phoneNumber="true"
+                  android:hint="0000"/>
+
+        <!-- 右前 -->
+        <Spinner android:id="@+id/rf_tire_spinner"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_toRightOf="@id/tire_image"
+                 android:layout_alignTop="@id/tire_image"
+                 android:layout_marginTop="90dp"
+                 android:entries="@array/it_tire_wear_item"/>
+        <EditText android:id="@+id/rf_tire_edit"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_below="@id/rf_tire_spinner"
+                  android:layout_alignLeft="@id/rf_tire_spinner"
+                  android:phoneNumber="true"
+                  android:hint="0000"/>
+
+        <!-- 左后 -->
+        <Spinner android:id="@+id/lr_tire_spinner"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_toLeftOf="@id/tire_image"
+                 android:layout_alignBottom="@id/tire_image"
+                 android:layout_marginBottom="130dp"
+                 android:entries="@array/it_tire_wear_item"/>
+        <EditText android:id="@+id/lr_tire_edit"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_alignLeft="@id/lr_tire_spinner"
+                  android:layout_alignBottom="@id/tire_image"
+                  android:layout_marginBottom="90dp"
+                  android:phoneNumber="true"
+                  android:hint="0000"/>
+
+        <!-- 右后 -->
+        <Spinner android:id="@+id/rr_tire_spinner"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_toRightOf="@id/tire_image"
+                 android:layout_alignBottom="@id/tire_image"
+                 android:layout_marginBottom="130dp"
+                 android:entries="@array/it_tire_wear_item"/>
+        <EditText android:id="@+id/rr_tire_edit"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_alignLeft="@id/rr_tire_spinner"
+                  android:layout_alignBottom="@id/tire_image"
+                  android:layout_marginBottom="90dp"
+                  android:phoneNumber="true"
+                  android:hint="0000"/>
+    </RelativeLayout>
+
+</LinearLayout>
