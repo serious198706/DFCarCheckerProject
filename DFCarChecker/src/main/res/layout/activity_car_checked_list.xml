@@ -9,6 +9,6 @@
               android:layout_height="wrap_content"
               android:headerDividersEnabled="true"
               android:longClickable="true"
-            />
+              android:listSelector="@drawable/car_checked_list_selector"/>
 
 </RelativeLayout>

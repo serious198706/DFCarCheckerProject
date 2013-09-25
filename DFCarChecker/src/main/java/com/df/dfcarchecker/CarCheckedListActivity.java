@@ -2,6 +2,7 @@ package com.df.dfcarchecker;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.NavUtils;
@@ -12,17 +13,25 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 public class CarCheckedListActivity extends Activity {
     private ArrayList<HashMap<String, String>> mylist;
     private ActionMode mActionMode = null;
+    private ListView list;
+    private int lastPos = 0;
+    private SimpleAdapter adapter;
+
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
         // Called when the action mode is created; startActionMode() was called
@@ -64,6 +73,7 @@ public class CarCheckedListActivity extends Activity {
         @Override
         public void onDestroyActionMode(ActionMode mode) {
             mActionMode = null;
+            list.clearFocus();
         }
     };
 
@@ -72,8 +82,8 @@ public class CarCheckedListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_checked_list);
 
-        ListView list = (ListView) findViewById(R.id.car_checked_list);
-
+        list = (ListView) findViewById(R.id.car_checked_list);
+        list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         mylist = new ArrayList<HashMap<String, String>>();
         HashMap<String, String> map;
 
@@ -102,7 +112,7 @@ public class CarCheckedListActivity extends Activity {
             mylist.add(map);
         }
 
-        SimpleAdapter adapter = new SimpleAdapter(
+        adapter = new SimpleAdapter(
                 this,
                 mylist,
                 R.layout.car_checked_list_row,
@@ -114,6 +124,11 @@ public class CarCheckedListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Toast.makeText(CarCheckedListActivity.this, mylist.get(i).get("car_number"), Toast.LENGTH_SHORT).show();
+
+                lastPos = i;
+
+                view.clearFocus();
+                list.clearFocus();
                 Intent intent = new Intent(CarCheckedListActivity.this, CarReportFrameActivity.class);
                 startActivity(intent);
             }
@@ -126,6 +141,7 @@ public class CarCheckedListActivity extends Activity {
                 Toast.makeText(CarCheckedListActivity.this, mylist.get(pos).get("car_number"), Toast.LENGTH_SHORT).show();
                 mActionMode = CarCheckedListActivity.this.startActionMode(mActionModeCallback);
                 view.setSelected(true);
+
                 return true;
             }
         });
@@ -167,7 +183,10 @@ public class CarCheckedListActivity extends Activity {
                 return true;
             case R.id.action_refresh:
                 // 提交数据
-                Toast.makeText(CarCheckedListActivity.this, "refreshing..", Toast.LENGTH_SHORT).show();
+                list.setSelection(lastPos);
+                list.clearChoices();
+                list.clearFocus();
+                list.invalidate();
                 break;
         }
         return super.onOptionsItemSelected(item);
