@@ -292,6 +292,10 @@
                         android:hint="@string/cbi_comment"
                         android:id="@+id/editText"/>
             </TableRow>
+
+            <ImageView android:id="@+id/image"
+                       android:layout_width="wrap_content"
+                       android:layout_height="wrap_content"/>
         </TableLayout>
     </ScrollView>
 </LinearLayout>

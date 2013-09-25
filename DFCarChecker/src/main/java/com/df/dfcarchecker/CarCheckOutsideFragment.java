@@ -3,6 +3,7 @@ package com.df.dfcarchecker;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
     private static View rootView;
     private List<Integer> brokenArrayIndex;
     private LayoutInflater inflater;
+    private int currentGroup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -65,7 +67,13 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
         builder.setItems(R.array.out_camera_cato_item, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(rootView.getContext(), String.format("%s", i), Toast.LENGTH_SHORT).show();
+                currentGroup = i;
+                String group = getResources().getStringArray(R.array.out_camera_cato_item)[currentGroup];
+
+                Toast.makeText(rootView.getContext(), "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, Common.PHOTO_FOR_OUTSIED_GROUP);
             }
         });
         // Inflate and set the layout for the dialog
@@ -101,6 +109,16 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
                     catch(NullPointerException ex) {
 
                     }
+                }
+                break;
+            case Common.PHOTO_FOR_OUTSIED_GROUP:
+                if(resultCode == Activity.RESULT_OK) {
+                    Bitmap image = (Bitmap) data.getExtras().get("data");
+                    //img.setImageBitmap(image);
+                } else {
+                    Toast.makeText(rootView.getContext(),
+                            "error occured during opening camera", Toast.LENGTH_SHORT)
+                            .show();
                 }
                 break;
         }

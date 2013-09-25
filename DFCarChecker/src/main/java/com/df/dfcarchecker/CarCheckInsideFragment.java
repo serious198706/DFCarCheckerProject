@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.df.service.Common;
 public class CarCheckInsideFragment extends Fragment implements View.OnClickListener  {
     private static View rootView;
     private LayoutInflater inflater;
+    private int currentGroup;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,7 +76,13 @@ public class CarCheckInsideFragment extends Fragment implements View.OnClickList
         builder.setItems(R.array.in_camera_cato_item, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                Toast.makeText(rootView.getContext(), String.format("%s", i), Toast.LENGTH_SHORT).show();
+                currentGroup = i;
+                String group = getResources().getStringArray(R.array.in_camera_cato_item)[currentGroup];
+
+                Toast.makeText(rootView.getContext(), "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, Common.PHOTO_FOR_INSIDE_GROUP);
             }
         });
         // Inflate and set the layout for the dialog
@@ -92,7 +100,7 @@ public class CarCheckInsideFragment extends Fragment implements View.OnClickList
         dialog.show();
     }
 
-
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case Common.CHOOSE_IN_BROKEN:
@@ -129,6 +137,16 @@ public class CarCheckInsideFragment extends Fragment implements View.OnClickList
                     catch(NullPointerException ex) {
 
                     }
+                }
+                break;
+            case Common.PHOTO_FOR_INSIDE_GROUP:
+                if(resultCode == Activity.RESULT_OK) {
+                    Bitmap image = (Bitmap) data.getExtras().get("data");
+                    //img.setImageBitmap(image);
+                } else {
+                    Toast.makeText(rootView.getContext(),
+                            "error occured during opening camera", Toast.LENGTH_SHORT)
+                            .show();
                 }
                 break;
         }

@@ -25,4 +25,10 @@ public class Common {
     public static final String IT_TIRE_RESULT = "IT_TIRE_RESULT";
     public static final String IT_FIRE_RESULT = "IT_FIRE_RESULT";
     public static final String IT_ELECTRICITY_RESULT = "IT_ELECTRICITY_RESULT";
+
+    // 拍摄组别代码
+    public static final int PHOTO_FOR_OTHER_GROUP = 0;
+    public static final int PHOTO_FOR_ENGINE_GROUP = 1;
+    public static final int PHOTO_FOR_OUTSIED_GROUP = 2;
+    public static final int PHOTO_FOR_INSIDE_GROUP = 3;
 }
