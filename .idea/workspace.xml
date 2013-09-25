@@ -72,25 +72,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="721d7231-0a31-4f76-bb3a-78a7d95e63b1" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/drawable-hdpi/activated.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/drawable-hdpi/disabled.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/drawable-hdpi/normal.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/drawable-hdpi/pressed.png" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/ExtendableGridView.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/drawable-hdpi/car_checked_list_selector.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/AndroidManifest.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckAccidentFragment.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckAccidentFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckedListActivity.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckedListActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReportAccidentFragment.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReportAccidentFragment.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/PopupActivity.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/PopupActivity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_checked_list.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_checked_list.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/car_checked_list_row.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/car_checked_list_row.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_report_accident.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_report_accident.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_report_result.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_report_result.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/values/styles.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/values/styles.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/values-v11/styles.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/values-v11/styles.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/values-v14/styles.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/values-v14/styles.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DFCarChecker.iws" />
@@ -946,7 +927,11 @@
       <created>1380011152842</created>
       <updated>1380011152842</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="20130924">
+      <created>1380103593302</created>
+      <updated>1380103593302</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -982,6 +967,7 @@
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.22651933" sideWeight="0.42735043" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32799146" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22651933" sideWeight="0.42735043" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.49944752" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928178" sideWeight="0.79594016" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -996,7 +982,6 @@
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2685083" sideWeight="0.8002137" order="4" side_tool="false" content_ui="tabs" x="1101" y="249" width="640" height="627" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.49944752" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
