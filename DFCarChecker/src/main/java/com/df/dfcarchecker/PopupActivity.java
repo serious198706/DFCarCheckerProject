@@ -78,6 +78,12 @@ public class PopupActivity extends Activity {
 
     private void SetOutScrewLayout() {
         RESULT_TYPE = Common.OUT_SCREW_RESULT;
+
+        setTitle(getResources().getString(R.string.ac_screw_parts));
+
+        String[] checkBoxTextArray = getResources().getStringArray(R.array.ac_screw_item);
+
+        RenderChildTree(checkBoxTextArray);
     }
 
     // 车身检查 - 破损

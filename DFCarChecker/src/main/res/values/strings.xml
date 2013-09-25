@@ -773,7 +773,7 @@
     <string name="cr_inside_check_result">车内检查结果：</string>
     <string name="cr_engine_check_result">发动机检查结果：</string>
     <string name="cr_function_check_result">功能检查结果：</string>
-    <string name="cr_total_level">综合车况级别：</string>
+    <string name="cr_total_level">车况级别：80</string>
     <string name="cr_total_level_comment">车辆现状综合状况较好</string>
     <string name="cr_level">车辆级别：</string>
 
