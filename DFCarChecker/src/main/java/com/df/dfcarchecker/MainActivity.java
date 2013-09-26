@@ -1,14 +1,11 @@
 package com.df.dfcarchecker;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
 
 public class MainActivity extends Activity {
     @Override
@@ -35,7 +32,7 @@ public class MainActivity extends Activity {
     public void Quit(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-        builder.setTitle(R.string.quit_title);
+        builder.setTitle(R.string.alert_title);
         builder.setMessage(R.string.quit);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {

@@ -24,7 +24,6 @@ import android.widget.Toast;
 import com.df.service.Common;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -59,6 +58,7 @@ public class CarCheckAccidentFragment extends Fragment implements View.OnClickLi
 
         glassArrayIndex = new ArrayList<Integer>();
         screwArrayIndex = new ArrayList<Integer>();
+
 
         // 为所有Switch绑定事件
         HandleSwitchButtons();
@@ -107,8 +107,6 @@ public class CarCheckAccidentFragment extends Fragment implements View.OnClickLi
     }
 
     private void HandleImageViewButtons() {
-
-
         imageViewButtons = new ImageView[20];
         for (int i = 0; i < 20; i++) {
             int id = getResources().getIdentifier("ac_prob" + (i + 1) + "_image", "id", rootView.getContext().getPackageName());
@@ -117,21 +115,20 @@ public class CarCheckAccidentFragment extends Fragment implements View.OnClickLi
             imageViewButtons[i].setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // create Intent to take a picture and return control to the calling application
                     Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
+                    // 创建一个文件，用来存储相片
                     fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
+
+                    // 如果没有存储设备，就不拍照了
+                    if(fileUri == null) {
+                        Toast.makeText(rootView.getContext(), "没有检测到存储设备", Toast.LENGTH_LONG).show();
+                        return;
+                    }
 
                     intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, fileUri);
 
-//                    // 相机BUG，需要特殊处理
-//                    if (hasImageCaptureBug()) {
-//                        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, fileUri);
-//                    } else {
-//                        intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-//                    }
-
-                    // start the image capture Intent
+                    // 开始拍照
                     startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
                 }
             });
@@ -251,67 +248,31 @@ public class CarCheckAccidentFragment extends Fragment implements View.OnClickLi
                 }
                 break;
             case CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE:
-//                if (resultCode == Activity.RESULT_OK) {
-//                    // Image captured and saved to fileUri specified in the Intent
-//                    Toast.makeText(rootView.getContext(), "Image saved to:\n" + data.getData(), Toast.LENGTH_LONG).show();
-//                } else if (resultCode == Activity.RESULT_CANCELED) {
-//                    // User cancelled the image capture
-//                } else {
-//                    // Image capture failed, advise user
-//                }
-
                 if (resultCode == Activity.RESULT_OK) {
-                    Uri u = null;
-                    if (!hasImageCaptureBug()) {
-                        File fi = new File(fileUri.getPath());
-                        try {
-                            u = Uri.parse(android.provider.MediaStore.Images.Media.insertImage(rootView.getContext().getContentResolver(), fi.getAbsolutePath(), null, null));
-                            if (!fi.delete()) {
-                                Log.i("logMarker", "Failed to delete " + fi);
-                            }
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        u = data.getData();
-                    }
+                    // 照片成功拍摄，并存储成功
+                    Toast.makeText(rootView.getContext(), "拍摄成功！", Toast.LENGTH_LONG).show();
 
-                    Toast.makeText(rootView.getContext(), "Image saved to:\n" + u.getPath(), Toast.LENGTH_LONG).show();
+                    // TODO 在这里应该拿到照片并做相应处理（也许不用？？）
+                } else if (resultCode == Activity.RESULT_CANCELED) {
+                    // 用户取消照片拍摄
+                } else {
+                    // 拍摄照片失败
                 }
+
                 break;
             case Common.PHOTO_FOR_ENGINE_GROUP:
                 if(resultCode == Activity.RESULT_OK) {
                     Bitmap image = (Bitmap) data.getExtras().get("data");
                     //img.setImageBitmap(image);
                 } else {
-                    Toast.makeText(rootView.getContext(),
-                            "error occured during opening camera", Toast.LENGTH_SHORT)
-                            .show();
+                    Toast.makeText(rootView.getContext(),"error occured during opening camera", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
-
-
     }
 
-    public boolean hasImageCaptureBug() {
-
-        // list of known devices that have the bug
-        ArrayList<String> devices = new ArrayList<String>();
-        devices.add("android-devphone1/dream_devphone/dream");
-        devices.add("generic/sdk/generic");
-        devices.add("vodafone/vfpioneer/sapphire");
-        devices.add("tmobile/kila/dream");
-        devices.add("verizon/voles/sholes");
-        devices.add("google_ion/google_ion/sapphire");
-
-        return devices.contains(android.os.Build.BRAND + "/" + android.os.Build.PRODUCT + "/"
-                + android.os.Build.DEVICE);
-
-    }
 
     public static final int MEDIA_TYPE_IMAGE = 1;
-    public static final int MEDIA_TYPE_VIDEO = 2;
 
     /** Create a file Uri for saving an image or video */
     private static Uri getOutputMediaFileUri(int type){
@@ -320,18 +281,19 @@ public class CarCheckAccidentFragment extends Fragment implements View.OnClickLi
 
     /** Create a File for saving an image or video */
     private static File getOutputMediaFile(int type){
-        // To be safe, you should check that the SDCard is mounted
-        // using Environment.getExternalStorageState() before doing this.
+        // 先检查是否有可存储设备
+        if( Environment.getExternalStorageState() == null) {
+            Log.d("DFCarChecker", "没有存储设备！！！");
+            return null;
+        }
 
+        // 选取存储设备上的存储路径 TODO 可修改
         File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(
-                Environment.DIRECTORY_PICTURES), "MyCameraApp");
-        // This location works best if you want the created images to be shared
-        // between applications and persist after your app has been uninstalled.
+                Environment.DIRECTORY_PICTURES), "DFCarChecker");
 
-        // Create the storage directory if it does not exist
-        if (! mediaStorageDir.exists()){
-            if (! mediaStorageDir.mkdirs()){
-                Log.d("MyCameraApp", "failed to create directory");
+        if (!mediaStorageDir.exists()){
+            if (!mediaStorageDir.mkdirs()){
+                Log.d("DFCarChecker", "创建目录失败！！！");
                 return null;
             }
         }
@@ -342,9 +304,6 @@ public class CarCheckAccidentFragment extends Fragment implements View.OnClickLi
         if (type == MEDIA_TYPE_IMAGE){
             mediaFile = new File(mediaStorageDir.getPath() + File.separator +
                     "IMG_"+ timeStamp + ".jpg");
-        } else if(type == MEDIA_TYPE_VIDEO) {
-            mediaFile = new File(mediaStorageDir.getPath() + File.separator +
-                    "VID_"+ timeStamp + ".mp4");
         } else {
             return null;
         }

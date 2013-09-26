@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal" >
+
+        <RadioGroup android:id="@+id/out_radio_group"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal">
+            <RadioButton android:id="@+id/out_color_diff_radio"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                         android:layout_weight="1"
+                         android:drawableLeft="@drawable/out_color_diff"
+                         android:text="@string/out_color_diff"
+                         android:checked="true"/>
+            <RadioButton android:id="@+id/out_scratch_radio"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                         android:layout_weight="1"
+                         android:drawableLeft="@drawable/out_scratch"
+                         android:text="@string/out_scratch"/>
+            <RadioButton android:id="@+id/out_trans_radio"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                         android:layout_weight="1"
+                         android:drawableLeft="@drawable/out_trans"
+                         android:text="@string/out_trans"/>
+            <RadioButton android:id="@+id/out_scrape_radio"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                         android:layout_weight="1"
+                         android:drawableLeft="@drawable/out_scrape"
+                         android:text="@string/out_scrape"/>
+        </RadioGroup>
+
+
+        <!--<Button-->
+                <!--android:id="@+id/bn1"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:onClick="bn1"-->
+                <!--android:text="色差" />-->
+
+        <!--<Button-->
+                <!--android:id="@+id/bn2"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:onClick="bn2"-->
+                <!--android:text="划痕" />-->
+
+        <!--<Button-->
+                <!--android:id="@+id/bn3"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:onClick="bn3"-->
+                <!--android:text="变型" />-->
+
+        <!--<Button-->
+                <!--android:id="@+id/bn4"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:onClick="bn4"-->
+                <!--android:text="刮蹭" />-->
+</LinearLayout>

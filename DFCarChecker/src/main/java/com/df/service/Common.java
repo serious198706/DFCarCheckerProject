@@ -14,6 +14,7 @@ public class Common {
     public static final int IT_TIRE = 7;
     public static final int IT_FIRE = 8;
     public static final int IT_ELECTRICITY = 9;
+    public static final int OUT_PAINT = 10;
 
     // 用来获取Activity结果的查询代码
     public static final String OUT_GLASS_RESULT = "OUT_GLASS_RESULT";
@@ -29,6 +30,15 @@ public class Common {
     // 拍摄组别代码
     public static final int PHOTO_FOR_OTHER_GROUP = 0;
     public static final int PHOTO_FOR_ENGINE_GROUP = 1;
-    public static final int PHOTO_FOR_OUTSIED_GROUP = 2;
+    public static final int PHOTO_FOR_OUTSIDE_GROUP = 2;
     public static final int PHOTO_FOR_INSIDE_GROUP = 3;
+
+    // 绘图类型代码
+    public static final int COLOR_DIFF = 1;
+    public static final int SCRATCH = 2;
+    public static final int TRANS = 3;
+    public static final int SCRAPE = 4;
+
+    // TODO 加入事故检查绘图类型代码
+
 }
