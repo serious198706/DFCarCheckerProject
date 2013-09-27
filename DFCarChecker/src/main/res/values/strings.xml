@@ -5,8 +5,9 @@
     <string name="set_dark_theme">深色主题</string>
     <string name="app_name">车易拍检测客户端</string>
     <string name="action_settings">Settings</string>
+
     <string name="quit">确定退出？</string>
-    <string name="quit_title">提示</string>
+    <string name="alert_title">提示</string>
 
     <string-array name="existornot">
         <item>无</item>
@@ -517,6 +518,9 @@
     <string name="out_trans">  变形</string>
     <string name="out_scrape">  刮蹭</string>
     <string name="out_broken_parts">表面有破损的零部件：</string>
+    <string name="out_start_paint">绘制车身表面缺陷</string>
+    <string name="action_clear">清除</string>
+    <string name="out_clear_confirm">确定清除？</string>
 
     <string-array name="out_broken_parts">
         <item>前保险杠</item>
@@ -776,6 +780,7 @@
     <string name="cr_total_level">车况级别：80</string>
     <string name="cr_total_level_comment">车辆现状综合状况较好</string>
     <string name="cr_level">车辆级别：</string>
-
+    <string name="title_activity_car_check_out_side_paint">MainActivity</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>

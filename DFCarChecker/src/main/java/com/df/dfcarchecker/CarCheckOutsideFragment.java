@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
@@ -15,7 +17,9 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.df.service.Common;
+import com.df.service.PosEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarCheckOutsideFragment extends Fragment implements View.OnClickListener {
@@ -24,17 +28,26 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
     private LayoutInflater inflater;
     private int currentGroup;
 
+    public static List<PosEntity> posEntities;
+
+    private PaintPreviewView paintPreviewView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.inflater = inflater;
         rootView = inflater.inflate(R.layout.fragment_car_check_outside, container, false);
+        paintPreviewView = (PaintPreviewView) rootView.findViewById(R.id.out_base_image_preview);
 
         Button brokenButton = (Button)rootView.findViewById(R.id.out_choose_broken_button);
         brokenButton.setOnClickListener(this);
         Button cameraButton = (Button)rootView.findViewById(R.id.out_start_camera_button);
         cameraButton.setOnClickListener(this);
+        Button startPaintButton = (Button)rootView.findViewById(R.id.out_start_paint_button);
+        startPaintButton.setOnClickListener(this);
+
+        posEntities = new ArrayList<PosEntity>();
 
         return rootView;
     }
@@ -47,6 +60,9 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
                 break;
             case R.id.out_start_camera_button:
                 out_start_camera(v);
+                break;
+            case R.id.out_start_paint_button:
+                StartPaint(v);
                 break;
         }
     }
@@ -73,7 +89,7 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
                 Toast.makeText(rootView.getContext(), "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, Common.PHOTO_FOR_OUTSIED_GROUP);
+                startActivityForResult(intent, Common.PHOTO_FOR_OUTSIDE_GROUP);
             }
         });
         // Inflate and set the layout for the dialog
@@ -90,6 +106,12 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void StartPaint(View v) {
+        Intent intent = new Intent(rootView.getContext(), CarCheckOutSidePaintActivity.class);
+        startActivityForResult(intent, Common.OUT_PAINT);
+    }
+
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
@@ -111,7 +133,7 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
                     }
                 }
                 break;
-            case Common.PHOTO_FOR_OUTSIED_GROUP:
+            case Common.PHOTO_FOR_OUTSIDE_GROUP:
                 if(resultCode == Activity.RESULT_OK) {
                     Bitmap image = (Bitmap) data.getExtras().get("data");
                     //img.setImageBitmap(image);
@@ -121,6 +143,11 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
                             .show();
                 }
                 break;
+            case Common.OUT_PAINT:
+paintPreviewView.invalidate();
+                break;
         }
     }
+
+
 }

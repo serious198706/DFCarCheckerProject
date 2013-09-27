@@ -27,42 +27,19 @@
             <LinearLayout android:orientation="horizontal"
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content">
-                <ImageView android:id="@+id/out_base_image"
-                           android:layout_height="wrap_content"
-                           android:layout_width="0dp"
-                           android:src="@drawable/out_base_image"
-                           android:layout_weight="3"/>
+                <com.df.dfcarchecker.PaintPreviewView android:id="@+id/out_base_image_preview"
+                           android:layout_width="560px"
+                           android:layout_height="800px"/>
 
                 <TableLayout android:layout_width="0dp"
                              android:layout_height="wrap_content"
-                             android:layout_toRightOf="@id/out_base_image"
+                             android:layout_toRightOf="@id/out_base_image_preview"
                              android:layout_weight="1">
-                    <TableRow>
-                        <RadioGroup android:orientation="vertical"
-                                    android:layout_height="wrap_content"
-                                    android:layout_width="wrap_content">
-                            <RadioButton android:id="@+id/out_color_diff_radio"
-                                         android:layout_height="wrap_content"
-                                         android:layout_width="wrap_content"
-                                         android:drawableLeft="@drawable/out_color_diff"
-                                         android:text="@string/out_color_diff"/>
-                            <RadioButton android:id="@+id/out_scratch_radio"
-                                         android:layout_height="wrap_content"
-                                         android:layout_width="wrap_content"
-                                         android:drawableLeft="@drawable/out_scratch"
-                                         android:text="@string/out_scratch"/>
-                            <RadioButton android:id="@+id/out_trans_radio"
-                                         android:layout_height="wrap_content"
-                                         android:layout_width="wrap_content"
-                                         android:drawableLeft="@drawable/out_trans"
-                                         android:text="@string/out_trans"/>
-                            <RadioButton android:id="@+id/out_scrape_radio"
-                                         android:layout_height="wrap_content"
-                                         android:layout_width="wrap_content"
-                                         android:drawableLeft="@drawable/out_scrape"
-                                         android:text="@string/out_scrape"/>
-                        </RadioGroup>
-                    </TableRow>
+                    <Button android:id="@+id/out_start_paint_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/out_start_paint"
+                            android:onClick="StartPaint"/>
                 </TableLayout>
             </LinearLayout>
 
