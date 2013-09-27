@@ -137,6 +137,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/BluetoothService.java" line="88" class="com.df.service.BluetoothService" package="com.df.service">
         <option name="ENABLED" value="false" />
@@ -184,7 +185,6 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </line_breakpoints>
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -194,26 +194,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="gradle.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/.idea/gradle.xml">
+      <file leaf-file-name="CarCheckAccidentFragment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckAccidentFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="9" column="0" selection-start="334" selection-end="334" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="306">
+            <state line="291" column="9" selection-start="11490" selection-end="11490" vertical-scroll-proportion="0.0" vertical-offset="3970" max-vertical-offset="4590">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CarCheckAccidentFragment.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckAccidentFragment.java">
+      <file leaf-file-name="PaintPreviewView.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/PaintPreviewView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="291" column="9" selection-start="12207" selection-end="12207" vertical-scroll-proportion="0.49604222" vertical-offset="4011" max-vertical-offset="5372">
-              <folding>
-                <element signature="e#4392#5435#0" expanded="true" />
-                <element signature="e#5420#5421#0" expanded="true" />
-                <element signature="e#8300#8876#0" expanded="true" />
-                <element signature="e#8865#8866#0" expanded="true" />
-                <element signature="e#12360#12368#0" expanded="true" />
-              </folding>
+            <state line="29" column="13" selection-start="719" selection-end="719" vertical-scroll-proportion="0.33245382" vertical-offset="10" max-vertical-offset="2567">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -221,7 +215,7 @@
       <file leaf-file-name="FragmentActivity.class" pinned="false" current="false" current-in-tab="false">
         <entry file="jar://$APPLICATION_HOME_DIR$/sdk/extras/android/m2repository/com/android/support/support-v4/13.0.0/support-v4-13.0.0.jar!/android/support/v4/app/FragmentActivity.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="28" column="19" selection-start="1121" selection-end="1121" vertical-scroll-proportion="-4.48" vertical-offset="347" max-vertical-offset="2091">
+            <state line="28" column="19" selection-start="1121" selection-end="1121" vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="2108">
               <folding />
             </state>
           </provider>
@@ -230,7 +224,7 @@
       <file leaf-file-name="CarReportAccidentFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReportAccidentFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="48" column="0" selection-start="1626" selection-end="1626" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="884">
+            <state line="48" column="0" selection-start="1626" selection-end="1626" vertical-scroll-proportion="0.0" vertical-offset="799" max-vertical-offset="1071">
               <folding />
             </state>
           </provider>
@@ -239,7 +233,7 @@
       <file leaf-file-name="Common.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Common.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="22" column="19" selection-start="858" selection-end="858" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="680">
+            <state line="22" column="19" selection-start="832" selection-end="832" vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="850">
               <folding />
             </state>
           </provider>
@@ -248,11 +242,8 @@
       <file leaf-file-name="CarCheckOutsideFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="110" column="21" selection-start="4232" selection-end="4232" vertical-scroll-proportion="0.0" vertical-offset="1225" max-vertical-offset="1904">
-              <folding>
-                <element signature="e#2229#2807#0" expanded="true" />
-                <element signature="e#2796#2797#0" expanded="true" />
-              </folding>
+            <state line="110" column="21" selection-start="4083" selection-end="4083" vertical-scroll-proportion="0.0" vertical-offset="1853" max-vertical-offset="2703">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -260,11 +251,8 @@
       <file leaf-file-name="CarCheckInsideFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckInsideFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="144" column="22" selection-start="5643" selection-end="5643" vertical-scroll-proportion="0.0" vertical-offset="1820" max-vertical-offset="2431">
-              <folding>
-                <element signature="e#2627#3203#0" expanded="true" />
-                <element signature="e#3192#3193#0" expanded="true" />
-              </folding>
+            <state line="144" column="22" selection-start="5643" selection-end="5643" vertical-scroll-proportion="0.0" vertical-offset="2431" max-vertical-offset="2737">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -272,13 +260,8 @@
       <file leaf-file-name="CarCheckBasicInfoFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="90" column="16" selection-start="3289" selection-end="3696" vertical-scroll-proportion="0.0" vertical-offset="1140" max-vertical-offset="1598">
-              <folding>
-                <element signature="e#1794#2399#0" expanded="true" />
-                <element signature="e#2388#2389#0" expanded="true" />
-                <element signature="e#2762#2913#0" expanded="true" />
-                <element signature="e#2902#2903#0" expanded="true" />
-              </folding>
+            <state line="90" column="16" selection-start="3289" selection-end="3696" vertical-scroll-proportion="0.0" vertical-offset="1513" max-vertical-offset="1853">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -286,7 +269,7 @@
       <file leaf-file-name="DialogInterface.class" pinned="false" current="false" current-in-tab="false">
         <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-17/android.jar!/android/content/DialogInterface.class">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="39" column="8" selection-start="908" selection-end="908" vertical-scroll-proportion="0.0" vertical-offset="505" max-vertical-offset="986">
+            <state line="39" column="8" selection-start="908" selection-end="908" vertical-scroll-proportion="0.0" vertical-offset="646" max-vertical-offset="1003">
               <folding />
             </state>
           </provider>
@@ -298,7 +281,7 @@
             <state />
           </provider>
           <provider selected="true" editor-type-id="text-editor">
-            <state line="297" column="61" selection-start="13751" selection-end="13751" vertical-scroll-proportion="-16.464285" vertical-offset="4588" max-vertical-offset="5219">
+            <state line="297" column="61" selection-start="13751" selection-end="13751" vertical-scroll-proportion="0.0" vertical-offset="4588" max-vertical-offset="5219">
               <folding />
             </state>
           </provider>
@@ -379,7 +362,7 @@
     <ConfirmationsSetting value="0" id="Remove" />
   </component>
   <component name="ProjectReloadState">
-    <option name="STATE" value="2" />
+    <option name="STATE" value="0" />
   </component>
   <component name="ProjectView">
     <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
@@ -394,8 +377,8 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -611,16 +594,16 @@
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="Modules" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="228" />
-    <property name="project.structure.proportion" value="0.15" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="251" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="239" />
-    <property name="recentsLimit" value="5" />
-    <property name="MemberChooser.sorted" value="false" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="recentsLimit" value="5" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="239" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
-    <property name="UI_DESIGNER_EDITOR_MODE.PaletteToolWindowManager.WIDTH" value="237" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/build.gradle" />
+    <property name="UI_DESIGNER_EDITOR_MODE.PaletteToolWindowManager.WIDTH" value="237" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="258" />
     <property name="external.system.task.project.file.to.start" value="$PROJECT_DIR$/build.gradle" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1039" />
@@ -635,8 +618,8 @@
     <property name="FullScreen" value="false" />
     <property name="GoToClass.includeLibraries" value="false" />
     <property name="options.splitter.details.proportions" value="0.2" />
-    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
     <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
@@ -932,16 +915,14 @@
     <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3253205" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3253205" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2685083" sideWeight="0.8002137" order="4" side_tool="false" content_ui="tabs" x="1101" y="249" width="640" height="627" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3525641" sideWeight="0.49944752" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19391026" sideWeight="0.5007962" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.22651933" sideWeight="0.42735043" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32741934" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22651933" sideWeight="0.42735043" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852563" sideWeight="0.49944752" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928178" sideWeight="0.79594016" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -954,7 +935,9 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2685083" sideWeight="0.8002137" order="4" side_tool="false" content_ui="tabs" x="1101" y="249" width="640" height="627" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852563" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852563" sideWeight="0.49944752" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -1030,21 +1013,9 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_report_result.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="73" column="0" selection-start="4025" selection-end="4025" vertical-scroll-proportion="0.0" vertical-offset="1224" max-vertical-offset="3553">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/build/manifests/debug/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="19" selection-start="2877" selection-end="2877" vertical-scroll-proportion="0.0" vertical-offset="490" max-vertical-offset="867">
-          <folding />
-        </state>
+        <state line="40" column="19" selection-start="2877" selection-end="2877" vertical-scroll-proportion="0.0" vertical-offset="490" max-vertical-offset="867" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/AndroidManifest.xml">
@@ -1087,7 +1058,7 @@
         <state />
       </provider>
       <provider selected="true" editor-type-id="text-editor">
-        <state line="297" column="61" selection-start="13751" selection-end="13751" vertical-scroll-proportion="-16.464285" vertical-offset="4588" max-vertical-offset="5219">
+        <state line="297" column="61" selection-start="13751" selection-end="13751" vertical-scroll-proportion="0.0" vertical-offset="4588" max-vertical-offset="5219">
           <folding />
         </state>
       </provider>
@@ -1101,7 +1072,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Common.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="22" column="19" selection-start="858" selection-end="858" vertical-scroll-proportion="0.0" vertical-offset="153" max-vertical-offset="680">
+        <state line="22" column="19" selection-start="832" selection-end="832" vertical-scroll-proportion="0.0" vertical-offset="357" max-vertical-offset="850">
           <folding />
         </state>
       </provider>
@@ -1109,32 +1080,21 @@
     <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="90" column="16" selection-start="3289" selection-end="3696" vertical-scroll-proportion="0.0" vertical-offset="1140" max-vertical-offset="1598">
-          <folding>
-            <element signature="e#1794#2399#0" expanded="true" />
-            <element signature="e#2388#2389#0" expanded="true" />
-            <element signature="e#2762#2913#0" expanded="true" />
-            <element signature="e#2902#2903#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckInsideFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="144" column="22" selection-start="5643" selection-end="5643" vertical-scroll-proportion="0.0" vertical-offset="1820" max-vertical-offset="2431">
-          <folding>
-            <element signature="e#2627#3203#0" expanded="true" />
-            <element signature="e#3192#3193#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="110" column="21" selection-start="4232" selection-end="4232" vertical-scroll-proportion="0.0" vertical-offset="1225" max-vertical-offset="1904">
-          <folding>
-            <element signature="e#2229#2807#0" expanded="true" />
-            <element signature="e#2796#2797#0" expanded="true" />
-          </folding>
+        <state line="110" column="21" selection-start="4083" selection-end="4083" vertical-scroll-proportion="0.0" vertical-offset="1853" max-vertical-offset="2703">
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1147,21 +1107,22 @@
     </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/sdk/extras/android/m2repository/com/android/support/support-v4/13.0.0/support-v4-13.0.0.jar!/android/support/v4/app/FragmentActivity.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="19" selection-start="1121" selection-end="1121" vertical-scroll-proportion="-4.48" vertical-offset="347" max-vertical-offset="2091">
+        <state line="28" column="19" selection-start="1121" selection-end="1121" vertical-scroll-proportion="0.0" vertical-offset="459" max-vertical-offset="2108">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckAccidentFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="291" column="9" selection-start="12207" selection-end="12207" vertical-scroll-proportion="0.49604222" vertical-offset="4011" max-vertical-offset="5372">
-          <folding>
-            <element signature="e#4392#5435#0" expanded="true" />
-            <element signature="e#5420#5421#0" expanded="true" />
-            <element signature="e#8300#8876#0" expanded="true" />
-            <element signature="e#8865#8866#0" expanded="true" />
-            <element signature="e#12360#12368#0" expanded="true" />
-          </folding>
+        <state line="291" column="9" selection-start="11490" selection-end="11490" vertical-scroll-proportion="0.0" vertical-offset="3970" max-vertical-offset="4590">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/PaintPreviewView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="29" column="13" selection-start="719" selection-end="719" vertical-scroll-proportion="0.33245382" vertical-offset="10" max-vertical-offset="2567">
+          <folding />
         </state>
       </provider>
     </entry>
