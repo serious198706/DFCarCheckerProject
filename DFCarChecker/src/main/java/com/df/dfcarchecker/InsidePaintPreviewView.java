@@ -4,21 +4,14 @@ package com.df.dfcarchecker;
  * Created by 岩 on 13-9-26.
  */
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.provider.MediaStore;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.df.service.Common;
@@ -27,7 +20,7 @@ import com.df.service.PosEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaintPreviewView extends ImageView {
+public class InsidePaintPreviewView extends ImageView {
 
     private int currentType;
     private boolean move;
@@ -37,17 +30,17 @@ public class PaintPreviewView extends ImageView {
 
     private int max_x, max_y;
 
-    public PaintPreviewView(Context context, AttributeSet attrs, int defStyle) {
+    public InsidePaintPreviewView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
 
-    public PaintPreviewView(Context context, AttributeSet attrs) {
+    public InsidePaintPreviewView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public PaintPreviewView(Context context) {
+    public InsidePaintPreviewView(Context context) {
         super(context);
         init();
     }
@@ -58,8 +51,6 @@ public class PaintPreviewView extends ImageView {
         max_y = bitmap.getHeight();
 
         data = new ArrayList<PosEntity>();
-
-        colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
     }
 
     @Override
@@ -81,24 +72,11 @@ public class PaintPreviewView extends ImageView {
         paint.setColor(Color.BLUE);
         paint.setAlpha(0x80);//半透明
 
-        switch (type) {
-            case Common.COLOR_DIFF:
-                paint.setStyle(Paint.Style.FILL_AND_STROKE);//填充并且填充
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.SCRATCH:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.TRANS:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.SCRAPE:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-        }
+        // 根据当前类型决定笔触的颜色
+        paint.setColor(type == Common.DIRTY ? Color.RED : Color.BLACK);
+        paint.setAlpha(0x80);   //80%透明
+        paint.setStyle(Paint.Style.STROKE); // 线类型填充
+        paint.setStrokeWidth(4);  // 笔触粗细
 
         return paint;
     }
@@ -110,29 +88,7 @@ public class PaintPreviewView extends ImageView {
     }
 
     private void paint(PosEntity entity, Canvas canvas) {
-        int type = entity.getType();
-
-        switch (type) {
-            case Common.COLOR_DIFF:
-                canvas.drawBitmap(colorDiffBitmap, entity.getStartX(), entity.getStartY(), null);
-                return;
-            case Common.SCRATCH:
-                canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(type));
-                return ;
-            case Common.TRANS:
-                int dx = Math.abs(entity.getEndX()-entity.getStartX());
-                int dy = Math.abs(entity.getEndY()-entity.getStartY());
-                int dr = (int)Math.sqrt(dx*dx+dy*dy);
-                int x0 = (entity.getStartX()+entity.getEndX())/2;
-                int y0 = (entity.getStartY()+entity.getEndY())/2;
-                canvas.drawCircle(x0, y0, dr/2, getPaint(type));
-                return;
-            case Common.SCRAPE:
-                canvas.drawRect(
-                        new RectF(entity.getStartX(), entity.getStartY(), entity.getEndX() , entity.getEndY()),
-                        getPaint(type));
-                return;
-        }
+        canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(entity.getType()));
     }
 
     public PosEntity getPosEntity(){

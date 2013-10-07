@@ -4,8 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
@@ -30,7 +28,7 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
 
     public static List<PosEntity> posEntities;
 
-    private PaintPreviewView paintPreviewView;
+    private OutsidePaintPreviewView outsidePaintPreviewView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,7 +36,7 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
         super.onCreate(savedInstanceState);
         this.inflater = inflater;
         rootView = inflater.inflate(R.layout.fragment_car_check_outside, container, false);
-        paintPreviewView = (PaintPreviewView) rootView.findViewById(R.id.out_base_image_preview);
+        outsidePaintPreviewView = (OutsidePaintPreviewView) rootView.findViewById(R.id.out_base_image_preview);
 
         Button brokenButton = (Button)rootView.findViewById(R.id.out_choose_broken_button);
         brokenButton.setOnClickListener(this);
@@ -109,6 +107,7 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
 
     private void StartPaint(View v) {
         Intent intent = new Intent(rootView.getContext(), CarCheckOutSidePaintActivity.class);
+        intent.putExtra("PAINT_TYPE", "OUT_PAINT");
         startActivityForResult(intent, Common.OUT_PAINT);
     }
 
@@ -144,7 +143,7 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
                 }
                 break;
             case Common.OUT_PAINT:
-paintPreviewView.invalidate();
+                outsidePaintPreviewView.invalidate();
                 break;
         }
     }

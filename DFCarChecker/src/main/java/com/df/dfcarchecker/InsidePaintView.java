@@ -27,27 +27,28 @@ import com.df.service.PosEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaintView extends ImageView {
+public class InsidePaintView extends ImageView {
 
-    private int currentType = Common.COLOR_DIFF;
+    private int currentType = Common.DIRTY;
     private boolean move;
-    private List<PosEntity> data = CarCheckOutsideFragment.posEntities;
+    private List<PosEntity> data = CarCheckInsideFragment.posEntities;
+    private List<PosEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
 
     private int max_x, max_y;
 
-    public PaintView(Context context, AttributeSet attrs, int defStyle) {
+    public InsidePaintView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
 
-    public PaintView(Context context, AttributeSet attrs) {
+    public InsidePaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public PaintView(Context context) {
+    public InsidePaintView(Context context) {
         super(context);
         init();
     }
@@ -57,7 +58,8 @@ public class PaintView extends ImageView {
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
-        colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
+        undoData = new ArrayList<PosEntity>();
+
         this.setOnTouchListener(onTouchListener);
     }
 
@@ -72,29 +74,25 @@ public class PaintView extends ImageView {
     private OnTouchListener onTouchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if (currentType > 0 && currentType <= 4) {
+            if (currentType > 4 && currentType <= 6) {
 
                 int x = (int) event.getX();
                 int y = (int) event.getY();
-                PosEntity entity = null;
+                PosEntity entity;
 
-                if(event.getAction()==MotionEvent.ACTION_DOWN){
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
                     entity = new PosEntity(currentType);
                     entity.setMaxX(max_x);
                     entity.setMaxY(max_y);
                     entity.setStart(x, y);
-                    if(currentType!=1){
-                        entity.setEnd(x, y);
-                    }
+                    entity.setEnd(x, y);
                     data.add(entity);
-                } else if(event.getAction()==MotionEvent.ACTION_MOVE){
-                    if(currentType!=1){
-                        entity = data.get(data.size()-1);
-                        entity.setEnd(x, y);
-                        move = true;
-                    }
-                } else if(event.getAction()==MotionEvent.ACTION_UP){
-                    if(currentType==2&&move){
+                } else if(event.getAction() == MotionEvent.ACTION_MOVE){
+                    entity = data.get(data.size() - 1);
+                    entity.setEnd(x, y);
+                    move = true;
+                } else if(event.getAction() == MotionEvent.ACTION_UP){
+                    if(move){
                         entity = data.get(data.size()-1);
                         entity.setEnd(x, y);
                         move = false;
@@ -112,30 +110,16 @@ public class PaintView extends ImageView {
         this.currentType = type;
     }
 
+
     private Paint getPaint(int type) {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
-        paint.setColor(Color.BLUE);
-        paint.setAlpha(0x80);//半透明
 
-        switch (type) {
-            case Common.COLOR_DIFF:
-                paint.setStyle(Paint.Style.FILL_AND_STROKE);//填充并且填充
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.SCRATCH:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.TRANS:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.SCRAPE:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-        }
+        // 根据当前类型决定笔触的颜色
+        paint.setColor(type == Common.DIRTY ? Color.RED : Color.BLACK);
+        paint.setAlpha(0x80);   //80%透明
+        paint.setStyle(Paint.Style.STROKE); // 线类型填充
+        paint.setStrokeWidth(4);  // 笔触粗细
 
         return paint;
     }
@@ -147,30 +131,7 @@ public class PaintView extends ImageView {
     }
 
     private void paint(PosEntity entity, Canvas canvas) {
-        int type = entity.getType();
-
-        switch (type) {
-            case Common.COLOR_DIFF:
-                canvas.drawBitmap(colorDiffBitmap, entity.getStartX(), entity.getStartY(), null);
-                //canvas.drawCircle(entity.getStartX(), entity.getStartY(), 16, getPaint(type));
-                return;
-            case Common.SCRATCH:
-                canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(type));
-                return ;
-            case Common.TRANS:
-                int dx = Math.abs(entity.getEndX()-entity.getStartX());
-                int dy = Math.abs(entity.getEndY()-entity.getStartY());
-                int dr = (int)Math.sqrt(dx*dx+dy*dy);
-                int x0 = (entity.getStartX()+entity.getEndX())/2;
-                int y0 = (entity.getStartY()+entity.getEndY())/2;
-                canvas.drawCircle(x0, y0, dr/2, getPaint(type));
-                return;
-            case Common.SCRAPE:
-                canvas.drawRect(
-                        new RectF(entity.getStartX(), entity.getStartY(), entity.getEndX() , entity.getEndY()),
-                        getPaint(type));
-                return;
-        }
+        canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(entity.getType()));
     }
 
     private void showCamera(){
@@ -197,6 +158,24 @@ public class PaintView extends ImageView {
     public void Clear() {
         if(!data.isEmpty()) {
             data.clear();
+            undoData.clear();
+            invalidate();
+        }
+    }
+
+    public void Undo() {
+        if(!data.isEmpty()) {
+            undoData.add(data.get(data.size() - 1));
+            data.remove(data.size() - 1);
+            invalidate();
+        }
+    }
+
+    public void Redo() {
+        if(!undoData.isEmpty()) {
+            data.add(undoData.get(undoData.size() - 1));
+            undoData.remove(undoData.size() - 1);
+            invalidate();
         }
     }
 }

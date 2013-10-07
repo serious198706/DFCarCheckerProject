@@ -15,6 +15,7 @@ public class Common {
     public static final int IT_FIRE = 8;
     public static final int IT_ELECTRICITY = 9;
     public static final int OUT_PAINT = 10;
+    public static final int IN_PAINT = 11;
 
     // 用来获取Activity结果的查询代码
     public static final String OUT_GLASS_RESULT = "OUT_GLASS_RESULT";
@@ -38,6 +39,8 @@ public class Common {
     public static final int SCRATCH = 2;
     public static final int TRANS = 3;
     public static final int SCRAPE = 4;
+    public static final int DIRTY = 5;
+    public static final int BROKEN = 6;
 
     // TODO 加入事故检查绘图类型代码
 

@@ -27,7 +27,8 @@
             <LinearLayout android:orientation="horizontal"
                           android:layout_width="match_parent"
                           android:layout_height="wrap_content">
-                <com.df.dfcarchecker.PaintPreviewView android:id="@+id/out_base_image_preview"
+                <com.df.dfcarchecker.OutsidePaintPreviewView
+                        android:id="@+id/out_base_image_preview"
                            android:layout_width="560px"
                            android:layout_height="800px"/>
 

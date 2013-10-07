@@ -15,11 +15,17 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.df.service.Common;
+import com.df.service.PosEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CarCheckInsideFragment extends Fragment implements View.OnClickListener  {
     private static View rootView;
     private LayoutInflater inflater;
     private int currentGroup;
+
+    public static List<PosEntity> posEntities;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -34,6 +40,10 @@ public class CarCheckInsideFragment extends Fragment implements View.OnClickList
         dirtyButton.setOnClickListener(this);
         Button cameraButton = (Button)rootView.findViewById(R.id.in_start_camera_button);
         cameraButton.setOnClickListener(this);
+        Button startPaintButton = (Button)rootView.findViewById(R.id.in_start_paint_button);
+        startPaintButton.setOnClickListener(this);
+
+        posEntities = new ArrayList<PosEntity>();
 
         return rootView;
     }
@@ -50,6 +60,9 @@ public class CarCheckInsideFragment extends Fragment implements View.OnClickList
             case R.id.in_start_camera_button:
                 in_start_camera(v);
                 break;
+            case R.id.in_start_paint_button:
+                StartPaint(v);
+                break;
         }
     }
 
@@ -64,6 +77,12 @@ public class CarCheckInsideFragment extends Fragment implements View.OnClickList
         Intent intent = new Intent(rootView.getContext(), PopupActivity.class);
         intent.putExtra("POPUP_TYPE", "IN_DIRTY");
         startActivityForResult(intent, Common.CHOOSE_IN_DIRTY);
+    }
+
+    public void StartPaint(View v) {
+        Intent intent = new Intent(rootView.getContext(), CarCheckOutSidePaintActivity.class);
+        intent.putExtra("PAINT_TYPE", "IN_PAINT");
+        startActivityForResult(intent, Common.IN_PAINT);
     }
 
     public void in_start_camera(View v) {
@@ -148,6 +167,9 @@ public class CarCheckInsideFragment extends Fragment implements View.OnClickList
                             "error occured during opening camera", Toast.LENGTH_SHORT)
                             .show();
                 }
+                break;
+            case Common.IN_PAINT:
+                Toast.makeText(rootView.getContext(), "aa", Toast.LENGTH_LONG).show();
                 break;
         }
     }

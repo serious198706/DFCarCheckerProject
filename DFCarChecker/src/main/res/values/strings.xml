@@ -521,6 +521,8 @@
     <string name="out_start_paint">绘制车身表面缺陷</string>
     <string name="action_clear">清除</string>
     <string name="out_clear_confirm">确定清除？</string>
+    <string name="action_undo">撤销</string>
+    <string name="action_redo">恢复</string>
 
     <string-array name="out_broken_parts">
         <item>前保险杠</item>
