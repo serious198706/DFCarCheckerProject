@@ -29,6 +29,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private TableLayout tableLayout;
     private LinearLayout brand;
     private EditText vin_edit;
+    private Button brandOkButton;
+    private Button brandSelectButton;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                             Bundle savedInstanceState) {
@@ -48,9 +50,11 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         Button vinButton = (Button) rootView.findViewById(R.id.bi_vin_button);
         vinButton.setOnClickListener(this);
-        Button brandOkButton = (Button) rootView.findViewById(R.id.bi_brand_ok_button);
+        brandOkButton = (Button) rootView.findViewById(R.id.bi_brand_ok_button);
+        brandOkButton.setEnabled(false);
         brandOkButton.setOnClickListener(this);
-        Button brandSelectButton = (Button) rootView.findViewById(R.id.bi_brand_select_button);
+        brandSelectButton = (Button) rootView.findViewById(R.id.bi_brand_select_button);
+        brandSelectButton.setEnabled(false);
         brandSelectButton.setOnClickListener(this);
 
         vin_edit = (EditText) rootView.findViewById(R.id.bi_vin_edit);
@@ -114,6 +118,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             // TODO: Get brand from server
             EditText brand_edit = (EditText) rootView.findViewById(R.id.bi_brand_edit);
             brand_edit.setText("大众甲壳虫 1.6 MT");
+            brandOkButton.setEnabled(true);
+            brandSelectButton.setEnabled(true);
         }
     }
 
