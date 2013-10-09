@@ -11,6 +11,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -24,20 +25,64 @@ import java.io.IOException;
 
 public class CarCheckOutSidePaintActivity extends Activity {
     private LinearLayout root;
-    private PaintView paintView;
+    private OutsidePaintView outsidePaintView;
+    private InsidePaintView insidePaintView;
+    private String currentPaintView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_car_check_outside_paint);
 
-        root = (LinearLayout) findViewById(R.id.titleLy);
-        paintView = (PaintView) findViewById(R.id.tile);
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String value = extras.getString("PAINT_TYPE");
+            if(value.equals("OUT_PAINT")) {
+                SetOutPaintLayout();
+            } else if(value.equals("IN_PAINT")) {
+                SetInPaintLayout();
+            }
+
+        }
 
         ActionBar actionBar = getActionBar();
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+    }
+
+    private void SetInPaintLayout() {
+        setContentView(R.layout.activity_car_check_inside_paint);
+
+        root = (LinearLayout) findViewById(R.id.titleLy);
+        insidePaintView = (InsidePaintView) findViewById(R.id.tile);
+
+        RadioGroup radioGroup = (RadioGroup)findViewById(R.id.in_radio_group);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                int type = 0;
+
+                switch (i) {
+                    case R.id.in_dirty_radio:
+                        type = Common.DIRTY;
+                        break;
+                    case R.id.in_broken_radio:
+                        type = Common.BROKEN;
+                        break;
+                }
+
+                insidePaintView.setType(type);
+            }
+        });
+
+        currentPaintView = "IN_PAINT";
+    }
+
+    private void SetOutPaintLayout() {
+        setContentView(R.layout.activity_car_check_outside_paint);
+
+        root = (LinearLayout) findViewById(R.id.titleLy);
+        outsidePaintView = (OutsidePaintView) findViewById(R.id.tile);
 
         RadioGroup radioGroup = (RadioGroup)findViewById(R.id.out_radio_group);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -60,9 +105,11 @@ public class CarCheckOutSidePaintActivity extends Activity {
                         break;
                 }
 
-                paintView.setType(type);
+                outsidePaintView.setType(type);
             }
         });
+
+        currentPaintView = "OUT_PAINT";
     }
 
 
@@ -103,13 +150,31 @@ public class CarCheckOutSidePaintActivity extends Activity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // 退出
-                        paintView.Clear();
-                        paintView.invalidate();
+                        if(currentPaintView.equals("OUT_PAINT")) {
+                            outsidePaintView.Clear();
+                        } else {
+                            insidePaintView.Clear();
+                        }
                     }
                 });
 
                 AlertDialog dialog = builder.create();
                 dialog.show();
+                break;
+            case R.id.action_undo:
+                if(currentPaintView.equals("OUT_PAINT")) {
+                    outsidePaintView.Undo();
+                } else {
+                    insidePaintView.Undo();
+                }
+                break;
+            case R.id.action_redo:
+                if(currentPaintView.equals("OUT_PAINT")) {
+                    outsidePaintView.Redo();
+                } else {
+                    insidePaintView.Redo();
+                }
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -155,8 +220,15 @@ public class CarCheckOutSidePaintActivity extends Activity {
                         e.printStackTrace();
                     }
                 }
-                Toast.makeText(this, "图片保存路径"+fileName, 0).show();
-                paintView.getPosEntity().setImage(fileName);
+
+                if(currentPaintView.equals("OUT_PAINT")) {
+                    Toast.makeText(this, "图片保存路径"+fileName, 0).show();
+                    outsidePaintView.getPosEntity().setImage(fileName);
+
+                } else {
+                    Toast.makeText(this, "图片保存路径"+fileName, 0).show();
+                    insidePaintView.getPosEntity().setImage(fileName);
+                }
 
                 break;
             case Activity.RESULT_CANCELED:

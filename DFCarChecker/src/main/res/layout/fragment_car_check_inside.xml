@@ -37,20 +37,9 @@
                               android:layout_height="wrap_content"
                               android:layout_weight="1"
                               android:orientation="vertical">
-                    <RadioGroup android:orientation="vertical"
-                                android:layout_height="wrap_content"
-                                android:layout_width="wrap_content">
-                        <RadioButton android:id="@+id/in_dirty_radio"
-                                     android:layout_height="wrap_content"
-                                     android:layout_width="wrap_content"
-                                     android:drawableLeft="@drawable/in_dirty"
-                                     android:text="@string/in_dirty"/>
-                        <RadioButton android:id="@+id/in_broken_radio"
-                                     android:layout_height="wrap_content"
-                                     android:layout_width="wrap_content"
-                                     android:drawableLeft="@drawable/in_broken"
-                                     android:text="@string/in_broken"/>
-                    </RadioGroup>
+                    <Button android:id="@+id/in_start_paint_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
                     <ImageView android:id="@+id/in_skylight_base_image"
                                android:layout_height="wrap_content"
                                android:layout_width="wrap_content"

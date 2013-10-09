@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal" >
+
+        <RadioGroup android:id="@+id/in_radio_group"
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal">
+            <RadioButton android:id="@+id/in_dirty_radio"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                         android:layout_weight="1"
+                         android:drawableLeft="@drawable/in_dirty"
+                         android:text="@string/in_dirty"
+                         android:checked="true"/>
+            <RadioButton android:id="@+id/in_broken_radio"
+                         android:layout_height="wrap_content"
+                         android:layout_width="wrap_content"
+                         android:layout_weight="1"
+                         android:drawableLeft="@drawable/in_broken"
+                         android:text="@string/in_broken"/>
+        </RadioGroup>
+
+
+        <!--<Button-->
+                <!--android:id="@+id/bn1"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:onClick="bn1"-->
+                <!--android:text="色差" />-->
+
+        <!--<Button-->
+                <!--android:id="@+id/bn2"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:onClick="bn2"-->
+                <!--android:text="划痕" />-->
+
+        <!--<Button-->
+                <!--android:id="@+id/bn3"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:onClick="bn3"-->
+                <!--android:text="变型" />-->
+
+        <!--<Button-->
+                <!--android:id="@+id/bn4"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1"-->
+                <!--android:gravity="center"-->
+                <!--android:onClick="bn4"-->
+                <!--android:text="刮蹭" />-->
+</LinearLayout>
