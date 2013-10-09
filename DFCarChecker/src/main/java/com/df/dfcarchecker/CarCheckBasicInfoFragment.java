@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -12,7 +13,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.df.service.Common;
@@ -22,7 +26,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private LayoutInflater inflater;
     private int currentGroup;
     private ImageView img;
-
+    private TableLayout tableLayout;
+    private LinearLayout brand;
+    private EditText vin_edit;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                             Bundle savedInstanceState) {
@@ -32,8 +38,22 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         img = (ImageView) rootView.findViewById(R.id.image);
 
+        tableLayout = (TableLayout) rootView.findViewById(R.id.bi_content_table);
+        tableLayout.setVisibility(View.GONE);
+
+        brand = (LinearLayout) rootView.findViewById(R.id.brand_input);
+
         Button button = (Button) rootView.findViewById(R.id.cbi_start_camera_button);
         button.setOnClickListener(this);
+
+        Button vinButton = (Button) rootView.findViewById(R.id.bi_vin_button);
+        vinButton.setOnClickListener(this);
+        Button brandOkButton = (Button) rootView.findViewById(R.id.bi_brand_ok_button);
+        brandOkButton.setOnClickListener(this);
+        Button brandSelectButton = (Button) rootView.findViewById(R.id.bi_brand_select_button);
+        brandSelectButton.setOnClickListener(this);
+
+        vin_edit = (EditText) rootView.findViewById(R.id.bi_vin_edit);
 
         return rootView;
     }
@@ -44,6 +64,11 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             case R.id.cbi_start_camera_button:
                 cbi_start_camera(v);
                 break;
+            case R.id.bi_vin_button:
+                bi_brand_show();
+                break;
+            case R.id.bi_brand_ok_button:
+                bi_content_show();
         }
     }
 
@@ -80,6 +105,20 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    private void bi_brand_show() {
+        if(vin_edit.getText() != null) {
+            brand.setVisibility(View.VISIBLE);
+
+            // TODO: Get brand from server
+            EditText brand_edit = (EditText) rootView.findViewById(R.id.bi_brand_edit);
+            brand_edit.setText("大众甲壳虫 1.6 MT");
+        }
+    }
+
+    private void bi_content_show() {
+        tableLayout.setVisibility(View.VISIBLE);
     }
 
     @Override

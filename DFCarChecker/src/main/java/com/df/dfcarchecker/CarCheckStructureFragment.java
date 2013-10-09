@@ -71,12 +71,12 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         // Get the layout inflater
         LayoutInflater inflater = this.inflater;
 
-        builder.setTitle(R.string.in_camera);
-        builder.setItems(R.array.in_camera_cato_item, new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.structure_camera);
+        builder.setItems(R.array.structure_camera_cato_item, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 currentGroup = i;
-                String group = getResources().getStringArray(R.array.in_camera_cato_item)[currentGroup];
+                String group = getResources().getStringArray(R.array.structure_camera_cato_item)[currentGroup];
 
                 Toast.makeText(rootView.getContext(), "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
 

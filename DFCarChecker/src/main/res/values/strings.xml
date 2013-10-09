@@ -66,6 +66,9 @@
     <string name="ci_kilometer">万公里</string>
     <string name="ci_vin_number">车架号码（VIN）：</string>
     <string name="ci_engine_number">发动机号：</string>
+    <string name="ci_seller_name">卖方姓名（单位）：</string>
+    <string name="ci_seller_id_number">卖方有效证件号：</string>
+    <string name="ci_seller_phone_number">卖方联系电话：</string>
     <string name="ci_owner_name">车主姓名（单位）:</string>
     <string name="ci_owner_id_number">车主有效证件号：</string>
     <string name="ci_owner_phone_number">车主联系电话：</string>
@@ -187,6 +190,7 @@
 
     <string name="ct_maintain_manual">保养手册：</string>
     <string name="ct_vehicle_and_vessel_tax_ticket">车船税票：</string>
+    <string name="ct_backup_tire">备胎</string>
     <string name="ct_backup_key">备用钥匙：</string>
     <string name="ct_yearly_check_available_date">年检有效期：</string>
     <string name="ct_mandatory_vehicle_insurance">交强险：</string>
@@ -297,6 +301,8 @@
     </string-array>
 
     <string name="ex_ex1">个工作日内完成过户</string>
+
+    <string name="ex_expected_money">心理价位：</string>
     <string name="title_activity_car_check_frame">车辆检测</string>
     <string name="title_activity_car_waiting_list">待检测车辆</string>
 
@@ -512,6 +518,13 @@
     <string name="structure">车体结构检查</string>
     <string name="structure_start_paint">绘制车体结构缺陷</string>
     <string name="structure_camera">拍摄机舱组照片</string>
+
+    <string-array name="structure_camera_cato_item">
+        <item>机舱全景</item>
+        <item>前部</item>
+        <item>后部</item>
+    </string-array>
+
     <string name="structure_camera_overview">机舱全景</string>
     <string name="structure_camera_front">前部</string>
     <string name="structure_camera_rear">后部</string>
@@ -793,5 +806,6 @@
     <string name="title_activity_car_check_out_side_paint">MainActivity</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_car_check_structure_paint">MainActivity</string>
+    <string name="title_activity_car_check_vin_input">MainActivity</string>
 
 </resources>
