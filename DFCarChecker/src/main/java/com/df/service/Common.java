@@ -16,6 +16,7 @@ public class Common {
     public static final int IT_ELECTRICITY = 9;
     public static final int OUT_PAINT = 10;
     public static final int IN_PAINT = 11;
+    public static final int STURCTURE_PAINT = 12;
 
     // 用来获取Activity结果的查询代码
     public static final String OUT_GLASS_RESULT = "OUT_GLASS_RESULT";
@@ -33,6 +34,7 @@ public class Common {
     public static final int PHOTO_FOR_ENGINE_GROUP = 1;
     public static final int PHOTO_FOR_OUTSIDE_GROUP = 2;
     public static final int PHOTO_FOR_INSIDE_GROUP = 3;
+    public static final int PHOTO_FOR_STRUCTURE_GROUP = 4;
 
     // 绘图类型代码
     public static final int COLOR_DIFF = 1;

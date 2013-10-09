@@ -10,22 +10,12 @@
         <TableRow>
             <Button android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:layout_marginBottom="15dp"
-                    android:drawableTop="@drawable/procedure"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:text="手续录入"
-                    android:onClick="EnterProcedureInput"/>
-            <Button android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
                     android:layout_marginBottom="15dp"
                     android:drawableTop="@drawable/waiting"
                     android:background="?android:attr/selectableItemBackground"
-                    android:text="待检车辆"
-                    android:onClick="EnterCarWaitingList"/>
-        </TableRow>
-        <TableRow>
+                    android:text="检测车辆"
+                    android:onClick="EnterCarCheck"/>
             <Button android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="15dp"

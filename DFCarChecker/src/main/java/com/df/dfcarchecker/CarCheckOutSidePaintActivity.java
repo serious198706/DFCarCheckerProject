@@ -27,6 +27,7 @@ public class CarCheckOutSidePaintActivity extends Activity {
     private LinearLayout root;
     private OutsidePaintView outsidePaintView;
     private InsidePaintView insidePaintView;
+    private StructurePaintView structurePaintView;
     private String currentPaintView;
 
     @Override
@@ -40,6 +41,8 @@ public class CarCheckOutSidePaintActivity extends Activity {
                 SetOutPaintLayout();
             } else if(value.equals("IN_PAINT")) {
                 SetInPaintLayout();
+            } else if(value.equals("STRUCTURE_PAINT")) {
+                SetStructurePaintLayout();
             }
 
         }
@@ -113,6 +116,16 @@ public class CarCheckOutSidePaintActivity extends Activity {
     }
 
 
+    private void SetStructurePaintLayout() {
+        setContentView(R.layout.activity_car_check_structure_paint);
+
+        root = (LinearLayout) findViewById(R.id.titleLy);
+        structurePaintView = (StructurePaintView) findViewById(R.id.tile);
+        structurePaintView.setType(Common.COLOR_DIFF);
+
+        currentPaintView = "STRUCTURE_PAINT";
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -152,8 +165,10 @@ public class CarCheckOutSidePaintActivity extends Activity {
                         // 退出
                         if(currentPaintView.equals("OUT_PAINT")) {
                             outsidePaintView.Clear();
-                        } else {
+                        } else if(currentPaintView.equals("IN_PAINT")) {
                             insidePaintView.Clear();
+                        } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
+                            structurePaintView.Clear();
                         }
                     }
                 });
@@ -164,15 +179,19 @@ public class CarCheckOutSidePaintActivity extends Activity {
             case R.id.action_undo:
                 if(currentPaintView.equals("OUT_PAINT")) {
                     outsidePaintView.Undo();
-                } else {
+                } else if(currentPaintView.equals("IN_PAINT")) {
                     insidePaintView.Undo();
+                } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
+                    structurePaintView.Undo();
                 }
                 break;
             case R.id.action_redo:
                 if(currentPaintView.equals("OUT_PAINT")) {
                     outsidePaintView.Redo();
-                } else {
+                } else if(currentPaintView.equals("IN_PAINT")) {
                     insidePaintView.Redo();
+                } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
+                    structurePaintView.Redo();
                 }
                 break;
         }
@@ -224,10 +243,12 @@ public class CarCheckOutSidePaintActivity extends Activity {
                 if(currentPaintView.equals("OUT_PAINT")) {
                     Toast.makeText(this, "图片保存路径"+fileName, 0).show();
                     outsidePaintView.getPosEntity().setImage(fileName);
-
-                } else {
+                } else if(currentPaintView.equals("IN_PAINT")) {
                     Toast.makeText(this, "图片保存路径"+fileName, 0).show();
                     insidePaintView.getPosEntity().setImage(fileName);
+                } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
+                    Toast.makeText(this, "图片保存路径"+fileName, 0).show();
+                    structurePaintView.getPosEntity().setImage(fileName);
                 }
 
                 break;

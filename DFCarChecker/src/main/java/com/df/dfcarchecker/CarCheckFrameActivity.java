@@ -159,15 +159,9 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
                     fragment = new CarCheckBasicInfoFragment();
                     break;
                 case 1:
-                    fragment = new CarCheckAccidentFragment();
+                    fragment = new CarCheckStructureFragment();
                     break;
                 case 2:
-                    fragment = new CarCheckOutsideFragment();
-                    break;
-                case 3:
-                    fragment = new CarCheckInsideFragment();
-                    break;
-                case 4:
                     fragment = new CarCheckIntergratedFragment();
                     break;
             }
@@ -177,7 +171,7 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 5;
+            return 3;
         }
 
         @Override
@@ -190,10 +184,6 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
                     return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
                     return getString(R.string.title_section3).toUpperCase(l);
-                case 3:
-                    return getString(R.string.title_section4).toUpperCase(l);
-                case 4:
-                    return getString(R.string.title_section5).toUpperCase(l);
             }
             return null;
         }
