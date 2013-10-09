@@ -16,6 +16,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     style="@style/CodeFont"
+                    android:text="@string/out" />
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3px"
+                    android:background="?android:attr/listDivider"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    style="@style/CodeFont"
                     android:text="@string/it_function" />
             <View
                     android:layout_width="match_parent"
@@ -216,7 +227,7 @@
                          android:layout_width="0dp"
                          android:layout_height="wrap_content"
                          android:layout_weight="1"
-                         android:entries="@array/it_engint_gas_color_item">
+                         android:entries="@array/it_engine_gas_color_item">
                 </Spinner>
             </TableRow>
             <TableRow>

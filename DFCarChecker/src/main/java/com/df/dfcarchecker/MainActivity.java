@@ -19,8 +19,8 @@ public class MainActivity extends Activity {
         startActivity(intent);
     }
 
-    public void EnterCarWaitingList(View view) {
-        Intent intent = new Intent(this, CarWaitingListActivity.class);
+    public void EnterCarCheck(View view) {
+        Intent intent = new Intent(this, CarCheckFrameActivity.class);
         startActivity(intent);
     }
 
