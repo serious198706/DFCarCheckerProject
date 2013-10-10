@@ -531,7 +531,7 @@
     <string name="structure_comment">车体结构检查的备注说明：</string>
 
     <!-- 车身检查 -->
-    <string name="out">车身表面检查</string>
+    <string name="out">外观检查</string>
     <string name="out_color_diff">  色差</string>
     <string name="out_scratch">  划痕</string>
     <string name="out_trans">  变形</string>
@@ -687,6 +687,7 @@
     <string name="it_out">外观检查</string>
     <string name="it_in">内饰检查</string>
     <string name="it_function">功能检查</string>
+    <string name="it_chassis">底盘检查</string>
 
     <string-array name="it_function_item">
         <item>正常</item>
@@ -725,7 +726,7 @@
     <string name="it_gear_oil_leak">变速箱漏油：</string>
     <string name="it_comment">综合检查的备注说明：</string>
     <string name="it_other">其他检查</string>
-    <string name="it_other_water">泡水车检查</string>
+    <string name="it_other_water">泡水检查</string>
     <string name="it_other_fire">火烧车检查</string>
     <string name="it_other_electricity">电控单元检测</string>
     <string name="it_other_tire">轮胎与表显里程</string>
@@ -757,6 +758,15 @@
         <item>正常</item>
         <item>磨损</item>
     </string-array>
+
+    <string name="score_20">共计：20分</string>
+    <string name="score_15">共计：15分</string>
+    <string name="score_10">共计：10分</string>
+    <string name="score_0">不计分</string>
+    <string name="score">实际得分：</string>
+    <string name="point">分</string>
+
+
 
     <!-- 已检车辆 -->
     <string name="title_activity_car_checked_list">已检车辆</string>

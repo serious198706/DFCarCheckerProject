@@ -4,21 +4,14 @@ package com.df.dfcarchecker;
  * Created by 岩 on 13-9-26.
  */
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.provider.MediaStore;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
 
 import com.df.service.Common;
@@ -174,7 +167,7 @@ public class OutsidePaintPreviewView extends ImageView {
     private void HandelPosEntitiesDueToDifferentResolution() {
         data.clear();
 
-        for(PosEntity posEntity : CarCheckOutsideFragment.posEntities) {
+        for(PosEntity posEntity : CarCheckOutsideActivity.posEntities) {
             // 因为不能对原entities做修改，所以此处要做些特殊处理，采用值传递方式
             PosEntity temp = new PosEntity(posEntity.getType());
             temp.setStart(posEntity.getStartX(), posEntity.getStartY());

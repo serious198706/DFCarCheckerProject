@@ -14,7 +14,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -31,7 +30,7 @@ public class InsidePaintView extends ImageView {
 
     private int currentType = Common.DIRTY;
     private boolean move;
-    private List<PosEntity> data = CarCheckInsideFragment.posEntities;
+    private List<PosEntity> data = CarCheckInsideActivity.posEntities;
     private List<PosEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;

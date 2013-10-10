@@ -14,7 +14,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
@@ -25,7 +24,6 @@ import android.widget.ImageView;
 import com.df.service.Common;
 import com.df.service.PosEntity;
 
-import java.nio.channels.ConnectionPendingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class OutsidePaintView extends ImageView {
 
     private int currentType = Common.COLOR_DIFF;
     private boolean move;
-    private List<PosEntity> data = CarCheckOutsideFragment.posEntities;
+    private List<PosEntity> data = CarCheckOutsideActivity.posEntities;
     private List<PosEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
