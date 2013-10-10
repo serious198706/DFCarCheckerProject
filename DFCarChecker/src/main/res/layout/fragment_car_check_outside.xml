@@ -128,13 +128,13 @@
                             android:layout_weight="1"
                             android:textSize="18sp"/>
                     <EditText
+                            android:id="@+id/out_comment_edit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
                             android:inputType="textMultiLine"
                             android:ems="10"
-                            android:hint="@string/out_comment"
-                            android:id="@+id/editText"/>
+                            android:hint="@string/out_comment"/>
                 </TableRow>
             </TableLayout>
         </LinearLayout>

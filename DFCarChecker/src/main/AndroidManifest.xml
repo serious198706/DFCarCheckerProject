@@ -81,6 +81,14 @@
             android:name="com.df.dfcarchecker.CarCheckOutSidePaintActivity"
             android:label="@string/out" >
         </activity>
+        <activity
+            android:name="com.df.dfcarchecker.CarCheckOutsideActivity"
+            android:label="@string/out">
+        </activity>
+        <activity
+            android:name="com.df.dfcarchecker.CarCheckInsideActivity"
+            android:label="@string/in">
+        </activity>
     </application>
 
 </manifest>

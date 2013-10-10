@@ -10,7 +10,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -101,7 +100,7 @@ public class InsidePaintPreviewView extends ImageView {
     private void HandelPosEntitiesDueToDifferentResolution() {
         data.clear();
 
-        for(PosEntity posEntity : CarCheckOutsideFragment.posEntities) {
+        for(PosEntity posEntity : CarCheckOutsideActivity.posEntities) {
             // 因为不能对原entities做修改，所以此处要做些特殊处理，采用值传递方式
             PosEntity temp = new PosEntity(posEntity.getType());
             temp.setStart(posEntity.getStartX(), posEntity.getStartY());
