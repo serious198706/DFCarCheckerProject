@@ -22,14 +22,12 @@ public class CarCheckIntergratedFragment extends Fragment implements View.OnClic
         this.inflater = inflater;
         rootView = inflater.inflate(R.layout.fragment_car_check_intergrated, container, false);
 
+        Button outButton = (Button) rootView.findViewById(R.id.out_button);
+        outButton.setOnClickListener(this);
+        Button inButton = (Button) rootView.findViewById(R.id.in_button);
+        inButton.setOnClickListener(this);
         Button waterButton = (Button)rootView.findViewById(R.id.it_other_water_button);
         waterButton.setOnClickListener(this);
-        Button tireButton = (Button)rootView.findViewById(R.id.it_other_tire_button);
-        tireButton.setOnClickListener(this);
-        Button fireButton = (Button)rootView.findViewById(R.id.it_other_fire_button);
-        fireButton.setOnClickListener(this);
-        Button electricityButton = (Button)rootView.findViewById(R.id.it_other_electricity_button);
-        electricityButton.setOnClickListener(this);
 
         return rootView;
     }
@@ -38,38 +36,30 @@ public class CarCheckIntergratedFragment extends Fragment implements View.OnClic
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.it_other_water_button:
-                CheckWaterCar(v);
+                CheckWaterCar();
                 break;
-            case R.id.it_other_tire_button:
-                CheckTire(v);
+            case R.id.out_button:
+                CheckOutSide();
                 break;
-            case R.id.it_other_fire_button:
-                CheckFireCar(v);
-                break;
-            case R.id.it_other_electricity_button:
-                CheckElectricityCar(v);
+            case R.id.in_button:
+                CheckInside();
                 break;
         }
     }
 
-    private void CheckWaterCar(View v) {
+    private void CheckOutSide() {
+        Intent intent = new Intent(rootView.getContext(), CarCheckOutsideActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
+    private void CheckInside() {
+        Intent intent = new Intent(rootView.getContext(), CarCheckInsideActivity.class);
+        startActivityForResult(intent, 0);
+    }
+
+    private void CheckWaterCar() {
         Intent intent = new Intent(rootView.getContext(), CarCheckWaterActivity.class);
         startActivityForResult(intent, Common.IT_WATER);
-    }
-
-    private void CheckTire(View v) {
-        Intent intent = new Intent(rootView.getContext(), CarCheckTireActivity.class);
-        startActivityForResult(intent, Common.IT_TIRE);
-    }
-
-    private void CheckFireCar(View v) {
-        Intent intent = new Intent(rootView.getContext(), CarCheckWaterActivity.class);
-        startActivityForResult(intent, Common.IT_FIRE);
-    }
-
-    private void CheckElectricityCar(View v) {
-        Intent intent = new Intent(rootView.getContext(), CarCheckWaterActivity.class);
-        startActivityForResult(intent, Common.IT_ELECTRICITY);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -82,54 +72,6 @@ public class CarCheckIntergratedFragment extends Fragment implements View.OnClic
                             String waterResult = bundle.getString(Common.IT_WATER_RESULT);
                             if(waterResult != null) {
                                 // 保存泡水车检查的结果
-                            }
-                        }
-                    }
-                    catch(NullPointerException ex) {
-
-                    }
-                }
-                break;
-            case Common.IT_TIRE:
-                if (resultCode == Activity.RESULT_OK) {
-                    try{
-                        Bundle bundle = data.getExtras();
-                        if(bundle != null) {
-                            String tireResult = bundle.getString(Common.IT_TIRE_RESULT);
-                            if(tireResult != null) {
-                                // 保存轮胎检查的结果
-                            }
-                        }
-                    }
-                    catch(NullPointerException ex) {
-
-                    }
-                }
-                break;
-            case Common.IT_FIRE:
-                if (resultCode == Activity.RESULT_OK) {
-                    try{
-                        Bundle bundle = data.getExtras();
-                        if(bundle != null) {
-                            String fireResult = bundle.getString(Common.IT_FIRE_RESULT);
-                            if(fireResult != null) {
-                                // 保存火烧车检查的结果
-                            }
-                        }
-                    }
-                    catch(NullPointerException ex) {
-
-                    }
-                }
-                break;
-            case Common.IT_ELECTRICITY:
-                if (resultCode == Activity.RESULT_OK) {
-                    try{
-                        Bundle bundle = data.getExtras();
-                        if(bundle != null) {
-                            String electricityResult = bundle.getString(Common.IT_ELECTRICITY_RESULT);
-                            if(electricityResult != null) {
-                                // 保存电控单元检查的结果
                             }
                         }
                     }
