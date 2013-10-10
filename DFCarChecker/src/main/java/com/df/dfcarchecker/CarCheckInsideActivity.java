@@ -1,11 +1,11 @@
 package com.df.dfcarchecker;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,29 +20,27 @@ import com.df.service.PosEntity;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CarCheckOutsideFragment extends Fragment implements View.OnClickListener {
+public class CarCheckInsideActivity extends Fragment implements View.OnClickListener  {
     private static View rootView;
-    private List<Integer> brokenArrayIndex;
     private LayoutInflater inflater;
     private int currentGroup;
 
     public static List<PosEntity> posEntities;
-
-    private OutsidePaintPreviewView outsidePaintPreviewView;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.inflater = inflater;
-        rootView = inflater.inflate(R.layout.fragment_car_check_outside, container, false);
-        outsidePaintPreviewView = (OutsidePaintPreviewView) rootView.findViewById(R.id.out_base_image_preview);
+        rootView = inflater.inflate(R.layout.fragment_car_check_inside, container, false);
 
-        Button brokenButton = (Button)rootView.findViewById(R.id.out_choose_broken_button);
+        Button brokenButton = (Button)rootView.findViewById(R.id.in_choose_broken_button);
         brokenButton.setOnClickListener(this);
-        Button cameraButton = (Button)rootView.findViewById(R.id.out_start_camera_button);
+        Button dirtyButton = (Button)rootView.findViewById(R.id.in_choose_dirty_button);
+        dirtyButton.setOnClickListener(this);
+        Button cameraButton = (Button)rootView.findViewById(R.id.in_start_camera_button);
         cameraButton.setOnClickListener(this);
-        Button startPaintButton = (Button)rootView.findViewById(R.id.out_start_paint_button);
+        Button startPaintButton = (Button)rootView.findViewById(R.id.in_start_paint_button);
         startPaintButton.setOnClickListener(this);
 
         posEntities = new ArrayList<PosEntity>();
@@ -53,41 +51,57 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.out_choose_broken_button:
+            case R.id.in_choose_broken_button:
                 ChooseBroken(v);
                 break;
-            case R.id.out_start_camera_button:
-                out_start_camera(v);
+            case R.id.in_choose_dirty_button:
+                ChooseDirty(v);
                 break;
-            case R.id.out_start_paint_button:
+            case R.id.in_start_camera_button:
+                in_start_camera(v);
+                break;
+            case R.id.in_start_paint_button:
                 StartPaint(v);
                 break;
         }
     }
 
+
     public void ChooseBroken(View v) {
         Intent intent = new Intent(rootView.getContext(), PopupActivity.class);
-        intent.putExtra("POPUP_TYPE", "OUT_BROKEN");
-        startActivityForResult(intent, Common.CHOOSE_OUT_BROKEN);
+        intent.putExtra("POPUP_TYPE", "IN_BROKEN");
+        startActivityForResult(intent, Common.CHOOSE_IN_BROKEN);
     }
 
-    public void out_start_camera(View v) {
+    public void ChooseDirty(View v) {
+        Intent intent = new Intent(rootView.getContext(), PopupActivity.class);
+        intent.putExtra("POPUP_TYPE", "IN_DIRTY");
+        startActivityForResult(intent, Common.CHOOSE_IN_DIRTY);
+    }
+
+    public void StartPaint(View v) {
+        Intent intent = new Intent(rootView.getContext(), CarCheckOutSidePaintActivity.class);
+        intent.putExtra("PAINT_TYPE", "IN_PAINT");
+        startActivityForResult(intent, Common.IN_PAINT);
+    }
+
+    public void in_start_camera(View v) {
         AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
 
         // Get the layout inflater
         LayoutInflater inflater = this.inflater;
 
-        builder.setTitle(R.string.out_camera);
-        builder.setItems(R.array.out_camera_cato_item, new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.in_camera);
+        builder.setItems(R.array.in_camera_cato_item, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 currentGroup = i;
-                String group = getResources().getStringArray(R.array.out_camera_cato_item)[currentGroup];
+                String group = getResources().getStringArray(R.array.in_camera_cato_item)[currentGroup];
 
                 Toast.makeText(rootView.getContext(), "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, Common.PHOTO_FOR_OUTSIDE_GROUP);
+                startActivityForResult(intent, Common.PHOTO_FOR_INSIDE_GROUP);
             }
         });
         // Inflate and set the layout for the dialog
@@ -105,24 +119,18 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
         dialog.show();
     }
 
-    private void StartPaint(View v) {
-        Intent intent = new Intent(rootView.getContext(), CarCheckOutSidePaintActivity.class);
-        intent.putExtra("PAINT_TYPE", "OUT_PAINT");
-        startActivityForResult(intent, Common.OUT_PAINT);
-    }
-
-
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case Common.CHOOSE_OUT_BROKEN:
+            case Common.CHOOSE_IN_BROKEN:
                 // 查找成功
                 if (resultCode == Activity.RESULT_OK) {
                     try{
                         Bundle bundle = data.getExtras();
                         if(bundle != null) {
-                            String brokenPart = bundle.getString(Common.OUT_BROKEN_RESULT);
+                            String brokenPart = bundle.getString(Common.IN_BROKEN_RESULT);
                             if(brokenPart != null) {
-                                EditText editText = (EditText)rootView.findViewById(R.id.out_broken_edit);
+                                EditText editText = (EditText)rootView.findViewById(R.id.in_broken_parts_edit);
                                 editText.setText(brokenPart);
                             }
                         }
@@ -132,7 +140,25 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
                     }
                 }
                 break;
-            case Common.PHOTO_FOR_OUTSIDE_GROUP:
+            case Common.CHOOSE_IN_DIRTY:
+                // 查找成功
+                if (resultCode == Activity.RESULT_OK) {
+                    try{
+                        Bundle bundle = data.getExtras();
+                        if(bundle != null) {
+                            String dirtyPart = bundle.getString(Common.IN_DIRTY_RESULT);
+                            if(dirtyPart != null) {
+                                EditText editText = (EditText)rootView.findViewById(R.id.in_dirty_parts_edit);
+                                editText.setText(dirtyPart);
+                            }
+                        }
+                    }
+                    catch(NullPointerException ex) {
+
+                    }
+                }
+                break;
+            case Common.PHOTO_FOR_INSIDE_GROUP:
                 if(resultCode == Activity.RESULT_OK) {
                     Bitmap image = (Bitmap) data.getExtras().get("data");
                     //img.setImageBitmap(image);
@@ -142,11 +168,10 @@ public class CarCheckOutsideFragment extends Fragment implements View.OnClickLis
                             .show();
                 }
                 break;
-            case Common.OUT_PAINT:
-                outsidePaintPreviewView.invalidate();
+            case Common.IN_PAINT:
+                Toast.makeText(rootView.getContext(), "aa", Toast.LENGTH_LONG).show();
                 break;
         }
     }
-
 
 }
