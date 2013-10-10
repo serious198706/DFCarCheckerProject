@@ -430,13 +430,112 @@
                 android:layout_height="3px"
                 android:background="?android:attr/listDivider"/>
             <TableRow>
-                <Button android:id="@+id/it_chassis_water_button"
+                <Button android:id="@+id/it_chassis_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="18sp"
                     android:text="@string/it_chassis"/>
             </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_chassis_lf_good">
+                </TextView>
+                <Spinner android:id="@+id/it_chassis_lf_good_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/yes_no">
+                </Spinner>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_chassis_rf_good">
+                </TextView>
+                <Spinner android:id="@+id/it_chassis_rf_good_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/yes_no">
+                </Spinner>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_chassis_lr_good">
+                </TextView>
+                <Spinner android:id="@+id/it_chassis_lr_good_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/yes_no">
+                </Spinner>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_chassis_rr_good">
+                </TextView>
+                <Spinner android:id="@+id/it_chassis_rr_good_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/yes_no">
+                </Spinner>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_chassis_good">
+                </TextView>
+                <Spinner android:id="@+id/it_chassis_good_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/yes_no">
+                </Spinner>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_chassis_engine_good">
+                </TextView>
+                <Spinner android:id="@+id/it_chassis_engine_good_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/yes_no">
+                </Spinner>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_chassis_gear_good">
+                </TextView>
+                <Spinner android:id="@+id/it_chassis_gear_good_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/yes_no">
+                </Spinner>
+            </TableRow>
+
 
             <!-- 泡水检查 -->
             <TableRow>
@@ -467,7 +566,92 @@
                         android:textSize="18sp"
                         android:text="@string/it_other_water"/>
             </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_water_cabin_smoke">
+                </TextView>
+                <Spinner android:id="@+id/it_water_cabin_smoke_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/yes_no">
+                </Spinner>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_water_cabin_ashtray">
+                </TextView>
+                <Spinner android:id="@+id/it_water_cabin_ashtray_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/yes_no">
+                </Spinner>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_water_cabin_belt">
+                </TextView>
+                <Spinner android:id="@+id/it_water_cabin_belt_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/yes_no">
+                </Spinner>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_water_cabin_cushion">
+                </TextView>
+                <Spinner android:id="@+id/it_water_cabin_cushion_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/yes_no">
+                </Spinner>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_water_back_corner">
+                </TextView>
+                <Spinner android:id="@+id/it_water_back_corner_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/yes_no">
+                </Spinner>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_water_back_tire">
+                </TextView>
+                <Spinner android:id="@+id/it_water_back_tire_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:entries="@array/yes_no">
+                </Spinner>
+            </TableRow>
 
+            <!-- 备注 -->
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
