@@ -10,10 +10,10 @@ public class Common {
     public static final int CHOOSE_OUT_BROKEN = 3;
     public static final int CHOOSE_IN_BROKEN = 4;
     public static final int CHOOSE_IN_DIRTY = 5;
-    public static final int IT_WATER = 6;
-    public static final int IT_TIRE = 7;
-    public static final int IT_FIRE = 8;
-    public static final int IT_ELECTRICITY = 9;
+    public static final int IT_OUT = 6;
+    public static final int IT_IN = 7;
+    public static final int IT_CHASSIS = 8;
+    public static final int IT_WATER = 9;
     public static final int OUT_PAINT = 10;
     public static final int IN_PAINT = 11;
     public static final int STURCTURE_PAINT = 12;
@@ -24,10 +24,12 @@ public class Common {
     public static final String OUT_BROKEN_RESULT = "OUT_BROKEN_RESULT";
     public static final String IN_BROKEN_RESULT = "IN_BROKEN_RESULT";
     public static final String IN_DIRTY_RESULT = "IN_DIRTY_RESULT";
+    public static final String IT_OUT_RESULT = "IT_OUT_RESULT";
+    public static final String IT_IN_RESULT = "IT_IN_RESULT";
+    public static final String IT_CHASSIS_RESULT = "IT_CHASSIS_RESULT";
     public static final String IT_WATER_RESULT = "IT_WATER_RESULT";
     public static final String IT_TIRE_RESULT = "IT_TIRE_RESULT";
-    public static final String IT_FIRE_RESULT = "IT_FIRE_RESULT";
-    public static final String IT_ELECTRICITY_RESULT = "IT_ELECTRICITY_RESULT";
+
 
     // 拍摄组别代码
     public static final int PHOTO_FOR_OTHER_GROUP = 0;
