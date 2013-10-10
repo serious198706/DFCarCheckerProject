@@ -79,6 +79,7 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
         brokenEdit.setText(savedInstanceState.getString("brokenEdit"));
         paintSpinner.setSelection(savedInstanceState.getInt("paintSpinnerPosition"));
         commentEdit.setText(savedInstanceState.getString("comment"));
+
     }
 
     @Override
