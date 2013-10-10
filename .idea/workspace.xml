@@ -1417,7 +1417,11 @@
       <created>1381410176782</created>
       <updated>1381410176782</updated>
     </task>
-    <option name="localTasksCounter" value="23" />
+    <task id="LOCAL-00023" summary="20131009_night">
+      <created>1381410182296</created>
+      <updated>1381410182296</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1522,7 +1526,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="38" selection-start="455" selection-end="455" vertical-scroll-proportion="-2.7810025" vertical-offset="1224" max-vertical-offset="28577" />
+        <state line="10" column="38" selection-start="455" selection-end="455" vertical-scroll-proportion="-2.7810025" vertical-offset="1224" max-vertical-offset="28577">
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/InsidePaintView.java">
