@@ -26,6 +26,8 @@ public class CarCheckIntergratedFragment extends Fragment implements View.OnClic
         outButton.setOnClickListener(this);
         Button inButton = (Button) rootView.findViewById(R.id.in_button);
         inButton.setOnClickListener(this);
+        Button chassisButton = (Button) rootView.findViewById(R.id.it_chassis_button);
+        chassisButton.setOnClickListener(this);
         Button waterButton = (Button)rootView.findViewById(R.id.it_other_water_button);
         waterButton.setOnClickListener(this);
 
@@ -41,6 +43,9 @@ public class CarCheckIntergratedFragment extends Fragment implements View.OnClic
             case R.id.out_button:
                 CheckOutSide();
                 break;
+            case R.id.it_chassis_button:
+                CheckChassis();
+                break;
             case R.id.in_button:
                 CheckInside();
                 break;
@@ -49,12 +54,16 @@ public class CarCheckIntergratedFragment extends Fragment implements View.OnClic
 
     private void CheckOutSide() {
         Intent intent = new Intent(rootView.getContext(), CarCheckOutsideActivity.class);
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent, Common.IT_OUT);
     }
 
     private void CheckInside() {
         Intent intent = new Intent(rootView.getContext(), CarCheckInsideActivity.class);
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent, Common.IT_IN);
+    }
+
+    private void CheckChassis() {
+
     }
 
     private void CheckWaterCar() {
