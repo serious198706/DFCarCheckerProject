@@ -81,6 +81,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="721d7231-0a31-4f76-bb3a-78a7d95e63b1" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Helper.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Helper.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/ProcedureInputCarInfoFragment.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/ProcedureInputCarInfoFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DFCarChecker.iws" />
@@ -204,21 +207,6 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java" line="126" class="com.df.dfcarchecker.CarCheckBasicInfoFragment" package="com.df.dfcarchecker">
-        <option name="ENABLED" value="true" />
-        <option name="LOG_ENABLED" value="false" />
-        <option name="LOG_EXPRESSION_ENABLED" value="false" />
-        <option name="REMOVE_AFTER_HIT" value="false" />
-        <option name="SUSPEND_POLICY" value="SuspendAll" />
-        <option name="SUSPEND" value="true" />
-        <option name="COUNT_FILTER_ENABLED" value="false" />
-        <option name="COUNT_FILTER" value="0" />
-        <option name="CONDITION_ENABLED" value="true" />
-        <option name="CLASS_FILTERS_ENABLED" value="false" />
-        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
-        <option name="CONDITION" value="" />
-        <option name="LOG_MESSAGE" value="" />
-      </breakpoint>
       <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideActivity.java" line="64" class="com.df.dfcarchecker.CarCheckOutsideActivity" package="com.df.dfcarchecker">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
@@ -275,24 +263,6 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="CarCheckIntergratedFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckIntergratedFragment.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="77" column="24" selection-start="2627" selection-end="2627" vertical-scroll-proportion="0.0" vertical-offset="780" max-vertical-offset="1820">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CarCheckInsideActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckInsideActivity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="68" column="25" selection-start="2285" selection-end="2285" vertical-scroll-proportion="0.0" vertical-offset="1360" max-vertical-offset="4080">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="CarCheckOutsideActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideActivity.java">
           <provider selected="true" editor-type-id="text-editor">
@@ -302,10 +272,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="fragment_car_check_intergrated.xml" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="fragment_car_check_intergrated.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="205" column="22" selection-start="9188" selection-end="9188" vertical-scroll-proportion="0.31523642" vertical-offset="3920" max-vertical-offset="13660">
+            <state line="268" column="33" selection-start="12030" selection-end="12030" vertical-scroll-proportion="-12.0" vertical-offset="5000" max-vertical-offset="13660">
               <folding />
             </state>
           </provider>
@@ -314,11 +284,173 @@
           </provider>
         </entry>
       </file>
+      <file leaf-file-name="ProcedureInputCarInfoFragment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/ProcedureInputCarInfoFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="85" column="12" selection-start="3040" selection-end="3127" vertical-scroll-proportion="0.0" vertical-offset="1302" max-vertical-offset="3700">
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#5542#5569#0" expanded="true" />
+                <element signature="e#5856#5909#0" expanded="true" />
+                <element signature="e#5945#6001#0" expanded="true" />
+                <element signature="e#6125#6155#0" expanded="true" />
+                <element signature="e#6443#6496#0" expanded="true" />
+                <element signature="e#6532#6588#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ProcedureInputCertifiactionsFragment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/ProcedureInputCertifiactionsFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="73" column="4" selection-start="2713" selection-end="3090" vertical-scroll-proportion="0.0" vertical-offset="772" max-vertical-offset="1660">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="fragment_car_check_basic_info.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_basic_info.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="366" column="61" selection-start="18202" selection-end="18202" vertical-scroll-proportion="-22.355932" vertical-offset="6001" max-vertical-offset="18000">
+              <folding>
+                <element signature="e#3297#3310#0" expanded="true" />
+                <element signature="e#3638#3655#0" expanded="true" />
+                <element signature="e#4233#4253#0" expanded="true" />
+                <element signature="e#4591#4611#0" expanded="true" />
+                <element signature="e#4898#4922#0" expanded="true" />
+                <element signature="e#5584#5607#0" expanded="true" />
+                <element signature="e#6350#6370#0" expanded="true" />
+                <element signature="e#7052#7069#0" expanded="true" />
+                <element signature="e#7747#7770#0" expanded="true" />
+                <element signature="e#8456#8481#0" expanded="true" />
+                <element signature="e#9167#9190#0" expanded="true" />
+                <element signature="e#9880#9909#0" expanded="true" />
+                <element signature="e#10602#10628#0" expanded="true" />
+                <element signature="e#11314#11336#0" expanded="true" />
+                <element signature="e#12028#12060#0" expanded="true" />
+                <element signature="e#12759#12788#0" expanded="true" />
+                <element signature="e#13482#13509#0" expanded="true" />
+                <element signature="e#14191#14208#0" expanded="true" />
+                <element signature="e#14893#14923#0" expanded="true" />
+                <element signature="e#15619#15647#0" expanded="true" />
+                <element signature="e#16339#16365#0" expanded="true" />
+                <element signature="e#17055#17081#0" expanded="true" />
+                <element signature="e#17766#17787#0" expanded="true" />
+                <element signature="e#18537#18562#0" expanded="true" />
+                <element signature="e#19222#19245#0" expanded="true" />
+                <element signature="e#19525#19548#0" expanded="true" />
+                <element signature="e#19835#19860#0" expanded="true" />
+                <element signature="e#20140#20165#0" expanded="true" />
+                <element signature="e#20587#20608#0" expanded="true" />
+                <element signature="e#21242#21267#0" expanded="true" />
+                <element signature="e#21837#21853#0" expanded="true" />
+                <element signature="e#22476#22492#0" expanded="true" />
+                <element signature="e#22826#22842#0" expanded="true" />
+                <element signature="e#23074#23096#0" expanded="true" />
+                <element signature="e#23431#23453#0" expanded="true" />
+                <element signature="e#24020#24047#0" expanded="true" />
+                <element signature="e#24477#24493#0" expanded="true" />
+                <element signature="e#24968#24997#0" expanded="true" />
+                <element signature="e#25811#25835#0" expanded="true" />
+                <element signature="e#27095#27131#0" expanded="true" />
+                <element signature="e#27793#27820#0" expanded="true" />
+                <element signature="e#28431#28462#0" expanded="true" />
+                <element signature="e#29280#29320#0" expanded="true" />
+                <element signature="e#30166#30206#0" expanded="true" />
+                <element signature="e#30891#30918#0" expanded="true" />
+                <element signature="e#31979#32000#0" expanded="true" />
+                <element signature="e#32652#32668#0" expanded="true" />
+                <element signature="e#33007#33038#0" expanded="true" />
+                <element signature="e#33690#33726#0" expanded="true" />
+                <element signature="e#34388#34425#0" expanded="true" />
+                <element signature="e#34705#34742#0" expanded="true" />
+                <element signature="e#35001#35019#0" expanded="true" />
+                <element signature="e#35306#35352#0" expanded="true" />
+                <element signature="e#36470#36509#0" expanded="true" />
+                <element signature="e#37175#37199#0" expanded="true" />
+                <element signature="e#37829#37852#0" expanded="true" />
+                <element signature="e#38480#38504#0" expanded="true" />
+                <element signature="e#38784#38808#0" expanded="true" />
+                <element signature="e#39095#39124#0" expanded="true" />
+                <element signature="e#39404#39433#0" expanded="true" />
+                <element signature="e#39720#39752#0" expanded="true" />
+                <element signature="e#40082#40114#0" expanded="true" />
+                <element signature="e#40401#40427#0" expanded="true" />
+                <element signature="e#40706#40732#0" expanded="true" />
+                <element signature="e#41086#41113#0" expanded="true" />
+                <element signature="e#41656#41674#0" expanded="true" />
+                <element signature="e#42060#42076#0" expanded="true" />
+                <element signature="e#42531#42551#0" expanded="true" />
+                <element signature="e#42974#42991#0" expanded="true" />
+                <element signature="e#43397#43418#0" expanded="true" />
+                <element signature="e#43856#43877#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+          <provider editor-type-id="android-designer">
+            <state />
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PopupActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/PopupActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="178" column="0" selection-start="5457" selection-end="5457" vertical-scroll-proportion="0.0" vertical-offset="2922" max-vertical-offset="4120">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CarCheckBasicInfoFragment.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="93" column="0" selection-start="3514" selection-end="3514" vertical-scroll-proportion="0.30779943" vertical-offset="1639" max-vertical-offset="6180">
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#4411#4430#0" expanded="true" />
+                <element signature="e#4488#5093#0" expanded="true" />
+                <element signature="e#5082#5083#0" expanded="true" />
+                <element signature="e#5131#5146#0" expanded="true" />
+                <element signature="e#10255#10282#0" expanded="true" />
+                <element signature="e#10569#10622#0" expanded="true" />
+                <element signature="e#10658#10714#0" expanded="true" />
+                <element signature="e#10838#10868#0" expanded="true" />
+                <element signature="e#11156#11209#0" expanded="true" />
+                <element signature="e#11245#11301#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Common.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Common.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="5" column="13" selection-start="74" selection-end="74" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1140">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Helper.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Helper.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="65" column="37" selection-start="1363" selection-end="1377" vertical-scroll-proportion="0.0" vertical-offset="592" max-vertical-offset="1480">
+              <folding>
+                <element signature="e#1541#1549#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="720" column="41" selection-start="23939" selection-end="23939" vertical-scroll-proportion="0.0" vertical-offset="14164" max-vertical-offset="17000">
-              <folding />
+            <state line="336" column="3" selection-start="10899" selection-end="11872" vertical-scroll-proportion="0.0" vertical-offset="6522" max-vertical-offset="17440">
+              <folding>
+                <marker date="1381474879689" expanded="true" signature="10982:11071" placeholder="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -691,14 +823,9 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_check_vin_input.xml" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckVinInputActivity.java" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_procedureinput_ci.xml" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_procedureinput_ct.xml" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_basic_info.xml" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java" />
         <option value="$PROJECT_DIR$/DFCarChecker/build.gradle" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideFragment.java" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckIntergratedFragment.java" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/AndroidManifest.xml" />
@@ -707,6 +834,11 @@
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideActivity.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Helper.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/ProcedureInputCarInfoFragment.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_basic_info.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java" />
       </list>
     </option>
   </component>
@@ -1418,7 +1550,19 @@
       <created>1381468124360</created>
       <updated>1381468124360</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="20131011&#10;">
+      <created>1381468132203</created>
+      <updated>1381468132203</updated>
+    </task>
+    <task id="LOCAL-00030" summary="20131011&#10;">
+      <created>1381481452895</created>
+      <updated>1381481452895</updated>
+    </task>
+    <task id="LOCAL-00031" summary="20131011&#10;">
+      <created>1381481737365</created>
+      <updated>1381481737365</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1446,7 +1590,7 @@
     <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32188842" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32188842" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26799557" sideWeight="0.80364805" order="4" side_tool="false" content_ui="tabs" x="1101" y="249" width="640" height="627" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -1463,8 +1607,8 @@
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1839779" sideWeight="0.67094016" order="8" side_tool="false" content_ui="tabs" x="1090" y="278" width="452" height="745" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32983425" sideWeight="0.79594016" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32945737" sideWeight="0.6781116" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19635193" sideWeight="0.49920383" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32945737" sideWeight="0.80364805" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19635193" sideWeight="0.49920383" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -1502,62 +1646,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckCollectDataActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="72" column="27" selection-start="2050" selection-end="2058" vertical-scroll-proportion="0.0" vertical-offset="780" max-vertical-offset="7880">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckFrameActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="13" selection-start="764" selection-end="764" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3460">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckedListActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="153" column="4" selection-start="5526" selection-end="7326" vertical-scroll-proportion="0.0" vertical-offset="2215" max-vertical-offset="3400">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_checked_list.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="718">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="88" column="62" selection-start="3701" selection-end="3701" vertical-scroll-proportion="0.9164345" vertical-offset="1102" max-vertical-offset="2000">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckInsideActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="68" column="25" selection-start="2285" selection-end="2285" vertical-scroll-proportion="0.0" vertical-offset="522" max-vertical-offset="3520">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="720" column="41" selection-start="23939" selection-end="23939" vertical-scroll-proportion="0.0" vertical-offset="14164" max-vertical-offset="17000">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_check_frame.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="718">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_outside.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="130" column="57" selection-start="6608" selection-end="6608" vertical-scroll-proportion="0.7427326" vertical-offset="2089" max-vertical-offset="2960">
@@ -1608,12 +1696,167 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="205" column="22" selection-start="9188" selection-end="9188" vertical-scroll-proportion="0.31523642" vertical-offset="3920" max-vertical-offset="13660">
+        <state line="268" column="33" selection-start="12030" selection-end="12030" vertical-scroll-proportion="-12.0" vertical-offset="5000" max-vertical-offset="13660">
           <folding />
         </state>
       </provider>
       <provider editor-type-id="android-designer">
         <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Common.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="13" selection-start="74" selection-end="74" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1140">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Helper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="65" column="37" selection-start="1363" selection-end="1377" vertical-scroll-proportion="0.0" vertical-offset="592" max-vertical-offset="1480">
+          <folding>
+            <element signature="e#1541#1549#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/ProcedureInputCertifiactionsFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="73" column="4" selection-start="2713" selection-end="3090" vertical-scroll-proportion="0.0" vertical-offset="772" max-vertical-offset="1660">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/ProcedureInputCarInfoFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="85" column="12" selection-start="3040" selection-end="3127" vertical-scroll-proportion="0.0" vertical-offset="1302" max-vertical-offset="3700">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#5542#5569#0" expanded="true" />
+            <element signature="e#5856#5909#0" expanded="true" />
+            <element signature="e#5945#6001#0" expanded="true" />
+            <element signature="e#6125#6155#0" expanded="true" />
+            <element signature="e#6443#6496#0" expanded="true" />
+            <element signature="e#6532#6588#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/PopupActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="178" column="0" selection-start="5457" selection-end="5457" vertical-scroll-proportion="0.0" vertical-offset="2922" max-vertical-offset="4120">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="336" column="3" selection-start="10899" selection-end="11872" vertical-scroll-proportion="0.0" vertical-offset="6522" max-vertical-offset="17440">
+          <folding>
+            <marker date="1381474879689" expanded="true" signature="10982:11071" placeholder="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_basic_info.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="366" column="61" selection-start="18202" selection-end="18202" vertical-scroll-proportion="-22.355932" vertical-offset="6001" max-vertical-offset="18000">
+          <folding>
+            <element signature="e#3297#3310#0" expanded="true" />
+            <element signature="e#3638#3655#0" expanded="true" />
+            <element signature="e#4233#4253#0" expanded="true" />
+            <element signature="e#4591#4611#0" expanded="true" />
+            <element signature="e#4898#4922#0" expanded="true" />
+            <element signature="e#5584#5607#0" expanded="true" />
+            <element signature="e#6350#6370#0" expanded="true" />
+            <element signature="e#7052#7069#0" expanded="true" />
+            <element signature="e#7747#7770#0" expanded="true" />
+            <element signature="e#8456#8481#0" expanded="true" />
+            <element signature="e#9167#9190#0" expanded="true" />
+            <element signature="e#9880#9909#0" expanded="true" />
+            <element signature="e#10602#10628#0" expanded="true" />
+            <element signature="e#11314#11336#0" expanded="true" />
+            <element signature="e#12028#12060#0" expanded="true" />
+            <element signature="e#12759#12788#0" expanded="true" />
+            <element signature="e#13482#13509#0" expanded="true" />
+            <element signature="e#14191#14208#0" expanded="true" />
+            <element signature="e#14893#14923#0" expanded="true" />
+            <element signature="e#15619#15647#0" expanded="true" />
+            <element signature="e#16339#16365#0" expanded="true" />
+            <element signature="e#17055#17081#0" expanded="true" />
+            <element signature="e#17766#17787#0" expanded="true" />
+            <element signature="e#18537#18562#0" expanded="true" />
+            <element signature="e#19222#19245#0" expanded="true" />
+            <element signature="e#19525#19548#0" expanded="true" />
+            <element signature="e#19835#19860#0" expanded="true" />
+            <element signature="e#20140#20165#0" expanded="true" />
+            <element signature="e#20587#20608#0" expanded="true" />
+            <element signature="e#21242#21267#0" expanded="true" />
+            <element signature="e#21837#21853#0" expanded="true" />
+            <element signature="e#22476#22492#0" expanded="true" />
+            <element signature="e#22826#22842#0" expanded="true" />
+            <element signature="e#23074#23096#0" expanded="true" />
+            <element signature="e#23431#23453#0" expanded="true" />
+            <element signature="e#24020#24047#0" expanded="true" />
+            <element signature="e#24477#24493#0" expanded="true" />
+            <element signature="e#24968#24997#0" expanded="true" />
+            <element signature="e#25811#25835#0" expanded="true" />
+            <element signature="e#27095#27131#0" expanded="true" />
+            <element signature="e#27793#27820#0" expanded="true" />
+            <element signature="e#28431#28462#0" expanded="true" />
+            <element signature="e#29280#29320#0" expanded="true" />
+            <element signature="e#30166#30206#0" expanded="true" />
+            <element signature="e#30891#30918#0" expanded="true" />
+            <element signature="e#31979#32000#0" expanded="true" />
+            <element signature="e#32652#32668#0" expanded="true" />
+            <element signature="e#33007#33038#0" expanded="true" />
+            <element signature="e#33690#33726#0" expanded="true" />
+            <element signature="e#34388#34425#0" expanded="true" />
+            <element signature="e#34705#34742#0" expanded="true" />
+            <element signature="e#35001#35019#0" expanded="true" />
+            <element signature="e#35306#35352#0" expanded="true" />
+            <element signature="e#36470#36509#0" expanded="true" />
+            <element signature="e#37175#37199#0" expanded="true" />
+            <element signature="e#37829#37852#0" expanded="true" />
+            <element signature="e#38480#38504#0" expanded="true" />
+            <element signature="e#38784#38808#0" expanded="true" />
+            <element signature="e#39095#39124#0" expanded="true" />
+            <element signature="e#39404#39433#0" expanded="true" />
+            <element signature="e#39720#39752#0" expanded="true" />
+            <element signature="e#40082#40114#0" expanded="true" />
+            <element signature="e#40401#40427#0" expanded="true" />
+            <element signature="e#40706#40732#0" expanded="true" />
+            <element signature="e#41086#41113#0" expanded="true" />
+            <element signature="e#41656#41674#0" expanded="true" />
+            <element signature="e#42060#42076#0" expanded="true" />
+            <element signature="e#42531#42551#0" expanded="true" />
+            <element signature="e#42974#42991#0" expanded="true" />
+            <element signature="e#43397#43418#0" expanded="true" />
+            <element signature="e#43856#43877#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="93" column="0" selection-start="3514" selection-end="3514" vertical-scroll-proportion="0.30779943" vertical-offset="1639" max-vertical-offset="6180">
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4411#4430#0" expanded="true" />
+            <element signature="e#4488#5093#0" expanded="true" />
+            <element signature="e#5082#5083#0" expanded="true" />
+            <element signature="e#5131#5146#0" expanded="true" />
+            <element signature="e#10255#10282#0" expanded="true" />
+            <element signature="e#10569#10622#0" expanded="true" />
+            <element signature="e#10658#10714#0" expanded="true" />
+            <element signature="e#10838#10868#0" expanded="true" />
+            <element signature="e#11156#11209#0" expanded="true" />
+            <element signature="e#11245#11301#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
   </component>

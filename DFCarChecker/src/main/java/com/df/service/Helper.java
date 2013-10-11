@@ -1,5 +1,9 @@
 package com.df.service;
 
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -57,5 +61,14 @@ public class Helper {
         }
 
         return list;
+    }
+
+    public static void SetSpinnerData(int redID, List<String> list, View view)
+    {
+        Spinner spinner = (Spinner)view.findViewById(redID);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(view.getContext(), android.R.layout.simple_spinner_item, list);
+
+        spinner.setAdapter(adapter);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
     }
 }

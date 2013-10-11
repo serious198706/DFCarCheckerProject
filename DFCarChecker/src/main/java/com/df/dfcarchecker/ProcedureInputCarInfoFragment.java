@@ -1,6 +1,7 @@
 package com.df.dfcarchecker;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,8 @@ import android.widget.TableRow;
 import com.df.service.Helper;
 
 import java.util.List;
+
+import static com.df.service.Helper.SetSpinnerData;
 
 /**
  * Created by 岩 on 13-9-2.
@@ -92,14 +95,14 @@ public class ProcedureInputCarInfoFragment extends Fragment implements View.OnCl
         String[] carTypeArray = getResources().getStringArray(R.array.ci_car_type_arrays);
         List<String> carTypeList = Helper.StringArray2List(carTypeArray);
 
-        SetSpinnerData(R.id.ci_car_type_spinner, carTypeList);
+        SetSpinnerData(R.id.ci_car_type_spinner, carTypeList, rootView);
     }
 
     // 初次登记时间
     private void SetFirstLogTimeSpinner()
     {
-        SetSpinnerData(R.id.ci_first_log_year_spinner, Helper.GetYearList(21));
-        SetSpinnerData(R.id.ci_first_log_month_spinner, Helper.GetMonthList());
+        SetSpinnerData(R.id.ci_first_log_year_spinner, Helper.GetYearList(21), rootView);
+        SetSpinnerData(R.id.ci_first_log_month_spinner, Helper.GetMonthList(), rootView);
     }
 
     // 车身颜色
@@ -108,28 +111,28 @@ public class ProcedureInputCarInfoFragment extends Fragment implements View.OnCl
         String[] colorArray = getResources().getStringArray(R.array.ci_car_color_arrays);
         List<String> colorList = Helper.StringArray2List(colorArray);
 
-        SetSpinnerData(R.id.ci_car_color_spinner, colorList);
+        SetSpinnerData(R.id.ci_car_color_spinner, colorList, rootView);
     }
 
     // 出厂日期
     private void SetManufactureTimeSpinner()
     {
-        SetSpinnerData(R.id.ci_manufacture_year_spinner, Helper.GetYearList(21));
-        SetSpinnerData(R.id.ci_manufacture_month_spinner, Helper.GetMonthList());
+        SetSpinnerData(R.id.ci_manufacture_year_spinner, Helper.GetYearList(21), rootView);
+        SetSpinnerData(R.id.ci_manufacture_month_spinner, Helper.GetMonthList(), rootView);
     }
 
 
     // 过户次数
     private void SetTransferCountSpinner()
     {
-        SetSpinnerData(R.id.ci_transfer_count_spinner, Helper.GetMonthList());
+        SetSpinnerData(R.id.ci_transfer_count_spinner, Helper.GetMonthList(), rootView);
     }
 
     // 最后过户时间
     private void SetLastTransferTimeSpinner()
     {
-        SetSpinnerData(R.id.ci_last_transfer_year_spinner, Helper.GetYearList(17));
-        SetSpinnerData(R.id.ci_last_transfer_month_spinner, Helper.GetMonthList());
+        SetSpinnerData(R.id.ci_last_transfer_year_spinner, Helper.GetYearList(17), rootView);
+        SetSpinnerData(R.id.ci_last_transfer_month_spinner, Helper.GetMonthList(), rootView);
     }
 
     // 注册地
@@ -137,16 +140,7 @@ public class ProcedureInputCarInfoFragment extends Fragment implements View.OnCl
     {
         String[] provinceArray = getResources().getStringArray(R.array.ci_province);
         List<String> province = Helper.StringArray2List(provinceArray);
-        SetSpinnerData(R.id.ci_reg_location_spinner, province);
-    }
-
-    private void SetSpinnerData(int redID, List<String> list)
-    {
-        Spinner spinner = (Spinner)rootView.findViewById(redID);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, list);
-
-        spinner.setAdapter(adapter);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        SetSpinnerData(R.id.ci_reg_location_spinner, province, rootView);
     }
 
     public void PictureMatch(View view)
