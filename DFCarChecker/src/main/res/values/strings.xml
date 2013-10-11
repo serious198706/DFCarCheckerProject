@@ -334,6 +334,28 @@
     <string name="csi_add">添加</string>
     <string name="csi_volume">排量：</string>
     <string name="csi_drive_type">驱动方式：</string>
+    <string name="csi_airbag">气囊数：</string>
+    <string-array name="csi_airbag_number">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+    </string-array>
+    <string name="csi_abs">ABS</string>
+    <string name="csi_turn_help">转向助力：</string>
+    <string name="csi_ele_windows">电动车窗</string>
+    <string name="csi_sky_light">天窗：</string>
+    <string name="csi_air_conditioner">空调：</string>
+    <string name="csi_feather_seat">真皮座椅：</string>
+    <string name="csi_ele_seat">电动座椅：</string>
+    <string name="csi_ele_reflect_mirror">电动反光镜：</string>
+    <string name="csi_parking_sensors">倒车雷达：</string>
+    <string name="csi_parking_video">倒车影像：</string>
+    <string name="csi_ccs">定速巡航：</string>
+    <string name="csi_soft_close_doors">电吸门：</string>
+    <string name="csi_rear_ele_seats">后排电动座椅：</string>
+    <string name="csi_auto_chassis">底盘升降：</string>
+    <string name="csi_auto_parking">自动泊车：</string>
+    <string name="csi_curtain">隔物板（伸缩帘）：</string>
 
     <string-array name="csi_drive_type_item">
         <item>两驱</item>
