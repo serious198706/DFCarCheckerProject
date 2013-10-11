@@ -687,7 +687,6 @@
     <string name="it_out">外观检查</string>
     <string name="it_in">内饰检查</string>
     <string name="it_function">功能检查</string>
-    <string name="it_chassis">底盘检查</string>
 
     <string-array name="it_function_item">
         <item>正常</item>
@@ -706,20 +705,31 @@
     <string name="it_ele_seats">电动座椅</string>
     <string name="it_ele_rel_mirror">电动反光镜</string>
     <string name="it_engine">发动机检查</string>
-    <string name="it_engine_start">车辆是否可正常启动：</string>
-    <string name="it_engine_steady">怠速工况下运转平稳：</string>
-    <string name="it_engine_sound">发动机没有明显异响：</string>
+    <string name="it_engine_start">发动机可正常启动：</string>
+    <string name="it_engine_steady">发动机怠速平稳：</string>
+    <string name="it_engine_sound">发动机怠速无异响：</string>
     <string name="it_engine_gas_color">目测发动机排气颜色：</string>
-
     <string-array name="it_engine_gas_color_item">
-        <item>无</item>
+        <item>无色</item>
         <item>黑</item>
         <item>蓝</item>
     </string-array>
-
-    <string name="it_engine_oil_leak">发动机无机油渗漏：</string>
+    <string name="it_engine_oil_leak">发动机无漏液现象：</string>
     <string name="it_engine_pipe">舱内的线路及管路无老化的现象：</string>
+
+
     <string name="it_gear">变速箱检查</string>
+    <string name="it_gear_manually">手动档：</string>
+    <string name="it_gear_manually_1">离合器踩踏轻便，无异常沉重感</string>
+    <string name="it_gear_manually_2">各档位切换清晰、轻便，无涩滞感</string>
+    <string name="it_gear_manually_3">档把的晃动间隙在合理范围内</string>
+
+    <string name="it_gear_auto">自动档</string>
+    <string name="it_gear_auto_1">原地挂档的冲击感在合理范围内</string>
+    <string name="it_gear_auto_2">各档位切换清晰、轻便，无涩滞感</string>
+    <string name="it_gear_auto_3">档把的晃动间隙在合理范围内</string>
+
+
     <string name="it_gear_clear">档位是否清晰、不松晃：</string>
     <string name="it_gear_push_sound">离合器踩下是否有异响：</string>
     <string name="it_gear_release_sound">离合器松开是否有异响：</string>
@@ -730,19 +740,32 @@
     <string name="it_other_fire">火烧车检查</string>
     <string name="it_other_electricity">电控单元检测</string>
     <string name="it_other_tire">轮胎与表显里程</string>
+
+    <string name="it_chassis">底盘检查</string>
+    <string name="it_chassis_lf_good">左前减震器完好无漏油</string>
+    <string name="it_chassis_rf_good">右前减震器完好无漏油</string>
+    <string name="it_chassis_lr_good">左后减震器完好无漏油</string>
+    <string name="it_chassis_rr_good">右后减震器完好无漏油</string>
+    <string name="it_chassis_good">底盘完好，无严重拖底或锈蚀现象</string>
+    <string name="it_chassis_engine_good">发动机底部无渗漏</string>
+    <string name="it_chassis_gear_good">变速箱底部无渗漏</string>
+
+
     <string name="it_water">泡水检查</string>
+    <string name="it_water_cabin_smoke">点烟器底座无锈迹：</string>
+    <string name="it_water_cabin_ashtray">烟灰缸底座无泥沙、水印：</string>
+    <string name="it_water_cabin_belt">安全带底部无水印：</string>
+    <string name="it_water_cabin_cushion">后排座椅下无泥沙、水印：</string>
+    <string name="it_water_back_corner">行李箱的边角无泥沙、水印：</string>
+    <string name="it_water_back_tire">备胎槽内无泥沙、水印：</string>
+
+
     <string name="it_water_cabin">车舱检查</string>
     <string name="it_water_cabin_sound">音响的纸盆喇叭是否有水印：</string>
-    <string name="it_water_cabin_smoke">点烟器底座是否有锈迹：</string>
-    <string name="it_water_cabin_belt">安全带底部是否有水印：</string>
     <string name="it_water_cabin_slide">座椅滑轨内是否有泥沙：</string>
-    <string name="it_water_cabin_ashtray">取下烟灰缸后查看底座是否有泥沙：</string>
-    <string name="it_water_cabin_cushion">掀开后排座椅的座垫，查看底部是否有水印或泥沙：</string>
     <string name="it_water_cabin_ecu">细查车辆ECU接口处是否有水印或泥沙：</string>
     <string name="it_water_cabin_top">顶棚是否有水印痕迹：</string>
     <string name="it_water_back">后备箱检查：</string>
-    <string name="it_water_back_tire">备胎槽的四角是否有泥沙：</string>
-    <string name="it_water_back_corner">后备箱的四边是否有泥沙：</string>
     <string name="it_water_back_disc">放置后置碟盒的部位是否有泥沙：</string>
     <string name="it_water_back_storage">后备箱两侧储物空间的四边是否有泥沙：</string>
     <string name="it_water_engine">发动机舱检查：</string>
