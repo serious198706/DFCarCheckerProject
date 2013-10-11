@@ -96,7 +96,7 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
                 finish();
                 return true;
             case R.id.action_done:
-                // TODO 提交数据
+                // TODO 提交数据，并保存当前Activity
 
                 break;
             case R.id.action_cancel:
