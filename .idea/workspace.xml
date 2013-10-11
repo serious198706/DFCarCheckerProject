@@ -81,7 +81,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="721d7231-0a31-4f76-bb3a-78a7d95e63b1" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="DFCarChecker.iws" />
@@ -279,7 +278,7 @@
       <file leaf-file-name="CarCheckIntergratedFragment.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckIntergratedFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="33" column="0" selection-start="1200" selection-end="1200" vertical-scroll-proportion="0.0" vertical-offset="660" max-vertical-offset="1820">
+            <state line="77" column="24" selection-start="2627" selection-end="2627" vertical-scroll-proportion="0.0" vertical-offset="780" max-vertical-offset="1820">
               <folding />
             </state>
           </provider>
@@ -297,52 +296,16 @@
       <file leaf-file-name="CarCheckOutsideActivity.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="81" column="0" selection-start="3010" selection-end="3010" vertical-scroll-proportion="0.0" vertical-offset="1620" max-vertical-offset="4220">
+            <state line="98" column="42" selection-start="3534" selection-end="3534" vertical-scroll-proportion="0.0" vertical-offset="1140" max-vertical-offset="3660">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OutsidePaintView.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/OutsidePaintView.java">
+      <file leaf-file-name="fragment_car_check_intergrated.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="37" column="0" selection-start="1005" selection-end="1005" vertical-scroll-proportion="0.0" vertical-offset="740" max-vertical-offset="5320">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="build.gradle" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DFCarChecker/build.gradle">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="17" column="1" selection-start="326" selection-end="326" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="760">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name=".gitignore" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.gitignore">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="216" column="19" selection-start="2663" selection-end="2663" vertical-scroll-proportion="0.83416253" vertical-offset="3817" max-vertical-offset="4440">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SharedPreferences.class" pinned="false" current="false" current-in-tab="false">
-        <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-17/android.jar!/android/content/SharedPreferences.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="0" selection-start="416" selection-end="416" vertical-scroll-proportion="0.0" vertical-offset="240" max-vertical-offset="1200">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fragment_car_check_outside.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_outside.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="130" column="57" selection-start="6608" selection-end="6608" vertical-scroll-proportion="0.0" vertical-offset="2089" max-vertical-offset="2960">
+            <state line="205" column="22" selection-start="9188" selection-end="9188" vertical-scroll-proportion="0.31523642" vertical-offset="3920" max-vertical-offset="13660">
               <folding />
             </state>
           </provider>
@@ -351,19 +314,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="car_checked_list.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_checked_list.xml">
+      <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="260">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="car_check_frame.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_check_frame.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="360">
+            <state line="720" column="41" selection-start="23939" selection-end="23939" vertical-scroll-proportion="0.0" vertical-offset="14164" max-vertical-offset="17000">
               <folding />
             </state>
           </provider>
@@ -745,14 +699,14 @@
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java" />
         <option value="$PROJECT_DIR$/DFCarChecker/build.gradle" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideFragment.java" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckIntergratedFragment.java" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/AndroidManifest.xml" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckInsideActivity.java" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_outside.xml" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideActivity.java" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideActivity.java" />
       </list>
     </option>
   </component>
@@ -1452,7 +1406,19 @@
       <created>1381398353950</created>
       <updated>1381398353951</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="20131010&#10;">
+      <created>1381456061435</created>
+      <updated>1381456061435</updated>
+    </task>
+    <task id="LOCAL-00027" summary="20131011&#10;">
+      <created>1381467745126</created>
+      <updated>1381467745126</updated>
+    </task>
+    <task id="LOCAL-00028" summary="20131011&#10;">
+      <created>1381468124360</created>
+      <updated>1381468124360</updated>
+    </task>
+    <option name="localTasksCounter" value="29" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1477,17 +1443,18 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="54" y="-8" width="1874" height="1096" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32119915" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32188842" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26799557" sideWeight="0.80364805" order="4" side_tool="false" content_ui="tabs" x="1101" y="249" width="640" height="627" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35085836" sideWeight="0.49944752" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19711539" sideWeight="0.5007962" order="11" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.22651933" sideWeight="0.42735043" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32535884" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3251073" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22651933" sideWeight="0.42735043" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32832617" sideWeight="0.49944752" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.3251073" sideWeight="0.5" order="10" side_tool="false" content_ui="combo" x="73" y="322" width="1256" height="203" />
@@ -1496,13 +1463,12 @@
       <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1839779" sideWeight="0.67094016" order="8" side_tool="false" content_ui="tabs" x="1090" y="278" width="452" height="745" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32983425" sideWeight="0.79594016" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32945737" sideWeight="0.6788009" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.32945737" sideWeight="0.6781116" order="3" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.19635193" sideWeight="0.49920383" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26799557" sideWeight="0.80364805" order="4" side_tool="false" content_ui="tabs" x="1101" y="249" width="640" height="627" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852563" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -1525,7 +1491,8 @@
     <MESSAGE value="20130927" />
     <MESSAGE value="20131009_night" />
     <MESSAGE value="20131010&#10;" />
-    <option name="LAST_COMMIT_MESSAGE" value="20131010&#10;" />
+    <MESSAGE value="20131011&#10;" />
+    <option name="LAST_COMMIT_MESSAGE" value="20131011&#10;" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1535,65 +1502,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="607" column="39" selection-start="20559" selection-end="20559" vertical-scroll-proportion="0.0" vertical-offset="11881" max-vertical-offset="16540">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="35" column="52" selection-start="1585" selection-end="1585" vertical-scroll-proportion="-20.0" vertical-offset="100" max-vertical-offset="10160">
-          <folding>
-            <element signature="e#935#948#0" expanded="true" />
-            <element signature="e#1229#1247#0" expanded="true" />
-            <element signature="e#1813#1826#0" expanded="true" />
-            <element signature="e#2171#2183#0" expanded="true" />
-            <element signature="e#2464#2482#0" expanded="true" />
-            <element signature="e#3035#3047#0" expanded="true" />
-            <element signature="e#3393#3412#0" expanded="true" />
-            <element signature="e#3693#3711#0" expanded="true" />
-            <element signature="e#4254#4279#0" expanded="true" />
-            <element signature="e#4930#4956#0" expanded="true" />
-            <element signature="e#5608#5633#0" expanded="true" />
-            <element signature="e#6284#6313#0" expanded="true" />
-            <element signature="e#6986#7014#0" expanded="true" />
-            <element signature="e#7668#7692#0" expanded="true" />
-            <element signature="e#8381#8398#0" expanded="true" />
-            <element signature="e#8679#8697#0" expanded="true" />
-            <element signature="e#9240#9263#0" expanded="true" />
-            <element signature="e#9912#9940#0" expanded="true" />
-            <element signature="e#10594#10625#0" expanded="true" />
-            <element signature="e#11282#11308#0" expanded="true" />
-            <element signature="e#11998#12019#0" expanded="true" />
-            <element signature="e#12300#12318#0" expanded="true" />
-            <element signature="e#12826#12852#0" expanded="true" />
-            <element signature="e#13423#13452#0" expanded="true" />
-            <element signature="e#14073#14099#0" expanded="true" />
-            <element signature="e#14670#14701#0" expanded="true" />
-            <element signature="e#15324#15356#0" expanded="true" />
-            <element signature="e#15933#15951#0" expanded="true" />
-            <element signature="e#16561#16582#0" expanded="true" />
-            <element signature="e#17148#17172#0" expanded="true" />
-            <element signature="e#17788#17810#0" expanded="true" />
-            <element signature="e#18377#18404#0" expanded="true" />
-            <element signature="e#19085#19105#0" expanded="true" />
-            <element signature="e#19386#19404#0" expanded="true" />
-            <element signature="e#19971#19991#0" expanded="true" />
-            <element signature="e#20336#20360#0" expanded="true" />
-            <element signature="e#20641#20658#0" expanded="true" />
-            <element signature="e#21255#21279#0" expanded="true" />
-            <element signature="e#21571#21588#0" expanded="true" />
-            <element signature="e#21982#22002#0" expanded="true" />
-            <element signature="e#22436#22456#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckCollectDataActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="72" column="27" selection-start="2050" selection-end="2058" vertical-scroll-proportion="0.0" vertical-offset="780" max-vertical-offset="7880">
@@ -1629,13 +1537,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_check_frame.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="718">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckInsideActivity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="68" column="25" selection-start="2285" selection-end="2285" vertical-scroll-proportion="0.0" vertical-offset="522" max-vertical-offset="3520">
@@ -1643,9 +1544,23 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="720" column="41" selection-start="23939" selection-end="23939" vertical-scroll-proportion="0.0" vertical-offset="14164" max-vertical-offset="17000">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_check_frame.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="718">
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_outside.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="130" column="57" selection-start="6608" selection-end="6608" vertical-scroll-proportion="0.0" vertical-offset="2089" max-vertical-offset="2960">
+        <state line="130" column="57" selection-start="6608" selection-end="6608" vertical-scroll-proportion="0.7427326" vertical-offset="2089" max-vertical-offset="2960">
           <folding />
         </state>
       </provider>
@@ -1655,44 +1570,50 @@
     </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-17/android.jar!/android/content/SharedPreferences.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="0" selection-start="416" selection-end="416" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1180">
-          <folding />
-        </state>
+        <state line="12" column="0" selection-start="416" selection-end="416" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1180" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckIntergratedFragment.java">
+    <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="33" column="0" selection-start="1200" selection-end="1200" vertical-scroll-proportion="0.0" vertical-offset="180" max-vertical-offset="1640">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="81" column="0" selection-start="3010" selection-end="3010" vertical-scroll-proportion="0.0" vertical-offset="840" max-vertical-offset="3800">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/OutsidePaintView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="37" column="0" selection-start="1005" selection-end="1005" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4780">
+        <state line="210" column="13" selection-start="2592" selection-end="2604" vertical-scroll-proportion="0.9206128" vertical-offset="3539" max-vertical-offset="4440">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="17" column="1" selection-start="326" selection-end="326" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="760">
+        <state line="17" column="1" selection-start="326" selection-end="326" vertical-scroll-proportion="0.41504177" vertical-offset="42" max-vertical-offset="760" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/OutsidePaintView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="37" column="0" selection-start="1005" selection-end="1005" vertical-scroll-proportion="-0.59574467" vertical-offset="740" max-vertical-offset="4780">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckIntergratedFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="216" column="19" selection-start="2663" selection-end="2663" vertical-scroll-proportion="0.83416253" vertical-offset="3817" max-vertical-offset="4440">
+        <state line="77" column="24" selection-start="2627" selection-end="2627" vertical-scroll-proportion="0.0" vertical-offset="780" max-vertical-offset="1820">
           <folding />
         </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="98" column="42" selection-start="3534" selection-end="3534" vertical-scroll-proportion="0.0" vertical-offset="1140" max-vertical-offset="3660">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="205" column="22" selection-start="9188" selection-end="9188" vertical-scroll-proportion="0.31523642" vertical-offset="3920" max-vertical-offset="13660">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
   </component>
