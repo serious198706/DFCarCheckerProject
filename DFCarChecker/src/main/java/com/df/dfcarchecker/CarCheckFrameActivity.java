@@ -13,17 +13,17 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.df.service.CustomViewPager;
 
 public class CarCheckFrameActivity extends FragmentActivity implements ActionBar.TabListener {
+    private CarCheckBasicInfoFragment carCheckBasicInfoFragment;
+    private CarCheckStructureFragment carCheckStructureFragment;
+    private CarCheckIntegratedFragment carCheckIntegratedFragment;
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -45,22 +45,24 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_check_frame);
 
+        carCheckBasicInfoFragment = new CarCheckBasicInfoFragment();
+        carCheckStructureFragment = new CarCheckStructureFragment();
+        carCheckIntegratedFragment = new CarCheckIntegratedFragment();
+
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the app.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (CustomViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setPagingEnabled(false);
+        // 让viewPager一次性缓存3个页面，可以提高viewPager的流畅性，也可以保存fragment的数据，在
+        // fragment来回切换时数据不会丢失
+        mViewPager.setOffscreenPageLimit(3);
         actionBar.setDisplayHomeAsUpEnabled(true);
-        // When swiping between different sections, select the corresponding
-        // tab. We can also use ActionBar.Tab#select() to do this if we have
-        // a reference to the Tab.
+
         mViewPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(int position) {
@@ -156,13 +158,13 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
             switch (position)
             {
                 case 0:
-                    fragment = new CarCheckBasicInfoFragment();
+                    fragment = carCheckBasicInfoFragment;
                     break;
                 case 1:
-                    fragment = new CarCheckStructureFragment();
+                    fragment = carCheckStructureFragment;
                     break;
                 case 2:
-                    fragment = new CarCheckIntergratedFragment();
+                    fragment = carCheckIntegratedFragment;
                     break;
             }
             return fragment;

@@ -8,12 +8,34 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TableRow;
+import android.widget.Toast;
 
 import com.df.service.Common;
 
-public class CarCheckIntergratedFragment extends Fragment implements View.OnClickListener {
+public class CarCheckIntegratedFragment extends Fragment implements View.OnClickListener {
     private static View rootView;
     private LayoutInflater inflater;
+
+    private int[][] csi_map = {
+            {0, R.id.csi_airbag, View.GONE},
+            {1, R.id.csi_abs, View.GONE},
+            {2, R.id.csi_turn_help, View.GONE},
+            {3, R.id.csi_ele_windows, View.GONE},
+            {4, R.id.csi_sky_light, View.GONE},
+            {5, R.id.csi_air_conditioner, View.GONE},
+            {6, R.id.csi_feather_seat, View.GONE},
+            {7, R.id.csi_ele_seat, View.GONE},
+            {8, R.id.csi_ele_reflect_mirror, View.GONE},
+            {9, R.id.csi_parking_sensors, View.GONE},
+            {10, R.id.csi_parking_video, View.GONE},
+            {11, R.id.csi_ccs, View.GONE},
+            {12, R.id.csi_soft_close_doors, View.GONE},
+            {13, R.id.csi_rear_ele_seats, View.GONE},
+            {14, R.id.csi_auto_chassis, View.GONE},
+            {15, R.id.csi_auto_parking, View.GONE},
+            {16, R.id.csi_curtain, View.GONE}
+    };
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,6 +52,8 @@ public class CarCheckIntergratedFragment extends Fragment implements View.OnClic
         chassisButton.setOnClickListener(this);
         Button waterButton = (Button)rootView.findViewById(R.id.it_other_water_button);
         waterButton.setOnClickListener(this);
+
+        HandelCSITableRow(CarCheckBasicInfoFragment.carSets);
 
         return rootView;
     }
@@ -51,6 +75,12 @@ public class CarCheckIntergratedFragment extends Fragment implements View.OnClic
                 break;
         }
     }
+
+//    @Override
+//    public void onResume() {
+//        Toast.makeText(rootView.getContext(), "front~", Toast.LENGTH_SHORT).show();
+//        super.onResume();
+//    }
 
     private void CheckOutSide() {
         Intent intent = new Intent(rootView.getContext(), CarCheckOutsideActivity.class);
@@ -89,6 +119,19 @@ public class CarCheckIntergratedFragment extends Fragment implements View.OnClic
                     }
                 }
                 break;
+        }
+    }
+
+    private void HandelCSITableRow(int[] tableRow) {
+        for(int i = 0; i < tableRow.length; i++) {
+            csi_map[tableRow[i]][2] = View.VISIBLE;
+        }
+
+
+        for(int i = 0; i < csi_map.length; i++) {
+            // 将每一行的状态进行更新
+            TableRow row = (TableRow) rootView.findViewById(csi_map[i][1]);
+            row.setVisibility(csi_map[i][2]);
         }
     }
 }

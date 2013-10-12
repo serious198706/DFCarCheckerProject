@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.opengl.Visibility;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
@@ -38,27 +38,33 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private Button brandOkButton;
     private Button brandSelectButton;
     private boolean match;
+    public static int[] carSets;
 
     // 每一个部位的序号关联：
-    // 第一个表示序号，第二个表示该序号所对应的TableRow，第三个表示该TableRow是否应该显示
-    private int[][] csi_map = {
-            {0, R.id.csi_airbag, View.GONE},
-            {1, R.id.csi_abs, View.GONE},
-            {2, R.id.csi_turn_help, View.GONE},
-            {3, R.id.csi_ele_windows, View.GONE},
-            {4, R.id.csi_sky_light, View.GONE},
-            {5, R.id.csi_air_conditioner, View.GONE},
-            {6, R.id.csi_feather_seat, View.GONE},
-            {7, R.id.csi_ele_seat, View.GONE},
-            {8, R.id.csi_ele_reflect_mirror, View.GONE},
-            {9, R.id.csi_parking_sensors, View.GONE},
-            {10, R.id.csi_parking_video, View.GONE},
-            {11, R.id.csi_ccs, View.GONE},
-            {12, R.id.csi_soft_close_doors, View.GONE},
-            {13, R.id.csi_rear_ele_seats, View.GONE},
-            {14, R.id.csi_auto_chassis, View.GONE},
-            {15, R.id.csi_auto_parking, View.GONE},
-            {16, R.id.csi_curtain, View.GONE}
+    // 第一个表示序号，
+    // 第二个表示该序号所对应的TableRow的id，
+    // 第三个表示该TableRow是否应该显示，
+    // 第四个表示该序号所对应的Spinner id，
+    // 第五个表示该Spinner目前的选择项
+
+    public static int[][] csi_map = {
+            {0,     R.id.csi_airbag,                View.GONE,  R.id.csi_airbag_spinner,                 0},
+            {1,     R.id.csi_abs,                   View.GONE,  R.id.csi_abs_spinner,                    0},
+            {2,     R.id.csi_turn_help,             View.GONE,  R.id.csi_turn_help_spinner,              0},
+            {3,     R.id.csi_ele_windows,           View.GONE,  R.id.csi_ele_windows_spinner,            0},
+            {4,     R.id.csi_sky_light,             View.GONE,  R.id.csi_sky_light_spinner,              0},
+            {5,     R.id.csi_air_conditioner,       View.GONE,  R.id.csi_air_conditioner_spinner,        0},
+            {6,     R.id.csi_feather_seat,          View.GONE,  R.id.csi_feather_seat_spinner,           0},
+            {7,     R.id.csi_ele_seat,              View.GONE,  R.id.csi_ele_seat_spinner,               0},
+            {8,     R.id.csi_ele_reflect_mirror,    View.GONE,  R.id.csi_ele_reflect_mirror_spinner,     0},
+            {9,     R.id.csi_parking_sensors,       View.GONE,  R.id.csi_parking_sensors_spinner,        0},
+            {10,    R.id.csi_parking_video,         View.GONE,  R.id.csi_parking_video_spinner,          0},
+            {11,    R.id.csi_ccs,                   View.GONE,  R.id.csi_ccs_spinner,                    0},
+            {12,    R.id.csi_soft_close_doors,      View.GONE,  R.id.csi_soft_close_doors_spinner,       0},
+            {13,    R.id.csi_rear_ele_seats,        View.GONE,  R.id.csi_rear_ele_seats_spinner,         0},
+            {14,    R.id.csi_auto_chassis,          View.GONE,  R.id.csi_auto_chassis_spinner,           0},
+            {15,    R.id.csi_auto_parking,          View.GONE,  R.id.csi_auto_parking_spinner,           0},
+            {16,    R.id.csi_curtain,               View.GONE,  R.id.csi_curtain_spinner,                0}
     };
 
     @Override
@@ -71,7 +77,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         img = (ImageView) rootView.findViewById(R.id.image);
 
         tableLayout = (TableLayout) rootView.findViewById(R.id.bi_content_table);
-        tableLayout.setVisibility(View.GONE);
+        int a = tableLayout.getVisibility();
 
         brand = (LinearLayout) rootView.findViewById(R.id.brand_input);
 
@@ -94,11 +100,16 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         vin_edit = (EditText) rootView.findViewById(R.id.bi_vin_edit);
 
-        // TODO：此序列号来自服务器
-        int[] whichToShowFromServer = null;
+        carSets = GetCarSets();
 
-        HandelCSITableRow(whichToShowFromServer);
+        HandelCSITableRow(carSets);
         return rootView;
+    }
+
+    int[] GetCarSets() {
+        // TODO：此序列号来自服务器
+        int[] temp = {0, 2, 8};
+        return temp;
     }
 
     @Override
@@ -300,12 +311,32 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     }
 
     private void HandelCSITableRow(int[] tableRow) {
-        for(int i = 0; i < csi_map.length; i++) {
-            // 将每一行的状态进行更新
-            csi_map[i][2] = tableRow[i];
+        for(int i = 0; i < tableRow.length; i++) {
+            final int index = tableRow[i];
 
-            TableRow row = (TableRow) rootView.findViewById(csi_map[i][2]);
-            row.setVisibility(csi_map[i][2]);
+            csi_map[index][2] = View.VISIBLE;
+            TableRow row = (TableRow) rootView.findViewById(csi_map[index][1]);
+            row.setVisibility(View.VISIBLE);
+
+            Spinner spinner = (Spinner) rootView.findViewById(csi_map[index][3]);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    csi_map[index][4] = i;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
         }
+
+
+//        for(int i = 0; i < csi_map.length; i++) {
+//            // 将每一行的状态进行更新
+//            TableRow row = (TableRow) rootView.findViewById(csi_map[i][1]);
+//            row.setVisibility(csi_map[i][2]);
+//        }
     }
 }
