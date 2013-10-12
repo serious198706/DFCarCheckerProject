@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.df.service.Common;
@@ -77,7 +78,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         img = (ImageView) rootView.findViewById(R.id.image);
 
         tableLayout = (TableLayout) rootView.findViewById(R.id.bi_content_table);
-        int a = tableLayout.getVisibility();
 
         brand = (LinearLayout) rootView.findViewById(R.id.brand_input);
 
@@ -160,10 +160,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     }
 
     private void bi_brand_show() {
-        if(vin_edit.getText() != null) {
+        if(vin_edit.getText().toString().equals("")) {
+            Toast.makeText(rootView.getContext(), "请输入VIN码", Toast.LENGTH_SHORT).show();
+        } else {
             brand.setVisibility(View.VISIBLE);
 
-            // TODO: Get brand from server
+            // TODO: 从服务器获取故事片型号
+            // TODO: 如果返回多个，要提供选择功能
             EditText brand_edit = (EditText) rootView.findViewById(R.id.bi_brand_edit);
             brand_edit.setText("大众甲壳虫 1.6 MT");
             brandOkButton.setEnabled(true);
@@ -183,6 +186,10 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             SetYearlyCheckAvailableDateSpinner();
             SetAvailableDateYearSpinner();
             SetBusinessInsuranceAvailableDateYearSpinner();
+
+            // TODO: 排量、驱动方式、变速器形式由服务器决定
+            EditText volumeEdit = (EditText) rootView.findViewById(R.id.csi_volumn_edit);
+            volumeEdit.setText("1.6");
 
             tableLayout.setVisibility(View.VISIBLE);
         }
@@ -333,10 +340,10 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         }
 
 
-//        for(int i = 0; i < csi_map.length; i++) {
-//            // 将每一行的状态进行更新
-//            TableRow row = (TableRow) rootView.findViewById(csi_map[i][1]);
-//            row.setVisibility(csi_map[i][2]);
-//        }
+        for(int i = 0; i < csi_map.length; i++) {
+            // 将每一行的状态进行更新
+            TableRow row = (TableRow) rootView.findViewById(csi_map[i][1]);
+            row.setVisibility(csi_map[i][2]);
+        }
     }
 }
