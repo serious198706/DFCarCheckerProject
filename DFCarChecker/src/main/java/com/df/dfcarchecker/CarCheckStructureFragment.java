@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.df.service.Common;
@@ -25,6 +26,7 @@ import java.util.List;
  */
 public class CarCheckStructureFragment extends Fragment implements View.OnClickListener  {
     private static View rootView;
+    private static ScrollView root;
     private LayoutInflater inflater;
     private int currentGroup;
 
@@ -44,6 +46,9 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         startPaintButton.setOnClickListener(this);
         posEntities = new ArrayList<PosEntity>();
 
+        root = (ScrollView)rootView.findViewById(R.id.root);
+        root.setVisibility(View.GONE);
+
         return rootView;
     }
 
@@ -57,6 +62,10 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
                 structure_start_camera(v);
                 break;
         }
+    }
+
+    public static void ShowContent() {
+        root.setVisibility(View.VISIBLE);
     }
 
     public void StartPaint(View v) {

@@ -4,8 +4,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+
+import com.df.service.FileCopier;
+
+import java.io.File;
 
 public class MainActivity extends Activity {
     @Override
@@ -51,4 +56,8 @@ public class MainActivity extends Activity {
         dialog.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        Quit(null);
+    }
 }

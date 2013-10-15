@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TableRow;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ import com.df.service.Common;
 
 public class CarCheckIntegratedFragment extends Fragment implements View.OnClickListener {
     private static View rootView;
+    private static ScrollView root;
     private LayoutInflater inflater;
 
     private int[][] csi_map = {
@@ -48,12 +50,15 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         outButton.setOnClickListener(this);
         Button inButton = (Button) rootView.findViewById(R.id.in_button);
         inButton.setOnClickListener(this);
-        Button chassisButton = (Button) rootView.findViewById(R.id.it_chassis_button);
-        chassisButton.setOnClickListener(this);
-        Button waterButton = (Button)rootView.findViewById(R.id.it_other_water_button);
-        waterButton.setOnClickListener(this);
+//        Button chassisButton = (Button) rootView.findViewById(R.id.it_chassis_button);
+//        chassisButton.setOnClickListener(this);
+//        Button waterButton = (Button)rootView.findViewById(R.id.it_other_water_button);
+//        waterButton.setOnClickListener(this);
 
         HandelCSITableRow(CarCheckBasicInfoFragment.carSets);
+
+        root = (ScrollView)rootView.findViewById(R.id.root);
+        root.setVisibility(View.GONE);
 
         return rootView;
     }
@@ -61,15 +66,15 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.it_other_water_button:
-                CheckWaterCar();
-                break;
+//            case R.id.it_other_water_button:
+//                CheckWaterCar();
+//                break;
             case R.id.out_button:
                 CheckOutSide();
                 break;
-            case R.id.it_chassis_button:
-                CheckChassis();
-                break;
+//            case R.id.it_chassis_button:
+//                CheckChassis();
+//                break;
             case R.id.in_button:
                 CheckInside();
                 break;
@@ -81,6 +86,11 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
 //        Toast.makeText(rootView.getContext(), "front~", Toast.LENGTH_SHORT).show();
 //        super.onResume();
 //    }
+
+
+    public static void ShowContent() {
+        root.setVisibility(View.VISIBLE);
+    }
 
     private void CheckOutSide() {
         Intent intent = new Intent(rootView.getContext(), CarCheckOutsideActivity.class);

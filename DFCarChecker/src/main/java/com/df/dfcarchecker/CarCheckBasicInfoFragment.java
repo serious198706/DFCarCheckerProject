@@ -18,7 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.df.service.Common;
@@ -102,7 +101,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         carSets = GetCarSets();
 
-        HandelCSITableRow(carSets);
+        // HandelCSITableRow(carSets);
+
         return rootView;
     }
 
@@ -126,6 +126,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                 break;
             case R.id.picture_match_button:
                 PictureMatch(v);
+                break;
+            case R.id.bi_brand_select_button:
+                selectBrand();
                 break;
         }
     }
@@ -165,7 +168,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         } else {
             brand.setVisibility(View.VISIBLE);
 
-            // TODO: 从服务器获取故事片型号
+            // TODO: 从服务器获取厂牌型号
             // TODO: 如果返回多个，要提供选择功能
             EditText brand_edit = (EditText) rootView.findViewById(R.id.bi_brand_edit);
             brand_edit.setText("大众甲壳虫 1.6 MT");
@@ -188,13 +191,18 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             SetBusinessInsuranceAvailableDateYearSpinner();
 
             // TODO: 排量、驱动方式、变速器形式由服务器决定
-            EditText volumeEdit = (EditText) rootView.findViewById(R.id.csi_volumn_edit);
+            EditText volumeEdit = (EditText) rootView.findViewById(R.id.csi_volume_edit);
             volumeEdit.setText("1.6");
 
             tableLayout.setVisibility(View.VISIBLE);
+            CarCheckIntegratedFragment.ShowContent();
+            CarCheckStructureFragment.ShowContent();
         }
     }
 
+    private void selectBrand() {
+
+    }
 
 
     @Override

@@ -6,7 +6,8 @@
               android:layout_height="match_parent"
               android:orientation="vertical">
 
-    <ScrollView android:layout_width="match_parent"
+    <ScrollView android:id="@+id/root"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp">
@@ -23,7 +24,7 @@
             <View
                     android:layout_width="match_parent"
                     android:layout_height="3px"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="#000"/>
 
             <LinearLayout android:orientation="horizontal"
                           android:layout_width="match_parent"
@@ -57,7 +58,7 @@
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="3px"
-                        android:background="?android:attr/listDivider"/>
+                        android:background="#000"/>
                 <TableRow>
                     <Button android:id="@+id/structure_start_camera_button"
                             android:layout_width="wrap_content"
@@ -75,7 +76,7 @@
                 <View
                         android:layout_width="match_parent"
                         android:layout_height="3px"
-                        android:background="?android:attr/listDivider"/>
+                        android:background="#000"/>
                 <TableRow>
                     <TextView
                             android:layout_height="wrap_content"

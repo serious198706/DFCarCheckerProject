@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     tools:context=".CarCheckMixFragment">
 
-    <ScrollView android:layout_width="match_parent"
+    <ScrollView android:id="@+id/root"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
@@ -13,6 +14,11 @@
                      android:layout_height="wrap_content">
             <!-- 外观检查 -->
             <TableRow>
+                <ImageView android:layout_width="0px"
+                    android:layout_height="48px"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/item"
+                    android:scaleType="fitStart" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -27,10 +33,11 @@
                     android:text="@string/score_20"
                     android:textSize="16sp"/>
             </TableRow>
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="3px"
-                    android:background="?android:attr/listDivider"/>
+
+            <View android:layout_width="match_parent"
+                android:layout_height="3px"
+                android:background="#000"
+                android:layout_weight="1"/>
 
             <TableRow>
                 <Button android:id="@+id/out_button"
@@ -43,6 +50,10 @@
 
             <!-- 内饰检查 -->
             <TableRow>
+                <ImageView android:layout_width="32px"
+                    android:layout_height="32px"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/item"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -60,7 +71,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3px"
-                android:background="?android:attr/listDivider"/>
+                android:background="#000"/>
 
             <TableRow>
                 <Button android:id="@+id/in_button"
@@ -90,8 +101,8 @@
 
             <View
                     android:layout_width="match_parent"
-                    android:layout_height="3px"
-                    android:background="?android:attr/listDivider"/>
+                android:layout_height="3px"
+                android:background="#000"/>
             <TableRow>
                 <TextView android:layout_width="0dp"
                           android:layout_height="wrap_content"
@@ -197,7 +208,7 @@
             <View
                     android:layout_width="match_parent"
                     android:layout_height="3px"
-                    android:background="?android:attr/listDivider"/>
+                android:background="#000"/>
 
             <!-- TODO:2选1 -->
             <TextView android:id="@+id/it_gear_manually_row"
@@ -275,7 +286,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3px"
-                android:background="?android:attr/listDivider"/>
+                android:background="#000"/>
 
             <!-- 7个必选项 -->
             <TableRow>
@@ -647,15 +658,15 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="3px"
-                android:background="?android:attr/listDivider"/>
-            <TableRow>
+                android:background="#000"/>
+            <!--TableRow>
                 <Button android:id="@+id/it_chassis_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:textSize="18sp"
                     android:text="@string/it_chassis"/>
-            </TableRow>
+            </TableRow-->
             <TableRow>
                 <TextView android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -776,15 +787,15 @@
             <View
                     android:layout_width="match_parent"
                     android:layout_height="3px"
-                    android:background="?android:attr/listDivider"/>
-            <TableRow>
+                    android:background="#000"/>
+            <!--TableRow>
                 <Button android:id="@+id/it_other_water_button"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:textSize="18sp"
                         android:text="@string/it_other_water"/>
-            </TableRow>
+            </TableRow-->
             <TableRow>
                 <TextView android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -881,7 +892,7 @@
             <View
                     android:layout_width="match_parent"
                     android:layout_height="3px"
-                    android:background="?android:attr/listDivider"/>
+                    android:background="#000"/>
             <TableRow>
                 <TextView
                         android:layout_height="wrap_content"

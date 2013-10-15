@@ -17,10 +17,19 @@
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
 
-    <style name="CodeFont" parent="@android:style/TextAppearance.Large">
+    <style name="TextAppearance">
+        <item name="android:textSize">26sp</item>
+    </style>
+
+    <style name="CodeFont" parent="TextAppearance">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:typeface">monospace</item>
+    </style>
+
+    <style name="DividerLine">
+        <item name="android:height">3px</item>
+        <item name="android:background">#000</item>
     </style>
 
     <color name="bright_foreground_light_disabled">#80000000</color>
