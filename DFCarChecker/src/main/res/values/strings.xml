@@ -359,7 +359,17 @@
     </string-array>
 
     <string name="csi_abs">ABS：</string>
+    <string-array name="csi_abs_items">
+        <item>有</item>
+        <item>无</item>
+    </string-array>
+
     <string name="csi_turn_help">转向助力：</string>
+    <string-array name="csi_turn_help_items">
+        <item>有</item>
+        <item>无</item>
+    </string-array>
+
     <string name="csi_ele_windows">电动车窗：</string>
     <string-array name="csi_ele_windows_items">
         <item>有</item>
@@ -436,9 +446,29 @@
     </string-array>
 
     <string name="csi_soft_close_doors">电吸门：</string>
+    <string-array name="csi_soft_close_doors_items">
+        <item>有</item>
+        <item>无</item>
+    </string-array>
+
     <string name="csi_rear_ele_seats">后排电动座椅：</string>
+    <string-array name="csi_rear_ele_seats_items">
+        <item>有</item>
+        <item>无</item>
+    </string-array>
+
     <string name="csi_auto_chassis">底盘升降：</string>
+    <string-array name="csi_auto_chassis_items">
+        <item>有</item>
+        <item>无</item>
+    </string-array>
+
     <string name="csi_auto_parking">自动泊车：</string>
+    <string-array name="csi_auto_parking_items">
+        <item>有</item>
+        <item>无</item>
+    </string-array>
+
     <string name="csi_curtain">隔物板（伸缩帘）：</string>
     <string-array name="csi_curtain_items">
         <item>有</item>
