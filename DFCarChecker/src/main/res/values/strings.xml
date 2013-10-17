@@ -22,6 +22,8 @@
         <item>看不见</item>
     </string-array>
 
+    <string name="itemImage">itemImage</string>
+
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="choose">选择</string>
@@ -115,6 +117,43 @@
         <item>西藏自治区</item>
         <item>香港特别行政区</item>
         <item>澳门特别行政区</item>
+    </string-array>
+
+    <string-array name="ci_province_abbreviation">
+        <item>京</item>
+        <item>津</item>
+        <item>渝</item>
+        <item>沪</item>
+        <item>冀</item>
+        <item>晋</item>
+        <item>辽</item>
+        <item>吉</item>
+        <item>黑</item>
+        <item>苏</item>
+        <item>浙</item>
+        <item>皖</item>
+        <item>闽</item>
+        <item>赣</item>
+        <item>鲁</item>
+        <item>豫</item>
+        <item>鄂</item>
+        <item>湘</item>
+        <item>粤</item>
+        <item>琼</item>
+        <item>川</item>
+        <item>黔</item>
+        <item>滇</item>
+        <item>陕</item>
+        <item>甘 </item>
+        <item>青</item>
+        <item>台</item>
+        <item>内蒙古</item>
+        <item>桂</item>
+        <item>宁</item>
+        <item>新</item>
+        <item>藏</item>
+        <item>港</item>
+        <item>澳</item>
     </string-array>
 
     <string name="ci_transfer_count">过户次数：</string>
@@ -414,14 +453,14 @@
     <string-array name="csi_ele_seats_items">
         <item>有</item>
         <item>无</item>
-        <item>加装</item>
+        <item>带记忆</item>
     </string-array>
 
     <string name="csi_ele_reflect_mirror">电动反光镜：</string>
     <string-array name="csi_ele_reflect_mirror_items">
         <item>有</item>
         <item>无</item>
-        <item>加装</item>
+        <item>自动折叠</item>
     </string-array>
 
     <string name="csi_parking_sensors">倒车雷达：</string>
@@ -473,7 +512,6 @@
     <string-array name="csi_curtain_items">
         <item>有</item>
         <item>无</item>
-        <item>加装</item>
     </string-array>
 
 

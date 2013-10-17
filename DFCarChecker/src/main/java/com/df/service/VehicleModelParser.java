@@ -68,8 +68,8 @@ public class VehicleModelParser {
                         } else if("c".equals(tagName)){
                             // 新建一个brand list
                             brands = new ArrayList<Brand>();
-                            country = new Country();
 
+                            country = new Country();
                             country.id = parser.getAttributeValue(0);
                             country.name = parser.getAttributeValue(1);
                             countries.add(country);

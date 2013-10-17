@@ -19,6 +19,7 @@ public class Serial {
 
     public List<String> getModelNames() {
         modelNames = new ArrayList<String>();
+        modelNames.add("");
         for(int i = 0; i < models.size(); i++) {
             modelNames.add(models.get(i).name);
         }

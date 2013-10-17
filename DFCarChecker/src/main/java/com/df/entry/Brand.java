@@ -15,6 +15,7 @@ public class Brand {
 
     public List<String> getProductionNames() {
         productionNames = new ArrayList<String>();
+        productionNames.add("");
         for(int i = 0; i < productions.size(); i++) {
             productionNames.add(productions.get(i).name);
         }

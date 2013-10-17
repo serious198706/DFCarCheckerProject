@@ -3,19 +3,19 @@
               android:layout_height="match_parent"
               android:orientation="vertical" >
 
-    <include layout="@layout/activity_car_check_outside_paint_menu" />
+    <include layout="@layout/activity_car_check_outside_paint_menu"/>
 
     <LinearLayout
             android:id="@+id/titleLy"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_gravity="center"
             android:layout_weight="1" >
 
         <com.df.dfcarchecker.OutsidePaintView
                 android:id="@+id/tile"
-                android:layout_width="1200px"
-                android:layout_height="1600px" />
+                android:layout_width="600dp"
+                android:layout_height="800dp" />
 
     </LinearLayout>
 </LinearLayout>

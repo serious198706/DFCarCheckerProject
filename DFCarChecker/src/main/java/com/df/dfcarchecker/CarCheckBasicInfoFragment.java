@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,14 +43,9 @@ import static com.df.service.Helper.SetSpinnerData;
 public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickListener {
     private static View rootView;
     private LayoutInflater inflater;
-    private int currentGroup;
-
-    // 测试用ImageView
-    private ImageView img;
 
     // 内容TableLayout
     private TableLayout tableLayout;
-
 
     private LinearLayout brand;
     private EditText vin_edit;
@@ -76,6 +72,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private String brandString = null;
 
     private CarSettings carSettings;
+
+    private Spinner firstLogYearSpinner;
+    private Spinner firstLogMonthSpinner;
+    private Spinner manufactureYearSpinner;
+    private Spinner manufactureMonthSpinner;
+
+    private EditText carNumberEdit;
 
     // 每一个部位的序号关联：
     // 第一个表示序号，
@@ -113,14 +116,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         this.inflater = inflater;
         rootView = inflater.inflate(R.layout.fragment_car_check_basic_info, container, false);
 
-        img = (ImageView) rootView.findViewById(R.id.image);
-
         tableLayout = (TableLayout) rootView.findViewById(R.id.bi_content_table);
 
         brand = (LinearLayout) rootView.findViewById(R.id.brand_input);
-
-        Button cameraButton = (Button) rootView.findViewById(R.id.cbi_start_camera_button);
-        cameraButton.setOnClickListener(this);
 
         Button vinButton = (Button) rootView.findViewById(R.id.bi_vin_button);
         vinButton.setOnClickListener(this);
@@ -140,17 +138,22 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         brandEdit = (EditText) rootView.findViewById(R.id.bi_brand_edit);
         volumeEdit = (EditText) rootView.findViewById(R.id.csi_volume_edit);
 
+        carNumberEdit = (EditText) rootView.findViewById(R.id.ci_car_number_edit);
+
+        manufactureYearSpinner = (Spinner) rootView.findViewById(R.id.ci_manufacture_year_spinner);
+        manufactureMonthSpinner = (Spinner) rootView.findViewById(R.id.ci_manufacture_month_spinner);
+
         carSettings = new CarSettings();
 
         try {
-            File f = new File("/mnt/sdcard/VehicleModel.xml");
+            File f = new File(Environment.getExternalStorageDirectory().getPath() + "/VehicleModel.xml");
             fis = new FileInputStream(f);
 
             if(fis == null) {
-                Toast.makeText(rootView.getContext(), "SD卡挂载有问题", 1);
+                Toast.makeText(rootView.getContext(), "SD卡挂载有问题", Toast.LENGTH_LONG).show();
             }
         } catch (FileNotFoundException e) {
-            Toast.makeText(rootView.getContext(), "文件不存在", 1);
+            Toast.makeText(rootView.getContext(), "文件不存在", Toast.LENGTH_LONG).show();
             e.printStackTrace();
         }
 
@@ -170,9 +173,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.cbi_start_camera_button:
-                cbi_start_camera(v);
-                break;
             case R.id.bi_vin_button:
                 bi_brand_show();
                 break;
@@ -180,41 +180,12 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                 bi_content_show();
                 break;
             case R.id.picture_match_button:
-                PictureMatch(v);
+                PictureMatch();
                 break;
             case R.id.bi_brand_select_button:
                 selectBrand();
                 break;
         }
-    }
-
-    public void cbi_start_camera(View view) {
-        // 开始拍摄其他组
-        AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
-
-        builder.setTitle(R.string.cbi_camera);
-        builder.setItems(R.array.cbi_camera_cato_item, new DialogInterface.OnClickListener() {
-            // 点击某个组时，记录当前组别
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                currentGroup = i;
-                String group = getResources().getStringArray(R.array.cbi_camera_cato_item)[currentGroup];
-
-                Toast.makeText(rootView.getContext(), "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
-
-                Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, Common.PHOTO_FOR_OTHER_GROUP);
-            }
-        });
-
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // 取消
-            }
-        });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
     }
 
     private void bi_brand_show() {
@@ -240,25 +211,25 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         // TODO: 改为从网络获取，目前是来自资源文件
         carSettings.setBrand("一汽奥迪 100 1.6 MT");
         carSettings.setVolume("1.6");
-        carSettings.setDriveType(arrayToList(getResources().getStringArray(R.array.csi_drive_type_item)));
-        carSettings.setGearType(arrayToList(getResources().getStringArray(R.array.csi_gear_type_item)));
-        carSettings.setAirbag(arrayToList(getResources().getStringArray(R.array.csi_airbag_number)));
-        carSettings.setAbs(arrayToList(getResources().getStringArray(R.array.csi_abs_items)));
-        carSettings.setTurnHelper(arrayToList(getResources().getStringArray(R.array.csi_turn_help_items)));
-        carSettings.setEleWindows(arrayToList(getResources().getStringArray(R.array.csi_ele_windows_items)));
-        carSettings.setSkyLight(arrayToList(getResources().getStringArray(R.array.csi_sky_light_items)));
-        carSettings.setAirConditioner(arrayToList(getResources().getStringArray(R.array.csi_air_conditioner_items)));
-        carSettings.setFeatherSeather(arrayToList(getResources().getStringArray(R.array.csi_feather_seat_items)));
-        carSettings.setEleSeats(arrayToList(getResources().getStringArray(R.array.csi_ele_seats_items)));
-        carSettings.setEleReflectMirror(arrayToList(getResources().getStringArray(R.array.csi_ele_reflect_mirror_items)));
-        carSettings.setParkingSensors(arrayToList(getResources().getStringArray(R.array.csi_parking_sensors_items)));
-        carSettings.setParkingVideo(arrayToList(getResources().getStringArray(R.array.csi_parking_video_items)));
-        carSettings.setCcs(arrayToList(getResources().getStringArray(R.array.csi_ccs_items)));
-        carSettings.setSoftCloseDoors(arrayToList(getResources().getStringArray(R.array.csi_soft_close_doors_items)));
-        carSettings.setRearEleSeats(arrayToList(getResources().getStringArray(R.array.csi_rear_ele_seats_items)));
-        carSettings.setAutoChassis(arrayToList(getResources().getStringArray(R.array.csi_auto_chassis_items)));
-        carSettings.setAutoParking(arrayToList(getResources().getStringArray(R.array.csi_auto_parking_items)));
-        carSettings.setCurtain(arrayToList(getResources().getStringArray(R.array.csi_curtain_items)));
+        carSettings.setDriveType(Helper.StringArray2List(getResources().getStringArray(R.array.csi_drive_type_item)));
+        carSettings.setGearType(Helper.StringArray2List(getResources().getStringArray(R.array.csi_gear_type_item)));
+        carSettings.setAirbag(Helper.StringArray2List(getResources().getStringArray(R.array.csi_airbag_number)));
+        carSettings.setAbs(Helper.StringArray2List(getResources().getStringArray(R.array.csi_abs_items)));
+        carSettings.setTurnHelper(Helper.StringArray2List(getResources().getStringArray(R.array.csi_turn_help_items)));
+        carSettings.setEleWindows(Helper.StringArray2List(getResources().getStringArray(R.array.csi_ele_windows_items)));
+        carSettings.setSkyLight(Helper.StringArray2List(getResources().getStringArray(R.array.csi_sky_light_items)));
+        carSettings.setAirConditioner(Helper.StringArray2List(getResources().getStringArray(R.array.csi_air_conditioner_items)));
+        carSettings.setFeatherSeather(Helper.StringArray2List(getResources().getStringArray(R.array.csi_feather_seat_items)));
+        carSettings.setEleSeats(Helper.StringArray2List(getResources().getStringArray(R.array.csi_ele_seats_items)));
+        carSettings.setEleReflectMirror(Helper.StringArray2List(getResources().getStringArray(R.array.csi_ele_reflect_mirror_items)));
+        carSettings.setParkingSensors(Helper.StringArray2List(getResources().getStringArray(R.array.csi_parking_sensors_items)));
+        carSettings.setParkingVideo(Helper.StringArray2List(getResources().getStringArray(R.array.csi_parking_video_items)));
+        carSettings.setCcs(Helper.StringArray2List(getResources().getStringArray(R.array.csi_ccs_items)));
+        carSettings.setSoftCloseDoors(Helper.StringArray2List(getResources().getStringArray(R.array.csi_soft_close_doors_items)));
+        carSettings.setRearEleSeats(Helper.StringArray2List(getResources().getStringArray(R.array.csi_rear_ele_seats_items)));
+        carSettings.setAutoChassis(Helper.StringArray2List(getResources().getStringArray(R.array.csi_auto_chassis_items)));
+        carSettings.setAutoParking(Helper.StringArray2List(getResources().getStringArray(R.array.csi_auto_parking_items)));
+        carSettings.setCurtain(Helper.StringArray2List(getResources().getStringArray(R.array.csi_curtain_items)));
 
         // 初始化所有的Spinner
         setRegLocationSpinner();
@@ -336,9 +307,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         if(vehicleModel == null) {
             ParseXml();
-        } else {
-            setCountrySpinner();
         }
+
+        setCountrySpinner(vehicleModel);
 
         AlertDialog dialog = builder.create();
         dialog.show();
@@ -346,16 +317,18 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
 
     public void ParseXml() {
-
-
         VehicleModelParser parser = new VehicleModelParser();
         vehicleModel = parser.parseVehicleModelXml(fis);
-
-        setCountrySpinner();
     }
 
-    private void setCountrySpinner() {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, vehicleModel.getCountryNames());
+    private void setCountrySpinner(final VehicleModel vehicleModel) {
+        ArrayAdapter<String> adapter;
+
+        if(vehicleModel == null) {
+            adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, Helper.getEmptyStringList());
+        } else {
+            adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, vehicleModel.getCountryNames());
+        }
 
         countrySpinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -364,7 +337,11 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         countrySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                setBrandSpinner(vehicleModel.countries.get(i));
+                if(i == 0) {
+                    setBrandSpinner(null);
+                } else if(i >= 1) {
+                    setBrandSpinner(vehicleModel.countries.get(i - 1));
+                }
             }
 
             @Override
@@ -375,16 +352,30 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     }
 
     private void setBrandSpinner(final Country country) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, country.getBrandNames());
+        ArrayAdapter<String> adapter;
+        if(country == null) {
+            adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, Helper.getEmptyStringList());
+        } else {
+            adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, country.getBrandNames());
+        }
 
         brandSpinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        // 该国家只有一个品牌（虽然不太可能哈），则默认选中吧
+        if(country != null && country.getBrandNames().size() == 2) {
+            brandSpinner.setSelection(1);
+        }
 
         // 选择国别时，更改品牌的Spinner Adapter
         brandSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                setProductionSpinner(country.brands.get(i));
+                if(country == null || i == 0) {
+                    setProductionSpinner(null);
+                } else if(i >= 1) {
+                    setProductionSpinner(country.brands.get(i - 1));
+                }
             }
 
             @Override
@@ -395,16 +386,30 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     }
 
     private void setProductionSpinner(final Brand brand) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, brand.getProductionNames());
+        ArrayAdapter<String> adapter;
+
+        if(brand == null) {
+            adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, Helper.getEmptyStringList());
+        } else {
+            adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, brand.getProductionNames());
+        }
 
         productionSpinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // 选择国别时，更改品牌的Spinner Adapter
+        if(brand != null && brand.getProductionNames().size() == 2) {
+            productionSpinner.setSelection(1);
+        }
+
+        // 选择品牌时，更改厂商的Spinner Adapter
         productionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                setSerialSpinner(brand.productions.get(i));
+                if(brand == null || i == 0) {
+                    setSerialSpinner(null);
+                } else if( i >= 1){
+                    setSerialSpinner(brand.productions.get(i - 1));
+                }
             }
 
             @Override
@@ -415,16 +420,31 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     }
 
     private void setSerialSpinner(final Production production) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, production.getSerialNames());
+        ArrayAdapter<String> adapter;
+
+        if(production == null) {
+            adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, Helper.getEmptyStringList());
+        } else {
+            adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, production.getSerialNames());
+        }
 
         serialSpinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        // 选择国别时，更改品牌的Spinner Adapter
+        if(production != null && production.getSerialNames().size() == 2) {
+            serialSpinner.setSelection(1);
+        }
+
+        // 选择厂商时，更改系列的Spinner Adapter
         serialSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                setModelSpinner(production.serials.get(i));
+                if(production == null || i == 0) {
+                    setModelSpinner(null);
+                } else if(i >= 1) {
+                    setModelSpinner(production.serials.get(i - 1));
+                }
+
             }
 
             @Override
@@ -435,28 +455,19 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     }
 
     private void setModelSpinner(final Serial serial) {
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, serial.getModelNames());
+        ArrayAdapter<String> adapter;
+
+        if(serial == null) {
+            adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, Helper.getEmptyStringList());
+        } else {
+            adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, serial.getModelNames());
+        }
 
         modelSpinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    }
 
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case Common.PHOTO_FOR_OTHER_GROUP:
-                if(resultCode == Activity.RESULT_OK) {
-                    Bitmap image = (Bitmap) data.getExtras().get("data");
-                    img.setImageBitmap(image);
-                } else {
-                    Toast.makeText(rootView.getContext(),
-                            "error occured during opening camera", Toast.LENGTH_SHORT)
-                            .show();
-                }
-                break;
+        if(serial != null && serial.getModelNames().size() == 2) {
+            modelSpinner.setSelection(1);
         }
     }
 
@@ -466,6 +477,22 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         String[] provinceArray = getResources().getStringArray(R.array.ci_province);
         List<String> province = Helper.StringArray2List(provinceArray);
         SetSpinnerData(R.id.ci_reg_location_spinner, province, rootView);
+
+        String[] privinceAbbreviationArray = getResources().getStringArray(R.array.ci_province_abbreviation);
+        final List<String> provinceAbbreviation = Helper.StringArray2List(privinceAbbreviationArray);
+
+        Spinner regLocationSpinner = (Spinner) rootView.findViewById(R.id.ci_reg_location_spinner);
+        regLocationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                carNumberEdit.setText(provinceAbbreviation.get(i));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     // 车身颜色
@@ -480,21 +507,52 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     // 初次登记时间
     private void setFirstLogTimeSpinner()
     {
-        SetSpinnerData(R.id.ci_first_log_year_spinner, Helper.GetYearList(21), rootView);
+        SetSpinnerData(R.id.ci_first_log_year_spinner, Helper.GetYearList(22), rootView);
         SetSpinnerData(R.id.ci_first_log_month_spinner, Helper.GetMonthList(), rootView);
+
+        firstLogYearSpinner = (Spinner) rootView.findViewById(R.id.ci_first_log_year_spinner);
+        firstLogYearSpinner.setSelection(19);
+        firstLogYearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                // 出厂日期不能晚于登记日期
+                List<String> temp = Helper.GetYearList(22);
+                SetSpinnerData(R.id.ci_manufacture_year_spinner, temp.subList(0, i + 1), rootView);
+                manufactureYearSpinner.setSelection(i);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        firstLogMonthSpinner = (Spinner) rootView.findViewById(R.id.ci_first_log_month_spinner);
+        firstLogMonthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                List<String> temp = Helper.GetMonthList();
+                SetSpinnerData(R.id.ci_manufacture_month_spinner, temp.subList(0, i + 1), rootView);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     // 出厂日期
     private void setManufactureTimeSpinner()
     {
-        SetSpinnerData(R.id.ci_manufacture_year_spinner, Helper.GetYearList(21), rootView);
+        SetSpinnerData(R.id.ci_manufacture_year_spinner, Helper.GetYearList(22), rootView);
         SetSpinnerData(R.id.ci_manufacture_month_spinner, Helper.GetMonthList(), rootView);
     }
 
     // 过户次数
     private void setTransferCountSpinner()
     {
-        SetSpinnerData(R.id.ci_transfer_count_spinner, Helper.GetMonthList(), rootView);
+        SetSpinnerData(R.id.ci_transfer_count_spinner, Helper.GetNumbersList(0, 15), rootView);
     }
 
     // 最后过户时间
@@ -524,7 +582,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         SetSpinnerData(R.id.ct_business_insurance_available_date_day_spinner, Helper.GetDayList(31), rootView);
     }
 
-    public void PictureMatch(View view)
+    public void PictureMatch()
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
 
@@ -595,14 +653,5 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             TableRow row = (TableRow) rootView.findViewById(csi_map[i][1]);
             row.setVisibility(csi_map[i][2]);
         }
-    }
-
-    private List<String> arrayToList(String[] array) {
-        List<String> result = new ArrayList<String>();
-        for(int i = 0; i < array.length; i++) {
-            result.add(array[i]);
-        }
-
-        return result;
     }
 }

@@ -19,6 +19,7 @@
 
     <style name="TextAppearance">
         <item name="android:textSize">26sp</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="CodeFont" parent="TextAppearance">

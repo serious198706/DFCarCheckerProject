@@ -18,9 +18,9 @@ public class Helper {
 
         List<String> yearList = new ArrayList<String>();
 
-        for(int i = 0; i < count; i++)
+        for(int i = year - count; i <= year; i++)
         {
-            yearList.add(Integer.toString(year - i));
+            yearList.add(Integer.toString(i));
         }
 
         return  yearList;
@@ -50,6 +50,20 @@ public class Helper {
         return dayList;
     }
 
+    public static List<String> GetNumbersList(int from, int to) {
+        if(from > to) {
+            return null;
+        }
+
+        List<String> numberList = new ArrayList<String>();
+
+        for(int i = from; i <= to; i++) {
+            numberList.add(Integer.toString(i));
+        }
+
+        return numberList;
+    }
+
 
     public static List<String> StringArray2List(String[] array)
     {
@@ -70,5 +84,12 @@ public class Helper {
 
         spinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+    }
+
+    public static List<String> getEmptyStringList() {
+        List<String> emptyStringList = new ArrayList<String>();
+        emptyStringList.add("");
+
+        return  emptyStringList;
     }
 }

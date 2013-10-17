@@ -27,6 +27,9 @@ public class VehicleModel {
 
     public List<String> getCountryNames() {
         countryNames = new ArrayList<String>();
+
+        countryNames.add("");
+
         for(int i = 0; i < countries.size(); i++) {
             countryNames.add(countries.get(i).name);
         }

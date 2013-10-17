@@ -20,6 +20,7 @@ public class Country {
 
     public List<String> getBrandNames() {
         brandNames = new ArrayList<String>();
+        brandNames.add("");
         for(int i = 0; i < brands.size(); i++) {
             brandNames.add(brands.get(i).name);
         }
