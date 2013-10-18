@@ -1,142 +1,135 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".CarCheckOutsideFragment">
+<?xml version="1.0" encoding="utf-8"?>
 
-    <ScrollView android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp">
-        <LinearLayout android:layout_width="match_parent"
-                      android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginRight="5dp"
+            android:orientation="vertical">
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/CodeFont"
+                android:text="@string/out" />
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider"/>
+
+        <LinearLayout android:orientation="horizontal"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content">
+            <com.df.dfcarchecker.OutsidePaintPreviewView
+                    android:id="@+id/out_base_image_preview"
+                       android:layout_width="280dp"
+                       android:layout_height="400dp"/>
+
+            <TableLayout android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="1">
+                <Button android:id="@+id/out_start_paint_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/out_start_paint"/>
+            </TableLayout>
+        </LinearLayout>
+
+        <TableLayout android:layout_width="match_parent"
+                     android:layout_height="wrap_content">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="5"
+                    style="@style/CodeFont"
+                    android:text="@string/other_check" />
+
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="?android:attr/listDivider"/>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:text="@string/out_broken_parts"
+                          android:textSize="18sp"
+                          android:layout_weight="2"/>
+                <EditText android:id="@+id/out_broken_edit"
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="3"
+                          android:editable="false"
+                          android:singleLine="true"
+                          android:lines="1"
+                          android:scrollHorizontally="true"
+                          android:ellipsize="end"/>
+                <Button android:id="@+id/out_choose_broken_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/choose"
+                        android:layout_weight="1"/>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:text="@string/out_paint"
+                          android:textSize="18sp"
+                          android:layout_weight="1"/>
+                <Spinner android:id="@+id/out_paint_spinner"
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="2"
+                         android:entries="@array/out_paint_level"/>
+            </TableRow>
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     style="@style/CodeFont"
-                    android:text="@string/out" />
+                    android:text="@string/camera" />
 
             <View
                     android:layout_width="match_parent"
-                    android:layout_height="3px"
+                    android:layout_height="2dp"
                     android:background="?android:attr/listDivider"/>
-
-            <LinearLayout android:orientation="horizontal"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content">
-                <com.df.dfcarchecker.OutsidePaintPreviewView
-                        android:id="@+id/out_base_image_preview"
-                           android:layout_width="560px"
-                           android:layout_height="800px"/>
-
-                <TableLayout android:layout_width="0dp"
-                             android:layout_height="wrap_content"
-                             android:layout_toRightOf="@id/out_base_image_preview"
-                             android:layout_weight="1">
-                    <Button android:id="@+id/out_start_paint_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/out_start_paint"
-                            android:onClick="StartPaint"/>
-                </TableLayout>
-            </LinearLayout>
-
-            <TableLayout android:layout_width="match_parent"
-                         android:layout_height="wrap_content">
-                <TextView
+            <TableRow>
+                <Button android:id="@+id/out_start_camera_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_weight="5"
-                        style="@style/CodeFont"
-                        android:text="@string/other_check" />
+                        android:text="@string/out_camera"
+                        android:drawableRight="@drawable/camera"/>
+            </TableRow>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    style="@style/CodeFont"
+                    android:text="@string/comment" />
 
-                <View
-                        android:layout_width="match_parent"
-                        android:layout_height="3px"
-                        android:background="?android:attr/listDivider"/>
-                <TableRow>
-                    <TextView android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:text="@string/out_broken_parts"
-                              android:textSize="18sp"
-                              android:layout_weight="2"/>
-                    <EditText android:id="@+id/out_broken_edit"
-                              android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="3"
-                              android:editable="false"
-                              android:singleLine="true"
-                              android:lines="1"
-                              android:scrollHorizontally="true"
-                              android:ellipsize="end"/>
-                    <Button android:id="@+id/out_choose_broken_button"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/choose"
-                            android:layout_weight="1"/>
-                </TableRow>
-                <TableRow>
-                    <TextView android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:text="@string/out_paint"
-                              android:textSize="18sp"
-                              android:layout_weight="1"/>
-                    <Spinner android:id="@+id/out_paint_spinner"
-                             android:layout_width="0dp"
-                             android:layout_height="wrap_content"
-                             android:layout_weight="2"
-                             android:entries="@array/out_paint_level"/>
-                </TableRow>
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="?android:attr/listDivider"/>
+            <TableRow>
                 <TextView
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        style="@style/CodeFont"
-                        android:text="@string/camera" />
-
-                <View
+                        android:layout_width="0dp"
+                        android:text="@string/out_comment"
+                        android:layout_weight="1"
+                        android:textSize="18sp"/>
+                <EditText
+                        android:id="@+id/out_comment_edit"
                         android:layout_width="match_parent"
-                        android:layout_height="3px"
-                        android:background="?android:attr/listDivider"/>
-                <TableRow>
-                    <Button android:id="@+id/out_start_camera_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/out_camera"
-                            android:drawableRight="@drawable/camera"/>
-                </TableRow>
-                <TextView
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        style="@style/CodeFont"
-                        android:text="@string/comment" />
+                        android:layout_weight="1"
+                        android:inputType="textMultiLine"
+                        android:ems="10"/>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</ScrollView>
 
-                <View
-                        android:layout_width="match_parent"
-                        android:layout_height="3px"
-                        android:background="?android:attr/listDivider"/>
-                <TableRow>
-                    <TextView
-                            android:layout_height="wrap_content"
-                            android:layout_width="0dp"
-                            android:text="@string/out_comment"
-                            android:layout_weight="1"
-                            android:textSize="18sp"/>
-                    <EditText
-                            android:id="@+id/out_comment_edit"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:inputType="textMultiLine"
-                            android:ems="10"
-                            android:hint="@string/out_comment"/>
-                </TableRow>
-            </TableLayout>
-        </LinearLayout>
-    </ScrollView>
-</LinearLayout>

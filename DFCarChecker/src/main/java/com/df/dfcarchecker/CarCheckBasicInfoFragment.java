@@ -1,13 +1,12 @@
 package com.df.dfcarchecker;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TableLayout;
@@ -28,14 +26,13 @@ import com.df.entry.Country;
 import com.df.entry.Production;
 import com.df.entry.Serial;
 import com.df.entry.VehicleModel;
-import com.df.service.Common;
 import com.df.service.Helper;
 import com.df.service.VehicleModelParser;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static com.df.service.Helper.SetSpinnerData;
@@ -73,12 +70,21 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     private CarSettings carSettings;
 
+    private EditText runEdit;
+
     private Spinner firstLogYearSpinner;
     private Spinner firstLogMonthSpinner;
     private Spinner manufactureYearSpinner;
     private Spinner manufactureMonthSpinner;
 
+    private Spinner ticketSpinner;
+    private Spinner lastTransferCountSpinner;
+    private Spinner businessInsuranceSpinner;
+
     private EditText carNumberEdit;
+
+    private boolean isPorted;
+    private TableRow portedProcedureRow;
 
     // 每一个部位的序号关联：
     // 第一个表示序号，
@@ -138,10 +144,90 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         brandEdit = (EditText) rootView.findViewById(R.id.bi_brand_edit);
         volumeEdit = (EditText) rootView.findViewById(R.id.csi_volume_edit);
 
+        runEdit = (EditText) rootView.findViewById(R.id.bi_run_edit);
+        runEdit.addTextChangedListener(new TextWatcher()
+        {
+            public void afterTextChanged(Editable edt)
+            {
+                String temp = edt.toString();
+                int posDot = temp.indexOf(".");
+                if (posDot <= 0) return;
+                if (temp.length() - posDot - 1 > 2)
+                {
+                    edt.delete(posDot + 3, posDot + 4);
+                }
+            }
+
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
+
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
+        });
+
+        ticketSpinner = (Spinner) rootView.findViewById(R.id.ct_buy_tickets_spinner);
+        ticketSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                // 有发票
+                if(i <= 1) {
+                    Helper.showView(true, rootView, R.id.ct_buy_tickets_edit);
+                    Helper.showView(true, rootView, R.id.yuan);
+                    Helper.showView(false, rootView, R.id.placeholder);
+                } else {
+                // 无发票
+                    Helper.showView(false, rootView, R.id.ct_buy_tickets_edit);
+                    Helper.showView(false, rootView, R.id.yuan);
+                    Helper.showView(true, rootView, R.id.placeholder);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        lastTransferCountSpinner = (Spinner) rootView.findViewById(R.id.ci_transfer_count_spinner);
+        lastTransferCountSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                // 过户次数大于0
+                if(i > 0) {
+                    Helper.showView(true, rootView, R.id.ci_last_transfer_row);
+                } else {
+                    Helper.showView(false, rootView, R.id.ci_last_transfer_row);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+        businessInsuranceSpinner = (Spinner) rootView.findViewById(R.id.ct_business_insurance_spinner);
+        businessInsuranceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                // 保险随车出售
+                if(i == 0) {
+                    Helper.showView(true, rootView, R.id.ct_business_table);
+                } else {
+                    Helper.showView(false, rootView, R.id.ct_business_table);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         carNumberEdit = (EditText) rootView.findViewById(R.id.ci_car_number_edit);
 
         manufactureYearSpinner = (Spinner) rootView.findViewById(R.id.ci_manufacture_year_spinner);
         manufactureMonthSpinner = (Spinner) rootView.findViewById(R.id.ci_manufacture_month_spinner);
+
+        portedProcedureRow = (TableRow) rootView.findViewById(R.id.ct_ported_procedure);
 
         carSettings = new CarSettings();
 
@@ -249,9 +335,10 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         volumeEdit.setText(carSettings.getVolume());
 
         // TODO: 顺带更新其他Spinner
+        if(isPorted) {
+            portedProcedureRow.setVisibility(View.VISIBLE);
+        }
     }
-
-
 
     private void bi_content_show() {
 
@@ -261,8 +348,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             CarCheckStructureFragment.ShowContent();
         }
     }
-
-
 
     private void selectBrand() {
         AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
@@ -288,6 +373,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             public void onClick(DialogInterface dialog, int id) {
                 // TODO: getCarSettings();
                 // 确定
+                // 判断是否为进口车
+                if(countrySpinner.getSelectedItemPosition() > 1) {
+                    isPorted = true;
+                } else {
+                    isPorted = false;
+                }
+
                 brandString = productionSpinner.getSelectedItem().toString() + " " +
                         serialSpinner.getSelectedItem().toString() + " " +
                         modelSpinner.getSelectedItem().toString();
@@ -367,7 +459,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             brandSpinner.setSelection(1);
         }
 
-        // 选择国别时，更改品牌的Spinner Adapter
+        // 选择品牌时，更改厂商的Spinner Adapter
         brandSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -401,7 +493,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             productionSpinner.setSelection(1);
         }
 
-        // 选择品牌时，更改厂商的Spinner Adapter
+        // 选择厂商时，更改车系的Spinner Adapter
         productionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -435,7 +527,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             serialSpinner.setSelection(1);
         }
 
-        // 选择厂商时，更改系列的Spinner Adapter
+        // 选择车系时，更改型号的Spinner Adapter
         serialSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -507,18 +599,32 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     // 初次登记时间
     private void setFirstLogTimeSpinner()
     {
-        SetSpinnerData(R.id.ci_first_log_year_spinner, Helper.GetYearList(22), rootView);
+        SetSpinnerData(R.id.ci_first_log_year_spinner, Helper.GetYearList(20), rootView);
         SetSpinnerData(R.id.ci_first_log_month_spinner, Helper.GetMonthList(), rootView);
 
         firstLogYearSpinner = (Spinner) rootView.findViewById(R.id.ci_first_log_year_spinner);
-        firstLogYearSpinner.setSelection(19);
+        firstLogYearSpinner.setSelection(17);
         firstLogYearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // 出厂日期不能晚于登记日期
-                List<String> temp = Helper.GetYearList(22);
+                List<String> temp = Helper.GetYearList(20);
                 SetSpinnerData(R.id.ci_manufacture_year_spinner, temp.subList(0, i + 1), rootView);
                 manufactureYearSpinner.setSelection(i);
+
+                // 最后过户时间不能早于登记日期
+                SetSpinnerData(R.id.ci_last_transfer_year_spinner, temp.subList(i, temp.size()), rootView);
+
+                // 年检有效期、交强险有效期不能早于登记日期
+                int from = Integer.parseInt(temp.get(i));
+                int to = Calendar.getInstance().get(Calendar.YEAR) + 2;
+
+                SetSpinnerData(R.id.ct_yearly_check_available_date_year_spinner, Helper.GetNumbersList(from, to), rootView);
+                SetSpinnerData(R.id.ct_available_date_year_spinner, Helper.GetNumbersList(from, to), rootView);
+                SetSpinnerData(R.id.ct_business_insurance_available_date_year_spinner, Helper.GetNumbersList(from, to), rootView);
+
+                // 商险有效期不能早于登记日期
+                SetSpinnerData(R.id.ct_business_insurance_available_date_year_spinner, temp.subList(i, temp.size()), rootView);
             }
 
             @Override
@@ -545,7 +651,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     // 出厂日期
     private void setManufactureTimeSpinner()
     {
-        SetSpinnerData(R.id.ci_manufacture_year_spinner, Helper.GetYearList(22), rootView);
+        SetSpinnerData(R.id.ci_manufacture_year_spinner, Helper.GetYearList(20), rootView);
         SetSpinnerData(R.id.ci_manufacture_month_spinner, Helper.GetMonthList(), rootView);
     }
 
@@ -564,22 +670,20 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     // 年检有效期
     private void setYearlyCheckAvailableDateSpinner() {
-        SetSpinnerData(R.id.ct_yearly_check_available_date_year_spinner, Helper.GetYearList(19), rootView);
+        SetSpinnerData(R.id.ct_yearly_check_available_date_year_spinner, Helper.GetYearList(2), rootView);
         SetSpinnerData(R.id.ct_yearly_check_available_date_month_spinner, Helper.GetMonthList(), rootView);
     }
 
     // 有效期至（交强险）
     private void setAvailableDateYearSpinner() {
-        SetSpinnerData(R.id.ct_available_date_year_spinner, Helper.GetYearList(19), rootView);
+        SetSpinnerData(R.id.ct_available_date_year_spinner, Helper.GetYearList(2), rootView);
         SetSpinnerData(R.id.ct_available_date_month_spinner, Helper.GetMonthList(), rootView);
-        SetSpinnerData(R.id.ct_available_date_day_spinner, Helper.GetDayList(31), rootView);
     }
 
     // 商险有效期
     private void setBusinessInsuranceAvailableDateYearSpinner() {
         SetSpinnerData(R.id.ct_business_insurance_available_date_year_spinner, Helper.GetYearList(19), rootView);
         SetSpinnerData(R.id.ct_business_insurance_available_date_month_spinner, Helper.GetMonthList(), rootView);
-        SetSpinnerData(R.id.ct_business_insurance_available_date_day_spinner, Helper.GetDayList(31), rootView);
     }
 
     public void PictureMatch()

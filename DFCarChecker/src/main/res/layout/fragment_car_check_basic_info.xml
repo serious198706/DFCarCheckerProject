@@ -26,7 +26,7 @@
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="VIN编码："
+                android:text="@string/vin"
                 android:textSize="22sp"
                 style="@style/CodeFont"/>
             <EditText android:id="@+id/bi_vin_edit"
@@ -35,9 +35,11 @@
                 android:layout_weight="3"/>
             <Button android:id="@+id/bi_vin_button"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_weight="1"
-                android:text="@string/ok"/>
+                android:text="@string/ok"
+                android:background="@drawable/button_custom"
+                android:padding="-5dp" />
         </LinearLayout>
         <LinearLayout android:id="@+id/brand_input"
             android:layout_width="match_parent"
@@ -47,7 +49,7 @@
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="厂牌型号："
+                android:text="@string/brand"
                 android:textSize="22sp"
                 style="@style/CodeFont"/>
             <EditText android:id="@+id/bi_brand_edit"
@@ -57,14 +59,20 @@
                 android:enabled="false"/>
             <Button android:id="@+id/bi_brand_ok_button"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_weight="1"
-                android:text="@string/ok"/>
+                android:layout_marginRight="1dp"
+                android:text="@string/ok"
+                android:background="@drawable/button_custom"
+                android:padding="-5dp" />
             <Button android:id="@+id/bi_brand_select_button"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_weight="1"
-                android:text="@string/choose"/>
+                android:layout_marginLeft="1dp"
+                android:text="@string/choose"
+                android:background="@drawable/button_custom"
+                android:padding="-5dp" />
         </LinearLayout>
 
 
@@ -390,7 +398,7 @@
             <TableRow>
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="3px"
+                    android:layout_height="2dp"
                     android:background="#000"
                     android:layout_weight="1"
                     />
@@ -473,7 +481,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:phoneNumber="true"/>
+                    android:inputType="numberDecimal"/>
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
@@ -546,11 +554,17 @@
                     android:layout_weight="1"
                     android:inputType="phone"/>
                 <TextView
+                    android:id="@+id/yuan"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:text="元"
+                    android:text="@string/ci_money"
                     android:textSize="18sp"/>
+                <TextView android:id="@+id/placeholder"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:visibility="gone"/>
             </TableRow>
             <TableRow>
                 <TextView
@@ -609,38 +623,21 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"/>
             </TableRow>
-            <TableRow>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/ct_mandatory_vehicle_insurance"
-                    android:layout_weight="1"
-                    android:textSize="18sp"/>
-                <Spinner android:id="@+id/ct_mandatory_vehicle_insurance_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:entries="@array/existornot"/>
-            </TableRow>
             <TableRow android:id="@+id/ct_available_date_row">
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:text="@string/ct_available_date"
-                    android:layout_weight="3"
+                    android:layout_weight="1"
                     android:textSize="18sp"/>
                 <Spinner android:id="@+id/ct_available_date_year_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:layout_weight="2"/>
+                    android:layout_weight="1"/>
                 <Spinner android:id="@+id/ct_available_date_month_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:layout_weight="2"/>
-                <Spinner android:id="@+id/ct_available_date_day_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"/>
+                    android:layout_weight="1"/>
             </TableRow>
             <TableRow>
                 <TextView
@@ -657,7 +654,6 @@
                 <Button android:id="@+id/picture_match_button"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:onClick="PictureMatch"
                     android:text="@string/choose"
                     android:layout_weight="1"/>
             </TableRow>
@@ -676,70 +672,84 @@
                     android:layout_weight="2"
                     android:entries="@array/ct_business_insurance_type"/>
             </TableRow>
-            <TableRow>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/ct_business_insurance_area"
-                    android:layout_weight="1"
-                    android:textSize="18sp"/>
-                <Spinner android:id="@+id/ct_business_insurance_area_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:entries="@array/ct_business_insurance_area_type"/>
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/ct_business_insurance_money"
-                    android:layout_weight="1"
-                    android:textSize="18sp"/>
-                <EditText android:id="@+id/ct_business_insurance_money_edit"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:phoneNumber="true"/>
-                <TextView android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/ci_money"
-                    android:layout_weight="1"/>
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/ct_business_insurance_available_date"
-                    android:layout_weight="3"
-                    android:textSize="18sp"/>
-                <Spinner android:id="@+id/ct_business_insurance_available_date_year_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"/>
-                <Spinner android:id="@+id/ct_business_insurance_available_date_month_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"/>
-                <Spinner android:id="@+id/ct_business_insurance_available_date_day_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"/>
-            </TableRow>
-            <TableRow>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/ct_business_insurance_company"
-                    android:layout_weight="1"
-                    android:textSize="18sp"/>
-                <Spinner android:id="@+id/ct_business_insurance_company_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="2"
-                    android:entries="@array/ct_business_insurance_companies"/>
-            </TableRow>
+            <TableLayout android:id="@+id/ct_business_table"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TableRow>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ct_business_insurance_area"
+                        android:layout_weight="1"
+                        android:textSize="18sp"/>
+                    <Spinner android:id="@+id/ct_business_insurance_area_spinner"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:entries="@array/ct_business_insurance_area_type"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ct_business_insurance_money"
+                        android:layout_weight="1"
+                        android:textSize="18sp"/>
+                    <EditText android:id="@+id/ct_business_insurance_money_edit"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:phoneNumber="true"/>
+                    <TextView android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ci_money"
+                        android:layout_weight="1"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ct_business_insurance_available_date"
+                        android:layout_weight="1"
+                        android:textSize="18sp"/>
+                    <Spinner android:id="@+id/ct_business_insurance_available_date_year_spinner"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"/>
+                    <Spinner android:id="@+id/ct_business_insurance_available_date_month_spinner"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ct_business_insurance_company"
+                        android:layout_weight="1"
+                        android:textSize="18sp"/>
+                    <Spinner android:id="@+id/ct_business_insurance_company_spinner"
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_weight="2"
+                        android:entries="@array/ct_business_insurance_companies"/>
+                </TableRow>
+            </TableLayout>
 
+            <TableRow android:id="@+id/ct_ported_procedure"
+                android:visibility="gone">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ct_ported_procedure"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <Spinner android:id="@+id/ct_ported_procedure_spinner"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:entries="@array/ct_ported_prodecure_items"/>
+            </TableRow>
             <TableRow>
                 <TextView
                     android:layout_height="wrap_content"
@@ -751,7 +761,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:entries="@array/existornot"/>
+                    android:entries="@array/ct_backup_tire_items"/>
             </TableRow>
 
             <TableRow>
@@ -828,7 +838,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="3px"
+                android:layout_height="2dp"
                 android:background="#000"/>
             <TableRow>
                 <TextView
@@ -848,7 +858,8 @@
 
             <ImageView android:id="@+id/image"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/itemImage"/>
         </TableLayout>
     </LinearLayout>
 </ScrollView>

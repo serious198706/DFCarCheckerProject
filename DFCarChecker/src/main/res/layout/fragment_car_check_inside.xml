@@ -1,171 +1,164 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".CarCheckInsideFragment">
+<?xml version="1.0" encoding="utf-8"?>
 
-    <ScrollView android:layout_width="match_parent"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    <LinearLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
-
-        <LinearLayout android:layout_width="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+            android:orientation="vertical">
+        <TextView
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_marginTop="10dp"
+                style="@style/CodeFont"
+                android:text="@string/in" />
+
+        <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="?android:attr/listDivider"/>
+        <LinearLayout android:orientation="horizontal"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content">
+            <ImageView android:id="@+id/in_base_image"
+                       android:layout_height="wrap_content"
+                       android:layout_width="0dp"
+                       android:src="@drawable/in_base_image"
+                       android:contentDescription="@string/itemImage"
+                       android:layout_weight="3"/>
+
+            <LinearLayout android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:orientation="vertical">
+                <Button android:id="@+id/in_start_paint_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+                <ImageView android:id="@+id/in_skylight_base_image"
+                           android:layout_height="wrap_content"
+                           android:layout_width="wrap_content"
+                            android:contentDescription="@string/itemImage"
+                           android:src="@drawable/in_skylight_base_image"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TableLayout android:layout_width="match_parent"
+                     android:layout_height="wrap_content">
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     style="@style/CodeFont"
-                    android:text="@string/in" />
+                    android:text="@string/other_check" />
 
             <View
                     android:layout_width="match_parent"
-                    android:layout_height="3px"
+                    android:layout_height="2dp"
                     android:background="?android:attr/listDivider"/>
-            <LinearLayout android:orientation="horizontal"
-                          android:layout_width="match_parent"
-                          android:layout_height="wrap_content">
-                <ImageView android:id="@+id/in_base_image"
-                           android:layout_height="wrap_content"
-                           android:layout_width="0dp"
-                           android:src="@drawable/in_base_image"
-                           android:layout_weight="3"/>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:text="@string/in_broken_parts"
+                          android:textSize="18sp"
+                          android:layout_weight="2"/>
+                <EditText android:id="@+id/in_broken_parts_edit"
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="3"
+                          android:editable="false"
+                          android:singleLine="true"
+                          android:lines="1"
+                          android:scrollHorizontally="true"
+                          android:ellipsize="end"/>
+                <Button android:id="@+id/in_choose_broken_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/choose"
+                        android:layout_weight="1"
+                        android:onClick="ChooseBroken"/>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:text="@string/in_dirty_parts"
+                          android:textSize="18sp"
+                          android:layout_weight="2"/>
+                <EditText android:id="@+id/in_dirty_parts_edit"
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="3"
+                          android:editable="false"
+                          android:singleLine="true"
+                          android:lines="1"
+                          android:scrollHorizontally="true"
+                          android:ellipsize="end"/>
+                <Button android:id="@+id/in_choose_dirty_button"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/choose"
+                        android:layout_weight="1"
+                        android:onClick="ChooseDirty"/>
+            </TableRow>
+            <TableRow>
+                <TextView android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:text="@string/in_seal"
+                          android:textSize="18sp"
+                          android:layout_weight="1"/>
+                <Spinner android:id="@+id/in_seal_spinner"
+                         android:layout_width="0dp"
+                         android:layout_height="wrap_content"
+                         android:layout_weight="2"
+                         android:entries="@array/yes_no"/>
+            </TableRow>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    style="@style/CodeFont"
+                    android:text="@string/camera" />
 
-                <LinearLayout android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="1"
-                              android:orientation="vertical">
-                    <Button android:id="@+id/in_start_paint_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
-                    <ImageView android:id="@+id/in_skylight_base_image"
-                               android:layout_height="wrap_content"
-                               android:layout_width="wrap_content"
-                               android:src="@drawable/in_skylight_base_image"/>
-                </LinearLayout>
-            </LinearLayout>
-
-            <TableLayout android:layout_width="match_parent"
-                         android:layout_height="wrap_content">
-                <TextView
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="?android:attr/listDivider"/>
+            <TableRow>
+                <Button android:id="@+id/in_start_camera_button"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        style="@style/CodeFont"
-                        android:text="@string/other_check" />
+                        android:text="@string/in_camera"
+                        android:drawableRight="@drawable/camera"
+                        android:onClick="in_start_camera"/>
+            </TableRow>
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    style="@style/CodeFont"
+                    android:text="@string/comment" />
 
-                <View
-                        android:layout_width="match_parent"
-                        android:layout_height="3px"
-                        android:background="?android:attr/listDivider"/>
-                <TableRow>
-                    <TextView android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:text="@string/in_broken_parts"
-                              android:textSize="18sp"
-                              android:layout_weight="2"/>
-                    <EditText android:id="@+id/in_broken_parts_edit"
-                              android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="3"
-                              android:editable="false"
-                              android:singleLine="true"
-                              android:lines="1"
-                              android:scrollHorizontally="true"
-                              android:ellipsize="end"/>
-                    <Button android:id="@+id/in_choose_broken_button"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/choose"
-                            android:layout_weight="1"
-                            android:onClick="ChooseBroken"/>
-                </TableRow>
-                <TableRow>
-                    <TextView android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:text="@string/in_dirty_parts"
-                              android:textSize="18sp"
-                              android:layout_weight="2"/>
-                    <EditText android:id="@+id/in_dirty_parts_edit"
-                              android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:layout_weight="3"
-                              android:editable="false"
-                              android:singleLine="true"
-                              android:lines="1"
-                              android:scrollHorizontally="true"
-                              android:ellipsize="end"/>
-                    <Button android:id="@+id/in_choose_dirty_button"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:text="@string/choose"
-                            android:layout_weight="1"
-                            android:onClick="ChooseDirty"/>
-                </TableRow>
-                <TableRow>
-                    <TextView android:layout_width="0dp"
-                              android:layout_height="wrap_content"
-                              android:text="@string/in_seal"
-                              android:textSize="18sp"
-                              android:layout_weight="1"/>
-                    <Spinner android:id="@+id/in_seal_spinner"
-                             android:layout_width="0dp"
-                             android:layout_height="wrap_content"
-                             android:layout_weight="2"
-                             android:entries="@array/yes_no"/>
-                </TableRow>
+            <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="?android:attr/listDivider"/>
+            <TableRow>
                 <TextView
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        style="@style/CodeFont"
-                        android:text="@string/camera" />
-
-                <View
+                        android:layout_width="0dp"
+                        android:text="@string/in_comment"
+                        android:layout_weight="1"
+                        android:textSize="18sp"/>
+                <EditText
                         android:layout_width="match_parent"
-                        android:layout_height="3px"
-                        android:background="?android:attr/listDivider"/>
-                <TableRow>
-                    <Button android:id="@+id/in_start_camera_button"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/in_camera"
-                            android:drawableRight="@drawable/camera"
-                            android:onClick="in_start_camera"/>
-                </TableRow>
-                <TextView
-                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        style="@style/CodeFont"
-                        android:text="@string/comment" />
-
-                <View
-                        android:layout_width="match_parent"
-                        android:layout_height="3px"
-                        android:background="?android:attr/listDivider"/>
-                <TableRow>
-                    <TextView
-                            android:layout_height="wrap_content"
-                            android:layout_width="0dp"
-                            android:text="@string/in_comment"
-                            android:layout_weight="1"
-                            android:textSize="18sp"/>
-                    <EditText
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:inputType="textMultiLine"
-                            android:ems="10"
-                            android:hint="@string/in_comment"
-                            android:id="@+id/editText"/>
-                </TableRow>
-            </TableLayout>
-        </LinearLayout>
-    </ScrollView>
-
-
-
-</LinearLayout>
+                        android:layout_weight="1"
+                        android:inputType="textMultiLine"
+                        android:ems="10"
+                        android:id="@+id/editText"/>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</ScrollView>

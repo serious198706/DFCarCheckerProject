@@ -1,9 +1,11 @@
 package com.df.service;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import java.net.ContentHandler;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -91,5 +93,9 @@ public class Helper {
         emptyStringList.add("");
 
         return  emptyStringList;
+    }
+
+    public static void showView(boolean show, View view, int id) {
+        view.findViewById(id).setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }

@@ -2,7 +2,9 @@
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp">
+    android:layout_marginBottom="10dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
     <TableLayout android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -932,7 +934,6 @@
                 android:layout_weight="1"
                 android:inputType="textMultiLine"
                 android:ems="10"
-                android:hint="@string/it_comment"
                 android:id="@+id/editText"/>
         </TableRow>
     </TableLayout>

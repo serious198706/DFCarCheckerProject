@@ -20,7 +20,7 @@
                     android:text="@string/ac_car_top" />
             <View
                     android:layout_width="match_parent"
-                    android:layout_height="3px"
+                    android:layout_height="2dp"
                     android:background="?android:attr/listDivider"/>
 
             <ImageView android:id="@+id/ac_car_top_view"
