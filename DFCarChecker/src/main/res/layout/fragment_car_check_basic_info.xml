@@ -14,6 +14,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:text="@string/csi"
+            android:drawableLeft="@drawable/basic_info_item"
+            android:drawablePadding="10dp"
             style="@style/CodeFont"/>
         <View
             android:layout_width="match_parent"
@@ -86,6 +88,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:text="@string/csi"
+                    android:drawableLeft="@drawable/basic_info_item"
+                    android:drawablePadding="10dp"
                     style="@style/CodeFont"
                     android:layout_weight="5"/>
             </TableRow>
@@ -392,6 +396,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/basic_info_item"
+                    android:drawablePadding="10dp"
                     android:text="@string/procedure_input"
                     style="@style/CodeFont"/>
             </TableRow>
@@ -655,6 +661,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="@string/choose"
+                    android:background="@drawable/button_custom"
                     android:layout_weight="1"/>
             </TableRow>
 
@@ -833,6 +840,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/comment_item"
+                android:drawablePadding="10dp"
                 style="@style/CodeFont"
                 android:text="@string/comment" />
 

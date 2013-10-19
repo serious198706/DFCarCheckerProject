@@ -87,24 +87,13 @@ public class StructurePaintView extends ImageView {
                     entity.setMaxY(max_y);
                     entity.setStart(x, y);
 
-                    if(currentType != Common.COLOR_DIFF){
-                        entity.setEnd(x, y);
-                    }
-
                     data.add(entity);
                 } else if(event.getAction() == MotionEvent.ACTION_MOVE){
-                    if(currentType != Common.COLOR_DIFF){
                         entity = data.get(data.size() - 1);
-                        entity.setEnd(x, y);
+                        entity.setStart(x, y);
                         move = true;
-                    }
+                        invalidate();
                 } else if(event.getAction() == MotionEvent.ACTION_UP){
-                    if(currentType == Common.SCRATCH && move){
-                        entity = data.get(data.size() - 1);
-                        entity.setEnd(x, y);
-                        move = false;
-                    }
-
                     showCamera();
                 }
 

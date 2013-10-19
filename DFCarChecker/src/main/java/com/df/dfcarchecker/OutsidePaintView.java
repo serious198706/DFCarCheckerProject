@@ -101,6 +101,11 @@ public class OutsidePaintView extends ImageView {
                         entity = data.get(data.size() - 1);
                         entity.setEnd(x, y);
                         move = true;
+                    } else {
+                        entity = data.get(data.size() - 1);
+                        entity.setStart(x, y);
+                        move = true;
+                        invalidate();
                     }
                 } else if(event.getAction() == MotionEvent.ACTION_UP){
                     if(currentType == Common.SCRATCH && move){

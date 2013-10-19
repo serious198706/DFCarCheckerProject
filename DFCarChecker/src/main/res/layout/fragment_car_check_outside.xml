@@ -12,6 +12,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/outside_item"
+                android:drawablePadding="10dp"
                 style="@style/CodeFont"
                 android:text="@string/out" />
 
@@ -45,6 +47,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
                     android:layout_weight="5"
+                android:drawableLeft="@drawable/other_item"
+                android:drawablePadding="10dp"
                     style="@style/CodeFont"
                     android:text="@string/other_check" />
 
@@ -89,6 +93,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/camera_item"
+                android:drawablePadding="10dp"
                     style="@style/CodeFont"
                     android:text="@string/camera" />
 
@@ -101,7 +107,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/out_camera"
-                        android:drawableRight="@drawable/camera"/>
+                        android:drawableRight="@drawable/camera_item"/>
             </TableRow>
             <TextView
                     android:layout_width="wrap_content"
@@ -119,6 +125,8 @@
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:text="@string/out_comment"
+                    android:drawableLeft="@drawable/comment_item"
+                    android:drawablePadding="10dp"
                         android:layout_weight="1"
                         android:textSize="18sp"/>
                 <EditText

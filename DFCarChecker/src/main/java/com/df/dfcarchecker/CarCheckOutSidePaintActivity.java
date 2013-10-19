@@ -146,7 +146,8 @@ public class CarCheckOutSidePaintActivity extends Activity {
                 finish();
                 break;
             case R.id.action_cancel:
-                Toast.makeText(this, "W:" + Integer.toString(root.getWidth()) + ", " + "H:" + Integer.toString(root.getHeight()), Toast.LENGTH_LONG).show();
+                // TODO:点击取消后，要将刚才进入时的操作全部回退掉
+                outsidePaintView.Clear();
                 finish();
                 break;
             case R.id.action_clear:

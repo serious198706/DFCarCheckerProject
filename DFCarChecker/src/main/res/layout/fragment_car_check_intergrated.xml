@@ -20,7 +20,7 @@
                 android:layout_marginTop="10dp"
                 style="@style/CodeFont"
                 android:text="@string/out"
-                android:drawableLeft="@drawable/item"
+                android:drawableLeft="@drawable/outside_item"
                 android:drawablePadding="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -39,11 +39,11 @@
 
         <TableRow>
             <Button android:id="@+id/out_button"
-                android:layout_width="0dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/out"/>
+                android:text="@string/out"
+                android:background="@drawable/button_custom"/>
         </TableRow>
 
         <!-- 内饰检查 -->
@@ -58,7 +58,7 @@
                 android:layout_marginTop="10dp"
                 style="@style/CodeFont"
                 android:text="@string/in"
-                android:drawableLeft="@drawable/item"
+                android:drawableLeft="@drawable/inside_item"
                 android:drawablePadding="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -76,11 +76,11 @@
 
         <TableRow>
             <Button android:id="@+id/in_button"
-                android:layout_width="0dp"
+                android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/in"/>
+                android:text="@string/in"
+                android:background="@drawable/button_custom"/>
         </TableRow>
 
         <!-- 发动机检查 -->
@@ -94,7 +94,7 @@
                 android:layout_marginTop="10dp"
                 style="@style/CodeFont"
                 android:text="@string/it_engine"
-                android:drawableLeft="@drawable/item"
+                android:drawableLeft="@drawable/engine_item"
                 android:drawablePadding="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -205,7 +205,7 @@
                 android:layout_marginTop="10dp"
                 style="@style/CodeFont"
                 android:text="@string/it_gear"
-                android:drawableLeft="@drawable/item"
+                android:drawableLeft="@drawable/gear_item"
                 android:drawablePadding="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -288,7 +288,7 @@
                 android:layout_marginTop="10dp"
                 style="@style/CodeFont"
                 android:text="@string/it_function"
-                android:drawableLeft="@drawable/item"
+                android:drawableLeft="@drawable/function_item"
                 android:drawablePadding="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -665,7 +665,7 @@
                 android:layout_marginTop="10dp"
                 style="@style/CodeFont"
                 android:text="@string/it_chassis"
-                android:drawableLeft="@drawable/item"
+                android:drawableLeft="@drawable/chassis_item"
                 android:drawablePadding="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -799,7 +799,7 @@
                 android:layout_marginTop="10dp"
                 style="@style/CodeFont"
                 android:text="@string/it_other_water"
-                android:drawableLeft="@drawable/item"
+                android:drawableLeft="@drawable/water_item"
                 android:drawablePadding="10dp"/>
             <TextView
                 android:layout_width="wrap_content"
@@ -914,7 +914,7 @@
             android:layout_marginTop="10dp"
             style="@style/CodeFont"
             android:text="@string/comment"
-            android:drawableLeft="@drawable/item"
+            android:drawableLeft="@drawable/comment_item"
             android:drawablePadding="10dp"/>
 
         <View
