@@ -1,33 +1,27 @@
-package com.df.dfcarchecker;
+package com.df.paintview;
 
 /**
  * Created by 岩 on 13-9-26.
  */
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.RectF;
-import android.provider.MediaStore;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
-import android.view.View;
 import android.widget.ImageView;
 
+import com.df.dfcarchecker.CarCheckOutsideActivity;
+import com.df.dfcarchecker.R;
 import com.df.service.Common;
 import com.df.service.PosEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StructurePaintPreviewView extends ImageView {
+public class InsidePaintPreviewView extends ImageView {
 
     private int currentType;
     private boolean move;
@@ -37,17 +31,17 @@ public class StructurePaintPreviewView extends ImageView {
 
     private int max_x, max_y;
 
-    public StructurePaintPreviewView(Context context, AttributeSet attrs, int defStyle) {
+    public InsidePaintPreviewView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
 
-    public StructurePaintPreviewView(Context context, AttributeSet attrs) {
+    public InsidePaintPreviewView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public StructurePaintPreviewView(Context context) {
+    public InsidePaintPreviewView(Context context) {
         super(context);
         init();
     }
@@ -58,8 +52,6 @@ public class StructurePaintPreviewView extends ImageView {
         max_y = bitmap.getHeight();
 
         data = new ArrayList<PosEntity>();
-
-        colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
     }
 
     @Override
@@ -75,6 +67,21 @@ public class StructurePaintPreviewView extends ImageView {
         this.currentType = type;
     }
 
+    private Paint getPaint(int type) {
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.BLUE);
+        paint.setAlpha(0x80);//半透明
+
+        // 根据当前类型决定笔触的颜色
+        paint.setColor(type == Common.DIRTY ? Color.RED : Color.BLACK);
+        paint.setAlpha(0x80);   //80%透明
+        paint.setStyle(Paint.Style.STROKE); // 线类型填充
+        paint.setStrokeWidth(4);  // 笔触粗细
+
+        return paint;
+    }
+
     private void paint(Canvas canvas) {
         for (PosEntity entity : data) {
             paint(entity, canvas);
@@ -82,7 +89,7 @@ public class StructurePaintPreviewView extends ImageView {
     }
 
     private void paint(PosEntity entity, Canvas canvas) {
-        canvas.drawBitmap(colorDiffBitmap, entity.getStartX(), entity.getStartY(), null);
+        canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(entity.getType()));
     }
 
     public PosEntity getPosEntity(){
@@ -95,7 +102,7 @@ public class StructurePaintPreviewView extends ImageView {
     private void HandelPosEntitiesDueToDifferentResolution() {
         data.clear();
 
-        for(PosEntity posEntity : CarCheckStructureFragment.posEntities) {
+        for(PosEntity posEntity : CarCheckOutsideActivity.posEntities) {
             // 因为不能对原entities做修改，所以此处要做些特殊处理，采用值传递方式
             PosEntity temp = new PosEntity(posEntity.getType());
             temp.setStart(posEntity.getStartX(), posEntity.getStartY());

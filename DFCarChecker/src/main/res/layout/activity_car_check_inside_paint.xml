@@ -14,7 +14,7 @@
             android:layout_gravity="center"
             android:layout_weight="1" >
 
-        <com.df.dfcarchecker.InsidePaintView
+        <com.df.paintview.InsidePaintView
                 android:id="@+id/tile"
                 android:layout_width="600dp"
                 android:layout_height="800dp" />

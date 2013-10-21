@@ -232,7 +232,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         carSettings = new CarSettings();
 
         try {
-            File f = new File(Environment.getExternalStorageDirectory().getPath() + "/VehicleModel.xml");
+            File f = new File(Environment.getExternalStorageDirectory().getPath() + "/cheyipai/VehicleModel.xml");
             fis = new FileInputStream(f);
 
             if(fis == null) {

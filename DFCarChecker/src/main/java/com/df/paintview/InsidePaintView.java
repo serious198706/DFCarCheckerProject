@@ -1,4 +1,4 @@
-package com.df.dfcarchecker;
+package com.df.paintview;
 
 /**
  * Created by 岩 on 13-9-26.
@@ -14,43 +14,42 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.df.dfcarchecker.CarCheckInsideActivity;
+import com.df.dfcarchecker.R;
 import com.df.service.Common;
 import com.df.service.PosEntity;
 
-import java.nio.channels.ConnectionPendingException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StructurePaintView extends ImageView {
+public class InsidePaintView extends ImageView {
 
-    private int currentType = Common.COLOR_DIFF;
+    private int currentType = Common.DIRTY;
     private boolean move;
-    private List<PosEntity> data = CarCheckStructureFragment.posEntities;
+    private List<PosEntity> data = CarCheckInsideActivity.posEntities;
     private List<PosEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
 
     private int max_x, max_y;
 
-    public StructurePaintView(Context context, AttributeSet attrs, int defStyle) {
+    public InsidePaintView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }
 
-    public StructurePaintView(Context context, AttributeSet attrs) {
+    public InsidePaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public StructurePaintView(Context context) {
+    public InsidePaintView(Context context) {
         super(context);
         init();
     }
@@ -62,7 +61,6 @@ public class StructurePaintView extends ImageView {
 
         undoData = new ArrayList<PosEntity>();
 
-        colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
         this.setOnTouchListener(onTouchListener);
     }
 
@@ -71,12 +69,14 @@ public class StructurePaintView extends ImageView {
         super.onDraw(canvas);
         canvas.drawBitmap(bitmap, 0, 0, null);
         paint(canvas);
+
     }
 
     private OnTouchListener onTouchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if (currentType > 0 && currentType <= 4) {
+            if (currentType > 4 && currentType <= 6) {
+
                 int x = (int) event.getX();
                 int y = (int) event.getY();
                 PosEntity entity;
@@ -86,26 +86,43 @@ public class StructurePaintView extends ImageView {
                     entity.setMaxX(max_x);
                     entity.setMaxY(max_y);
                     entity.setStart(x, y);
-
+                    entity.setEnd(x, y);
                     data.add(entity);
                 } else if(event.getAction() == MotionEvent.ACTION_MOVE){
-                        entity = data.get(data.size() - 1);
-                        entity.setStart(x, y);
-                        move = true;
-                        invalidate();
+                    entity = data.get(data.size() - 1);
+                    entity.setEnd(x, y);
+                    move = true;
                 } else if(event.getAction() == MotionEvent.ACTION_UP){
+                    if(move){
+                        entity = data.get(data.size()-1);
+                        entity.setEnd(x, y);
+                        move = false;
+                    }
+
                     showCamera();
                 }
-
                 invalidate();
             }
-
             return true;
         }
     };
 
     public void setType(int type) {
         this.currentType = type;
+    }
+
+
+    private Paint getPaint(int type) {
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+
+        // 根据当前类型决定笔触的颜色
+        paint.setColor(type == Common.DIRTY ? Color.RED : Color.BLACK);
+        paint.setAlpha(0x80);   //80%透明
+        paint.setStyle(Paint.Style.STROKE); // 线类型填充
+        paint.setStrokeWidth(4);  // 笔触粗细
+
+        return paint;
     }
 
     private void paint(Canvas canvas) {
@@ -115,7 +132,7 @@ public class StructurePaintView extends ImageView {
     }
 
     private void paint(PosEntity entity, Canvas canvas) {
-        canvas.drawBitmap(colorDiffBitmap, entity.getStartX(), entity.getStartY(), null);
+        canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(entity.getType()));
     }
 
     private void showCamera(){

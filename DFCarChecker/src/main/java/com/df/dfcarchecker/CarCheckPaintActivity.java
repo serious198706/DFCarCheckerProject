@@ -11,11 +11,13 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.df.paintview.InsidePaintView;
+import com.df.paintview.OutsidePaintView;
+import com.df.paintview.StructurePaintView;
 import com.df.service.Common;
 
 import java.io.File;
@@ -23,7 +25,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-public class CarCheckOutSidePaintActivity extends Activity {
+public class CarCheckPaintActivity extends Activity {
     private LinearLayout root;
     private OutsidePaintView outsidePaintView;
     private InsidePaintView insidePaintView;
@@ -42,7 +44,8 @@ public class CarCheckOutSidePaintActivity extends Activity {
             } else if(value.equals("IN_PAINT")) {
                 SetInPaintLayout();
             } else if(value.equals("STRUCTURE_PAINT")) {
-                SetStructurePaintLayout();
+                String sight = extras.getString("PAINT_SIGHT");
+                SetStructurePaintLayout(sight);
             }
 
         }
@@ -56,7 +59,6 @@ public class CarCheckOutSidePaintActivity extends Activity {
     private void SetInPaintLayout() {
         setContentView(R.layout.activity_car_check_inside_paint);
 
-        root = (LinearLayout) findViewById(R.id.titleLy);
         insidePaintView = (InsidePaintView) findViewById(R.id.tile);
 
         RadioGroup radioGroup = (RadioGroup)findViewById(R.id.in_radio_group);
@@ -84,7 +86,6 @@ public class CarCheckOutSidePaintActivity extends Activity {
     private void SetOutPaintLayout() {
         setContentView(R.layout.activity_car_check_outside_paint);
 
-        root = (LinearLayout) findViewById(R.id.titleLy);
         outsidePaintView = (OutsidePaintView) findViewById(R.id.tile);
 
         RadioGroup radioGroup = (RadioGroup)findViewById(R.id.out_radio_group);
@@ -116,11 +117,16 @@ public class CarCheckOutSidePaintActivity extends Activity {
     }
 
 
-    private void SetStructurePaintLayout() {
+    private void SetStructurePaintLayout(String sight) {
         setContentView(R.layout.activity_car_check_structure_paint);
-
-        root = (LinearLayout) findViewById(R.id.titleLy);
         structurePaintView = (StructurePaintView) findViewById(R.id.tile);
+
+        if(sight.equals("FRONT")) {
+            structurePaintView.init(CarCheckStructureFragment.previewBitmapFront, CarCheckStructureFragment.posEntitiesFront);
+        } else {
+            structurePaintView.init(CarCheckStructureFragment.previewBitmapRear, CarCheckStructureFragment.posEntitiesRear);
+        }
+
         structurePaintView.setType(Common.COLOR_DIFF);
 
         currentPaintView = "STRUCTURE_PAINT";
@@ -147,7 +153,7 @@ public class CarCheckOutSidePaintActivity extends Activity {
                 break;
             case R.id.action_cancel:
                 // TODO:点击取消后，要将刚才进入时的操作全部回退掉
-                outsidePaintView.Clear();
+                //outsidePaintView.Clear();
                 finish();
                 break;
             case R.id.action_clear:

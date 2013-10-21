@@ -4,7 +4,6 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.app.Activity;
@@ -14,46 +13,53 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.df.paintview.OutsidePaintPreviewView;
 import com.df.service.Common;
 import com.df.service.PosEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class CarCheckOutsideActivity extends Activity implements View.OnClickListener {
-    private int currentGroup;
-
+    private int currentShotGroup;
     private EditText brokenEdit;
     private Spinner paintSpinner;
     private EditText commentEdit;
-
     public static List<PosEntity> posEntities;
-
     private OutsidePaintPreviewView outsidePaintPreviewView;
+    private TextView tip;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_car_check_outside);
 
+        // 点击图片进入绘制界面
         outsidePaintPreviewView = (OutsidePaintPreviewView) findViewById(R.id.out_base_image_preview);
+        outsidePaintPreviewView.setOnClickListener(this);
 
+        // 选择表面有破损的零部件
         Button brokenButton = (Button) findViewById(R.id.out_choose_broken_button);
         brokenButton.setOnClickListener(this);
+        brokenEdit = (EditText) findViewById(R.id.out_broken_edit);
 
+        // 拍摄外观组照片
         Button cameraButton = (Button) findViewById(R.id.out_start_camera_button);
         cameraButton.setOnClickListener(this);
 
-        Button startPaintButton = (Button) findViewById(R.id.out_start_paint_button);
-        startPaintButton.setOnClickListener(this);
+        // 图片上的提示
+        tip = (TextView)findViewById(R.id.tipOnPreview);
 
-        brokenEdit = (EditText) findViewById(R.id.out_broken_edit);
+        // 车辆漆面光洁度
         paintSpinner = (Spinner) findViewById(R.id.out_paint_spinner);
+
+        // 备注
         commentEdit = (EditText) findViewById(R.id.out_comment_edit);
 
+        // 坐标们
         posEntities = new ArrayList<PosEntity>();
 
         final ActionBar actionBar = getActionBar();
@@ -68,7 +74,7 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
         savedInstanceState.putString("brokenEdit", brokenEdit.getText().toString());
         savedInstanceState.putInt("paintSpinnerPosition", paintSpinner.getSelectedItemPosition());
         savedInstanceState.putString("comment", commentEdit.getText().toString());
-        //savedInstanceState.putParcelable("entities", posEntities);
+        //savedInstanceState.putParcelable("entities", posEntitiesFront);
     }
 
     @Override
@@ -115,7 +121,7 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
             case R.id.out_start_camera_button:
                 out_start_camera();
                 break;
-            case R.id.out_start_paint_button:
+            case R.id.out_base_image_preview:
                 StartPaint();
                 break;
         }
@@ -135,8 +141,8 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
         builder.setItems(R.array.out_camera_cato_item, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                currentGroup = i;
-                String group = getResources().getStringArray(R.array.out_camera_cato_item)[currentGroup];
+                currentShotGroup = i;
+                String group = getResources().getStringArray(R.array.out_camera_cato_item)[currentShotGroup];
 
                 Toast.makeText(CarCheckOutsideActivity.this, "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
 
@@ -144,11 +150,7 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
                 startActivityForResult(intent, Common.PHOTO_FOR_OUTSIDE_GROUP);
             }
         });
-        // Inflate and set the layout for the dialog
-        // Pass null as the parent view because its going in the dialog layout
-        //builder.setView(inflater.inflate(R.layout.bi_camera_cato_dialog, null));
 
-        //builder.setMessage(R.string.ci_attention_content).setTitle(R.string.ci_attention);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // 取消
@@ -160,7 +162,7 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
     }
 
     private void StartPaint() {
-        Intent intent = new Intent(this, CarCheckOutSidePaintActivity.class);
+        Intent intent = new Intent(this, CarCheckPaintActivity.class);
         intent.putExtra("PAINT_TYPE", "OUT_PAINT");
         startActivityForResult(intent, Common.OUT_PAINT);
     }
@@ -191,12 +193,23 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
                     //img.setImageBitmap(image);
                 } else {
                     Toast.makeText(CarCheckOutsideActivity.this,
-                            "error occured during opening camera", Toast.LENGTH_SHORT)
+                            "相机打开错误", Toast.LENGTH_SHORT)
                             .show();
                 }
                 break;
             case Common.OUT_PAINT:
-                outsidePaintPreviewView.invalidate();
+                // 如果有点，则将图片设为不透明，去掉提示文字
+                if(!posEntities.isEmpty()) {
+                    outsidePaintPreviewView.setAlpha(1f);
+                    outsidePaintPreviewView.invalidate();
+                    tip.setVisibility(View.GONE);
+                }
+                // 如果没点，则将图片设为半透明，添加提示文字
+                else {
+                    outsidePaintPreviewView.setAlpha(0.3f);
+                    outsidePaintPreviewView.invalidate();
+                    tip.setVisibility(View.VISIBLE);
+                }
                 break;
         }
     }

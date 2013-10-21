@@ -4,11 +4,11 @@
         android:id="@+id/titleLy"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
+        android:gravity="center">
 
-    <com.df.dfcarchecker.StructurePaintView
+    <com.df.paintview.StructurePaintView
             android:id="@+id/tile"
-            android:layout_width="600dp"
-            android:layout_height="800dp" />
+            android:layout_width="500dp"
+            android:layout_height="300dp" />
 
 </LinearLayout>

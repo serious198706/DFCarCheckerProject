@@ -25,25 +25,55 @@
                 android:layout_height="2dp"
                 android:background="#000"/>
 
-        <LinearLayout android:orientation="horizontal"
+        <RelativeLayout android:orientation="horizontal"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content">
-            <com.df.dfcarchecker.StructurePaintPreviewView
-                    android:id="@+id/structure_base_image_preview"
-                    android:layout_width="280dp"
-                    android:layout_height="400dp"/>
+            <com.df.paintview.StructurePaintPreviewView
+                    android:id="@+id/structure_base_image_preview_front"
+                    android:layout_width="500dp"
+                    android:layout_height="300dp"
+                    android:layout_centerInParent="true"
+                    android:onClick="StartPaint"
+                    android:alpha="0.3" />
+            <TextView
+                android:id="@+id/tipOnPreviewFront"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_alignLeft="@id/structure_base_image_preview_front"
+                android:layout_alignRight="@id/structure_base_image_preview_front"
+                android:layout_alignTop="@id/structure_base_image_preview_front"
+                android:layout_alignBottom="@id/structure_base_image_preview_front"
+                android:layout_margin="1dp"
+                android:gravity="center"
+                android:text="点击以绘制"
+                android:textSize="18sp"
+                android:textColor="#000000" />
+        </RelativeLayout>
 
-            <TableLayout android:layout_width="0dp"
-                         android:layout_height="wrap_content"
-
-                         android:layout_weight="1">
-                <Button android:id="@+id/structure_start_paint_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/structure_start_paint"
-                        android:onClick="StartPaint"/>
-            </TableLayout>
-        </LinearLayout>
+        <RelativeLayout android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.df.paintview.StructurePaintPreviewView
+                android:id="@+id/structure_base_image_preview_rear"
+                android:layout_width="500dp"
+                android:layout_height="300dp"
+                android:layout_centerInParent="true"
+                android:onClick="StartPaint"
+                android:alpha="0.3" />
+            <TextView
+                android:id="@+id/tipOnPreviewRear"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_alignLeft="@id/structure_base_image_preview_rear"
+                android:layout_alignRight="@id/structure_base_image_preview_rear"
+                android:layout_alignTop="@id/structure_base_image_preview_rear"
+                android:layout_alignBottom="@id/structure_base_image_preview_rear"
+                android:layout_margin="1dp"
+                android:gravity="center"
+                android:text="点击以绘制"
+                android:textSize="18sp"
+                android:textColor="#000000" />
+        </RelativeLayout>
 
         <TableLayout android:layout_width="match_parent"
                      android:layout_height="wrap_content">

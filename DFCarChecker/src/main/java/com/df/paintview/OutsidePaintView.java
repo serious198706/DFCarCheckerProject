@@ -1,4 +1,4 @@
-package com.df.dfcarchecker;
+package com.df.paintview;
 
 /**
  * Created by 岩 on 13-9-26.
@@ -13,14 +13,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
+import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.df.dfcarchecker.CarCheckOutsideActivity;
+import com.df.dfcarchecker.R;
 import com.df.service.Common;
 import com.df.service.PosEntity;
 
@@ -38,11 +43,6 @@ public class OutsidePaintView extends ImageView {
 
     private int max_x, max_y;
 
-    private static final int RIGHT_DOWN = 0;
-    private static final int RIGHT_UP = 1;
-    private static final int LEFT_DOWN = 2;
-    private static final int LEFT_UP = 3;
-
     public OutsidePaintView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
@@ -59,9 +59,24 @@ public class OutsidePaintView extends ImageView {
     }
 
     private void init() {
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.car);
-        max_x = bitmap.getWidth();
-        max_y = bitmap.getHeight();
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        String sdcardPath = Environment.getExternalStorageDirectory().toString();
+
+        Bitmap tempbitmap = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/out.png", options);
+
+        max_x = tempbitmap.getWidth();
+        max_y = tempbitmap.getHeight();
+
+        float scaleWidth = ((float) 1200) / max_x;
+        float scaleHeight = scaleWidth;
+        // CREATE A MATRIX FOR THE MANIPULATION
+        Matrix matrix = new Matrix();
+        // RESIZE THE BIT MAP
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        bitmap = Bitmap.createBitmap(tempbitmap, 0, 0, max_x, max_y, matrix,  false);
 
         undoData = new ArrayList<PosEntity>();
 

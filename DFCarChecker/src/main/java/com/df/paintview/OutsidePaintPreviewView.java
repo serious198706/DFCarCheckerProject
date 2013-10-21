@@ -1,4 +1,4 @@
-package com.df.dfcarchecker;
+package com.df.paintview;
 
 /**
  * Created by 岩 on 13-9-26.
@@ -11,9 +11,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.df.dfcarchecker.CarCheckOutsideActivity;
+import com.df.dfcarchecker.R;
 import com.df.service.Common;
 import com.df.service.PosEntity;
 
@@ -46,7 +49,13 @@ public class OutsidePaintPreviewView extends ImageView {
     }
 
     private void init() {
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_base_image);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        String sdcardPath = Environment.getExternalStorageDirectory().toString();
+
+        bitmap = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/out.png", options);
+
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
@@ -174,14 +183,14 @@ public class OutsidePaintPreviewView extends ImageView {
             temp.setEnd(posEntity.getEndX(), posEntity.getEndY());
 
             // 这些max要乘以2的原因是，在后面的getStartX()等方法调用时，max是按照大图的max来计算的
-            temp.setMaxX(max_x * 2);
-            temp.setMaxY(max_y * 2);
+            temp.setMaxX((int)(max_x * 1.5));
+            temp.setMaxY((int)(max_y * 1.5));
             data.add(temp);
         }
 
         for(PosEntity posEntity : data) {
-            posEntity.setStart(posEntity.getStartX() / 2, posEntity.getStartY() / 2);
-            posEntity.setEnd(posEntity.getEndX() / 2, posEntity.getEndY() / 2);
+            posEntity.setStart((int)(posEntity.getStartX() / 1.5), (int)(posEntity.getStartY() / 1.5));
+            posEntity.setEnd((int)(posEntity.getEndX() / 1.5), (int)(posEntity.getEndY() / 1.5));
         }
     }
 }

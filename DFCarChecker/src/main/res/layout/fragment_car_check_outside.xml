@@ -22,23 +22,29 @@
                 android:layout_height="2dp"
                 android:background="?android:attr/listDivider"/>
 
-        <LinearLayout android:orientation="horizontal"
+        <RelativeLayout
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content">
-            <com.df.dfcarchecker.OutsidePaintPreviewView
+            <com.df.paintview.OutsidePaintPreviewView
                     android:id="@+id/out_base_image_preview"
-                       android:layout_width="280dp"
-                       android:layout_height="400dp"/>
-
-            <TableLayout android:layout_width="0dp"
-                         android:layout_height="wrap_content"
-                         android:layout_weight="1">
-                <Button android:id="@+id/out_start_paint_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/out_start_paint"/>
-            </TableLayout>
-        </LinearLayout>
+                       android:layout_width="400dp"
+                       android:layout_height="540dp"
+                       android:layout_centerHorizontal="true"
+                       android:alpha="0.3"/>
+            <TextView
+                android:id="@+id/tipOnPreview"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_alignLeft="@id/out_base_image_preview"
+                android:layout_alignRight="@id/out_base_image_preview"
+                android:layout_alignTop="@id/out_base_image_preview"
+                android:layout_alignBottom="@id/out_base_image_preview"
+                android:layout_margin="1dp"
+                android:gravity="center"
+                android:text="点击以绘制"
+                android:textSize="18sp"
+                android:textColor="#000000" />
+        </RelativeLayout>
 
         <TableLayout android:layout_width="match_parent"
                      android:layout_height="wrap_content">

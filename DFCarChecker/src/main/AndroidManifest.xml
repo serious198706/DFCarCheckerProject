@@ -30,38 +30,12 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.ProcedureInputFrameActivity"
-            android:label="@string/procedure_input"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
-        <activity
             android:name="com.df.dfcarchecker.CarCheckFrameActivity"
             android:label="@string/title_activity_car_check_frame" >
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.CarWaitingListActivity"
-            android:label="@string/title_activity_car_waiting_list"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
-        <activity
-            android:name="com.df.dfcarchecker.CarCheckCollectDataActivity"
-            android:label="@string/title_activity_car_check_collect_data" >
-        </activity>
-        <activity
-            android:name="com.df.service.BluetoothDeviceListActivity"
-            android:label="@string/pair_device" >
-        </activity>
-        <activity
             android:name="com.df.dfcarchecker.PopupActivity"
             android:label="@string/title_activity_popup" >
-        </activity>
-        <activity
-            android:name="com.df.dfcarchecker.CarCheckWaterActivity"
-            android:label="@string/it_water" >
-        </activity>
-        <activity
-            android:name="com.df.dfcarchecker.CarCheckTireActivity"
-            android:label="@string/title_activity_car_check_tire" >
         </activity>
         <activity
             android:name="com.df.dfcarchecker.CarCheckedListActivity"
@@ -72,7 +46,7 @@
             android:label="@string/title_activity_car_report" >
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.CarCheckOutSidePaintActivity"
+            android:name=".CarCheckPaintActivity"
             android:label="@string/out" >
         </activity>
         <activity

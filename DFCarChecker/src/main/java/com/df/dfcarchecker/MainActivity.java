@@ -4,13 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
-
-import com.df.service.FileCopier;
-
-import java.io.File;
 
 // TODO: 登录界面！！！！！
 public class MainActivity extends Activity {
@@ -18,11 +13,6 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        }
-
-    public void EnterProcedureInput(View view) {
-        Intent intent = new Intent(this, ProcedureInputFrameActivity.class);
-        startActivity(intent);
     }
 
     public void EnterCarCheck(View view) {

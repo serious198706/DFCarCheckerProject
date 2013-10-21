@@ -1,4 +1,4 @@
-package com.df.dfcarchecker;
+package com.df.paintview;
 
 /**
  * Created by 岩 on 13-9-26.
@@ -12,54 +12,61 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.df.dfcarchecker.CarCheckStructureFragment;
+import com.df.dfcarchecker.R;
 import com.df.service.Common;
 import com.df.service.PosEntity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InsidePaintView extends ImageView {
+public class StructurePaintView extends ImageView {
 
-    private int currentType = Common.DIRTY;
+    private int currentType = Common.COLOR_DIFF;
     private boolean move;
-    private List<PosEntity> data = CarCheckInsideActivity.posEntities;
+    private List<PosEntity> data;
     private List<PosEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
 
     private int max_x, max_y;
 
-    public InsidePaintView(Context context, AttributeSet attrs, int defStyle) {
+    public StructurePaintView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+        //init();
     }
 
-    public InsidePaintView(Context context, AttributeSet attrs) {
+    public StructurePaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        //init();
     }
 
-    public InsidePaintView(Context context) {
+    public StructurePaintView(Context context) {
         super(context);
-        init();
+        //init();
     }
 
-    private void init() {
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.car);
+    public void init(Bitmap bitmap, List<PosEntity> entities) {
+        this.bitmap = bitmap;
+        data = entities;
+
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
         undoData = new ArrayList<PosEntity>();
 
+        colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
         this.setOnTouchListener(onTouchListener);
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+
     }
 
     @Override
@@ -67,14 +74,12 @@ public class InsidePaintView extends ImageView {
         super.onDraw(canvas);
         canvas.drawBitmap(bitmap, 0, 0, null);
         paint(canvas);
-
     }
 
     private OnTouchListener onTouchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if (currentType > 4 && currentType <= 6) {
-
+            if (currentType > 0 && currentType <= 4) {
                 int x = (int) event.getX();
                 int y = (int) event.getY();
                 PosEntity entity;
@@ -84,43 +89,26 @@ public class InsidePaintView extends ImageView {
                     entity.setMaxX(max_x);
                     entity.setMaxY(max_y);
                     entity.setStart(x, y);
-                    entity.setEnd(x, y);
+
                     data.add(entity);
                 } else if(event.getAction() == MotionEvent.ACTION_MOVE){
-                    entity = data.get(data.size() - 1);
-                    entity.setEnd(x, y);
-                    move = true;
+                        entity = data.get(data.size() - 1);
+                        entity.setStart(x, y);
+                        move = true;
+                        invalidate();
                 } else if(event.getAction() == MotionEvent.ACTION_UP){
-                    if(move){
-                        entity = data.get(data.size()-1);
-                        entity.setEnd(x, y);
-                        move = false;
-                    }
-
                     showCamera();
                 }
+
                 invalidate();
             }
+
             return true;
         }
     };
 
     public void setType(int type) {
         this.currentType = type;
-    }
-
-
-    private Paint getPaint(int type) {
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-
-        // 根据当前类型决定笔触的颜色
-        paint.setColor(type == Common.DIRTY ? Color.RED : Color.BLACK);
-        paint.setAlpha(0x80);   //80%透明
-        paint.setStyle(Paint.Style.STROKE); // 线类型填充
-        paint.setStrokeWidth(4);  // 笔触粗细
-
-        return paint;
     }
 
     private void paint(Canvas canvas) {
@@ -130,7 +118,7 @@ public class InsidePaintView extends ImageView {
     }
 
     private void paint(PosEntity entity, Canvas canvas) {
-        canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(entity.getType()));
+        canvas.drawBitmap(colorDiffBitmap, entity.getStartX(), entity.getStartY(), null);
     }
 
     private void showCamera(){

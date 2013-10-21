@@ -37,7 +37,7 @@
                 android:layout_weight="3"/>
             <Button android:id="@+id/bi_vin_button"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:layout_weight="1"
                 android:text="@string/ok"
                 android:background="@drawable/button_custom"
@@ -61,7 +61,7 @@
                 android:enabled="false"/>
             <Button android:id="@+id/bi_brand_ok_button"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:layout_weight="1"
                 android:layout_marginRight="1dp"
                 android:text="@string/ok"
@@ -69,7 +69,7 @@
                 android:padding="-5dp" />
             <Button android:id="@+id/bi_brand_select_button"
                 android:layout_width="0dp"
-                android:layout_height="30dp"
+                android:layout_height="35dp"
                 android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:text="@string/choose"
@@ -659,7 +659,7 @@
                     android:layout_weight="1"/>
                 <Button android:id="@+id/picture_match_button"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="35dp"
                     android:text="@string/choose"
                     android:background="@drawable/button_custom"
                     android:layout_weight="1"/>
