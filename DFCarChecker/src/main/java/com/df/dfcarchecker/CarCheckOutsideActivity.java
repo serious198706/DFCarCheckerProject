@@ -31,6 +31,7 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
     public static List<PosEntity> posEntities;
     private OutsidePaintPreviewView outsidePaintPreviewView;
     private TextView tip;
+    private String brokenParts;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -131,6 +132,7 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
     public void ChooseBroken() {
         Intent intent = new Intent(this, PopupActivity.class);
         intent.putExtra("POPUP_TYPE", "OUT_BROKEN");
+        intent.putExtra("BROKEN_PARTS", brokenParts);
         startActivityForResult(intent, Common.CHOOSE_OUT_BROKEN);
     }
 
@@ -180,6 +182,10 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
                             if(brokenPart != null) {
                                 brokenEdit.setText(brokenPart);
                             }
+
+                            // 记录从选择破损部件页面返回的序号
+                            String brokenParts = bundle.getString("BROKEN_PARTS");
+                            this.brokenParts = brokenParts;
                         }
                     }
                     catch(NullPointerException ex) {

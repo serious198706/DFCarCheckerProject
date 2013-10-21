@@ -15,9 +15,13 @@ import android.widget.TextView;
 
 import com.df.service.Common;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PopupActivity extends Activity {
     private TableLayout root;
     private String RESULT_TYPE = "";
+    private String brokenParts;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,7 +37,8 @@ public class PopupActivity extends Activity {
             } else if(value.equals("OUT_SCREW")) {
                 SetOutScrewLayout();
             } else if(value.equals("OUT_BROKEN")) {
-                SetOutBrokenLayout();
+                String brokenParts = extras.getString("BROKEN_PARTS");
+                SetOutBrokenLayout(brokenParts);
             } else if(value.equals("IN_BROKEN")) {
                 SetInBrokenLayout();
             } else if(value.equals("IN_DIRTY")) {
@@ -83,18 +88,31 @@ public class PopupActivity extends Activity {
 
         String[] checkBoxTextArray = getResources().getStringArray(R.array.ac_screw_item);
 
-        RenderChildTree(checkBoxTextArray);
+        RenderChildTree(checkBoxTextArray, null);
     }
 
     // 车身检查 - 破损
-    private void SetOutBrokenLayout() {
+    private void SetOutBrokenLayout(String brokenParts) {
+        // 破损部位以"0,1,4,7,19"的方式传输
+        int[] partArray = null;
+
+        if(brokenParts != null) {
+            String[] parts = brokenParts.split(",");
+
+            partArray = new int[parts.length];
+
+            for(int i = 0; i < parts.length; i++) {
+                partArray[i] = Integer.parseInt(parts[i]);
+            }
+        }
+
         RESULT_TYPE = Common.OUT_BROKEN_RESULT;
 
         setTitle(getResources().getString(R.string.out_broken_parts));
 
         String[] checkBoxTextArray = getResources().getStringArray(R.array.out_broken_parts);
 
-        RenderChildTree(checkBoxTextArray);
+        RenderChildTree(checkBoxTextArray, partArray);
     }
 
     // 内饰检查 - 破损
@@ -105,7 +123,7 @@ public class PopupActivity extends Activity {
 
         String[] checkBoxTextArray = getResources().getStringArray(R.array.in_broken_parts_item);
 
-        RenderChildTree(checkBoxTextArray);
+        RenderChildTree(checkBoxTextArray, null);
     }
 
     // 内饰检查 - 脏污
@@ -116,11 +134,13 @@ public class PopupActivity extends Activity {
 
         String[] checkBoxTextArray = getResources().getStringArray(R.array.in_dirty_parts_item);
 
-        RenderChildTree(checkBoxTextArray);
+        RenderChildTree(checkBoxTextArray, null);
     }
 
 
-    private void RenderChildTree(String[] checkBoxTextArray) {
+    private void RenderChildTree(String[] checkBoxTextArray, int[] parts) {
+        int count = 0;
+
         root = (TableLayout)findViewById(R.id.root);
 
         int length = checkBoxTextArray.length;
@@ -139,6 +159,15 @@ public class PopupActivity extends Activity {
                 TableRow.LayoutParams params = new TableRow.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT, 1f);
                 checkBox.setLayoutParams(params);
                 tableRow.addView(checkBox);
+
+                // 如果计数器存在于数组中，即选中状态
+                if(parts != null) {
+                    if(exist(count, parts)) {
+                        checkBox.setChecked(true);
+                    }
+                }
+
+                count++;
             }
 
             root.addView(tableRow);
@@ -170,10 +199,12 @@ public class PopupActivity extends Activity {
 
     private String CollectCheckedCheckBoxText() {
         String result = "";
+        brokenParts = "";
 
-        int count = root.getChildCount();
+        int count = 0;
+        int rowCount = root.getChildCount();
 
-        for(int i = 0; i < count; i++)
+        for(int i = 0; i < rowCount; i++)
         {
             TableRow row = (TableRow)root.getChildAt(i);
 
@@ -188,9 +219,18 @@ public class PopupActivity extends Activity {
                     if(s.isChecked()) {
                         result += s.getText();
                         result += ",";
+
+                        brokenParts += Integer.toString(count);
+                        brokenParts += ",";
                     }
                 }
+
+                count++;
             }
+        }
+
+        if(brokenParts != "") {
+            brokenParts = brokenParts.substring(0, brokenParts.length() - 1);
         }
 
         // 去掉最后一个","
@@ -205,9 +245,20 @@ public class PopupActivity extends Activity {
         // 创建结果意图和包括地址
         Intent intent = new Intent();
         intent.putExtra(RESULT_TYPE, result);
+        intent.putExtra("BROKEN_PARTS", brokenParts);
 
-        // 结果，完成这项活动
+        // 关闭activity
         setResult(Activity.RESULT_OK, intent);
         finish();
+    }
+
+    private boolean exist(int num, int[] array) {
+        for(int i = 0; i < array.length; i++) {
+            if(num == array[i]) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
