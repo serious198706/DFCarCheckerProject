@@ -3,14 +3,14 @@
 
     <string name="set_light_theme">浅色主题</string>
     <string name="set_dark_theme">深色主题</string>
-    <string name="app_name">车易拍检测客户端</string>
+    <string name="app_name">268V检测客户端</string>
     <string name="action_settings">Settings</string>
     <string name="quit">确定退出？</string>
     <string name="alert_title">提示</string>
 
     <string-array name="existornot">
-        <item>无</item>
         <item>有</item>
+        <item>无</item>
     </string-array>
     <string-array name="yes_no">
         <item>是</item>
@@ -22,6 +22,7 @@
         <item>看不见</item>
     </string-array>
 
+    <string name="itemImage">itemImage</string>
     <string name="ok">确定</string>
     <string name="cancel">取消</string>
     <string name="choose">选择</string>
@@ -32,6 +33,8 @@
     <string name="procedure_input">手续录入</string>
 
     <!-- 车辆信息 -->
+    <string name="vin">VIN编码：</string>
+    <string name="brand">厂牌型号：</string>
     <string name="ci">车辆信息</string>
     <string name="ci_licence_type">行驶证品牌型号：</string>
     <string name="ci_car_type">行驶证车辆类型：</string>
@@ -116,6 +119,42 @@
         <item>香港特别行政区</item>
         <item>澳门特别行政区</item>
     </string-array>
+    <string-array name="ci_province_abbreviation">
+        <item>京</item>
+        <item>津</item>
+        <item>渝</item>
+        <item>沪</item>
+        <item>冀</item>
+        <item>晋</item>
+        <item>辽</item>
+        <item>吉</item>
+        <item>黑</item>
+        <item>苏</item>
+        <item>浙</item>
+        <item>皖</item>
+        <item>闽</item>
+        <item>赣</item>
+        <item>鲁</item>
+        <item>豫</item>
+        <item>鄂</item>
+        <item>湘</item>
+        <item>粤</item>
+        <item>琼</item>
+        <item>川</item>
+        <item>黔</item>
+        <item>滇</item>
+        <item>陕</item>
+        <item>甘 </item>
+        <item>青</item>
+        <item>台</item>
+        <item>内蒙古</item>
+        <item>桂</item>
+        <item>宁</item>
+        <item>新</item>
+        <item>藏</item>
+        <item>港</item>
+        <item>澳</item>
+    </string-array>
 
     <string name="ci_transfer_count">过户次数：</string>
     <string name="ci_last_transfer_time">最后过户时间：</string>
@@ -191,10 +230,17 @@
     <string name="ct_maintain_manual">保养手册：</string>
     <string name="ct_vehicle_and_vessel_tax_ticket">车船税票：</string>
     <string name="ct_backup_tire">备胎</string>
+
+    <string-array name="ct_backup_tire_items">
+        <item>有</item>
+        <item>无</item>
+        <item>未见</item>
+    </string-array>
+
     <string name="ct_backup_key">备用钥匙：</string>
     <string name="ct_yearly_check_available_date">年检有效期：</string>
-    <string name="ct_mandatory_vehicle_insurance">交强险：</string>
-    <string name="ct_available_date">有效期至：</string>
+    <string name="ct_mandatory_vehicle_insurance">：</string>
+    <string name="ct_available_date">交强险有效期：</string>
     <string name="ct_business_insurance">商业保险：</string>
 
     <string-array name="ct_business_insurance_type">
@@ -212,7 +258,7 @@
 
     <string name="ct_business_insurance_money">商险金额：</string>
     <string name="ct_business_insurance_available_date">商险有效期：</string>
-    <string name="ct_business_insurance_company">保险公司：</string>
+    <string name="ct_business_insurance_company">商险公司：</string>
 
     <string-array name="ct_business_insurance_companies">
         <item>人保</item>
@@ -252,6 +298,13 @@
         <item>司乘险</item>
         <item>涉水险</item>
         <item>其他</item>
+    </string-array>
+
+    <string name="ct_ported_procedure">进口车手续：</string>
+
+    <string-array name="ct_ported_prodecure_items">
+        <item>大贸</item>
+        <item>小贸</item>
     </string-array>
 
     <string name="ct_car_from">车辆来源：</string>
@@ -301,7 +354,6 @@
     </string-array>
 
     <string name="ex_ex1">个工作日内完成过户</string>
-
     <string name="ex_expected_money">心理价位：</string>
     <string name="title_activity_car_check_frame">车辆检测</string>
     <string name="title_activity_car_waiting_list">待检测车辆</string>
@@ -351,6 +403,149 @@
         <item>CVT</item>
     </string-array>
 
+    <string name="csi_airbag">气囊数：</string>
+
+    <string-array name="csi_airbag_number">
+        <item>1</item>
+        <item>2</item>
+        <item>4</item>
+        <item>8</item>
+        <item>12</item>
+        <item>无</item>
+    </string-array>
+
+    <string name="csi_abs">ABS：</string>
+
+    <string-array name="csi_abs_items">
+        <item>有</item>
+        <item>无</item>
+    </string-array>
+
+    <string name="csi_turn_help">转向助力：</string>
+
+    <string-array name="csi_turn_help_items">
+        <item>有</item>
+        <item>无</item>
+    </string-array>
+
+    <string name="csi_ele_windows">电动车窗：</string>
+
+    <string-array name="csi_ele_windows_items">
+        <item>有</item>
+        <item>无</item>
+        <item>四门</item>
+        <item>前门</item>
+        <item>加装</item>
+    </string-array>
+
+    <string name="csi_sky_light">天窗：</string>
+
+    <string-array name="csi_sky_light_items">
+        <item>有</item>
+        <item>无</item>
+        <item>手动</item>
+        <item>电动</item>
+        <item>双天窗</item>
+        <item>全景</item>
+        <item>加装</item>
+    </string-array>
+
+    <string name="csi_air_conditioner">空调：</string>
+
+    <string-array name="csi_air_conditioner_items">
+        <item>有</item>
+        <item>无</item>
+        <item>手动</item>
+        <item>自动</item>
+        <item>前后</item>
+    </string-array>
+
+    <string name="csi_feather_seat">真皮座椅：</string>
+
+    <string-array name="csi_feather_seat_items">
+        <item>有</item>
+        <item>无</item>
+        <item>电加热</item>
+        <item>按摩</item>
+        <item>通风</item>
+        <item>加装</item>
+    </string-array>
+
+    <string name="csi_ele_seat">电动座椅：</string>
+
+    <string-array name="csi_ele_seats_items">
+        <item>有</item>
+        <item>无</item>
+        <item>带记忆</item>
+    </string-array>
+
+    <string name="csi_ele_reflect_mirror">电动反光镜：</string>
+
+    <string-array name="csi_ele_reflect_mirror_items">
+        <item>有</item>
+        <item>无</item>
+        <item>自动折叠</item>
+    </string-array>
+
+    <string name="csi_parking_sensors">倒车雷达：</string>
+
+    <string-array name="csi_parking_sensors_items">
+        <item>有</item>
+        <item>无</item>
+        <item>加装</item>
+    </string-array>
+
+    <string name="csi_parking_video">倒车影像：</string>
+
+    <string-array name="csi_parking_video_items">
+        <item>有</item>
+        <item>无</item>
+        <item>加装</item>
+    </string-array>
+
+    <string name="csi_ccs">定速巡航：</string>
+
+    <string-array name="csi_ccs_items">
+        <item>有</item>
+        <item>无</item>
+        <item>加装</item>
+    </string-array>
+
+    <string name="csi_soft_close_doors">电吸门：</string>
+
+    <string-array name="csi_soft_close_doors_items">
+        <item>有</item>
+        <item>无</item>
+    </string-array>
+
+    <string name="csi_rear_ele_seats">后排电动座椅：</string>
+
+    <string-array name="csi_rear_ele_seats_items">
+        <item>有</item>
+        <item>无</item>
+    </string-array>
+
+    <string name="csi_auto_chassis">底盘升降：</string>
+
+    <string-array name="csi_auto_chassis_items">
+        <item>有</item>
+        <item>无</item>
+    </string-array>
+
+    <string name="csi_auto_parking">自动泊车：</string>
+
+    <string-array name="csi_auto_parking_items">
+        <item>有</item>
+        <item>无</item>
+    </string-array>
+
+    <string name="csi_curtain">隔物板（伸缩帘）：</string>
+
+    <string-array name="csi_curtain_items">
+        <item>有</item>
+        <item>无</item>
+    </string-array>
+
     <string name="cbi">车型基本信息</string>
     <string name="cbi_lwh">长宽高：</string>
     <string name="cbi_camera">拍摄其他组照片</string>
@@ -361,7 +556,7 @@
         <item>车牌</item>
     </string-array>
 
-    <string name="cbi_comment">过户要求的备注说明：</string>
+    <string name="cbi_comment">过户要求说明：</string>
 
     <!-- 事故排查 -->
     <string name="ac_car_top">覆盖件视图</string>
@@ -473,7 +668,7 @@
         <item>右减震座</item>
     </string-array>
 
-    <string name="ac_comment">事故排查的备注说明：</string>
+    <string name="ac_comment">事故排查说明：</string>
     <string name="title_activity_car_check_collect_data">采集数据</string>
     <string name="huanh">\n</string>
     <string name="send">发送</string>
@@ -528,7 +723,7 @@
     <string name="structure_camera_overview">机舱全景</string>
     <string name="structure_camera_front">前部</string>
     <string name="structure_camera_rear">后部</string>
-    <string name="structure_comment">车体结构检查的备注说明：</string>
+    <string name="structure_comment">车体结构检查说明：</string>
 
     <!-- 车身检查 -->
     <string name="out">外观检查</string>
@@ -600,7 +795,7 @@
         <item>右后45°</item>
     </string-array>
 
-    <string name="out_comment">车身检查的备注说明：</string>
+    <string name="out_comment">车身检查说明：</string>
     <string name="title_activity_popup">MainActivity</string>
 
     <!-- 内饰检查 -->
@@ -680,7 +875,7 @@
     </string-array>
 
     <string name="in_seal">门窗密封条良好无老化、破损：</string>
-    <string name="in_comment">内饰检查的备注说明：</string>
+    <string name="in_comment">内饰检查说明：</string>
 
     <!-- 综合检查 -->
     <string name="it">综合检查</string>
@@ -694,63 +889,74 @@
         <item>无</item>
     </string-array>
 
-    <string name="it_abs_indicator">ABS灯</string>
-    <string name="it_gasbag_indicator">气囊灯</string>
-    <string name="it_oil_indicator">机油灯</string>
-    <string name="it_revolution_counter">转数表</string>
-    <string name="it_handbreak_indicator">手刹灯</string>
-    <string name="it_audio">音响</string>
-    <string name="it_skylight">天窗</string>
-    <string name="it_ele_windows">电窗</string>
-    <string name="it_ele_seats">电动座椅</string>
-    <string name="it_ele_rel_mirror">电动反光镜</string>
-    <string name="it_engine">发动机检查</string>
+    <!-- 7个必有项 -->
+    <string name="it_engine_indicator">发动机故障灯：</string>
+    <string name="it_oil_indicator">机油灯：</string>
+    <string name="it_handbreak_indicator">手刹灯：</string>
+    <string name="it_water_temp_indicator">水温表：</string>
+    <string name="it_revolution_counter">转数表：</string>
+    <string name="it_odometer">里程表：</string>
+    <string name="it_audio">音响：</string>
+
+    <string name="it_gasbag_indicator">气囊灯：</string>
+    <string name="it_abs_indicator">ABS灯：</string>
+    <string name="it_turn_help">转向助力：</string>
+    <string name="it_ele_windows">电动车窗：</string>
+    <string name="it_sky_light">天窗：</string>
+    <string name="it_air_conditioner">空调：</string>
+    <string name="it_feather_seat">真皮座椅：</string>
+    <string name="it_ele_seat">电动座椅：</string>
+    <string name="it_ele_reflect_mirror">电动反光镜：</string>
+    <string name="it_parking_sensors">倒车雷达：</string>
+    <string name="it_parking_video">倒车影像：</string>
+    <string name="it_ccs">定速巡航：</string>
+    <string name="it_soft_close_doors">电吸门：</string>
+    <string name="it_rear_ele_seats">后排电动座椅：</string>
+    <string name="it_auto_chassis">底盘升降：</string>
+    <string name="it_auto_parking">自动泊车：</string>
+    <string name="it_curtain">隔物板（伸缩帘）：</string>
+
+    <string name="it_engine">发动机检查：</string>
     <string name="it_engine_start">发动机可正常启动：</string>
     <string name="it_engine_steady">发动机怠速平稳：</string>
     <string name="it_engine_sound">发动机怠速无异响：</string>
     <string name="it_engine_gas_color">目测发动机排气颜色：</string>
+
     <string-array name="it_engine_gas_color_item">
         <item>无色</item>
         <item>黑</item>
         <item>蓝</item>
     </string-array>
+
     <string name="it_engine_oil_leak">发动机无漏液现象：</string>
     <string name="it_engine_pipe">舱内的线路及管路无老化的现象：</string>
-
-
     <string name="it_gear">变速箱检查</string>
     <string name="it_gear_manually">手动档：</string>
-    <string name="it_gear_manually_1">离合器踩踏轻便，无异常沉重感</string>
-    <string name="it_gear_manually_2">各档位切换清晰、轻便，无涩滞感</string>
-    <string name="it_gear_manually_3">档把的晃动间隙在合理范围内</string>
-
+    <string name="it_gear_manually_1">离合器踩踏轻便，无异常沉重感：</string>
+    <string name="it_gear_manually_2">各档位切换清晰、轻便，无涩滞感：</string>
+    <string name="it_gear_manually_3">档把的晃动间隙在合理范围内：</string>
     <string name="it_gear_auto">自动档</string>
-    <string name="it_gear_auto_1">原地挂档的冲击感在合理范围内</string>
-    <string name="it_gear_auto_2">各档位切换清晰、轻便，无涩滞感</string>
-    <string name="it_gear_auto_3">档把的晃动间隙在合理范围内</string>
-
-
+    <string name="it_gear_auto_1">原地挂档的冲击感在合理范围内：</string>
+    <string name="it_gear_auto_2">各档位切换清晰、轻便，无涩滞感：</string>
+    <string name="it_gear_auto_3">档把的晃动间隙在合理范围内：</string>
     <string name="it_gear_clear">档位是否清晰、不松晃：</string>
     <string name="it_gear_push_sound">离合器踩下是否有异响：</string>
     <string name="it_gear_release_sound">离合器松开是否有异响：</string>
     <string name="it_gear_oil_leak">变速箱漏油：</string>
-    <string name="it_comment">综合检查的备注说明：</string>
+    <string name="it_comment">综合检查说明：</string>
     <string name="it_other">其他检查</string>
     <string name="it_other_water">泡水检查</string>
     <string name="it_other_fire">火烧车检查</string>
     <string name="it_other_electricity">电控单元检测</string>
     <string name="it_other_tire">轮胎与表显里程</string>
-
     <string name="it_chassis">底盘检查</string>
-    <string name="it_chassis_lf_good">左前减震器完好无漏油</string>
-    <string name="it_chassis_rf_good">右前减震器完好无漏油</string>
-    <string name="it_chassis_lr_good">左后减震器完好无漏油</string>
-    <string name="it_chassis_rr_good">右后减震器完好无漏油</string>
-    <string name="it_chassis_good">底盘完好，无严重拖底或锈蚀现象</string>
-    <string name="it_chassis_engine_good">发动机底部无渗漏</string>
-    <string name="it_chassis_gear_good">变速箱底部无渗漏</string>
-
-
+    <string name="it_chassis_lf_good">左前减震器完好无漏油：</string>
+    <string name="it_chassis_rf_good">右前减震器完好无漏油：</string>
+    <string name="it_chassis_lr_good">左后减震器完好无漏油：</string>
+    <string name="it_chassis_rr_good">右后减震器完好无漏油：</string>
+    <string name="it_chassis_good">底盘完好，无严重拖底或锈蚀现象：</string>
+    <string name="it_chassis_engine_good">发动机底部无渗漏：</string>
+    <string name="it_chassis_gear_good">变速箱底部无渗漏：</string>
     <string name="it_water">泡水检查</string>
     <string name="it_water_cabin_smoke">点烟器底座无锈迹：</string>
     <string name="it_water_cabin_ashtray">烟灰缸底座无泥沙、水印：</string>
@@ -758,8 +964,6 @@
     <string name="it_water_cabin_cushion">后排座椅下无泥沙、水印：</string>
     <string name="it_water_back_corner">行李箱的边角无泥沙、水印：</string>
     <string name="it_water_back_tire">备胎槽内无泥沙、水印：</string>
-
-
     <string name="it_water_cabin">车舱检查</string>
     <string name="it_water_cabin_sound">音响的纸盆喇叭是否有水印：</string>
     <string name="it_water_cabin_slide">座椅滑轨内是否有泥沙：</string>
@@ -788,8 +992,6 @@
     <string name="score_0">不计分</string>
     <string name="score">实际得分：</string>
     <string name="point">分</string>
-
-
 
     <!-- 已检车辆 -->
     <string name="title_activity_car_checked_list">已检车辆</string>
@@ -840,5 +1042,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_car_check_structure_paint">MainActivity</string>
     <string name="title_activity_car_check_vin_input">MainActivity</string>
+    <string name="title_activity_startup">MainActivity</string>
+    <string name="title_activity_login">Login</string>
 
 </resources>

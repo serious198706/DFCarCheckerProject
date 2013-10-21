@@ -5,15 +5,19 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.df.paintview.StructurePaintPreviewView;
 import com.df.service.Common;
 import com.df.service.PosEntity;
 
@@ -25,10 +29,20 @@ import java.util.List;
  */
 public class CarCheckStructureFragment extends Fragment implements View.OnClickListener  {
     private static View rootView;
+    private static ScrollView root;
     private LayoutInflater inflater;
     private int currentGroup;
 
-    public static List<PosEntity> posEntities;
+    public static List<PosEntity> posEntitiesFront;
+    public static List<PosEntity> posEntitiesRear;
+
+    private StructurePaintPreviewView structurePaintPreviewViewFront;
+    private StructurePaintPreviewView structurePaintPreviewViewRear;
+    private TextView tipFront;
+    private TextView tipRear;
+
+    public static Bitmap previewBitmapFront;
+    public static Bitmap previewBitmapRear;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,9 +54,33 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         // TODO:
         Button cameraButton = (Button)rootView.findViewById(R.id.structure_start_camera_button);
         cameraButton.setOnClickListener(this);
-        Button startPaintButton = (Button)rootView.findViewById(R.id.structure_start_paint_button);
-        startPaintButton.setOnClickListener(this);
-        posEntities = new ArrayList<PosEntity>();
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        posEntitiesFront = new ArrayList<PosEntity>();
+        posEntitiesRear = new ArrayList<PosEntity>();
+
+        String sdcardPath = Environment.getExternalStorageDirectory().toString();
+
+        previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/st_f.png", options);
+        structurePaintPreviewViewFront = (StructurePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_front);
+        structurePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
+        structurePaintPreviewViewFront.setOnClickListener(this);
+
+        tipFront = (TextView)rootView.findViewById(R.id.tipOnPreviewFront);
+        tipFront.setOnClickListener(this);
+
+        previewBitmapRear = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/st_r.png", options);
+        structurePaintPreviewViewRear = (StructurePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_rear);
+        structurePaintPreviewViewRear.init(previewBitmapRear, posEntitiesRear);
+        structurePaintPreviewViewRear.setOnClickListener(this);
+
+        tipRear = (TextView)rootView.findViewById(R.id.tipOnPreviewRear);
+        tipRear.setOnClickListener(this);
+
+        root = (ScrollView)rootView.findViewById(R.id.root);
+        root.setVisibility(View.GONE);
 
         return rootView;
     }
@@ -50,8 +88,13 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
     @Override
     public void onClick(View v) {
         switch(v.getId()) {
-            case R.id.structure_start_paint_button:
-                StartPaint(v);
+            case R.id.tipOnPreviewFront:
+            case R.id.structure_base_image_preview_front:
+                StartPaint("FRONT");
+                break;
+            case R.id.tipOnPreviewRear:
+            case R.id.structure_base_image_preview_rear:
+                StartPaint("REAR");
                 break;
             case R.id.structure_start_camera_button:
                 structure_start_camera(v);
@@ -59,9 +102,16 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         }
     }
 
-    public void StartPaint(View v) {
-        Intent intent = new Intent(rootView.getContext(), CarCheckOutSidePaintActivity.class);
+    public static void ShowContent() {
+        root.setVisibility(View.VISIBLE);
+    }
+
+    public void StartPaint(String frontOrRear) {
+        Intent intent = new Intent(rootView.getContext(), CarCheckPaintActivity.class);
         intent.putExtra("PAINT_TYPE", "STRUCTURE_PAINT");
+
+        // 设定视角
+        intent.putExtra("PAINT_SIGHT", frontOrRear);
         startActivityForResult(intent, Common.STURCTURE_PAINT);
     }
 
@@ -113,7 +163,33 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
                 }
                 break;
             case Common.STURCTURE_PAINT:
-                Toast.makeText(rootView.getContext(), "aa", Toast.LENGTH_LONG).show();
+                // 前视角
+                // 如果有点，则将图片设为不透明，去掉提示文字
+                if(!posEntitiesFront.isEmpty()) {
+                    structurePaintPreviewViewFront.setAlpha(1f);
+                    structurePaintPreviewViewFront.setPosEntities(this.posEntitiesFront);
+                    structurePaintPreviewViewFront.invalidate();
+                    tipFront.setVisibility(View.GONE);
+                }
+                // 如果没点，则将图片设为半透明，添加提示文字
+                else {
+                    structurePaintPreviewViewFront.setAlpha(0.3f);
+                    structurePaintPreviewViewFront.invalidate();
+                    tipFront.setVisibility(View.VISIBLE);
+                }
+
+                // 后视角
+                if(!posEntitiesRear.isEmpty()) {
+                    structurePaintPreviewViewRear.setAlpha(1f);
+                    structurePaintPreviewViewRear.setPosEntities(this.posEntitiesRear);
+                    structurePaintPreviewViewRear.invalidate();
+                    tipRear.setVisibility(View.GONE);
+                } else {
+                    structurePaintPreviewViewRear.setAlpha(0.3f);
+                    structurePaintPreviewViewRear.invalidate();
+                    tipRear.setVisibility(View.VISIBLE);
+                }
+
                 break;
         }
     }

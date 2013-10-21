@@ -7,16 +7,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+// TODO: 登录界面！！！！！
 public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        }
-
-    public void EnterProcedureInput(View view) {
-        Intent intent = new Intent(this, ProcedureInputFrameActivity.class);
-        startActivity(intent);
     }
 
     public void EnterCarCheck(View view) {
@@ -51,4 +47,8 @@ public class MainActivity extends Activity {
         dialog.show();
     }
 
+    @Override
+    public void onBackPressed() {
+        Quit(null);
+    }
 }

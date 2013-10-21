@@ -7,12 +7,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -104,7 +101,7 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
     }
 
     public void StartPaint(View v) {
-        Intent intent = new Intent(this, CarCheckOutSidePaintActivity.class);
+        Intent intent = new Intent(this, CarCheckPaintActivity.class);
         intent.putExtra("PAINT_TYPE", "IN_PAINT");
         startActivityForResult(intent, Common.IN_PAINT);
     }

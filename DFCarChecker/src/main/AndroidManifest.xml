@@ -28,46 +28,14 @@
             android:name="com.df.dfcarchecker.MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name="com.df.dfcarchecker.ProcedureInputFrameActivity"
-            android:label="@string/procedure_input"
-            android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
             android:name="com.df.dfcarchecker.CarCheckFrameActivity"
-            android:label="@string/title_activity_car_check_frame"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
-        <activity
-            android:name="com.df.dfcarchecker.CarWaitingListActivity"
-            android:label="@string/title_activity_car_waiting_list"
-            android:windowSoftInputMode="stateHidden" >
-        </activity>
-        <activity
-            android:name="com.df.dfcarchecker.CarCheckCollectDataActivity"
-            android:label="@string/title_activity_car_check_collect_data" >
-        </activity>
-        <activity
-            android:name="com.df.service.BluetoothDeviceListActivity"
-            android:label="@string/pair_device" >
+            android:label="@string/title_activity_car_check_frame" >
         </activity>
         <activity
             android:name="com.df.dfcarchecker.PopupActivity"
             android:label="@string/title_activity_popup" >
-        </activity>
-        <activity
-            android:name="com.df.dfcarchecker.CarCheckWaterActivity"
-            android:label="@string/it_water" >
-        </activity>
-        <activity
-            android:name="com.df.dfcarchecker.CarCheckTireActivity"
-            android:label="@string/title_activity_car_check_tire" >
         </activity>
         <activity
             android:name="com.df.dfcarchecker.CarCheckedListActivity"
@@ -78,16 +46,29 @@
             android:label="@string/title_activity_car_report" >
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.CarCheckOutSidePaintActivity"
+            android:name=".CarCheckPaintActivity"
             android:label="@string/out" >
         </activity>
         <activity
             android:name="com.df.dfcarchecker.CarCheckOutsideActivity"
-            android:label="@string/out">
+            android:label="@string/out" >
         </activity>
         <activity
             android:name="com.df.dfcarchecker.CarCheckInsideActivity"
-            android:label="@string/in">
+            android:label="@string/in" >
+        </activity>
+        <activity
+            android:name="com.df.dfcarchecker.StartupActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.df.dfcarchecker.LoginActivity"
+            android:label="@string/title_activity_login" >
         </activity>
     </application>
 

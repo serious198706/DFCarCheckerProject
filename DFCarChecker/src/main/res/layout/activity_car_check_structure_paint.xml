@@ -1,19 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical" >
+        android:id="@+id/titleLy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
 
-    <LinearLayout
-            android:id="@+id/titleLy"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1" >
+    <com.df.paintview.StructurePaintView
+            android:id="@+id/tile"
+            android:layout_width="500dp"
+            android:layout_height="300dp" />
 
-        <com.df.dfcarchecker.StructurePaintView
-                android:id="@+id/tile"
-                android:layout_width="1200px"
-                android:layout_height="1600px" />
-
-    </LinearLayout>
 </LinearLayout>
