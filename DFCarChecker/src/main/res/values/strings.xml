@@ -372,6 +372,7 @@
     <string name="title_section3">综合检查</string>
 
     <!-- 基本信息 -->
+    <string name="bi_vin">车型</string>
     <string name="bi">基本信息</string>
     <string name="bi_vin_number">车架号码（VIN）：</string>
     <string name="bi_car_model">车辆型号：</string>
@@ -382,9 +383,23 @@
     <string name="bi_run">表显里程：</string>
     <string name="bi_kilometer">万公里</string>
     <string name="bi_engine_number">发动机号：</string>
-    <string name="csi">车辆配置信息</string>
+    <string name="csi">配置信息</string>
     <string name="csi_add">添加</string>
     <string name="csi_volume">排量：</string>
+    <string name="csi_car_type">车辆类型：</string>
+    <string-array name="csi_car_type_item">
+        <item>轿车</item>
+        <item>SUV</item>
+        <item>MPV</item>
+        <item>越野车</item>
+        <item>皮卡</item>
+        <item>跑车</item>
+        <item>面包</item>
+        <item>中客</item>
+        <item>货车</item>
+        <item>房车</item>
+    </string-array>
+
     <string name="csi_drive_type">驱动方式：</string>
 
     <string-array name="csi_drive_type_item">
@@ -710,7 +725,7 @@
     <string name="action_transfer_data">传输数据</string>
 
     <!-- 车体结构检查 -->
-    <string name="structure">车体结构检查</string>
+    <string name="structure">结构检查</string>
     <string name="structure_start_paint">绘制车体结构缺陷</string>
     <string name="structure_camera">拍摄机舱组照片</string>
 
@@ -838,7 +853,7 @@
         <item>点烟器</item>
         <item>A柱饰板</item>
         <item>B柱饰板</item>
-        <item>C术饰板</item>
+        <item>C柱饰板</item>
         <item>左前门扶手</item>
         <item>左后门扶手</item>
         <item>右前门扶手</item>
@@ -1043,6 +1058,6 @@
     <string name="title_activity_car_check_structure_paint">MainActivity</string>
     <string name="title_activity_car_check_vin_input">MainActivity</string>
     <string name="title_activity_startup">MainActivity</string>
-    <string name="title_activity_login">Login</string>
+
 
 </resources>

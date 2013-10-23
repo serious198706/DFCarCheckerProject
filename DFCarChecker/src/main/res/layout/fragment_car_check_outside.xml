@@ -2,7 +2,9 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
@@ -18,9 +20,9 @@
                 android:text="@string/out" />
 
         <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="?android:attr/listDivider"/>
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000"/>
 
         <RelativeLayout
                       android:layout_width="match_parent"
@@ -59,9 +61,9 @@
                     android:text="@string/other_check" />
 
             <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="?android:attr/listDivider"/>
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#000"/>
             <TableRow>
                 <TextView android:layout_width="0dp"
                           android:layout_height="wrap_content"
@@ -79,9 +81,10 @@
                           android:ellipsize="end"/>
                 <Button android:id="@+id/out_choose_broken_button"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:text="@string/choose"
-                        android:layout_weight="1"/>
+                        android:layout_weight="1"
+                        android:background="@drawable/button_custom"/>
             </TableRow>
             <TableRow>
                 <TextView android:layout_width="0dp"
@@ -105,15 +108,19 @@
                     android:text="@string/camera" />
 
             <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="?android:attr/listDivider"/>
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#000"/>
             <TableRow>
                 <Button android:id="@+id/out_start_camera_button"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
                         android:text="@string/out_camera"
-                        android:drawableRight="@drawable/camera_item"/>
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:drawableRight="@drawable/camera"
+                        android:background="@drawable/button_custom"/>/>
             </TableRow>
             <TextView
                     android:layout_width="wrap_content"
@@ -123,9 +130,9 @@
                     android:text="@string/comment" />
 
             <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="?android:attr/listDivider"/>
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#000"/>
             <TableRow>
                 <TextView
                         android:layout_height="wrap_content"

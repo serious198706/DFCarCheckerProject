@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Environment;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
@@ -47,7 +48,13 @@ public class InsidePaintPreviewView extends ImageView {
     }
 
     private void init() {
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_base_image);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        String sdcardPath = Environment.getExternalStorageDirectory().toString();
+
+        bitmap = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/in.png", options);
+
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
@@ -57,7 +64,7 @@ public class InsidePaintPreviewView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        HandelPosEntitiesDueToDifferentResolution();
+        //HandelPosEntitiesDueToDifferentResolution();
         canvas.drawBitmap(bitmap, 0, 0, null);
         paint(canvas);
 

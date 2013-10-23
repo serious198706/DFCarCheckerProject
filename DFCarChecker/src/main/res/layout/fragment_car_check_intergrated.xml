@@ -40,7 +40,8 @@
         <TableRow>
             <Button android:id="@+id/out_button"
                 android:layout_width="150dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
                 android:textSize="18sp"
                 android:text="@string/out"
                 android:background="@drawable/button_custom"/>
@@ -77,7 +78,8 @@
         <TableRow>
             <Button android:id="@+id/in_button"
                 android:layout_width="150dp"
-                android:layout_height="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginTop="5dp"
                 android:textSize="18sp"
                 android:text="@string/in"
                 android:background="@drawable/button_custom"/>

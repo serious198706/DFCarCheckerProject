@@ -17,7 +17,7 @@
         <com.df.paintview.InsidePaintView
                 android:id="@+id/tile"
                 android:layout_width="600dp"
-                android:layout_height="800dp" />
+                android:layout_height="360dp" />
 
     </LinearLayout>
 </LinearLayout>

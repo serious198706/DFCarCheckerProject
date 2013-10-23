@@ -2,7 +2,9 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <LinearLayout android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -13,39 +15,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-            android:drawableLeft="@drawable/inside_item"
-            android:drawablePadding="10dp"
+                android:drawableLeft="@drawable/inside_item"
+                android:drawablePadding="10dp"
                 style="@style/CodeFont"
                 android:text="@string/in" />
 
         <View
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:background="?android:attr/listDivider"/>
-        <LinearLayout android:orientation="horizontal"
-                      android:layout_width="match_parent"
-                      android:layout_height="wrap_content">
-            <ImageView android:id="@+id/in_base_image"
-                       android:layout_height="wrap_content"
-                       android:layout_width="0dp"
-                       android:src="@drawable/in_base_image"
-                       android:contentDescription="@string/itemImage"
-                       android:layout_weight="3"/>
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000"/>
 
-            <LinearLayout android:layout_width="0dp"
-                          android:layout_height="wrap_content"
-                          android:layout_weight="1"
-                          android:orientation="vertical">
-                <Button android:id="@+id/in_start_paint_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-                <ImageView android:id="@+id/in_skylight_base_image"
-                           android:layout_height="wrap_content"
-                           android:layout_width="wrap_content"
-                            android:contentDescription="@string/itemImage"
-                           android:src="@drawable/in_skylight_base_image"/>
-            </LinearLayout>
-        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.df.paintview.InsidePaintPreviewView
+                android:id="@+id/in_base_image_preview"
+                android:layout_width="500dp"
+                android:layout_height="300dp"
+                android:layout_centerHorizontal="true"
+                android:alpha="0.3"/>
+            <TextView
+                android:id="@+id/tipOnPreview"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_alignLeft="@id/in_base_image_preview"
+                android:layout_alignRight="@id/in_base_image_preview"
+                android:layout_alignTop="@id/in_base_image_preview"
+                android:layout_alignBottom="@id/in_base_image_preview"
+                android:layout_margin="1dp"
+                android:gravity="center"
+                android:text="点击以绘制"
+                android:textSize="18sp"
+                android:textColor="#000000" />
+        </RelativeLayout>
+
 
         <TableLayout android:layout_width="match_parent"
                      android:layout_height="wrap_content">
@@ -59,9 +63,10 @@
                     android:text="@string/other_check" />
 
             <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="?android:attr/listDivider"/>
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#000"/>
+
             <TableRow>
                 <TextView android:layout_width="0dp"
                           android:layout_height="wrap_content"
@@ -79,10 +84,10 @@
                           android:ellipsize="end"/>
                 <Button android:id="@+id/in_choose_broken_button"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:text="@string/choose"
                         android:layout_weight="1"
-                        android:onClick="ChooseBroken"/>
+                        android:background="@drawable/button_custom"/>
             </TableRow>
             <TableRow>
                 <TextView android:layout_width="0dp"
@@ -101,10 +106,10 @@
                           android:ellipsize="end"/>
                 <Button android:id="@+id/in_choose_dirty_button"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:text="@string/choose"
                         android:layout_weight="1"
-                        android:onClick="ChooseDirty"/>
+                        android:background="@drawable/button_custom"/>
             </TableRow>
             <TableRow>
                 <TextView android:layout_width="0dp"
@@ -128,16 +133,19 @@
                     android:text="@string/camera" />
 
             <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="?android:attr/listDivider"/>
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#000"/>
             <TableRow>
                 <Button android:id="@+id/in_start_camera_button"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
                         android:text="@string/in_camera"
-                        android:drawableRight="@drawable/camera_item"
-                        android:onClick="in_start_camera"/>
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:drawableRight="@drawable/camera"
+                        android:background="@drawable/button_custom"/>
             </TableRow>
             <TextView
                     android:layout_width="wrap_content"
@@ -147,9 +155,9 @@
                     android:text="@string/comment" />
 
             <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="?android:attr/listDivider"/>
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#000"/>
             <TableRow>
                 <TextView
                         android:layout_height="wrap_content"

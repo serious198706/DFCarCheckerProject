@@ -5,7 +5,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
+            android:layout_marginRight="5dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -93,9 +95,13 @@
             <TableRow>
                 <Button android:id="@+id/structure_start_camera_button"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
                         android:text="@string/structure_camera"
-                        android:drawableRight="@drawable/camera_item"/>
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:drawableRight="@drawable/camera"
+                        android:background="@drawable/button_custom"/>
             </TableRow>
             <TextView
                     android:layout_width="wrap_content"

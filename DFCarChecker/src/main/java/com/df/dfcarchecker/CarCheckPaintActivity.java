@@ -58,6 +58,7 @@ public class CarCheckPaintActivity extends Activity {
 
     private void SetInPaintLayout() {
         setContentView(R.layout.activity_car_check_inside_paint);
+        setTitle(R.string.in);
 
         insidePaintView = (InsidePaintView) findViewById(R.id.tile);
 
@@ -85,6 +86,7 @@ public class CarCheckPaintActivity extends Activity {
 
     private void SetOutPaintLayout() {
         setContentView(R.layout.activity_car_check_outside_paint);
+        setTitle(R.string.out);
 
         outsidePaintView = (OutsidePaintView) findViewById(R.id.tile);
 
@@ -119,6 +121,7 @@ public class CarCheckPaintActivity extends Activity {
 
     private void SetStructurePaintLayout(String sight) {
         setContentView(R.layout.activity_car_check_structure_paint);
+        setTitle(R.string.structure);
         structurePaintView = (StructurePaintView) findViewById(R.id.tile);
 
         if(sight.equals("FRONT")) {

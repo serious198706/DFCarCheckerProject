@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -55,7 +56,13 @@ public class InsidePaintView extends ImageView {
     }
 
     private void init() {
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.car);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        String sdcardPath = Environment.getExternalStorageDirectory().toString();
+
+        bitmap = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/in.png", options);
+
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
