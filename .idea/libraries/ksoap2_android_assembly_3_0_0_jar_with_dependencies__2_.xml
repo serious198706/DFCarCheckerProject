@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="ksoap2-android-assembly-3.0.0-jar-with-dependencies (2)">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/DFCarChecker/lib/ksoap2-android-assembly-3.0.0-jar-with-dependencies.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

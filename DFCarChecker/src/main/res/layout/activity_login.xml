@@ -33,13 +33,17 @@
         <LinearLayout style="@style/LoginFormContainer"
             android:orientation="vertical">
 
+            <ImageView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:src="@drawable/logo"/>
+
             <EditText
-                android:id="@+id/email"
+                android:id="@+id/userName"
                 android:singleLine="true"
                 android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textEmailAddress"
                 android:hint="@string/prompt_email" />
 
             <EditText

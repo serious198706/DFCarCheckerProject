@@ -4,10 +4,13 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -15,53 +18,51 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.df.service.SoapService;
+import com.df.service.UserInfo;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Activity which displays a login screen to the user, offering registration as
  * well.
  */
 public class LoginActivity extends Activity {
     /**
-     * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
-     */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
-            "foo@example.com:hello",
-            "bar@example.com:world"
-    };
-
-    /**
-     * The default email to populate the email field with.
-     */
-    public static final String EXTRA_EMAIL = "com.example.android.authenticatordemo.extra.EMAIL";
-
-    /**
+     * 后台任务，用来进行登录
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
 
-    // Values for email and password at the time of the login attempt.
-    private String mEmail;
+    // 储存用户名、密码
+    private String mUserName;
     private String mPassword;
 
-    // UI references.
-    private EditText mEmailView;
+    // 错误信息
+    private String errorMsg;
+
+    // 组件们
+    private EditText mUserNameView;
     private EditText mPasswordView;
     private View mLoginFormView;
     private View mLoginStatusView;
     private TextView mLoginStatusMessageView;
 
+    // 用户信息：id、key
+    private UserInfo userInfo;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_login);
 
-        // Set up the login form.
-        mEmail = getIntent().getStringExtra(EXTRA_EMAIL);
-        mEmailView = (EditText) findViewById(R.id.email);
-        mEmailView.setText(mEmail);
+        mUserNameView = (EditText) findViewById(R.id.userName);
+        mUserNameView.setText(mUserName);
 
         mPasswordView = (EditText) findViewById(R.id.password);
+
+        // 当在密码填写时点击了回车，也视为进行登录操作
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -94,64 +95,51 @@ public class LoginActivity extends Activity {
     }
 
     /**
-     * Attempts to sign in or register the account specified by the login form.
-     * If there are form errors (invalid email, missing fields, etc.), the
-     * errors are presented and no actual login attempt is made.
+     * 尝试进行登陆
+     * 如果有错误（用户名、密码未填写）则不进行登陆
      */
     public void attemptLogin() {
         if (mAuthTask != null) {
             return;
         }
 
-        // Reset errors.
-        mEmailView.setError(null);
+        mUserNameView.setError(null);
         mPasswordView.setError(null);
 
-        // Store values at the time of the login attempt.
-        mEmail = mEmailView.getText().toString();
+        mUserName = mUserNameView.getText().toString();
         mPassword = mPasswordView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password.
-        if (TextUtils.isEmpty(mPassword)) {
-            mPasswordView.setError(getString(R.string.error_field_required));
-            focusView = mPasswordView;
-            cancel = true;
-        } else if (mPassword.length() < 4) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+        // 检查用户名
+        if (TextUtils.isEmpty(mUserName)) {
+            mUserNameView.setError(getString(R.string.error_username_required));
+            focusView = mUserNameView;
             cancel = true;
         }
 
-        // Check for a valid email address.
-        if (TextUtils.isEmpty(mEmail)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!mEmail.contains("@")) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
+        // 检查密码
+        if (TextUtils.isEmpty(mPassword)) {
+            mPasswordView.setError(getString(R.string.error_password_required));
+            focusView = mPasswordView;
             cancel = true;
         }
 
         if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
+            // 有错误，让有错误的组件获取焦点
             focusView.requestFocus();
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
+            // 显示一个进度画面，并启动后台任务进行登录
             mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
             showProgress(true);
-            mAuthTask = new UserLoginTask();
+            mAuthTask = new UserLoginTask(this);
             mAuthTask.execute((Void) null);
         }
     }
 
     /**
-     * Shows the progress UI and hides the login form.
+     * 显示进度动画，隐藏登录框
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     private void showProgress(final boolean show) {
@@ -195,26 +183,43 @@ public class LoginActivity extends Activity {
      * the user.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+        Context context;
+
+        private UserLoginTask(Context context) {
+            this.context = context;
+        }
+
         @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
             try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+                // 登录
+                JSONObject jsonObject = new JSONObject();
+
+                jsonObject.put("UserName", mUserName);
+                jsonObject.put("Password", mPassword);
+
+                SoapService soapService = new SoapService();
+
+                // 设置soap的配置
+                soapService.setUtils("http://192.168.8.33:801/userManageService.svc",
+                        "http://cheyiju/IUserManageService/UserLogin",
+                        "UserLogin");
+
+                userInfo = soapService.login(context, jsonObject.toString());
+
+                // 登录失败，获取错误信息并显示
+                if(!soapService.getErrorMessage().equals("")) {
+                    errorMsg = soapService.getErrorMessage();
+
+                    return false;
+                }
+            } catch (JSONException e) {
+                Log.d("DFCarChecker", "Json Error" + e.getMessage());
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }
-
-            // TODO: register the new account here.
             return true;
         }
 
@@ -224,9 +229,11 @@ public class LoginActivity extends Activity {
             showProgress(false);
 
             if (success) {
+                Intent intent = new Intent(context, MainActivity.class);
+                startActivity(intent);
                 finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
+                mPasswordView.setError(errorMsg);
                 mPasswordView.requestFocus();
             }
         }
