@@ -58,6 +58,7 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
         mViewPager = (CustomViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setPagingEnabled(false);
+
         // 让viewPager一次性缓存3个页面，可以提高viewPager的流畅性，也可以保存fragment的数据，在
         // fragment来回切换时数据不会丢失
         mViewPager.setOffscreenPageLimit(3);

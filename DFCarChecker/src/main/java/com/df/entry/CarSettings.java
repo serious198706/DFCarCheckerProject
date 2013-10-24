@@ -1,32 +1,35 @@
 package com.df.entry;
 
-import java.util.List;
+import android.util.Log;
+
+import org.json.JSONObject;
 
 /**
  * Created by 岩 on 13-10-16.
  */
 public class CarSettings {
     private String brand;
-    private String volume;
-    private List<String> driveType;
-    private List<String> gearType;
-    private List<String> airbag;
-    private List<String> abs;
-    private List<String> turnHelper;
-    private List<String> eleWindows;
-    private List<String> skyLight;
-    private List<String> airConditioner;
-    private List<String> featherSeather;
-    private List<String> eleSeats;
-    private List<String> eleReflectMirror;
-    private List<String> parkingSensors;
-    private List<String> parkingVideo;
-    private List<String> ccs;
-    private List<String> softCloseDoors;
-    private List<String> rearEleSeats;
-    private List<String> autoChassis;
-    private List<String> autoParking;
-    private List<String> curtain;
+    private String displacement;
+    private String category;
+    private String driveType;
+    private String transmission;
+    private String airbag;
+    private String abs;
+    private String powerSteering;
+    private String powerWindows;
+    private String sunroof;
+    private String airConditioning;
+    private String leatherSeats;
+    private String powerSeats;
+    private String powerMirror;
+    private String reversingRadar;
+    private String reversingCamera;
+    private String ccs;
+    private String softCloseDoors;
+    private String rearPowerSeats;
+    private String ahc;
+    private String parkAssist;
+    private String clapboard;
 
     public String getBrand() {
         return brand;
@@ -36,163 +39,205 @@ public class CarSettings {
         this.brand = brand;
     }
 
-    public String getVolume() {
-        return volume;
+    public String getDisplacement() {
+        return displacement;
     }
 
-    public void setVolume(String volume) {
-        this.volume = volume;
+    public void setDisplacement(String displacement) {
+        this.displacement = displacement;
     }
 
-    public List<String> getDriveType() {
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getDriveType() {
         return driveType;
     }
 
-    public void setDriveType(List<String> driveType) {
+    public void setDriveType(String driveType) {
         this.driveType = driveType;
     }
 
-    public List<String> getGearType() {
-        return gearType;
+    public String getTransmission() {
+        return transmission;
     }
 
-    public void setGearType(List<String> gearType) {
-        this.gearType = gearType;
+    public void setTransmission(String transmission) {
+        this.transmission = transmission;
     }
 
-    public List<String> getAirbag() {
+    public String getAirbag() {
         return airbag;
     }
 
-    public void setAirbag(List<String> airbag) {
+    public void setAirbag(String airbag) {
         this.airbag = airbag;
     }
 
-    public List<String> getAbs() {
+    public String getAbs() {
         return abs;
     }
 
-    public void setAbs(List<String> abs) {
+    public void setAbs(String abs) {
         this.abs = abs;
     }
 
-    public List<String> getTurnHelper() {
-        return turnHelper;
+    public String getPowerSteering() {
+        return powerSteering;
     }
 
-    public void setTurnHelper(List<String> turnHelper) {
-        this.turnHelper = turnHelper;
+    public void setPowerSteering(String powerSteering) {
+        this.powerSteering = powerSteering;
     }
 
-    public List<String> getEleWindows() {
-        return eleWindows;
+    public String getPowerWindows() {
+        return powerWindows;
     }
 
-    public void setEleWindows(List<String> eleWindows) {
-        this.eleWindows = eleWindows;
+    public void setPowerWindows(String powerWindows) {
+        this.powerWindows = powerWindows;
     }
 
-    public List<String> getSkyLight() {
-        return skyLight;
+    public String getSunroof() {
+        return sunroof;
     }
 
-    public void setSkyLight(List<String> skyLight) {
-        this.skyLight = skyLight;
+    public void setSunroof(String sunroof) {
+        this.sunroof = sunroof;
     }
 
-    public List<String> getAirConditioner() {
-        return airConditioner;
+    public String getAirConditioning() {
+        return airConditioning;
     }
 
-    public void setAirConditioner(List<String> airConditioner) {
-        this.airConditioner = airConditioner;
+    public void setAirConditioning(String airConditioning) {
+        this.airConditioning = airConditioning;
     }
 
-    public List<String> getFeatherSeather() {
-        return featherSeather;
+    public String getLeatherSeats() {
+        return leatherSeats;
     }
 
-    public void setFeatherSeather(List<String> featherSeather) {
-        this.featherSeather = featherSeather;
+    public void setLeatherSeats(String leatherSeats) {
+        this.leatherSeats = leatherSeats;
     }
 
-    public List<String> getEleSeats() {
-        return eleSeats;
+    public String getPowerSeats() {
+        return powerSeats;
     }
 
-    public void setEleSeats(List<String> eleSeats) {
-        this.eleSeats = eleSeats;
+    public void setPowerSeats(String powerSeats) {
+        this.powerSeats = powerSeats;
     }
 
-    public List<String> getEleReflectMirror() {
-        return eleReflectMirror;
+    public String getPowerMirror() {
+        return powerMirror;
     }
 
-    public void setEleReflectMirror(List<String> eleReflectMirror) {
-        this.eleReflectMirror = eleReflectMirror;
+    public void setPowerMirror(String powerMirror) {
+        this.powerMirror = powerMirror;
     }
 
-    public List<String> getParkingSensors() {
-        return parkingSensors;
+    public String getReversingRadar() {
+        return reversingRadar;
     }
 
-    public void setParkingSensors(List<String> parkingSensors) {
-        this.parkingSensors = parkingSensors;
+    public void setReversingRadar(String reversingRadar) {
+        this.reversingRadar = reversingRadar;
     }
 
-    public List<String> getParkingVideo() {
-        return parkingVideo;
+    public String getReversingCamera() {
+        return reversingCamera;
     }
 
-    public void setParkingVideo(List<String> parkingVideo) {
-        this.parkingVideo = parkingVideo;
+    public void setReversingCamera(String reversingCamera) {
+        this.reversingCamera = reversingCamera;
     }
 
-    public List<String> getCcs() {
+    public String getCcs() {
         return ccs;
     }
 
-    public void setCcs(List<String> ccs) {
+    public void setCcs(String ccs) {
         this.ccs = ccs;
     }
 
-    public List<String> getSoftCloseDoors() {
+    public String getSoftCloseDoors() {
         return softCloseDoors;
     }
 
-    public void setSoftCloseDoors(List<String> softCloseDoors) {
+    public void setSoftCloseDoors(String softCloseDoors) {
         this.softCloseDoors = softCloseDoors;
     }
 
-    public List<String> getRearEleSeats() {
-        return rearEleSeats;
+    public String getRearPowerSeats() {
+        return rearPowerSeats;
     }
 
-    public void setRearEleSeats(List<String> rearEleSeats) {
-        this.rearEleSeats = rearEleSeats;
+    public void setRearPowerSeats(String rearPowerSeats) {
+        this.rearPowerSeats = rearPowerSeats;
     }
 
-    public List<String> getAutoChassis() {
-        return autoChassis;
+    public String getAhc() {
+        return ahc;
     }
 
-    public void setAutoChassis(List<String> autoChassis) {
-        this.autoChassis = autoChassis;
+    public void setAhc(String ahc) {
+        this.ahc = ahc;
     }
 
-    public List<String> getAutoParking() {
-        return autoParking;
+    public String getParkAssist() {
+        return parkAssist;
     }
 
-    public void setAutoParking(List<String> autoParking) {
-        this.autoParking = autoParking;
+    public void setParkAssist(String parkAssist) {
+        this.parkAssist = parkAssist;
     }
 
-    public List<String> getCurtain() {
-        return curtain;
+    public String getClapboard() {
+        return clapboard;
     }
 
-    public void setCurtain(List<String> curtain) {
-        this.curtain = curtain;
+    public void setClapboard(String clapboard) {
+        this.clapboard = clapboard;
+    }
+
+    // 通过Json数据填写各成员变量
+    public void setCarSettings(String jsonString) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+
+            brand = "一汽奥迪 100 1.6 MT";
+            displacement = jsonObject.getString("displacement");
+            category = jsonObject.getString("category");
+            driveType = jsonObject.getString("driveType");
+            transmission = jsonObject.getString("transmission");
+            airbag = jsonObject.getString("airBags");
+            abs = jsonObject.getString("abs");
+            powerSteering = jsonObject.getString("powerSteering");
+            powerWindows = jsonObject.getString("powerWindows");
+            sunroof = jsonObject.getString("sunroof");
+            airConditioning = jsonObject.getString("airConditioning");
+            leatherSeats = jsonObject.getString("leatherSeats");
+            powerSeats = jsonObject.getString("powerSeats");
+            powerMirror = jsonObject.getString("powerMirror");
+            reversingRadar = jsonObject.getString("reversingRadar");
+            reversingCamera = jsonObject.getString("reversingCamera");
+            ccs = jsonObject.getString("ccs");
+            softCloseDoors = jsonObject.getString("softCloseDoors");
+            rearPowerSeats = jsonObject.getString("rearPowerSeats");
+            ahc = jsonObject.getString("ahc");
+            parkAssist = jsonObject.getString("parkAssist");
+            clapboard = jsonObject.getString("clapboard");
+
+        } catch (Exception e) {
+            Log.d("DFCarChecker", "Json Error: " + e.getMessage());
+        }
     }
 }

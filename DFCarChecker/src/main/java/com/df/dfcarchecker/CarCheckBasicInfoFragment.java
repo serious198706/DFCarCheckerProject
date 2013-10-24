@@ -1,14 +1,17 @@
 package com.df.dfcarchecker;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -16,7 +19,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -29,7 +31,11 @@ import com.df.entry.Production;
 import com.df.entry.Serial;
 import com.df.entry.VehicleModel;
 import com.df.service.Helper;
+import com.df.service.SoapService;
 import com.df.service.VehicleModelParser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -70,7 +76,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private String volumeString = null;
     private String brandString = null;
 
-    private CarSettings carSettings;
+    private CarSettings mCarSettings;
 
     private EditText runEdit;
 
@@ -87,6 +93,10 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     private boolean isPorted;
     private TableRow portedProcedureRow;
+
+    private SoapService soapService;
+
+    private GetCarSettingsTask mGetCarSettingsTask = null;
 
     // 每一个部位的序号关联：
     // 第一个表示序号，
@@ -116,6 +126,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             {17,    R.id.csi_auto_parking_spinner,           0},
             {18,    R.id.csi_curtain_spinner,                0}
     };
+
+    private String result;
+    private ProgressDialog progressDialog;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -231,7 +244,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         portedProcedureRow = (TableRow) rootView.findViewById(R.id.ct_ported_procedure);
 
-        carSettings = new CarSettings();
+        mCarSettings = new CarSettings();
 
         try {
             File f = new File(Environment.getExternalStorageDirectory().getPath() + "/cheyipai/VehicleModel.xml");
@@ -248,6 +261,17 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         // 隐藏一些项目：废除
         carSets = GetCarSets();
         // HandelCSITableRow(carSets);
+
+        // 初始化所有的Spinner
+        setRegLocationSpinner();
+        setCarColorSpinner();
+        setFirstLogTimeSpinner();
+        setManufactureTimeSpinner();
+        setTransferCountSpinner();
+        setLastTransferTimeSpinner();
+        setYearlyCheckAvailableDateSpinner();
+        setAvailableDateYearSpinner();
+        setBusinessInsuranceAvailableDateYearSpinner();
 
         return rootView;
     }
@@ -285,56 +309,18 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             // TODO: 从服务器获取厂牌型号
             // TODO: 如果返回多个，要提供选择功能
             getCarSettings();
-
-            if(brandEdit.getText().toString().equals("")) {
-                updateSettings();
-            }
-
-            brandOkButton.setEnabled(true);
-            brandSelectButton.setEnabled(true);
         }
     }
 
     private void getCarSettings() {
-        // TODO: 改为从网络获取，目前是来自资源文件
-        carSettings.setBrand("一汽奥迪 100 1.6 MT");
-        carSettings.setVolume("1.6");
-        carSettings.setDriveType(Helper.StringArray2List(getResources().getStringArray(R.array.csi_drive_type_item)));
-        carSettings.setGearType(Helper.StringArray2List(getResources().getStringArray(R.array.csi_gear_type_item)));
-        carSettings.setAirbag(Helper.StringArray2List(getResources().getStringArray(R.array.csi_airbag_number)));
-        carSettings.setAbs(Helper.StringArray2List(getResources().getStringArray(R.array.csi_abs_items)));
-        carSettings.setTurnHelper(Helper.StringArray2List(getResources().getStringArray(R.array.csi_turn_help_items)));
-        carSettings.setEleWindows(Helper.StringArray2List(getResources().getStringArray(R.array.csi_ele_windows_items)));
-        carSettings.setSkyLight(Helper.StringArray2List(getResources().getStringArray(R.array.csi_sky_light_items)));
-        carSettings.setAirConditioner(Helper.StringArray2List(getResources().getStringArray(R.array.csi_air_conditioner_items)));
-        carSettings.setFeatherSeather(Helper.StringArray2List(getResources().getStringArray(R.array.csi_feather_seat_items)));
-        carSettings.setEleSeats(Helper.StringArray2List(getResources().getStringArray(R.array.csi_ele_seats_items)));
-        carSettings.setEleReflectMirror(Helper.StringArray2List(getResources().getStringArray(R.array.csi_ele_reflect_mirror_items)));
-        carSettings.setParkingSensors(Helper.StringArray2List(getResources().getStringArray(R.array.csi_parking_sensors_items)));
-        carSettings.setParkingVideo(Helper.StringArray2List(getResources().getStringArray(R.array.csi_parking_video_items)));
-        carSettings.setCcs(Helper.StringArray2List(getResources().getStringArray(R.array.csi_ccs_items)));
-        carSettings.setSoftCloseDoors(Helper.StringArray2List(getResources().getStringArray(R.array.csi_soft_close_doors_items)));
-        carSettings.setRearEleSeats(Helper.StringArray2List(getResources().getStringArray(R.array.csi_rear_ele_seats_items)));
-        carSettings.setAutoChassis(Helper.StringArray2List(getResources().getStringArray(R.array.csi_auto_chassis_items)));
-        carSettings.setAutoParking(Helper.StringArray2List(getResources().getStringArray(R.array.csi_auto_parking_items)));
-        carSettings.setCurtain(Helper.StringArray2List(getResources().getStringArray(R.array.csi_curtain_items)));
-
-        // 初始化所有的Spinner
-        setRegLocationSpinner();
-        setCarColorSpinner();
-        setFirstLogTimeSpinner();
-        setManufactureTimeSpinner();
-        setTransferCountSpinner();
-        setLastTransferTimeSpinner();
-        setYearlyCheckAvailableDateSpinner();
-        setAvailableDateYearSpinner();
-        setBusinessInsuranceAvailableDateYearSpinner();
+        mGetCarSettingsTask = new GetCarSettingsTask(rootView.getContext());
+        mGetCarSettingsTask.execute((Void)null);
     }
 
     // 更新配置信息
     private void updateSettings() {
-        brandEdit.setText(carSettings.getBrand());
-        volumeEdit.setText(carSettings.getVolume());
+        brandEdit.setText(mCarSettings.getBrand());
+        volumeEdit.setText(mCarSettings.getDisplacement());
 
         // TODO: 顺带更新其他Spinner
         if(isPorted) {
@@ -385,10 +371,14 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                 brandString = productionSpinner.getSelectedItem().toString() + " " +
                         serialSpinner.getSelectedItem().toString() + " " +
                         modelSpinner.getSelectedItem().toString();
-                volumeString = modelSpinner.getSelectedItem().toString().substring(0, 3);
 
-                carSettings.setBrand(brandString);
-                carSettings.setVolume(volumeString);
+                volumeString = modelSpinner.getSelectedItem().toString();
+                if(volumeString.length() > 3) {
+                    volumeString = volumeString.substring(0, 3);
+                }
+
+                mCarSettings.setBrand(brandString);
+                mCarSettings.setDisplacement(volumeString);
 
                 updateSettings();
             }
@@ -572,8 +562,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         List<String> province = Helper.StringArray2List(provinceArray);
         SetSpinnerData(R.id.ci_reg_location_spinner, province, rootView);
 
-        String[] privinceAbbreviationArray = getResources().getStringArray(R.array.ci_province_abbreviation);
-        final List<String> provinceAbbreviation = Helper.StringArray2List(privinceAbbreviationArray);
+        String[] provinceAbbreviationArray = getResources().getStringArray(R.array.ci_province_abbreviation);
+        final List<String> provinceAbbreviation = Helper.StringArray2List(provinceAbbreviationArray);
 
         Spinner regLocationSpinner = (Spinner) rootView.findViewById(R.id.ci_reg_location_spinner);
         regLocationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -758,6 +748,90 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             // 将每一行的状态进行更新
             TableRow row = (TableRow) rootView.findViewById(csi_map[i][1]);
             row.setVisibility(csi_map[i][2]);
+        }
+    }
+
+    private class GetCarSettingsTask extends AsyncTask<Void, Void, Boolean> {
+        Context context;
+
+        private GetCarSettingsTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute()
+        {
+            progressDialog = ProgressDialog.show(rootView.getContext(), "提醒",
+                    "正在获取车辆信息，请稍候。。", false, false);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+//            try {
+//                // 登录
+//                JSONObject jsonObject = new JSONObject();
+//
+//                // vin + userID + key
+//                jsonObject.put("Vin", vin_edit.getText().toString());
+//                jsonObject.put("UserId", LoginActivity.userInfo.getId());
+//                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+//
+//                soapService = new SoapService();
+//
+//                // 设置soap的配置
+//                soapService.setUtils("http://192.168.8.33:801/userManageService.svc",
+//                        "http://cheyiju/IUserManageService/UserLogin",
+//                        "UserLogin");
+//
+//                result = soapService.communicateWithServer(context, jsonObject.toString());
+//
+//                // 传输失败，获取错误信息并显示
+//                if(!result.equals("")) {
+//                    Log.d("DFCarChecker", "Login error:" + result);
+//                    return false;
+//                }
+//            } catch (JSONException e) {
+//                Log.d("DFCarChecker", "Json Error" + e.getMessage());
+//                return false;
+//            }
+
+            return true;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mGetCarSettingsTask = null;
+
+            progressDialog.dismiss();
+
+            if (success) {
+                // 设置车辆配置
+                //mCarSettings.setCarSettings(result);
+
+                mCarSettings.setBrand("1111");
+                mCarSettings.setDisplacement("1.5");
+
+                if(brandEdit.getText().toString().equals("")) {
+                    updateSettings();
+                }
+
+                brandOkButton.setEnabled(true);
+                brandSelectButton.setEnabled(true);
+            } else {
+                Log.d("DFCarChecker", "connection error.");
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mGetCarSettingsTask = null;
         }
     }
 }

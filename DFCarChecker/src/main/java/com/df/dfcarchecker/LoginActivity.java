@@ -31,7 +31,6 @@ import org.json.JSONObject;
 public class LoginActivity extends Activity {
     /**
      * 后台任务，用来进行登录
-     * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
 
@@ -50,7 +49,7 @@ public class LoginActivity extends Activity {
     private TextView mLoginStatusMessageView;
 
     // 用户信息：id、key
-    private UserInfo userInfo;
+    public static UserInfo userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,8 +178,7 @@ public class LoginActivity extends Activity {
     }
 
     /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
+     * 一个异步的登录任务
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
         Context context;
@@ -207,13 +205,14 @@ public class LoginActivity extends Activity {
                         "http://cheyiju/IUserManageService/UserLogin",
                         "UserLogin");
 
-                userInfo = soapService.login(context, jsonObject.toString());
+                errorMsg = soapService.login(context, jsonObject.toString());
 
                 // 登录失败，获取错误信息并显示
-                if(!soapService.getErrorMessage().equals("")) {
-                    errorMsg = soapService.getErrorMessage();
-
+                if(!errorMsg.equals("")) {
+                    Log.d("DFCarChecker", "Login error:" + errorMsg);
                     return false;
+                } else {
+                    userInfo = soapService.getUserInfo();
                 }
             } catch (JSONException e) {
                 Log.d("DFCarChecker", "Json Error" + e.getMessage());

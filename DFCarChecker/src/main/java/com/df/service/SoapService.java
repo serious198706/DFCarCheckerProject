@@ -1,6 +1,7 @@
 package com.df.service;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import org.json.JSONObject;
@@ -9,9 +10,6 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import java.net.ConnectException;
-
-
 public class SoapService implements ISoapService {
     private static final String NAMESPACE = "http://cheyiju";
     private String errorMessage;
@@ -19,6 +17,8 @@ public class SoapService implements ISoapService {
     private String url;
     private String soapAction;
     private String methodName;
+
+    private UserInfo userInfo;
 
     public SoapService() {}
 
@@ -30,7 +30,9 @@ public class SoapService implements ISoapService {
 
     public String getErrorMessage() { return errorMessage; }
 
-    public UserInfo login(Context context, String jsonString) {
+    public UserInfo getUserInfo() { return userInfo; }
+
+    public String login(Context context, String jsonString) {
         errorMessage = "";
 
         // 建立soap请求
@@ -56,7 +58,7 @@ public class SoapService implements ISoapService {
 
             errorMessage = "无法连接到服务器！";
 
-            return null;
+            return errorMessage;
         }
 
         // 收到的结果
@@ -68,7 +70,7 @@ public class SoapService implements ISoapService {
         // JSON格式数据
         String jsonResult = soapObject.getProperty(1).toString();
 
-        UserInfo userinfo = new UserInfo();;
+        userInfo = new UserInfo();
 
         // 成功
         if(result.equals("0")) {
@@ -76,8 +78,8 @@ public class SoapService implements ISoapService {
                 errorMessage = "";
                 JSONObject jsonObject = new JSONObject(jsonResult);
 
-                userinfo.setId(jsonObject.getString("UserId").toString());
-                userinfo.setKey(jsonObject.getString("Key").toString());
+                userInfo.setId(jsonObject.getString("UserId"));
+                userInfo.setKey(jsonObject.getString("Key"));
 
             } catch (Exception e) {
                 Log.d("DFCarChecker", e.getMessage());
@@ -89,7 +91,7 @@ public class SoapService implements ISoapService {
             Log.d("DFCarChecker", jsonResult);
         }
 
-        return userinfo;
+        return errorMessage;
     }
 
     public String communicateWithServer(Context context, String jsonString) {
@@ -131,6 +133,10 @@ public class SoapService implements ISoapService {
             Log.d("DFCarChecker", jsonResult);
         }
 
+        return errorMessage;
+    }
+
+    public String uploadPicture(Context context, Bitmap bitmap, String jsonString) {
         return errorMessage;
     }
 }
