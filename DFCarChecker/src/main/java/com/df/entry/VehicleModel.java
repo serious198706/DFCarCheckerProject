@@ -36,6 +36,18 @@ public class VehicleModel {
 
         return countryNames;
     }
+
+    public Country getCountryById(String id) {
+        Country country = null;
+
+        for(int i = 0; i < countries.size(); i++) {
+            if(countries.get(i).id.equals(id)) {
+                country = countries.get(i);
+            }
+        }
+
+        return country;
+    }
 }
 
 

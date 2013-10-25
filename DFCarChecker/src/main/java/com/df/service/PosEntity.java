@@ -25,6 +25,14 @@ public class PosEntity implements Serializable {
 
     private String image;
 
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+
     private Bitmap bitmap = null;
 
     public PosEntity(int type) {

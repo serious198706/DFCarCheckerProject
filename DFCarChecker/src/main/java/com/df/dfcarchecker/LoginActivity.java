@@ -182,6 +182,7 @@ public class LoginActivity extends Activity {
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
         Context context;
+        SoapService soapService;
 
         private UserLoginTask(Context context) {
             this.context = context;
@@ -189,7 +190,7 @@ public class LoginActivity extends Activity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
+            boolean success = false;
 
             try {
                 // 登录
@@ -198,28 +199,37 @@ public class LoginActivity extends Activity {
                 jsonObject.put("UserName", mUserName);
                 jsonObject.put("Password", mPassword);
 
-                SoapService soapService = new SoapService();
+                soapService = new SoapService();
 
                 // 设置soap的配置
                 soapService.setUtils("http://192.168.8.33:801/userManageService.svc",
                         "http://cheyiju/IUserManageService/UserLogin",
                         "UserLogin");
 
-                errorMsg = soapService.login(context, jsonObject.toString());
+                success = soapService.login(context, jsonObject.toString());
 
                 // 登录失败，获取错误信息并显示
-                if(!errorMsg.equals("")) {
-                    Log.d("DFCarChecker", "Login error:" + errorMsg);
-                    return false;
+                if(!success) {
+                    Log.d("DFCarChecker", "Login error:" + soapService.getErrorMessage());
                 } else {
-                    userInfo = soapService.getUserInfo();
+                    userInfo = new UserInfo();
+
+                    try {
+                        JSONObject userJsonObject = new JSONObject(soapService.getResultMessage());
+
+                        // 保存用户的UserId和此次登陆的Key
+                        userInfo.setId(userJsonObject.getString("UserId"));
+                        userInfo.setKey(userJsonObject.getString("Key"));
+                    } catch (Exception e) {
+                        Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
+                        return false;
+                    }
                 }
             } catch (JSONException e) {
-                Log.d("DFCarChecker", "Json Error" + e.getMessage());
-                return false;
+                Log.d("DFCarChecker", "Json解析错误: " + e.getMessage());
             }
 
-            return true;
+            return success;
         }
 
         @Override
@@ -232,7 +242,7 @@ public class LoginActivity extends Activity {
                 startActivity(intent);
                 finish();
             } else {
-                mPasswordView.setError(errorMsg);
+                mPasswordView.setError(soapService.getErrorMessage());
                 mPasswordView.requestFocus();
             }
         }

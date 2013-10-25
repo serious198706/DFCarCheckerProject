@@ -9,7 +9,7 @@ import android.graphics.Bitmap;
 import org.ksoap2.serialization.SoapObject;
 
 public interface ISoapService {
-    String login(Context context, String jsonString);
-    String communicateWithServer(Context context, String jsonString);
-    String uploadPicture(Context context, Bitmap bitmap, String jsonString);
+    boolean login(Context context, String jsonString);
+    boolean communicateWithServer(Context context, String jsonString);
+    boolean uploadPicture(Context context, Bitmap bitmap, String jsonString);
 }

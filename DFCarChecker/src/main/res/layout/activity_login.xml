@@ -44,7 +44,8 @@
                 android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/prompt_email" />
+                android:hint="@string/prompt_email"
+                android:text="dingyi"/>
 
             <EditText
                 android:id="@+id/password"
@@ -56,7 +57,8 @@
                 android:inputType="textPassword"
                 android:imeActionLabel="@string/action_sign_in_short"
                 android:imeActionId="@+id/login"
-                android:imeOptions="actionUnspecified" />
+                android:imeOptions="actionUnspecified"
+                android:text="123456"/>
 
             <Button android:id="@+id/sign_in_button"
                 android:layout_width="wrap_content"

@@ -13,8 +13,8 @@ import java.util.List;
 import com.df.entry.Brand;
 import com.df.entry.Country;
 import com.df.entry.Model;
-import com.df.entry.Production;
-import com.df.entry.Serial;
+import com.df.entry.Manufacturer;
+import com.df.entry.Series;
 import com.df.entry.VehicleModel;
 /**
  * Created by admin on 13-10-15.
@@ -36,12 +36,12 @@ public class VehicleModelParser {
         Brand brand = new Brand();
 
         // 厂商
-        List<Production> productions = new ArrayList<Production>();
-        Production production = new Production();
+        List<Manufacturer> manufacturers = new ArrayList<Manufacturer>();
+        Manufacturer manufacturer = new Manufacturer();
 
         // 车系
-        List<Serial> serials = new ArrayList<Serial>();
-        Serial serial = new Serial();
+        List<Series> serieses = new ArrayList<Series>();
+        Series series = new Series();
 
         // 型号
         List<Model> models = new ArrayList<Model>();
@@ -75,7 +75,7 @@ public class VehicleModelParser {
                             countries.add(country);
                         } else if("b".equals(tagName)){
                             // 新建一个production list
-                            productions = new ArrayList<Production>();
+                            manufacturers = new ArrayList<Manufacturer>();
 
                             brand = new Brand();
                             brand.id = parser.getAttributeValue(0);
@@ -83,20 +83,20 @@ public class VehicleModelParser {
                             brands.add(brand);
                         } else if("p".equals(tagName)){
                             // 新建一个serial list
-                            serials = new ArrayList<Serial>();
+                            serieses = new ArrayList<Series>();
 
-                            production = new Production();
-                            production.id = parser.getAttributeValue(0);
-                            production.name = parser.getAttributeValue(1);
-                            productions.add(production);
+                            manufacturer = new Manufacturer();
+                            manufacturer.id = parser.getAttributeValue(0);
+                            manufacturer.name = parser.getAttributeValue(1);
+                            manufacturers.add(manufacturer);
                         } else if("s".equals(tagName)){
                             // 新建一个model list
                             models = new ArrayList<Model>();
 
-                            serial = new Serial();
-                            serial.id = parser.getAttributeValue(0);
-                            serial.name = parser.getAttributeValue(1);
-                            serials.add(serial);
+                            series = new Series();
+                            series.id = parser.getAttributeValue(0);
+                            series.name = parser.getAttributeValue(1);
+                            serieses.add(series);
                         } else if("m".equals(tagName)){
                             model = new Model();
                             model.id = parser.getAttributeValue(0);
@@ -109,9 +109,9 @@ public class VehicleModelParser {
 
                 vehicleModels.countries = countries;
                 country.brands = brands;
-                brand.productions = productions;
-                production.serials = serials;
-                serial.models = models;
+                brand.manufacturers = manufacturers;
+                manufacturer.serieses = serieses;
+                series.models = models;
 
                 eventType=parser.next();
             }

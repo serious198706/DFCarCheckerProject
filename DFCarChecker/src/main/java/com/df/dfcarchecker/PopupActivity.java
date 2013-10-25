@@ -29,18 +29,19 @@ public class PopupActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String value = extras.getString("POPUP_TYPE");
-            if(value.equals("OUT_GLASS")) {
-                SetOutGlassLayout();
-            } else if(value.equals("OUT_SCREW")) {
-                SetOutScrewLayout();
-            } else if(value.equals("OUT_BROKEN")) {
+            // 外观破损
+            if(value.equals("OUT_BROKEN")) {
                 String brokenParts = extras.getString("BROKEN_PARTS");
                 SetOutBrokenLayout(brokenParts);
-            } else if(value.equals("IN_BROKEN")) {
+            }
+            // 内饰破损
+            else if(value.equals("IN_BROKEN")) {
                 String brokenParts = extras.getString("BROKEN_PARTS");
                 String dirtyParts = extras.getString("DIRTY_PARTS");
                 SetInBrokenLayout(brokenParts, dirtyParts);
-            } else if(value.equals("IN_DIRTY")) {
+            }
+            // 内饰脏污
+            else if(value.equals("IN_DIRTY")) {
                 String dirtyParts = extras.getString("DIRTY_PARTS");
                 String brokenParts = extras.getString("BROKEN_PARTS");
                 SetInDirtyLayout(dirtyParts, brokenParts);
@@ -77,20 +78,6 @@ public class PopupActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    private void SetOutGlassLayout() {
-        RESULT_TYPE = Common.OUT_GLASS_RESULT;
-    }
-
-    private void SetOutScrewLayout() {
-        RESULT_TYPE = Common.OUT_SCREW_RESULT;
-
-        setTitle(getResources().getString(R.string.ac_screw_parts));
-
-        String[] checkBoxTextArray = getResources().getStringArray(R.array.ac_screw_item);
-
-        RenderChildTree(checkBoxTextArray, null);
-    }
 
     // 外观检查 - 破损
     private void SetOutBrokenLayout(String brokenParts) {
@@ -161,8 +148,6 @@ public class PopupActivity extends Activity {
 
 
     private void RenderChildTree(String[] checkBoxTextArray, String[] parts) {
-        int count = 0;
-
         root = (TableLayout)findViewById(R.id.root);
 
         int length = checkBoxTextArray.length;
@@ -188,8 +173,6 @@ public class PopupActivity extends Activity {
                         checkBox.setChecked(true);
                     }
                 }
-
-                count++;
             }
 
             root.addView(tableRow);
@@ -219,8 +202,6 @@ public class PopupActivity extends Activity {
     }
 
     private void RenderChildTree(String[] checkBoxTextArray, String[] parts, String[] disableParts) {
-        int count = 0;
-
         root = (TableLayout)findViewById(R.id.root);
 
         int length = checkBoxTextArray.length;
@@ -253,8 +234,6 @@ public class PopupActivity extends Activity {
                         checkBox.setEnabled(false);
                     }
                 }
-
-                count++;
             }
 
             root.addView(tableRow);

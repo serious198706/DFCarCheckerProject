@@ -12,4 +12,13 @@ public class Model {
         return name;
     }
 
+    public String getNameById(String id) {
+        String name = "";
+
+        if(this.id.equals(id)) {
+            name = this.name;
+        }
+
+        return name;
+    }
 }
