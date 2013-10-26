@@ -4,6 +4,7 @@
     <string name="brand">厂牌型号：</string>
 
     <!-- 配置信息 -->
+    <string name="bi_select_model">选择车型</string>
     <string name="bi_vin">车型</string>
     <string name="bi_car_color">车身颜色：</string>
     <string name="bi_car_number">牌照号码：</string>
@@ -33,8 +34,8 @@
         <item>智能四驱</item>
     </string-array>
 
-    <string name="csi_gear_type">变速器形式：</string>
-    <string-array name="csi_gear_type_item">
+    <string name="csi_transmission">变速器形式：</string>
+    <string-array name="csi_transmission_item">
         <item>手动</item>
         <item>自动</item>
         <item>手自一体</item>

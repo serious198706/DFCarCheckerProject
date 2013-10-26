@@ -57,7 +57,10 @@ public class CarSettings {
     }
 
     public String getDriveType() {
-        return driveType;
+        if(driveType.equals("四驱"))
+            return "1";
+        else
+            return "0";
     }
 
     public void setDriveType(String driveType) {
@@ -65,7 +68,14 @@ public class CarSettings {
     }
 
     public String getTransmission() {
-        return transmission;
+        if(transmission.equals("MT"))
+            return "0";
+        else if(transmission.equals("A/MT"))
+            return "2";
+        else if(transmission.equals("CVT"))
+            return "3";
+        else
+            return "1";
     }
 
     public void setTransmission(String transmission) {

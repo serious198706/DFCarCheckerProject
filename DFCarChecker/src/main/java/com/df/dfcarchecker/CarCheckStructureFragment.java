@@ -9,9 +9,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,6 +32,7 @@ import com.df.entry.Model;
 import com.df.entry.Series;
 import com.df.paintview.StructurePaintPreviewView;
 import com.df.service.Common;
+import com.df.service.Helper;
 import com.df.service.PosEntity;
 import com.df.service.SoapService;
 
@@ -61,12 +64,8 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
     public static Bitmap previewBitmapFront;
     public static Bitmap previewBitmapRear;
 
-    private ImageView imageView;
     private Button uploadButton;
 
-    private Bitmap bitmapToUpload;
-
-    private String errorMessage;
     private UploadPictureTask mUploadPictureTask;
 
     @Override
@@ -107,7 +106,6 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         root = (ScrollView)rootView.findViewById(R.id.root);
         root.setVisibility(View.GONE);
 
-        imageView = (ImageView) rootView.findViewById(R.id.image);
         uploadButton = (Button) rootView.findViewById(R.id.upload);
         uploadButton.setOnClickListener(this);
 
@@ -163,6 +161,10 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
                 Toast.makeText(rootView.getContext(), "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+
+                Uri fileUri = Helper.getOutputMediaFileUri("structure_f_2"); // create a file to save the image
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+
                 startActivityForResult(intent, Common.PHOTO_FOR_STRUCTURE_GROUP);
             }
         });
@@ -192,8 +194,10 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         switch (requestCode) {
             case Common.PHOTO_FOR_STRUCTURE_GROUP:
                 if(resultCode == Activity.RESULT_OK) {
-                    bitmapToUpload = (Bitmap) data.getExtras().get("data");
-                    imageView.setImageBitmap(bitmapToUpload);
+                    //bitmapToUpload = (Bitmap) data.getExtras().get("data");
+                    // Upload();
+
+                    //imageView.setImageBitmap(bitmapToUpload);
                 } else {
                     Toast.makeText(rootView.getContext(),
                             "error occured during opening camera", Toast.LENGTH_SHORT)
@@ -259,17 +263,20 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
 
             JSONObject jsonObject = new JSONObject();
             try {
-                jsonObject.put("PictureName", "aa.jpg");
+                // TODO: 更改命名方式
+                jsonObject.put("PictureName", "structure_f_2.jpg");
                 jsonObject.put("StartPoint", "187,90");
                 jsonObject.put("EndPoint", "255, 103");
                 jsonObject.put("UniqueId", "199");
+                // 绘图类型 -
+                jsonObject.put("Type", "0");
                 jsonObject.put("UserId", LoginActivity.userInfo.getId());
                 jsonObject.put("Key", LoginActivity.userInfo.getKey());
             } catch (JSONException e) {
 
             }
 
-            File f = new File("/mnt/sdcard/Pictures/aa.jpg");
+            File f = new File("/mnt/sdcard/Pictures/DFCarChecker/structure_f_2.jpg");
             Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
 
             success = soapService.uploadPicture(root.getContext(), bitmap, jsonObject.toString());

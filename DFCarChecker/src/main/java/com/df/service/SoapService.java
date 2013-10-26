@@ -151,7 +151,7 @@ public class SoapService implements ISoapService {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
         // 将图片转换成流
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream);
         byte[] byteArray = stream.toByteArray();
         byte[] newByteArray = null;
 
@@ -161,7 +161,7 @@ public class SoapService implements ISoapService {
         // 将图片流复制到新的byte数组中
         int length = byteArray.length;
 
-        newByteArray = new byte[length + 2 + jsonString.length()];
+        newByteArray = new byte[length + jsonString.length()];
         System.arraycopy(byteArray, 0, newByteArray, 0, length);
 
         for(int i = 0; i < jsonString.length(); i++) {

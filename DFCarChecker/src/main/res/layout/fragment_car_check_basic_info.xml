@@ -34,11 +34,17 @@
                 android:text="@string/vin"
                 android:textSize="22sp"
                 style="@style/CodeFont"/>
+            <Spinner android:id="@+id/bi_vin_spinner"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="3"/>
             <EditText android:id="@+id/bi_vin_edit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="LE4FG65Z487015744"/>
+                android:text="LJDBAA33630037414"
+                android:visibility="gone"/>
+            <!-- LE4FG65Z487015744 -->
             <Button android:id="@+id/bi_vin_button"
                 android:layout_width="0dp"
                 android:layout_height="35dp"
@@ -149,16 +155,16 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="@string/csi_gear_type"
+                    android:text="@string/csi_transmission"
                     android:layout_weight="1"
                     android:textSize="18sp"
                     android:layout_marginLeft="8dp"/>
                 <Spinner
-                    android:id="@+id/csi_gear_type_spinner"
+                    android:id="@+id/csi_transmission_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:entries="@array/csi_gear_type_item"/>
+                    android:entries="@array/csi_transmission_item"/>
             </TableRow>
 
             <TableRow>
