@@ -34,6 +34,9 @@ public class InsidePaintView extends ImageView {
     private int currentType = Common.DIRTY;
     private boolean move;
     private List<PosEntity> data = CarCheckInsideActivity.posEntities;
+
+    // 本次更新的坐标点，如果用户点击取消，则不将thisTimeNewData中的坐标加入到data中
+    private List<PosEntity> thisTimeNewData;
     private List<PosEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
@@ -67,6 +70,7 @@ public class InsidePaintView extends ImageView {
         max_y = bitmap.getHeight();
 
         undoData = new ArrayList<PosEntity>();
+        thisTimeNewData = new ArrayList<PosEntity>();
 
         this.setOnTouchListener(onTouchListener);
     }
@@ -95,6 +99,7 @@ public class InsidePaintView extends ImageView {
                     entity.setStart(x, y);
                     entity.setEnd(x, y);
                     data.add(entity);
+                    thisTimeNewData.add(entity);
                 } else if(event.getAction() == MotionEvent.ACTION_MOVE){
                     entity = data.get(data.size() - 1);
                     entity.setEnd(x, y);
@@ -163,7 +168,7 @@ public class InsidePaintView extends ImageView {
         return data.get(data.size()-1);
     }
 
-    public void Clear() {
+    public void clear() {
         if(!data.isEmpty()) {
             data.clear();
             undoData.clear();
@@ -171,7 +176,7 @@ public class InsidePaintView extends ImageView {
         }
     }
 
-    public void Undo() {
+    public void undo() {
         if(!data.isEmpty()) {
             undoData.add(data.get(data.size() - 1));
             data.remove(data.size() - 1);
@@ -179,11 +184,19 @@ public class InsidePaintView extends ImageView {
         }
     }
 
-    public void Redo() {
+    public void redo() {
         if(!undoData.isEmpty()) {
             data.add(undoData.get(undoData.size() - 1));
             undoData.remove(undoData.size() - 1);
             invalidate();
+        }
+    }
+
+    public void cancel() {
+        if(!thisTimeNewData.isEmpty()) {
+            for(int i = 0; i < thisTimeNewData.size(); i++) {
+                data.remove(thisTimeNewData.get(i));
+            }
         }
     }
 }

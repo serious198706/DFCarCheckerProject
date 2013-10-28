@@ -123,6 +123,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         this.inflater = inflater;
         rootView = inflater.inflate(R.layout.fragment_car_check_basic_info, container, false);
 
+        // <editor-fold defaultstate="collapsed" desc="各种View的初始化">
         tableLayout = (TableLayout) rootView.findViewById(R.id.bi_content_table);
 
         brand = (LinearLayout) rootView.findViewById(R.id.brand_input);
@@ -174,7 +175,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     Helper.showView(true, rootView, R.id.yuan);
                     Helper.showView(false, rootView, R.id.placeholder);
                 } else {
-                // 无发票
+                    // 无发票
                     Helper.showView(false, rootView, R.id.ct_buy_tickets_edit);
                     Helper.showView(false, rootView, R.id.yuan);
                     Helper.showView(true, rootView, R.id.placeholder);
@@ -230,8 +231,19 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         portedProcedureRow = (TableRow) rootView.findViewById(R.id.ct_ported_procedure);
 
-        mCarSettings = new CarSettings();
+        // 初始化所有的Spinner
+        setRegLocationSpinner();
+        setCarColorSpinner();
+        setFirstLogTimeSpinner();
+        setManufactureTimeSpinner();
+        setTransferCountSpinner();
+        setLastTransferTimeSpinner();
+        setYearlyCheckAvailableDateSpinner();
+        setAvailableDateYearSpinner();
+        setBusinessInsuranceAvailableDateYearSpinner();
+        // </editor-fold>
 
+        mCarSettings = new CarSettings();
 
         List<String> dummy = new ArrayList<String>();
         // 1
@@ -240,6 +252,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         dummy.add("LJDBAA33630037414");
         // 0
         dummy.add("LVVDB12A86D193156");
+
         SetSpinnerData(R.id.bi_vin_spinner, dummy, rootView);
 
         try {
@@ -254,19 +267,20 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             e.printStackTrace();
         }
 
-        // 初始化所有的Spinner
-        setRegLocationSpinner();
-        setCarColorSpinner();
-        setFirstLogTimeSpinner();
-        setManufactureTimeSpinner();
-        setTransferCountSpinner();
-        setLastTransferTimeSpinner();
-        setYearlyCheckAvailableDateSpinner();
-        setAvailableDateYearSpinner();
-        setBusinessInsuranceAvailableDateYearSpinner();
-
         if(vehicleModel == null) {
-            ParseXml();
+            Thread thread = new Thread(new Runnable(){
+                @Override
+                public void run() {
+                    try {
+                        //Your code goes here
+                        ParseXml();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
+            thread.start();
         }
 
         return rootView;
@@ -329,7 +343,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     // 更新配置信息
     private void updateUIAccordingToCarSettings() {
-        // 更新品牌输入框
         brandEdit.setText(mCarSettings.getBrand());
         volumeEdit.setText(mCarSettings.getDisplacement());
 
@@ -344,6 +357,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         Spinner transmissionSpinner = (Spinner) rootView.findViewById(R.id.csi_transmission_spinner);
         transmissionSpinner.setSelection(Integer.parseInt(mCarSettings.getTransmission()));
     }
+
 
     // 显示车辆的配置信息
     private void showContent() {
@@ -374,7 +388,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         seriesSpinner = (Spinner) view.findViewById(R.id.serial_spinner);
         modelSpinner = (Spinner) view.findViewById(R.id.model_spinner);
 
-        //builder.setMessage(R.string.ci_attention_content).setTitle(R.string.ci_attention);
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // 确定
@@ -385,20 +398,29 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     isPorted = false;
                 }
 
-                // TODO: 提交方式不同，只提交车系id（seriesId)
-                // TODO: getCarSettingsFromServer();
-                // 获取当前选择的seriesID
-                lastCountryIndex = countrySpinner.getSelectedItemPosition() - 1;
-                lastBrandIndex = brandSpinner.getSelectedItemPosition() - 1;
-                lastManufacturerIndex = manufacturerSpinner.getSelectedItemPosition() - 1;
-                lastSeriesIndex = seriesSpinner.getSelectedItemPosition() - 1;
-                lastModelIndex = modelSpinner.getSelectedItemPosition() - 1;
+                // 记录用户选择的位置
+                lastCountryIndex = countrySpinner.getSelectedItemPosition();
+                lastBrandIndex = brandSpinner.getSelectedItemPosition();
+                lastManufacturerIndex = manufacturerSpinner.getSelectedItemPosition();
+                lastSeriesIndex = seriesSpinner.getSelectedItemPosition();
+                lastModelIndex = modelSpinner.getSelectedItemPosition();
 
-                Country country = vehicleModel.countries.get(lastCountryIndex);
-                Brand brand = country.brands.get(lastBrandIndex);
-                Manufacturer manufacturer = brand.manufacturers.get(lastManufacturerIndex);
-                Series series = manufacturer.serieses.get(lastSeriesIndex);
-                Model model = series.models.get(lastModelIndex);
+                // 如果用户点击确定，则必须要求所有的Spinner为选中状态
+                if(lastCountryIndex == 0 ||
+                        lastBrandIndex == 0 ||
+                        lastManufacturerIndex == 0 ||
+                        lastSeriesIndex == 0 ||
+                        lastModelIndex == 0) {
+                    Toast.makeText(rootView.getContext(), "请选择所有项目", Toast.LENGTH_SHORT).show();
+
+                    return;
+                }
+
+                Country country = vehicleModel.countries.get(lastCountryIndex - 1);
+                Brand brand = country.brands.get(lastBrandIndex - 1);
+                Manufacturer manufacturer = brand.manufacturers.get(lastManufacturerIndex - 1);
+                Series series = manufacturer.serieses.get(lastSeriesIndex - 1);
+                Model model = series.models.get(lastModelIndex - 1);
 
                 getCarSettingsFromServer(series.id);
 
@@ -422,12 +444,18 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // 取消
+                lastCountryIndex = countrySpinner.getSelectedItemPosition();
+                lastBrandIndex = brandSpinner.getSelectedItemPosition();
+                lastManufacturerIndex = manufacturerSpinner.getSelectedItemPosition();
+                lastSeriesIndex = seriesSpinner.getSelectedItemPosition();
+                lastModelIndex = modelSpinner.getSelectedItemPosition();
             }
         });
 
         setCountrySpinner(vehicleModel);
 
         AlertDialog dialog = builder.create();
+
         dialog.show();
     }
 
@@ -437,6 +465,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         vehicleModel = parser.parseVehicleModelXml(fis);
     }
 
+
+    // <editor-fold defaultstate="collapsed" desc="设置各种Spinner">
     // 设置国家Spinner
     private void setCountrySpinner(final VehicleModel vehicleModel) {
         ArrayAdapter<String> adapter;
@@ -466,6 +496,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
             }
         });
+
+        countrySpinner.setSelection(lastCountryIndex);
+        lastCountryIndex = 0;
     }
 
     // 设置品牌Spinner
@@ -501,6 +534,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
             }
         });
+
+        brandSpinner.setSelection(lastBrandIndex);
+        lastBrandIndex = 0;
     }
 
     // 设置厂商Spinner
@@ -510,13 +546,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         if(brand == null) {
             adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, Helper.getEmptyStringList());
         } else {
-            adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, brand.getProductionNames());
+            adapter = new ArrayAdapter<String>(rootView.getContext(), android.R.layout.simple_spinner_item, brand.getManufacturerNames());
         }
 
         manufacturerSpinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        if(brand != null && brand.getProductionNames().size() == 2) {
+        if(brand != null && brand.getManufacturerNames().size() == 2) {
             manufacturerSpinner.setSelection(1);
         }
 
@@ -536,6 +572,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
             }
         });
+
+        manufacturerSpinner.setSelection(lastManufacturerIndex);
+        lastManufacturerIndex = 0;
     }
 
     // 设置车系Spinner
@@ -572,6 +611,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
             }
         });
+
+        seriesSpinner.setSelection(lastSeriesIndex);
+        lastSeriesIndex = 0;
     }
 
     // 设置车型Spinner
@@ -590,6 +632,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         if(series != null && series.getModelNames().size() == 2) {
             modelSpinner.setSelection(1);
         }
+
+        modelSpinner.setSelection(lastModelIndex);
+        lastModelIndex = 0;
     }
 
     // 设置车辆配置Spinner（所有的）
@@ -779,16 +824,25 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+    // </editor-fold>
 
+    // <editor-fold defaultstate="collapsed" desc="GetCarSettingsTask">
 
     private class GetCarSettingsTask extends AsyncTask<String, Void, Boolean> {
         Context context;
         String seriesId;
-        Model model;
+
         String modelName = "";
         List<String> modelNames;
         JSONObject jsonObject;
         List<JSONObject> jsonObjects;
+
+        Country country = null;
+        Brand brand = null;
+        Manufacturer manufacturer = null;
+        Series series = null;
+        Model model = null;
+        String config = null;
 
         private GetCarSettingsTask(Context context) {
             this.context = context;
@@ -810,7 +864,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         @Override
         protected Boolean doInBackground(String... params) {
-            // TODO: attempt authentication against a network service.
             boolean success = false;
 
             seriesId = params[0];
@@ -828,7 +881,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     soapService = new SoapService();
 
                     // 设置soap的配置
-                    soapService.setUtils("http://192.168.8.33:801/ReportService.svc",
+                    soapService.setUtils("http://192.168.100.6:50/ReportService.svc",
                             "http://cheyiju/IReportService/GetOptionsBySeriesId",
                             "GetOptionsBySeriesId");
 
@@ -854,13 +907,16 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                     // vin + userID + key
                     jsonObject.put("Vin", vin_edit.getText().toString());
-                    jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                    jsonObject.put("Key", LoginActivity.userInfo.getKey());
+
+                    if(LoginActivity.userInfo != null) {
+                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                    }
 
                     soapService = new SoapService();
 
                     // 设置soap的配置
-                    soapService.setUtils("http://192.168.8.33:801/ReportService.svc",
+                    soapService.setUtils("http://192.168.100.6:50/ReportService.svc",
                             "http://cheyiju/IReportService/GetCarConfigInfoByVin",
                             "GetCarConfigInfoByVin");
 
@@ -890,16 +946,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             progressDialog.dismiss();
 
             if (success) {
-                // TODO：可以得到车辆配置了，解析字符串并且进行惨无人道的赋值吧=。=
                 // outputStringJson : [{"countryId":1,"brandId":5,"manufacturerId":2,"seriesId":24,"modelId":29,"config":"powerWindows,airConditioning,sunroof,leatherSeats,powerSeats,powerMirror,reversingRadar"}]
                 // 设置车辆配置
                 // mCarSettings.setCarSettings(result);
-
-                Country carCountry = null;
-                Brand brand = null;
-                Manufacturer manufacturer = null;
-                Series series = null;
-                String config = null;
 
                 try {
                     // 开始位为[，表示传输的是全部信息
@@ -912,11 +961,12 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                         // 用来存储车辆型号的string list
                         modelNames = new ArrayList<String>();
 
+                        // TODO: 如果获取的是空？或者有的为空有的不为空？
                         for(int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             jsonObjects.add(jsonObject);
-                            carCountry = vehicleModel.getCountryById(jsonObject.getString("countryId"));
-                            brand = carCountry.getBrandById(jsonObject.getString("brandId"));
+                            country = vehicleModel.getCountryById(jsonObject.getString("countryId"));
+                            brand = country.getBrandById(jsonObject.getString("brandId"));
                             manufacturer = brand.getProductionById(jsonObject.getString("manufacturerId"));
                             series = manufacturer.getSerialById(jsonObject.getString("seriesId"));
                             model = series.getModelById(jsonObject.getString("modelId"));
@@ -942,8 +992,30 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                                 modelName = modelNames.get(i);
                                 jsonObject = jsonObjects.get(i);
 
+                                try {
+                                    country = vehicleModel.getCountryById(jsonObject.getString("countryId"));
+                                    brand = country.getBrandById(jsonObject.getString("brandId"));
+                                    manufacturer = brand.getProductionById(jsonObject.getString("manufacturerId"));
+                                    series = manufacturer.getSerialById(jsonObject.getString("seriesId"));
+                                    model = series.getModelById(jsonObject.getString("modelId"));
+                                    config = jsonObject.getString("config");
+
+                                    // 根据用户选择的车型的id，记录车型选择spinner的位置
+                                    lastCountryIndex = vehicleModel.getCountryNames().indexOf(country.name);
+                                    lastBrandIndex = country.getBrandNames().indexOf(brand.name);
+                                    lastManufacturerIndex = brand.getManufacturerNames().indexOf(manufacturer.name);
+                                    lastSeriesIndex = manufacturer.getSerialNames().indexOf(series.name);
+                                    lastModelIndex = series.getModelNames().indexOf(model.name);
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
                                 // 将品牌框设置文字
                                 mCarSettings.setBrand(modelName);
+
+                                // 设置配置信息
+                                mCarSettings.setConfig(config);
 
                                 setCarSettingsSpinners(model.getName());
 
@@ -954,11 +1026,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                                 brandSelectButton.setEnabled(true);
                             }
                         });
-                        // Inflate and set the layout for the dialog
-                        // Pass null as the parent view because its going in the dialog layout
-                        //builder.setView(inflater.inflate(R.layout.bi_camera_cato_dialog, null));
 
-                        //builder.setMessage(R.string.ci_attention_content).setTitle(R.string.ci_attention);
                         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 // 取消
@@ -988,4 +1056,5 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             mGetCarSettingsTask = null;
         }
     }
+    // </editor-fold>
 }

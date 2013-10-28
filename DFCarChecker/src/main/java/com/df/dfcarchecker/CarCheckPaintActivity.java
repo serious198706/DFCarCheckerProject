@@ -25,12 +25,28 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+
+
 public class CarCheckPaintActivity extends Activity {
     private LinearLayout root;
     private OutsidePaintView outsidePaintView;
     private InsidePaintView insidePaintView;
     private StructurePaintView structurePaintView;
     private String currentPaintView;
+
+    public enum PaintType {
+        STRUCTURE_PAINT, OUT_PAINT, IN_PAINT, NOVALUE;
+
+        public static PaintType paintType(String str)
+        {
+            try {
+                return valueOf(str);
+            }
+            catch (Exception ex) {
+                return NOVALUE;
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +55,28 @@ public class CarCheckPaintActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String value = extras.getString("PAINT_TYPE");
-            if(value.equals("OUT_PAINT")) {
-                SetOutPaintLayout();
-            } else if(value.equals("IN_PAINT")) {
-                SetInPaintLayout();
-            } else if(value.equals("STRUCTURE_PAINT")) {
-                String sight = extras.getString("PAINT_SIGHT");
-                SetStructurePaintLayout(sight);
+
+            switch (PaintType.paintType(value)) {
+                case STRUCTURE_PAINT:
+                    String sight = extras.getString("PAINT_SIGHT");
+                    SetStructurePaintLayout(sight);
+                    break;
+                case OUT_PAINT:
+                    SetOutPaintLayout();
+                    break;
+                case IN_PAINT:
+                    SetInPaintLayout();
+                    break;
             }
+
+//            if(value.equals("OUT_PAINT")) {
+//                SetOutPaintLayout();
+//            } else if(value.equals("IN_PAINT")) {
+//                SetInPaintLayout();
+//            } else if(value.equals("STRUCTURE_PAINT")) {
+//                String sight = extras.getString("PAINT_SIGHT");
+//                SetStructurePaintLayout(sight);
+//            }
 
         }
 
@@ -155,8 +185,13 @@ public class CarCheckPaintActivity extends Activity {
                 finish();
                 break;
             case R.id.action_cancel:
-                // TODO:点击取消后，要将刚才进入时的操作全部回退掉
-                //outsidePaintView.Clear();
+                if(currentPaintView.equals("OUT_PAINT")) {
+                    outsidePaintView.cancel();
+                } else if(currentPaintView.equals("IN_PAINT")) {
+                    insidePaintView.cancel();
+                } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
+                    structurePaintView.cancel();
+                }
                 finish();
                 break;
             case R.id.action_clear:
@@ -174,9 +209,9 @@ public class CarCheckPaintActivity extends Activity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // 退出
                         if(currentPaintView.equals("OUT_PAINT")) {
-                            outsidePaintView.Clear();
+                            outsidePaintView.clear();
                         } else if(currentPaintView.equals("IN_PAINT")) {
-                            insidePaintView.Clear();
+                            insidePaintView.clear();
                         } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
                             structurePaintView.Clear();
                         }
@@ -188,18 +223,18 @@ public class CarCheckPaintActivity extends Activity {
                 break;
             case R.id.action_undo:
                 if(currentPaintView.equals("OUT_PAINT")) {
-                    outsidePaintView.Undo();
+                    outsidePaintView.undo();
                 } else if(currentPaintView.equals("IN_PAINT")) {
-                    insidePaintView.Undo();
+                    insidePaintView.undo();
                 } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
                     structurePaintView.Undo();
                 }
                 break;
             case R.id.action_redo:
                 if(currentPaintView.equals("OUT_PAINT")) {
-                    outsidePaintView.Redo();
+                    outsidePaintView.redo();
                 } else if(currentPaintView.equals("IN_PAINT")) {
-                    insidePaintView.Redo();
+                    insidePaintView.redo();
                 } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
                     structurePaintView.Redo();
                 }

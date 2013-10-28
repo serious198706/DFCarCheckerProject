@@ -38,9 +38,6 @@ public class LoginActivity extends Activity {
     private String mUserName;
     private String mPassword;
 
-    // 错误信息
-    private String errorMsg;
-
     // 组件们
     private EditText mUserNameView;
     private EditText mPasswordView;
@@ -202,7 +199,7 @@ public class LoginActivity extends Activity {
                 soapService = new SoapService();
 
                 // 设置soap的配置
-                soapService.setUtils("http://192.168.8.33:801/userManageService.svc",
+                soapService.setUtils("http://192.168.100.6:50/userManageService.svc",
                         "http://cheyiju/IUserManageService/UserLogin",
                         "UserLogin");
 

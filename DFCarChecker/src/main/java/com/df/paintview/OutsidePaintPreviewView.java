@@ -67,10 +67,9 @@ public class OutsidePaintPreviewView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        HandelPosEntitiesDueToDifferentResolution();
+        data = CarCheckOutsideActivity.posEntities;
         canvas.drawBitmap(bitmap, 0, 0, null);
         paint(canvas);
-
     }
 
     public void setType(int type) {

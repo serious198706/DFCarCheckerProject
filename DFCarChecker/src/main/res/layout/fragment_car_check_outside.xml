@@ -29,8 +29,8 @@
                       android:layout_height="wrap_content">
             <com.df.paintview.OutsidePaintPreviewView
                     android:id="@+id/out_base_image_preview"
-                       android:layout_width="400dp"
-                       android:layout_height="540dp"
+                       android:layout_width="500dp"
+                       android:layout_height="703dp"
                        android:layout_centerHorizontal="true"
                        android:alpha="0.3"/>
             <TextView

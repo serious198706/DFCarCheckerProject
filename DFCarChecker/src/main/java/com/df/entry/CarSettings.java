@@ -4,6 +4,9 @@ import android.util.Log;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by 岩 on 13-10-16.
  */
@@ -249,5 +252,11 @@ public class CarSettings {
         } catch (Exception e) {
             Log.d("DFCarChecker", "Json Error: " + e.getMessage());
         }
+    }
+
+    public void setConfig(String config) {
+        String[] configs = config.split(",");
+
+
     }
 }

@@ -7,20 +7,20 @@ public class Brand {
     public String name;
     public String id;
     public List<Manufacturer> manufacturers;
-    private List<String> productionNames;
+    private List<String> manufacturerNames;
 
     public Brand() {
         manufacturers = new ArrayList<Manufacturer>();
     }
 
-    public List<String> getProductionNames() {
-        productionNames = new ArrayList<String>();
-        productionNames.add("");
+    public List<String> getManufacturerNames() {
+        manufacturerNames = new ArrayList<String>();
+        manufacturerNames.add("");
         for(int i = 0; i < manufacturers.size(); i++) {
-            productionNames.add(manufacturers.get(i).name);
+            manufacturerNames.add(manufacturers.get(i).name);
         }
 
-        return productionNames;
+        return manufacturerNames;
     }
 
     public Manufacturer getProductionById(String id) {

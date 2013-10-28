@@ -32,7 +32,7 @@
             <com.df.paintview.InsidePaintPreviewView
                 android:id="@+id/in_base_image_preview"
                 android:layout_width="500dp"
-                android:layout_height="300dp"
+                android:layout_height="691dp"
                 android:layout_centerHorizontal="true"
                 android:alpha="0.3"/>
             <TextView

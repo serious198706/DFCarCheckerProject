@@ -215,6 +215,17 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
                 }
                 break;
             case Common.IN_PAINT:
+                if(!posEntities.isEmpty()) {
+                    insidePaintPreviewView.setAlpha(1f);
+                    insidePaintPreviewView.invalidate();
+                    tip.setVisibility(View.GONE);
+                }
+                // 如果没点，则将图片设为半透明，添加提示文字
+                else {
+                    insidePaintPreviewView.setAlpha(0.3f);
+                    insidePaintPreviewView.invalidate();
+                    tip.setVisibility(View.VISIBLE);
+                }
                 break;
         }
     }

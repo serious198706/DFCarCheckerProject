@@ -87,7 +87,7 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
 
-        previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/st_f.png", options);
+        previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/van_r.png", options);
         structurePaintPreviewViewFront = (StructurePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_front);
         structurePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
         structurePaintPreviewViewFront.setOnClickListener(this);
@@ -257,7 +257,7 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
             SoapService soapService = new SoapService();
 
             // 设置soap的配置
-            soapService.setUtils("http://192.168.8.33:801/ReportService.svc",
+            soapService.setUtils("http://192.168.100.6:50/ReportService.svc",
                     "http://cheyiju/IReportService/SaveCarPictureTagKey",
                     "SaveCarPictureTagKey");
 

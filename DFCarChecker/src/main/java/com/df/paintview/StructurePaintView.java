@@ -31,6 +31,9 @@ public class StructurePaintView extends ImageView {
     private int currentType = Common.COLOR_DIFF;
     private boolean move;
     private List<PosEntity> data;
+
+    // 本次更新的坐标点，如果用户点击取消，则不将thisTimeNewData中的坐标加入到data中
+    private List<PosEntity> thisTimeNewData;
     private List<PosEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
@@ -60,6 +63,7 @@ public class StructurePaintView extends ImageView {
         max_y = bitmap.getHeight();
 
         undoData = new ArrayList<PosEntity>();
+        thisTimeNewData = new ArrayList<PosEntity>();
 
         colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
         this.setOnTouchListener(onTouchListener);
@@ -91,6 +95,7 @@ public class StructurePaintView extends ImageView {
                     entity.setStart(x, y);
 
                     data.add(entity);
+                    thisTimeNewData.add(entity);
                 } else if(event.getAction() == MotionEvent.ACTION_MOVE){
                         entity = data.get(data.size() - 1);
                         entity.setStart(x, y);
@@ -163,6 +168,14 @@ public class StructurePaintView extends ImageView {
             data.add(undoData.get(undoData.size() - 1));
             undoData.remove(undoData.size() - 1);
             invalidate();
+        }
+    }
+
+    public void cancel() {
+        if(!thisTimeNewData.isEmpty()) {
+            for(int i = 0; i < thisTimeNewData.size(); i++) {
+                data.remove(thisTimeNewData.get(i));
+            }
         }
     }
 }

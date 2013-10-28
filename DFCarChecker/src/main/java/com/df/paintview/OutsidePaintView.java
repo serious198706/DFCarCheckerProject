@@ -37,6 +37,9 @@ public class OutsidePaintView extends ImageView {
     private int currentType = Common.COLOR_DIFF;
     private boolean move;
     private List<PosEntity> data = CarCheckOutsideActivity.posEntities;
+
+    // 本次更新的坐标点，如果用户点击取消，则不将thisTimeNewData中的坐标加入到data中
+    private List<PosEntity> thisTimeNewData;
     private List<PosEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
@@ -64,21 +67,22 @@ public class OutsidePaintView extends ImageView {
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
 
-        Bitmap tempbitmap = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/out.png", options);
+        bitmap = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/out.png", options);
 
-        max_x = tempbitmap.getWidth();
-        max_y = tempbitmap.getHeight();
+        max_x = bitmap.getWidth();
+        max_y = bitmap.getHeight();
 
-        float scaleWidth = ((float) 1200) / max_x;
-        float scaleHeight = scaleWidth;
+       // float scaleWidth = ((float) 1200) / max_x;
+       // float scaleHeight = scaleWidth;
         // CREATE A MATRIX FOR THE MANIPULATION
-        Matrix matrix = new Matrix();
+      //  Matrix matrix = new Matrix();
         // RESIZE THE BIT MAP
-        matrix.postScale(scaleWidth, scaleHeight);
+      //  matrix.postScale(scaleWidth, scaleHeight);
 
-        bitmap = Bitmap.createBitmap(tempbitmap, 0, 0, max_x, max_y, matrix,  false);
+     //   bitmap = Bitmap.createBitmap(tempbitmap, 0, 0, max_x, max_y, matrix,  false);
 
         undoData = new ArrayList<PosEntity>();
+        thisTimeNewData = new ArrayList<PosEntity>();
 
         colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
         this.setOnTouchListener(onTouchListener);
@@ -98,7 +102,7 @@ public class OutsidePaintView extends ImageView {
             if (currentType > 0 && currentType <= 4) {
                 int x = (int) event.getX();
                 int y = (int) event.getY();
-                PosEntity entity;
+                PosEntity entity = null;
 
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     entity = new PosEntity(currentType);
@@ -111,6 +115,7 @@ public class OutsidePaintView extends ImageView {
                     }
 
                     data.add(entity);
+                    thisTimeNewData.add(entity);
                 } else if(event.getAction() == MotionEvent.ACTION_MOVE){
                     if(currentType != Common.COLOR_DIFF){
                         entity = data.get(data.size() - 1);
@@ -126,10 +131,17 @@ public class OutsidePaintView extends ImageView {
                     if(currentType == Common.SCRATCH && move){
                         entity = data.get(data.size() - 1);
                         entity.setEnd(x, y);
+
                         move = false;
                     }
 
-                    showCamera();
+                    // 如果手指在屏幕上移动范围非常小
+                    if(Math.abs(entity.getEndX() - entity.getStartX()) < 10 &&
+                            Math.abs(entity.getEndY() - entity.getStartY()) < 10) {
+                        data.remove(entity);
+                    } else {
+                        showCamera();
+                    }
                 }
 
                 invalidate();
@@ -199,7 +211,7 @@ public class OutsidePaintView extends ImageView {
             case Common.SCRAPE:
                 RectF rectF = null;
 
-                // 如果Rect的right < left，或者bottom < top，则会画不出矩形
+                // Android:4.0+ 如果Rect的right < left，或者bottom < top，则会画不出矩形
                 // 为了修正这个，需要做点处理
 
                 // 右下
@@ -253,7 +265,7 @@ public class OutsidePaintView extends ImageView {
         return data.get(data.size()-1);
     }
 
-    public void Clear() {
+    public void clear() {
         if(!data.isEmpty()) {
             data.clear();
             undoData.clear();
@@ -261,7 +273,7 @@ public class OutsidePaintView extends ImageView {
         }
     }
 
-    public void Undo() {
+    public void undo() {
         if(!data.isEmpty()) {
             undoData.add(data.get(data.size() - 1));
             data.remove(data.size() - 1);
@@ -269,11 +281,19 @@ public class OutsidePaintView extends ImageView {
         }
     }
 
-    public void Redo() {
+    public void redo() {
         if(!undoData.isEmpty()) {
             data.add(undoData.get(undoData.size() - 1));
             undoData.remove(undoData.size() - 1);
             invalidate();
+        }
+    }
+
+    public void cancel() {
+        if(!thisTimeNewData.isEmpty()) {
+            for(int i = 0; i < thisTimeNewData.size(); i++) {
+                data.remove(thisTimeNewData.get(i));
+            }
         }
     }
 }

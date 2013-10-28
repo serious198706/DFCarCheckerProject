@@ -14,6 +14,7 @@ import android.os.Environment;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
+import com.df.dfcarchecker.CarCheckInsideActivity;
 import com.df.dfcarchecker.CarCheckOutsideActivity;
 import com.df.dfcarchecker.R;
 import com.df.service.Common;
@@ -64,10 +65,9 @@ public class InsidePaintPreviewView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        //HandelPosEntitiesDueToDifferentResolution();
+        data = CarCheckInsideActivity.posEntities;
         canvas.drawBitmap(bitmap, 0, 0, null);
         paint(canvas);
-
     }
 
     public void setType(int type) {
