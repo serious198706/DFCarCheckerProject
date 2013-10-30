@@ -30,6 +30,7 @@ public class OutsidePaintPreviewView extends ImageView {
     private List<PosEntity> data;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
+    private Bitmap otherBitmap;
 
     private int max_x, max_y;
 
@@ -54,7 +55,7 @@ public class OutsidePaintPreviewView extends ImageView {
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
 
-        bitmap = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/out.png", options);
+        bitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/out.png", options);
 
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
@@ -62,6 +63,7 @@ public class OutsidePaintPreviewView extends ImageView {
         data = new ArrayList<PosEntity>();
 
         colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
+        otherBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_other);
     }
 
     @Override
@@ -81,25 +83,8 @@ public class OutsidePaintPreviewView extends ImageView {
         paint.setAntiAlias(true);
         paint.setColor(Color.BLUE);
         paint.setAlpha(0x80);//半透明
-
-        switch (type) {
-            case Common.COLOR_DIFF:
-                paint.setStyle(Paint.Style.FILL_AND_STROKE);//填充并且填充
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.SCRATCH:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.TRANS:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.SCRAPE:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-        }
+        paint.setStyle(Paint.Style.STROKE); //加粗
+        paint.setStrokeWidth(4); //宽度
 
         return paint;
     }
@@ -161,6 +146,9 @@ public class OutsidePaintPreviewView extends ImageView {
 
                 canvas.drawRect(rectF, getPaint(type));
 
+                return;
+            case Common.OTHER:
+                canvas.drawBitmap(otherBitmap, entity.getStartX(), entity.getStartY(), null);
                 return;
         }
     }

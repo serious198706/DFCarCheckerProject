@@ -139,6 +139,9 @@ public class CarCheckPaintActivity extends Activity {
                     case R.id.out_scrape_radio:
                         type = Common.SCRAPE;
                         break;
+                    case R.id.out_other_radio:
+                        type = Common.OTHER;
+                        break;
                 }
 
                 outsidePaintView.setType(type);
@@ -265,9 +268,9 @@ public class CarCheckPaintActivity extends Activity {
                     return;
                 }
 
-                File file = new File(Environment.getExternalStorageDirectory().getPath()+"/cyp/");
+                File file = new File(Environment.getExternalStorageDirectory().getPath()+"/pictures/DFCarChecker");
                 file.mkdirs();// 创建文件夹
-                String fileName = Environment.getExternalStorageDirectory().getPath()+"/cyp/"+System.currentTimeMillis()+".jpg";
+                String fileName = Environment.getExternalStorageDirectory().getPath()+"/pictures/DFCarChecker/"+System.currentTimeMillis()+".jpg";
                 FileOutputStream b = null;
                 try {
                     b = new FileOutputStream(fileName);

@@ -14,6 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.logging.Logger;
 
 public class StartupActivity extends Activity {
     private String extStorageDirectory;
@@ -37,18 +38,20 @@ public class StartupActivity extends Activity {
         SharedPreferences settings = this.getSharedPreferences("DFCarChecker", 0);
         boolean firstrun = settings.getBoolean("firstrun", true);
         if (firstrun) { // Checks to see if we've ran the application b4
+            Log.d("DFCarChecker", "firstrun");
+
             SharedPreferences.Editor e = settings.edit();
             e.putBoolean("firstrun", false);
             e.commit();
             // If not, run these methods:
             SetDirectory();
-            Intent home = new Intent(StartupActivity.this, MainActivity.class);
+            Intent home = new Intent(StartupActivity.this, LoginActivity.class);
             startActivity(home);
             finish();
 
         } else { // Otherwise start the application here:
 
-            Intent home = new Intent(StartupActivity.this, MainActivity.class);
+            Intent home = new Intent(StartupActivity.this, LoginActivity.class);
             startActivity(home);
             finish();
         }
@@ -63,10 +66,12 @@ public class StartupActivity extends Activity {
 
             extStorageDirectory = Environment.getExternalStorageDirectory().toString();
 
-            File txtDirectory = new File(extStorageDirectory + "/cheyipai/");
+            File txtDirectory = new File(extStorageDirectory + "/.cheyipai/");
             // Create a File object for the parent directory
             txtDirectory.mkdirs();// Have the object build the directory structure, if needed.
             CopyAssets(); // Then run the method to copy the file.
+
+            Log.d("DFCarChecker", "/.cheyipai created.");
 
         } else if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED_READ_ONLY)) {
             Log.d("tag", "sdcard missing");
@@ -91,7 +96,7 @@ public class StartupActivity extends Activity {
             OutputStream out = null;
             try {
                 in = assetManager.open(files[i]);
-                out = new FileOutputStream(extStorageDirectory + "/cheyipai/" + files[i]);
+                out = new FileOutputStream(extStorageDirectory + "/.cheyipai/" + files[i]);
                 copyFile(in, out);
                 in.close();
                 in = null;

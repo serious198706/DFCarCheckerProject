@@ -20,7 +20,6 @@ import com.df.paintview.OutsidePaintPreviewView;
 import com.df.service.Common;
 import com.df.service.PosEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CarCheckOutsideActivity extends Activity implements View.OnClickListener {
@@ -28,7 +27,7 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
     private EditText brokenEdit;
     private Spinner paintSpinner;
     private EditText commentEdit;
-    public static List<PosEntity> posEntities;
+    public static List<PosEntity> posEntities = CarCheckIntegratedFragment.outsidePaintEntities;
     private OutsidePaintPreviewView outsidePaintPreviewView;
     private TextView tip;
     private String brokenParts;
@@ -60,11 +59,14 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
         // 备注
         commentEdit = (EditText) findViewById(R.id.out_comment_edit);
 
-        // 坐标们
-        posEntities = new ArrayList<PosEntity>();
-
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        if(!posEntities.isEmpty()) {
+            outsidePaintPreviewView.setAlpha(1f);
+            outsidePaintPreviewView.invalidate();
+            tip.setVisibility(View.GONE);
+        }
     }
 
     @Override

@@ -30,4 +30,10 @@
                  android:layout_weight="1"
                  android:drawableLeft="@drawable/out_scrape"
                  android:text="@string/out_scrape"/>
+    <RadioButton android:id="@+id/out_other_radio"
+                 android:layout_height="wrap_content"
+                 android:layout_width="wrap_content"
+                 android:layout_weight="1"
+                 android:drawableLeft="@drawable/out_other"
+                 android:text="@string/out_other"/>
 </RadioGroup>

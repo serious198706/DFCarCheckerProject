@@ -9,35 +9,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ScrollView;
-import android.widget.TableRow;
-import android.widget.Toast;
+import android.widget.Spinner;
 
+import com.df.entry.CarSettings;
 import com.df.service.Common;
+import com.df.service.PosEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CarCheckIntegratedFragment extends Fragment implements View.OnClickListener {
     private static View rootView;
     private static ScrollView root;
     private LayoutInflater inflater;
-
-//    private int[][] csi_map = {
-//            {0, R.id. View.GONE},
-//            {1, R.id.it_abs_spinnerabs, View.GONE},
-//            {2, R.id.csi_turn_help, View.GONE},
-//            {3, R.id.csi_ele_windows, View.GONE},
-//            {4, R.id.csi_sky_light, View.GONE},
-//            {5, R.id.csi_air_conditioner, View.GONE},
-//            {6, R.id.csi_feather_seat, View.GONE},
-//            {7, R.id.csi_ele_seat, View.GONE},
-//            {8, R.id.csi_ele_reflect_mirror, View.GONE},
-//            {9, R.id.csi_parking_sensors, View.GONE},
-//            {10, R.id.csi_parking_video, View.GONE},
-//            {11, R.id.csi_ccs, View.GONE},
-//            {12, R.id.csi_soft_close_doors, View.GONE},
-//            {13, R.id.csi_rear_ele_seats, View.GONE},
-//            {14, R.id.csi_auto_chassis, View.GONE},
-//            {15, R.id.csi_auto_parking, View.GONE},
-//            {16, R.id.csi_curtain, View.GONE}
-//    };
+    public static List<PosEntity> outsidePaintEntities;
+    private String paintIndex;
+    private String comment;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -50,15 +37,15 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         outButton.setOnClickListener(this);
         Button inButton = (Button) rootView.findViewById(R.id.in_button);
         inButton.setOnClickListener(this);
-//        Button chassisButton = (Button) rootView.findViewById(R.id.it_chassis_button);
-//        chassisButton.setOnClickListener(this);
-//        Button waterButton = (Button)rootView.findViewById(R.id.it_other_water_button);
-//        waterButton.setOnClickListener(this);
-
-        //HandelCSITableRow(CarCheckBasicInfoFragment.carSets);
 
         root = (ScrollView)rootView.findViewById(R.id.root);
         root.setVisibility(View.GONE);
+
+        // 坐标们
+        outsidePaintEntities = new ArrayList<PosEntity>();
+
+        paintIndex = "";
+        comment = "";
 
         return rootView;
     }
@@ -75,9 +62,55 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         }
     }
 
-
     public static void ShowContent() {
+        updateUi();
         root.setVisibility(View.VISIBLE);
+    }
+
+    private static void updateUi() {
+        CarSettings carSettings = CarCheckBasicInfoFragment.mCarSettings;
+
+        setSpinnerSelection(R.id.it_airBag_spinner, Integer.parseInt(carSettings.getAirbag()));
+        setSpinnerSelection(R.id.it_abs_spinner, Integer.parseInt(carSettings.getAbs()));
+        setSpinnerSelection(R.id.it_powerWindows_spinner, Integer.parseInt(carSettings.getPowerWindows()));
+        setSpinnerSelection(R.id.it_sunroof_spinner, Integer.parseInt(carSettings.getSunroof()));
+        setSpinnerSelection(R.id.it_airConditioning_spinner, Integer.parseInt(carSettings.getAirConditioning()));
+        setSpinnerSelection(R.id.it_powerSeats_spinner, Integer.parseInt(carSettings.getPowerSeats()));
+        setSpinnerSelection(R.id.it_powerMirror_spinner, Integer.parseInt(carSettings.getPowerMirror()));
+        setSpinnerSelection(R.id.it_reversingRadar_spinner, Integer.parseInt(carSettings.getReversingRadar()));
+        setSpinnerSelection(R.id.it_reversingCamera_spinner, Integer.parseInt(carSettings.getReversingCamera()));
+        setSpinnerSelection(R.id.it_softCloseDoors_spinner, Integer.parseInt(carSettings.getSoftCloseDoors()));
+        setSpinnerSelection(R.id.it_rearPowerSeats_spinner, Integer.parseInt(carSettings.getRearPowerSeats()));
+        setSpinnerSelection(R.id.it_ahc_spinner, Integer.parseInt(carSettings.getAhc()));
+        setSpinnerSelection(R.id.it_parkAssist_spinner,  Integer.parseInt(carSettings.getParkAssist()));
+    }
+
+    private static void setSpinnerSelection(int spinnerId, int selection) {
+        Spinner spinner = (Spinner) rootView.findViewById(spinnerId);
+
+        // 如果在配置信息处是“无”，则处此也应为“无”
+        if(selection == 1) {
+            spinner.setSelection(2);
+            spinner.setClickable(false);
+            spinner.setAlpha(0.3f);
+        } else {
+            spinner.setSelection(0);
+            spinner.setClickable(true);
+            spinner.setAlpha(1.0f);
+        }
+
+        // 气囊部件特殊处理
+        if(spinnerId == R.id.it_airBag_spinner) {
+            if(selection == 5) {
+                spinner.setSelection(2);
+                spinner.setClickable(false);
+                spinner.setAlpha(0.3f);
+            } else {
+                spinner.setSelection(0);
+                spinner.setClickable(true);
+                spinner.setAlpha(1.0f);
+            }
+        }
     }
 
     private void CheckOutSide() {
@@ -108,19 +141,29 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
                     }
                 }
                 break;
+            case Common.IT_OUT:
+                if(resultCode == Activity.RESULT_OK) {
+                    try{
+                        Bundle bundle = data.getExtras();
+                        if(bundle != null) {
+                            String paintIndex = bundle.getString("PAINT_INDEX");
+                            if(paintIndex != null) {
+                                // 保存车辆漆面光洁度的选择项
+                                this.paintIndex = paintIndex;
+                            }
+
+                            String comment = bundle.getString("COMMENT");
+                            if(comment != null) {
+                                // 保存备注信息
+                                this.comment = comment;
+                            }
+                        }
+                    }
+                    catch(NullPointerException ex) {
+
+                    }
+                }
+                break;
         }
     }
-
-//    private void HandelCSITableRow(int[] tableRow) {
-//        for(int i = 0; i < tableRow.length; i++) {
-//            csi_map[tableRow[i]][2] = View.VISIBLE;
-//        }
-//
-//
-//        for(int i = 0; i < csi_map.length; i++) {
-//            // 将每一行的状态进行更新
-//            TableRow row = (TableRow) rootView.findViewById(csi_map[i][1]);
-//            row.setVisibility(csi_map[i][2]);
-//        }
-//    }
 }

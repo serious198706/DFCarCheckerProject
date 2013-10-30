@@ -54,7 +54,7 @@ public class InsidePaintPreviewView extends ImageView {
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
 
-        bitmap = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/in.png", options);
+        bitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/in.png", options);
 
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();

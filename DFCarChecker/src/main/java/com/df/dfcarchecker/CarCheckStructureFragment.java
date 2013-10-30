@@ -87,7 +87,7 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
 
-        previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/van_r.png", options);
+        previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/st_f", options);
         structurePaintPreviewViewFront = (StructurePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_front);
         structurePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
         structurePaintPreviewViewFront.setOnClickListener(this);
@@ -95,7 +95,7 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         tipFront = (TextView)rootView.findViewById(R.id.tipOnPreviewFront);
         tipFront.setOnClickListener(this);
 
-        previewBitmapRear = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/st_r.png", options);
+        previewBitmapRear = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/st_r.png", options);
         structurePaintPreviewViewRear = (StructurePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_rear);
         structurePaintPreviewViewRear.init(previewBitmapRear, posEntitiesRear);
         structurePaintPreviewViewRear.setOnClickListener(this);

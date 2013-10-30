@@ -6,6 +6,8 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +19,9 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.df.service.ImageUploadQueue;
 import com.df.service.SoapService;
 import com.df.service.UserInfo;
 
@@ -80,6 +84,8 @@ public class LoginActivity extends Activity {
                 attemptLogin();
             }
         });
+
+        //ImageUploadQueue queue = ImageUploadQueue.getInstance();
     }
 
 
@@ -98,6 +104,15 @@ public class LoginActivity extends Activity {
         if (mAuthTask != null) {
             return;
         }
+
+        // 检查网络
+//        ConnectivityManager connMgr = (ConnectivityManager)
+//                getSystemService(Context.CONNECTIVITY_SERVICE);
+//        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+//        if (networkInfo == null || !networkInfo.isConnected()) {
+//            Toast.makeText(this, "无法连接到网络", Toast.LENGTH_LONG).show();
+//            return;
+//        }
 
         mUserNameView.setError(null);
         mPasswordView.setError(null);

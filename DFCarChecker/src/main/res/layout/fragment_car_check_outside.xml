@@ -65,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="#000"/>
-            <TableRow>
+            <TableRow android:visibility="gone">
                 <TextView android:layout_width="0dp"
                           android:layout_height="wrap_content"
                           android:text="@string/out_broken_parts"
