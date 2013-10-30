@@ -43,6 +43,7 @@ public class OutsidePaintView extends ImageView {
     private List<PosEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
+    private Bitmap otherBitmap;
 
     private int max_x, max_y;
 
@@ -67,7 +68,7 @@ public class OutsidePaintView extends ImageView {
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
 
-        bitmap = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/out.png", options);
+        bitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/out.png", options);
 
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
@@ -85,6 +86,7 @@ public class OutsidePaintView extends ImageView {
         thisTimeNewData = new ArrayList<PosEntity>();
 
         colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
+        otherBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_other);
         this.setOnTouchListener(onTouchListener);
     }
 
@@ -99,7 +101,7 @@ public class OutsidePaintView extends ImageView {
     private OnTouchListener onTouchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if (currentType > 0 && currentType <= 4) {
+            if (currentType > 0 && currentType <= 5) {
                 int x = (int) event.getX();
                 int y = (int) event.getY();
                 PosEntity entity = null;
@@ -110,14 +112,15 @@ public class OutsidePaintView extends ImageView {
                     entity.setMaxY(max_y);
                     entity.setStart(x, y);
 
-                    if(currentType != Common.COLOR_DIFF){
+                    // 当前绘图类型不为色差和其它时，设置终点
+                    if((currentType != Common.COLOR_DIFF) && (currentType != Common.OTHER)){
                         entity.setEnd(x, y);
                     }
 
                     data.add(entity);
                     thisTimeNewData.add(entity);
                 } else if(event.getAction() == MotionEvent.ACTION_MOVE){
-                    if(currentType != Common.COLOR_DIFF){
+                    if((currentType != Common.COLOR_DIFF) && (currentType != Common.OTHER)){
                         entity = data.get(data.size() - 1);
                         entity.setEnd(x, y);
                         move = true;
@@ -136,11 +139,17 @@ public class OutsidePaintView extends ImageView {
                     }
 
                     // 如果手指在屏幕上移动范围非常小
-                    if(Math.abs(entity.getEndX() - entity.getStartX()) < 10 &&
-                            Math.abs(entity.getEndY() - entity.getStartY()) < 10) {
-                        data.remove(entity);
-                    } else {
-                        showCamera();
+                    if(entity == null) {
+                        entity = data.get(data.size() - 1);
+                    }
+
+                    if(entity != null) {
+                        if(Math.abs(entity.getEndX() - entity.getStartX()) < 10 &&
+                                Math.abs(entity.getEndY() - entity.getStartY()) < 10) {
+                            data.remove(entity);
+                        } else {
+                            showCamera();
+                        }
                     }
                 }
 
@@ -160,25 +169,22 @@ public class OutsidePaintView extends ImageView {
         paint.setAntiAlias(true);
         paint.setColor(Color.BLUE);
         paint.setAlpha(0x80);//半透明
+        paint.setStyle(Paint.Style.STROKE); //加粗
+        paint.setStrokeWidth(4); //宽度
 
-        switch (type) {
-            case Common.COLOR_DIFF:
-                paint.setStyle(Paint.Style.FILL_AND_STROKE);//填充并且填充
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.SCRATCH:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.TRANS:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.SCRAPE:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-        }
+//        switch (type) {
+//            case Common.COLOR_DIFF:
+//            case Common.OTHER:
+//                paint.setStyle(Paint.Style.FILL_AND_STROKE);//填充并且填充
+//                paint.setStrokeWidth(4); //宽度
+//                break;
+//            case Common.SCRATCH:
+//            case Common.TRANS:
+//            case Common.SCRAPE:
+//                paint.setStyle(Paint.Style.STROKE); //加粗
+//                paint.setStrokeWidth(4); //宽度
+//                break;
+//        }
 
         return paint;
     }
@@ -195,7 +201,6 @@ public class OutsidePaintView extends ImageView {
         switch (type) {
             case Common.COLOR_DIFF:
                 canvas.drawBitmap(colorDiffBitmap, entity.getStartX(), entity.getStartY(), null);
-                //canvas.drawCircle(entity.getStartX(), entity.getStartY(), 16, getPaint(type));
                 return;
             case Common.SCRATCH:
                 canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(type));
@@ -240,6 +245,9 @@ public class OutsidePaintView extends ImageView {
                 }
 
                 canvas.drawRect(rectF, getPaint(type));
+                return;
+            case Common.OTHER:
+                canvas.drawBitmap(otherBitmap, entity.getStartX(), entity.getStartY(), null);
                 return;
         }
     }

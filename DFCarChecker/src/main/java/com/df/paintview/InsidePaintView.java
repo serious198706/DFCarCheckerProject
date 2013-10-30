@@ -64,7 +64,7 @@ public class InsidePaintView extends ImageView {
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
 
-        bitmap = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/in.png", options);
+        bitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/in.png", options);
 
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
@@ -86,11 +86,11 @@ public class InsidePaintView extends ImageView {
     private OnTouchListener onTouchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if (currentType > 4 && currentType <= 6) {
+            if (currentType > Common.DIRTY && currentType <= Common.BROKEN) {
 
                 int x = (int) event.getX();
                 int y = (int) event.getY();
-                PosEntity entity;
+                PosEntity entity = null;
 
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     entity = new PosEntity(currentType);
@@ -111,7 +111,21 @@ public class InsidePaintView extends ImageView {
                         move = false;
                     }
 
-                    showCamera();
+                    //showCamera();
+
+                    // 如果手指在屏幕上移动范围非常小
+                    if(entity == null) {
+                        entity = data.get(data.size() - 1);
+                    }
+
+                    if(entity != null) {
+                        if(Math.abs(entity.getEndX() - entity.getStartX()) < 10 &&
+                                Math.abs(entity.getEndY() - entity.getStartY()) < 10) {
+                            data.remove(entity);
+                        } else {
+                            showCamera();
+                        }
+                    }
                 }
                 invalidate();
             }

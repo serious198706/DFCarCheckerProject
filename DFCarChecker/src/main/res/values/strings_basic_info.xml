@@ -11,9 +11,9 @@
     <string name="bi_run">表显里程：</string>
     <string name="bi_kilometer">万公里</string>
     <string name="csi">配置信息</string>
-    <string name="csi_volume">排量：</string>
-    <string name="csi_car_type">车辆类型：</string>
-    <string-array name="csi_car_type_item">
+    <string name="csi_displacement">排量：</string>
+    <string name="csi_category">车辆类型：</string>
+    <string-array name="csi_category_item">
         <item>轿车</item>
         <item>SUV</item>
         <item>MPV</item>
@@ -26,8 +26,8 @@
         <item>房车</item>
     </string-array>
 
-    <string name="csi_drive_type">驱动方式：</string>
-    <string-array name="csi_drive_type_item">
+    <string name="csi_driveType">驱动方式：</string>
+    <string-array name="csi_driveType_item">
         <item>两驱</item>
         <item>四驱</item>
         <item>全时四驱</item>
@@ -36,9 +36,10 @@
 
     <string name="csi_transmission">变速器形式：</string>
     <string-array name="csi_transmission_item">
-        <item>手动</item>
-        <item>自动</item>
-        <item>手自一体</item>
+        <item>AT</item>
+        <item>MT</item>
+        <item>AMT</item>
+        <item>A/MT</item>
         <item>CVT</item>
     </string-array>
 
@@ -58,14 +59,14 @@
         <item>无</item>
     </string-array>
 
-    <string name="csi_turn_help">转向助力：</string>
+    <string name="csi_powerSteering">转向助力：</string>
     <string-array name="csi_turn_help_items">
         <item>有</item>
         <item>无</item>
     </string-array>
 
-    <string name="csi_ele_windows">电动车窗：</string>
-    <string-array name="csi_ele_windows_items">
+    <string name="csi_powerWindows">电动车窗：</string>
+    <string-array name="csi_powerWindows_items">
         <item>有</item>
         <item>无</item>
         <item>四门</item>
@@ -73,8 +74,8 @@
         <item>加装</item>
     </string-array>
 
-    <string name="csi_sky_light">天窗：</string>
-    <string-array name="csi_sky_light_items">
+    <string name="csi_sunroof">天窗：</string>
+    <string-array name="csi_sunroof_items">
         <item>有</item>
         <item>无</item>
         <item>手动</item>
@@ -84,8 +85,8 @@
         <item>加装</item>
     </string-array>
 
-    <string name="csi_air_conditioner">空调：</string>
-    <string-array name="csi_air_conditioner_items">
+    <string name="csi_airConditioning">空调：</string>
+    <string-array name="csi_airConditioning_items">
         <item>有</item>
         <item>无</item>
         <item>手动</item>
@@ -93,8 +94,8 @@
         <item>前后</item>
     </string-array>
 
-    <string name="csi_feather_seat">真皮座椅：</string>
-    <string-array name="csi_feather_seat_items">
+    <string name="csi_leatherSeats">真皮座椅：</string>
+    <string-array name="csi_leatherSeats_items">
         <item>有</item>
         <item>无</item>
         <item>电加热</item>
@@ -103,29 +104,29 @@
         <item>加装</item>
     </string-array>
 
-    <string name="csi_ele_seat">电动座椅：</string>
-    <string-array name="csi_ele_seats_items">
+    <string name="csi_powerSeats">电动座椅：</string>
+    <string-array name="csi_powerSeats_items">
         <item>有</item>
         <item>无</item>
         <item>带记忆</item>
     </string-array>
 
-    <string name="csi_ele_reflect_mirror">电动反光镜：</string>
-    <string-array name="csi_ele_reflect_mirror_items">
+    <string name="csi_powerMirror">电动反光镜：</string>
+    <string-array name="csi_powerMirror_items">
         <item>有</item>
         <item>无</item>
         <item>自动折叠</item>
     </string-array>
 
-    <string name="csi_parking_sensors">倒车雷达：</string>
-    <string-array name="csi_parking_sensors_items">
+    <string name="csi_reversingRadar">倒车雷达：</string>
+    <string-array name="csi_reversingRadar_items">
         <item>有</item>
         <item>无</item>
         <item>加装</item>
     </string-array>
 
-    <string name="csi_parking_video">倒车影像：</string>
-    <string-array name="csi_parking_video_items">
+    <string name="csi_reversingCamera">倒车影像：</string>
+    <string-array name="csi_reversingCamera_items">
         <item>有</item>
         <item>无</item>
         <item>加装</item>
@@ -138,32 +139,32 @@
         <item>加装</item>
     </string-array>
 
-    <string name="csi_soft_close_doors">电吸门：</string>
+    <string name="csi_softCloseDoors">电吸门：</string>
     <string-array name="csi_soft_close_doors_items">
         <item>有</item>
         <item>无</item>
     </string-array>
 
-    <string name="csi_rear_ele_seats">后排电动座椅：</string>
+    <string name="csi_rearPowerSeats">后排电动座椅：</string>
     <string-array name="csi_rear_ele_seats_items">
         <item>有</item>
         <item>无</item>
     </string-array>
 
-    <string name="csi_auto_chassis">底盘升降：</string>
+    <string name="csi_ahc">底盘升降：</string>
     <string-array name="csi_auto_chassis_items">
         <item>有</item>
         <item>无</item>
     </string-array>
 
-    <string name="csi_auto_parking">自动泊车：</string>
+    <string name="csi_parkingAssist">自动泊车：</string>
     <string-array name="csi_auto_parking_items">
         <item>有</item>
         <item>无</item>
     </string-array>
 
-    <string name="csi_curtain">隔物板（伸缩帘）：</string>
-    <string-array name="csi_curtain_items">
+    <string name="csi_clapBoard">隔物板（伸缩帘）：</string>
+    <string-array name="csi_clapBoard_items">
         <item>有</item>
         <item>无</item>
     </string-array>

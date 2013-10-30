@@ -181,20 +181,7 @@
                 android:entries="@array/yes_no">
             </Spinner>
         </TableRow>
-        <TableRow>
-            <TextView android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textSize="18sp"
-                android:text="@string/it_engine_pipe">
-            </TextView>
-            <Spinner android:id="@+id/it_engine_pipe_spinner"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:entries="@array/yes_no">
-            </Spinner>
-        </TableRow>
+
 
         <!-- 变速箱检查 -->
         <LinearLayout android:layout_width="wrap_content"
@@ -406,68 +393,46 @@
                 android:layout_marginRight="8dp"
                 android:entries="@array/it_function_item">
             </Spinner>
-            <TextView android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginLeft="8dp"/>
-            <TextView android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"/>
-        </TableRow>
-        <!-- 7个必选项结束 -->
+            <!-- 7个必选项结束 -->
 
-        <!-- 配置项 -->
+            <!-- 配置项 -->
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_airBag"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:textSize="18sp"/>
+            <Spinner
+                android:id="@+id/it_airBag_spinner"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:entries="@array/it_function_item"/>
+        </TableRow>
         <TableRow>
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="@string/it_gasbag_indicator"
+                android:text="@string/it_abs"
                 android:layout_weight="1"
-                android:textSize="18sp"/>
-            <Spinner
-                android:id="@+id/it_airbag_spinner"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginRight="8dp"
-                android:entries="@array/it_function_item"/>
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="@string/it_abs_indicator"
-                android:layout_weight="1"
-                android:layout_marginLeft="8dp"
                 android:textSize="18sp"/>
             <Spinner
                 android:id="@+id/it_abs_spinner"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
-                android:entries="@array/it_function_item"/>
-        </TableRow>
-        <TableRow>
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="@string/it_turn_help"
-                android:layout_weight="1"
-                android:textSize="18sp"/>
-            <Spinner
-                android:id="@+id/it_turn_help_spinner"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="1"
                 android:layout_marginRight="8dp"
                 android:entries="@array/it_function_item"/>
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="@string/it_ele_windows"
+                android:text="@string/it_powerWindows"
                 android:layout_weight="1"
                 android:layout_marginLeft="8dp"
                 android:textSize="18sp"/>
             <Spinner
-                android:id="@+id/it_ele_windows_spinner"
+                android:id="@+id/it_powerWindows_spinner"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -477,11 +442,11 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="@string/it_sky_light"
+                android:text="@string/it_sunroof"
                 android:layout_weight="1"
                 android:textSize="18sp"/>
             <Spinner
-                android:id="@+id/it_sky_light_spinner"
+                android:id="@+id/it_sunroof_spinner"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -490,12 +455,12 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="@string/it_air_conditioner"
+                android:text="@string/it_airConditioning"
                 android:layout_weight="1"
                 android:layout_marginLeft="8dp"
                 android:textSize="18sp"/>
             <Spinner
-                android:id="@+id/it_air_conditioner_spinner"
+                android:id="@+id/it_airConditioning_spinner"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -505,11 +470,11 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="@string/it_ele_seat"
+                android:text="@string/it_powerSeats"
                 android:layout_weight="1"
                 android:textSize="18sp"/>
             <Spinner
-                android:id="@+id/it_ele_seat_spinner"
+                android:id="@+id/it_powerSeats_spinner"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -518,12 +483,12 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="@string/it_ele_reflect_mirror"
+                android:text="@string/it_powerMirror"
                 android:layout_weight="1"
                 android:layout_marginLeft="8dp"
                 android:textSize="18sp"/>
             <Spinner
-                android:id="@+id/it_ele_reflect_mirror_spinner"
+                android:id="@+id/it_powerMirror_spinner"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -533,11 +498,11 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="@string/it_parking_sensors"
+                android:text="@string/it_reversingRadar"
                 android:layout_weight="1"
                 android:textSize="18sp"/>
             <Spinner
-                android:id="@+id/it_parking_sensors_spinner"
+                android:id="@+id/it_reversingRadar_spinner"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -546,12 +511,12 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="@string/it_parking_video"
+                android:text="@string/it_reversingCamera"
                 android:layout_weight="1"
                 android:layout_marginLeft="8dp"
                 android:textSize="18sp"/>
             <Spinner
-                android:id="@+id/it_parking_video_spinner"
+                android:id="@+id/it_reversingCamera_spinner"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -561,11 +526,11 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="@string/it_ccs"
+                android:text="@string/it_softCloseDoors"
                 android:layout_weight="1"
                 android:textSize="18sp"/>
             <Spinner
-                android:id="@+id/it_ccs_spinner"
+                android:id="@+id/it_softCloseDoors_spinner"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -574,41 +539,12 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="@string/it_soft_close_doors"
+                android:text="@string/it_rearPowerSeats"
                 android:layout_weight="1"
                 android:layout_marginLeft="8dp"
                 android:textSize="18sp"/>
             <Spinner
-                android:id="@+id/it_soft_close_doors_spinner"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:entries="@array/it_function_item"/>
-        </TableRow>
-        <TableRow>
-
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="@string/it_rear_ele_seats"
-                android:layout_weight="1"
-                android:textSize="18sp"/>
-            <Spinner
-                android:id="@+id/it_rear_ele_seats_spinner"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginRight="8dp"
-                android:entries="@array/it_function_item"/>
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:text="@string/it_auto_chassis"
-                android:layout_weight="1"
-                android:layout_marginLeft="8dp"
-                android:textSize="18sp"/>
-            <Spinner
-                android:id="@+id/it_auto_chassis_spinner"
+                android:id="@+id/it_rearPowerSeats_spinner"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -618,11 +554,11 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="@string/it_auto_parking"
+                android:text="@string/it_ahc"
                 android:layout_weight="1"
                 android:textSize="18sp"/>
             <Spinner
-                android:id="@+id/it_auto_parking_spinner"
+                android:id="@+id/it_ahc_spinner"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -631,12 +567,12 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:text="@string/it_curtain"
+                android:text="@string/it_parkAssist"
                 android:layout_weight="1"
                 android:layout_marginLeft="8dp"
                 android:textSize="18sp"/>
             <Spinner
-                android:id="@+id/it_curtain_spinner"
+                android:id="@+id/it_parkAssist_spinner"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight="1"
