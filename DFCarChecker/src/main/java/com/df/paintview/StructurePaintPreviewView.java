@@ -13,16 +13,15 @@ import android.widget.ImageView;
 
 import com.df.dfcarchecker.CarCheckStructureFragment;
 import com.df.dfcarchecker.R;
-import com.df.service.PosEntity;
+import com.df.entry.FaultPhotoEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class StructurePaintPreviewView extends ImageView {
 
     private int currentType;
     private boolean move;
-    private List<PosEntity> data;
+    private List<FaultPhotoEntity> data;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
 
@@ -43,7 +42,7 @@ public class StructurePaintPreviewView extends ImageView {
         //init();
     }
 
-    public void init(Bitmap bitmap, List<PosEntity> entities) {
+    public void init(Bitmap bitmap, List<FaultPhotoEntity> entities) {
         this.bitmap = bitmap;
 
         data = entities;
@@ -51,7 +50,7 @@ public class StructurePaintPreviewView extends ImageView {
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
-        //data = new ArrayList<PosEntity>();
+        //data = new ArrayList<FaultPhotoEntity>();
 
         colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
     }
@@ -70,23 +69,23 @@ public class StructurePaintPreviewView extends ImageView {
     }
 
     private void paint(Canvas canvas) {
-        for (PosEntity entity : data) {
+        for (FaultPhotoEntity entity : data) {
             paint(entity, canvas);
         }
     }
 
-    private void paint(PosEntity entity, Canvas canvas) {
+    private void paint(FaultPhotoEntity entity, Canvas canvas) {
         canvas.drawBitmap(colorDiffBitmap, entity.getStartX(), entity.getStartY(), null);
     }
 
-    public PosEntity getPosEntity(){
+    public FaultPhotoEntity getPosEntity(){
         if(data.isEmpty()){
             return null;
         }
         return data.get(data.size()-1);
     }
 
-    public void setPosEntities(List<PosEntity> entities) {
+    public void setPosEntities(List<FaultPhotoEntity> entities) {
         data = entities;
     }
 
@@ -97,11 +96,11 @@ public class StructurePaintPreviewView extends ImageView {
             return;
         }
 
-        for(PosEntity posEntity : CarCheckStructureFragment.posEntitiesFront) {
+        for(FaultPhotoEntity faultPhotoEntity : CarCheckStructureFragment.posEntitiesFront) {
             // 因为不能对原entities做修改，所以此处要做些特殊处理，采用值传递方式
-            PosEntity temp = new PosEntity(posEntity.getType());
-            temp.setStart(posEntity.getStartX(), posEntity.getStartY());
-            temp.setEnd(posEntity.getEndX(), posEntity.getEndY());
+            FaultPhotoEntity temp = new FaultPhotoEntity(faultPhotoEntity.getType());
+            temp.setStart(faultPhotoEntity.getStartX(), faultPhotoEntity.getStartY());
+            temp.setEnd(faultPhotoEntity.getEndX(), faultPhotoEntity.getEndY());
 
             // 这些max要乘以2的原因是，在后面的getStartX()等方法调用时，max是按照大图的max来计算的
             temp.setMaxX((int)(max_x * 1.5));
@@ -109,9 +108,9 @@ public class StructurePaintPreviewView extends ImageView {
             data.add(temp);
         }
 
-        for(PosEntity posEntity : data) {
-            posEntity.setStart((int)(posEntity.getStartX() / 1.5), (int)(posEntity.getStartY() / 1.5));
-            posEntity.setEnd((int)(posEntity.getEndX() / 1.5), (int)(posEntity.getEndY() / 1.5));
+        for(FaultPhotoEntity faultPhotoEntity : data) {
+            faultPhotoEntity.setStart((int)(faultPhotoEntity.getStartX() / 1.5), (int)(faultPhotoEntity.getStartY() / 1.5));
+            faultPhotoEntity.setEnd((int)(faultPhotoEntity.getEndX() / 1.5), (int)(faultPhotoEntity.getEndY() / 1.5));
         }
     }
 }

@@ -1,13 +1,15 @@
 package com.df.service;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.util.Log;
 
 import com.df.dfcarchecker.LoginActivity;
+import com.df.entry.EngineRoomPhotoEntity;
+import com.df.entry.FaultPhotoEntity;
+import com.df.entry.InsidePhotoEntity;
+import com.df.entry.OutsidePhotoEntity;
+import com.df.entry.StructurePhotoEntity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,46 +22,76 @@ import java.util.List;
  * Created by 岩 on 13-10-30.
  */
 public final class ImageUploadQueue {
-    private List<ImageEntity> queue;
+    private List<FaultPhotoEntity> faultQueue;
+    private List<StructurePhotoEntity> structureQueue;
+    private List<EngineRoomPhotoEntity> engineRoomQueue;
+    private List<InsidePhotoEntity> insideQueue;
+    private List<OutsidePhotoEntity> outsideQueue;
+
     private static final ImageUploadQueue instance = new ImageUploadQueue();
     private static UploadPictureTask mUploadPictureTask;
+    private Context context;
 
     private ImageUploadQueue() {
-        queue = new ArrayList<ImageEntity>();
-        //mUploadPictureTask = new UploadPictureTask();
+        faultQueue = new ArrayList<FaultPhotoEntity>();
+        structureQueue = new ArrayList<StructurePhotoEntity>();
+        engineRoomQueue = new ArrayList<EngineRoomPhotoEntity>();
+        insideQueue = new ArrayList<InsidePhotoEntity>();
+        outsideQueue = new ArrayList<OutsidePhotoEntity>();
     }
 
     public static ImageUploadQueue getInstance() {
         return instance;
     }
 
-    public int getSize() {
-        return queue.size();
+    public void setContext(Context context) {
+        this.context = context;
     }
 
-    public ImageEntity getImage() {
-        return queue.size() > 0 ? queue.get(0) : null;
+    public int getSize(FaultPhotoEntity entity) {
+        return faultQueue.size();
+    }
+
+    public int getSize(StructurePhotoEntity entity) {
+        return structureQueue.size();
+    }
+
+    public int getSize(EngineRoomPhotoEntity entity) {
+        return engineRoomQueue.size();
+    }
+
+    public int getSize(OutsidePhotoEntity entity) {
+        return outsideQueue.size();
+    }
+
+    public int getSize(InsidePhotoEntity entity) {
+        return insideQueue.size();
+    }
+
+    public FaultPhotoEntity getImage() {
+        return faultQueue.size() > 0 ? faultQueue.get(0) : null;
     }
 
     // 添加元素
-    public void addImage(ImageEntity imageEntity) {
-        queue.add(imageEntity);
+    public void addImage(FaultPhotoEntity faultPhotoEntity) {
+        faultQueue.add(faultPhotoEntity);
     }
 
     // 当上传成功后，删除队列中第一个元素
     public void removeImage() {
-        if(queue.size() > 0) {
+        if(faultQueue.size() > 0) {
             // 先将文件从内存卡中删除
-            if(deleteImageFromExternalStorage(queue.get(0).fileName)) {
-                queue.remove(0);
+            if(deleteImageFromExternalStorage(faultQueue.get(0).getImageFileName())) {
+                faultQueue.remove(0);
             }
         }
     }
 
     private boolean deleteImageFromExternalStorage(String fileName) {
         String path = Environment.getExternalStorageDirectory().getPath();
+        path += "/Pictures/DFCarChecker/";
 
-        File file = new File(path, "/" + fileName);
+        File file = new File(path, fileName);
         boolean deleted = file.delete();
 
         return deleted;
@@ -82,20 +114,27 @@ public final class ImageUploadQueue {
 //        Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
 //    }
 
-    public class ImageEntity
-    {
-        public Bitmap bitmap;
-        public String fileName;
-    }
+    public void startUpload(final Context context) {
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                while(true) {
+                    // 当照片池中还有照片，并且上传线程没有运行时，开启新的上传线程
+                    if((getSize() != 0) && (mUploadPictureTask == null)) {
+                        mUploadPictureTask = new UploadPictureTask(context);
+                        mUploadPictureTask.execute((Void) null);
+                    }
+                }
+            }
+        });
 
-    public void startUpload() {
-
+        thread.run();
     }
 
     private class UploadPictureTask extends AsyncTask<Void, Void, Boolean> {
         Context context;
 
-        private UploadPictureTask(Context context) {
+        public UploadPictureTask(Context context) {
             this.context = context;
         }
 
@@ -107,8 +146,7 @@ public final class ImageUploadQueue {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            boolean success = false;
+            boolean success;
 
             SoapService soapService = new SoapService();
 
@@ -117,25 +155,33 @@ public final class ImageUploadQueue {
                     "http://cheyiju/IReportService/SaveCarPictureTagKey",
                     "SaveCarPictureTagKey");
 
-            JSONObject jsonObject = new JSONObject();
-            try {
-                // TODO: 更改命名方式
-                jsonObject.put("PictureName", "structure_f_2.jpg");
-                jsonObject.put("StartPoint", "187,90");
-                jsonObject.put("EndPoint", "255, 103");
-                jsonObject.put("UniqueId", "199");
-                // 绘图类型 -
-                jsonObject.put("Type", "0");
-                jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                jsonObject.put("Key", LoginActivity.userInfo.getKey());
-            } catch (JSONException e) {
+            FaultPhotoEntity faultPhotoEntity = getImage();
 
+            // 如果照片池中还有照片
+            if(faultPhotoEntity != null) {
+                JSONObject jsonObject = new JSONObject();
+                try {
+                        jsonObject.put("PictureName", faultPhotoEntity.getImageFileName());
+                        jsonObject.put("StartPoint", Integer.toString(faultPhotoEntity.getStartX()) + "," + Integer.toString(faultPhotoEntity.getStartY()));
+                        jsonObject.put("EndPoint", Integer.toString(faultPhotoEntity.getEndX()) + "," + Integer.toString(faultPhotoEntity.getEndY()));
+                        jsonObject.put("UniqueId", "199");
+                        // 绘图类型
+                        jsonObject.put("Type", faultPhotoEntity.getType());
+                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                } catch (JSONException e) {
+
+                }
+
+                success = soapService.uploadPicture(this.context, faultPhotoEntity.getBitmap(), jsonObject.toString());
+            } else {
+                success = true;
             }
 
-            File f = new File("/mnt/sdcard/Pictures/DFCarChecker/structure_f_2.jpg");
-            Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+            //File f = new File("/mnt/sdcard/Pictures/DFCarChecker/structure_f_2.jpg");
+            //Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
 
-            //success = soapService.uploadPicture(root.getContext(), bitmap, jsonObject.toString());
+
 
             return success;
         }
@@ -145,9 +191,7 @@ public final class ImageUploadQueue {
             mUploadPictureTask = null;
 
             if(success) {
-
-            } else {
-
+                removeImage();
             }
         }
 

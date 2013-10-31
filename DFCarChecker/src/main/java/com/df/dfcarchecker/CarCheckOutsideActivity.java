@@ -16,9 +16,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.df.entry.FaultPhotoEntity;
 import com.df.paintview.OutsidePaintPreviewView;
 import com.df.service.Common;
-import com.df.service.PosEntity;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
     private EditText brokenEdit;
     private Spinner paintSpinner;
     private EditText commentEdit;
-    public static List<PosEntity> posEntities = CarCheckIntegratedFragment.outsidePaintEntities;
+    public static List<FaultPhotoEntity> posEntities = CarCheckIntegratedFragment.outsidePaintEntities;
     private OutsidePaintPreviewView outsidePaintPreviewView;
     private TextView tip;
     private String brokenParts;
@@ -59,6 +59,19 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
         // 备注
         commentEdit = (EditText) findViewById(R.id.out_comment_edit);
 
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            String paintIndex = extras.getString("INDEX");
+            if(paintIndex != null) {
+                paintSpinner.setSelection(Integer.parseInt(paintIndex));
+            }
+
+            String comment = extras.getString("COMMENT");
+            if(comment != null) {
+                commentEdit.setText(comment);
+            }
+        }
+
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
@@ -69,32 +82,11 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
         }
     }
 
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        super.onSaveInstanceState(savedInstanceState);
-
-        // 当用户保存时，将数据保存，以便再次进入时查看
-        savedInstanceState.putString("brokenEdit", brokenEdit.getText().toString());
-        savedInstanceState.putInt("paintSpinnerPosition", paintSpinner.getSelectedItemPosition());
-        savedInstanceState.putString("comment", commentEdit.getText().toString());
-        //savedInstanceState.putParcelable("entities", posEntitiesFront);
-    }
-
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        // Restore UI state from the savedInstanceState.
-        // This bundle has also been passed to onCreate.
-        brokenEdit.setText(savedInstanceState.getString("brokenEdit"));
-        paintSpinner.setSelection(savedInstanceState.getInt("paintSpinnerPosition"));
-        commentEdit.setText(savedInstanceState.getString("comment"));
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.car_check_frame, menu);
+        getMenuInflater().inflate(R.menu.menu_save_discard, menu);
         return true;
     }
 
@@ -104,11 +96,11 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_done:
-                // TODO 提交数据，并保存当前Activity
-
+            case R.id.action_save:
+                // 保存数据
+                saveResult();
                 break;
-            case R.id.action_cancel:
+            case R.id.action_discard:
                 finish();
                 break;
         }
@@ -222,5 +214,14 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
         }
     }
 
+    private void saveResult() {
+        // 创建结果意图和包括地址
+        Intent intent = new Intent();
+        intent.putExtra("INDEX", Integer.toString(paintSpinner.getSelectedItemPosition()));
+        intent.putExtra("COMMENT", commentEdit.getText().toString());
 
+        // 关闭activity
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
 }

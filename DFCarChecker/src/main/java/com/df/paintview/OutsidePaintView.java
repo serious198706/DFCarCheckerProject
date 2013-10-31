@@ -13,21 +13,19 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
-import android.util.Base64;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.df.dfcarchecker.CarCheckOutsideActivity;
 import com.df.dfcarchecker.R;
+import com.df.entry.FaultPhotoEntity;
 import com.df.service.Common;
-import com.df.service.PosEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,11 +34,11 @@ public class OutsidePaintView extends ImageView {
 
     private int currentType = Common.COLOR_DIFF;
     private boolean move;
-    private List<PosEntity> data = CarCheckOutsideActivity.posEntities;
+    private List<FaultPhotoEntity> data = CarCheckOutsideActivity.posEntities;
 
     // 本次更新的坐标点，如果用户点击取消，则不将thisTimeNewData中的坐标加入到data中
-    private List<PosEntity> thisTimeNewData;
-    private List<PosEntity> undoData;
+    private List<FaultPhotoEntity> thisTimeNewData;
+    private List<FaultPhotoEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
     private Bitmap otherBitmap;
@@ -82,8 +80,8 @@ public class OutsidePaintView extends ImageView {
 
      //   bitmap = Bitmap.createBitmap(tempbitmap, 0, 0, max_x, max_y, matrix,  false);
 
-        undoData = new ArrayList<PosEntity>();
-        thisTimeNewData = new ArrayList<PosEntity>();
+        undoData = new ArrayList<FaultPhotoEntity>();
+        thisTimeNewData = new ArrayList<FaultPhotoEntity>();
 
         colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
         otherBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_other);
@@ -104,10 +102,10 @@ public class OutsidePaintView extends ImageView {
             if (currentType > 0 && currentType <= 5) {
                 int x = (int) event.getX();
                 int y = (int) event.getY();
-                PosEntity entity = null;
+                FaultPhotoEntity entity = null;
 
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    entity = new PosEntity(currentType);
+                    entity = new FaultPhotoEntity(currentType);
                     entity.setMaxX(max_x);
                     entity.setMaxY(max_y);
                     entity.setStart(x, y);
@@ -190,12 +188,12 @@ public class OutsidePaintView extends ImageView {
     }
 
     private void paint(Canvas canvas) {
-        for (PosEntity entity : data) {
+        for (FaultPhotoEntity entity : data) {
             paint(entity, canvas);
         }
     }
 
-    private void paint(PosEntity entity, Canvas canvas) {
+    private void paint(FaultPhotoEntity entity, Canvas canvas) {
         int type = entity.getType();
 
         switch (type) {
@@ -266,7 +264,7 @@ public class OutsidePaintView extends ImageView {
         builder.show();
     }
 
-    public PosEntity getPosEntity(){
+    public FaultPhotoEntity getPosEntity(){
         if(data.isEmpty()){
             return null;
         }

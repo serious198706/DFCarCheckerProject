@@ -12,26 +12,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.df.entry.FaultPhotoEntity;
 import com.df.paintview.InsidePaintPreviewView;
 import com.df.service.Common;
-import com.df.service.PosEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CarCheckInsideActivity extends Activity implements View.OnClickListener  {
     private int currentGroup;
 
-    public static List<PosEntity> posEntities;
+    public static List<FaultPhotoEntity> posEntities = CarCheckIntegratedFragment.insidePaintEntities;
 
     private String brokenParts;
     private String dirtyParts;
 
     private InsidePaintPreviewView insidePaintPreviewView;
     private TextView tip;
+
+    private Spinner sealSpinner;
+    private EditText commentEdit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,16 +54,36 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
         tip = (TextView) findViewById(R.id.tipOnPreview);
         tip.setOnClickListener(this);
 
-        posEntities = new ArrayList<PosEntity>();
+        sealSpinner = (Spinner) findViewById(R.id.in_seal_spinner);
+        commentEdit = (EditText) findViewById(R.id.commentEdit);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            String index = extras.getString("INDEX");
+            if(index != null) {
+                sealSpinner.setSelection(Integer.parseInt(index));
+            }
+
+            String comment = extras.getString("COMMENT");
+            if(comment != null) {
+                commentEdit.setText(comment);
+            }
+        }
 
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        if(!posEntities.isEmpty()) {
+            insidePaintPreviewView.setAlpha(1f);
+            insidePaintPreviewView.invalidate();
+            tip.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.car_check_frame, menu);
+        getMenuInflater().inflate(R.menu.menu_save_discard, menu);
         return true;
     }
 
@@ -70,11 +93,11 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_done:
-                // TODO 提交数据
-                finish();
+            case R.id.action_save:
+                // 保存数据
+                saveResult();
                 break;
-            case R.id.action_cancel:
+            case R.id.action_discard:
                 finish();
                 break;
         }
@@ -101,6 +124,16 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
         }
     }
 
+    private void saveResult() {
+        // 创建结果意图和包括地址
+        Intent intent = new Intent();
+        intent.putExtra("INDEX", Integer.toString(sealSpinner.getSelectedItemPosition()));
+        intent.putExtra("COMMENT", commentEdit.getText().toString());
+
+        // 关闭activity
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
 
     public void ChooseBroken() {
         Intent intent = new Intent(this, PopupActivity.class);

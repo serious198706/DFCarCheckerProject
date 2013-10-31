@@ -131,7 +131,7 @@
                         android:layout_weight="1"
                         android:inputType="textMultiLine"
                         android:ems="10"
-                        android:id="@+id/editText"/>
+                        android:id="@+id/commentEdit"/>
             </TableRow>
             <Button android:id="@+id/upload"
                 android:layout_width="match_parent"

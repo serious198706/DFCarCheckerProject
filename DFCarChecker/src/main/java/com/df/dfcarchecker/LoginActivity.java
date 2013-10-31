@@ -4,10 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -19,11 +19,9 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.df.service.ImageUploadQueue;
 import com.df.service.SoapService;
-import com.df.service.UserInfo;
+import com.df.entry.UserInfo;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -204,6 +202,19 @@ public class LoginActivity extends Activity {
         protected Boolean doInBackground(Void... params) {
             boolean success = false;
 
+//            try {
+//                soapService = new SoapService();
+//
+//                // 设置soap的配置
+//                soapService.setUtils("http://192.168.100.6:50/UserManageService.svc",
+//                        "http://cheyiju/IUserManageService/GetCustomerIpAddress",
+//                        "GetCustomerIpAddress");
+//
+//                success = soapService.sendIpAddress();
+//            } catch (Exception e) {
+//                Log.d("DFCarChecker", "Json解析错误: " + e.getMessage());
+//            }
+
             try {
                 // 登录
                 JSONObject jsonObject = new JSONObject();
@@ -264,5 +275,32 @@ public class LoginActivity extends Activity {
             mAuthTask = null;
             showProgress(false);
         }
+    }
+
+    public void Quit(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(R.string.alert_title);
+        builder.setMessage(R.string.quit);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // 取消
+            }
+        });
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // 退出
+                finish();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Quit(null);
     }
 }

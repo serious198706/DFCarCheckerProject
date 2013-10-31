@@ -5,12 +5,16 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -33,6 +37,10 @@ public class CarCheckPaintActivity extends Activity {
     private InsidePaintView insidePaintView;
     private StructurePaintView structurePaintView;
     private String currentPaintView;
+
+    private View targetView;
+
+    private SaveCapturedImageTask mSaveCapturedImageTask;
 
     public enum PaintType {
         STRUCTURE_PAINT, OUT_PAINT, IN_PAINT, NOVALUE;
@@ -84,6 +92,8 @@ public class CarCheckPaintActivity extends Activity {
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        targetView = findViewById(R.id.titleLy);
     }
 
     private void SetInPaintLayout() {
@@ -184,7 +194,7 @@ public class CarCheckPaintActivity extends Activity {
                 return true;
             case R.id.action_done:
                 // 提交数据
-
+                captureUsingCanvas();
                 finish();
                 break;
             case R.id.action_cancel:
@@ -305,6 +315,60 @@ public class CarCheckPaintActivity extends Activity {
             default:
                 Log.d("DFCarChecker", "拍摄故障！！");
                 break;
+        }
+    }
+
+    private void captureUsingCanvas(){
+        mSaveCapturedImageTask = new SaveCapturedImageTask();
+        mSaveCapturedImageTask.execute((Void) null);
+    }
+
+    public class SaveCapturedImageTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            boolean success = false;
+
+            Bitmap b = Bitmap.createBitmap(targetView.getWidth(),targetView.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas c = new Canvas(b);
+            targetView.draw(c);
+
+
+
+            String filename = Environment.getExternalStorageDirectory().getPath();
+            filename += "/Pictures/DFCarChecker/";
+
+            File file = new File(filename);
+            file.mkdirs();// 创建文件夹
+
+            if(currentPaintView.equals("OUT_PAINT")) {
+                filename += "out_paint.png";
+            } else if(currentPaintView.equals("IN_PAINT")) {
+                filename += "int_paint.png";
+            } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
+                filename += "structure_paint.png";
+            }
+
+            try {
+                FileOutputStream out = new FileOutputStream(filename);
+                b.compress(Bitmap.CompressFormat.PNG, 90, out);
+                out.close();
+                success = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mSaveCapturedImageTask = null;
+        }
+
+        @Override
+        protected void onCancelled() {
+            mSaveCapturedImageTask = null;
         }
     }
 }

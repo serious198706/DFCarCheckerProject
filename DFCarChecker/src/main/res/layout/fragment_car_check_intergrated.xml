@@ -859,7 +859,7 @@
                 android:layout_weight="1"
                 android:inputType="textMultiLine"
                 android:ems="10"
-                android:id="@+id/editText"/>
+                android:id="@+id/commentEdit"/>
         </TableRow>
     </TableLayout>
 </ScrollView>

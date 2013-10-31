@@ -4,11 +4,11 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 
-import org.json.JSONObject;
+import com.df.entry.UserInfo;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.MarshalBase64;
 import org.ksoap2.serialization.SoapObject;
-import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 import org.xmlpull.v1.XmlPullParserException;
@@ -19,8 +19,6 @@ import java.io.IOException;
 public class SoapService implements ISoapService {
     private static final String NAMESPACE = "http://cheyiju";
 
-    // TODO: 建立一个错误信息的变量，一个正确信息的变量
-    // TODO: 有错误时将正确信息变成""，然后调用者就可以通过判断返回值是否为""来决定是否取错误信息
     private boolean success;
     private String errorMessage;
     private String resultMessage;
@@ -214,4 +212,53 @@ public class SoapService implements ISoapService {
             return false;
         }
     }
+
+    public boolean sendIpAddress() {
+        errorMessage = "";
+        resultMessage = "";
+
+        // 各种配置
+        SoapObject request = new SoapObject(NAMESPACE, this.methodName);
+
+        SoapSerializationEnvelope envelope=new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        new MarshalBase64().register(envelope);
+        envelope.dotNet = true;
+        envelope.setOutputSoapObject(request);
+
+        HttpTransportSE trans = new HttpTransportSE(this.url);
+
+        try {
+            trans.call(this.soapAction, envelope);
+            Log.d("DFCarChecker", "send Successful!");
+        } catch (IOException e) {
+            Log.d("DFCarChecker", "IOException");
+            e.printStackTrace();
+        } catch (XmlPullParserException e) {
+            Log.d("DFCarChecker", "XmlPullParserException");
+            e.printStackTrace();
+        } catch (Exception e) {
+            Log.d("DFCarChecker", e.getMessage());
+        }
+
+        // 收到的结果
+        SoapObject soapObject = (SoapObject) envelope.bodyIn;
+
+        // 成功失败标志位
+        String result = soapObject.getProperty(0).toString();
+        Log.d("DFCarChecker", result);
+
+
+        // 成功
+        if(result.equals("0")) {
+            // JSON格式数据            resultMessage = soapObject.getProperty(1).toString();
+
+            return true;
+        }
+        // 失败
+        else {
+            Log.d("DFCarChecker", resultMessage);
+            return false;
+        }
+    }
+
 }

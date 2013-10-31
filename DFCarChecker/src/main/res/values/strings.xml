@@ -4,10 +4,14 @@
     <string name="action_settings">Settings</string>
 
     <string name="quit">确定退出？</string>
+    <string name="quitCarCheck">确定退出检测？</string>
+    <string name="commitCarCheck">确定提交信息？</string>
     <string name="alert_title">提示</string>
+    <string name="action_commit">提交</string>
     <string name="action_cancel">取消</string>
     <string name="action_done">确定</string>
-
+    <string name="action_discard">取消</string>
+    <string name="action_save">保存</string>
     <string-array name="existornot">
         <item>有</item>
         <item>无</item>

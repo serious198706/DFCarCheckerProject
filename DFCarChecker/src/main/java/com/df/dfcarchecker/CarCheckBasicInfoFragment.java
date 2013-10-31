@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -942,7 +943,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         @Override
         protected void onPreExecute()
         {
-            progressDialog = ProgressDialog.show(rootView.getContext(), "提醒",
+            progressDialog = ProgressDialog.show(rootView.getContext(), null,
                     "正在获取车辆信息，请稍候。。", false, false);
             model = null;
             modelName = "";
@@ -982,6 +983,12 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     // 传输失败，获取错误信息并显示
                     if(!success) {
                         Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
+
+                        if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
+                            Toast.makeText(rootView.getContext(), "连接错误，请重新登陆！", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
+                            startActivity(intent);
+                        }
                     } else {
                         result = soapService.getResultMessage();
                     }
@@ -1138,6 +1145,23 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                 }
             } else {
                 Log.d("DFCarChecker", "连接错误！");
+
+                if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
+                    builder.setTitle(R.string.bi_select_model)
+                            .setMessage("连接失败，请重新登录！");
+
+                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
             }
         }
 

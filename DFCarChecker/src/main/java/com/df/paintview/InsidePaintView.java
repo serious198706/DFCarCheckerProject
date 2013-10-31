@@ -22,9 +22,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.df.dfcarchecker.CarCheckInsideActivity;
-import com.df.dfcarchecker.R;
+import com.df.entry.FaultPhotoEntity;
 import com.df.service.Common;
-import com.df.service.PosEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,11 +32,11 @@ public class InsidePaintView extends ImageView {
 
     private int currentType = Common.DIRTY;
     private boolean move;
-    private List<PosEntity> data = CarCheckInsideActivity.posEntities;
+    private List<FaultPhotoEntity> data = CarCheckInsideActivity.posEntities;
 
     // 本次更新的坐标点，如果用户点击取消，则不将thisTimeNewData中的坐标加入到data中
-    private List<PosEntity> thisTimeNewData;
-    private List<PosEntity> undoData;
+    private List<FaultPhotoEntity> thisTimeNewData;
+    private List<FaultPhotoEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
 
@@ -69,8 +68,8 @@ public class InsidePaintView extends ImageView {
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
-        undoData = new ArrayList<PosEntity>();
-        thisTimeNewData = new ArrayList<PosEntity>();
+        undoData = new ArrayList<FaultPhotoEntity>();
+        thisTimeNewData = new ArrayList<FaultPhotoEntity>();
 
         this.setOnTouchListener(onTouchListener);
     }
@@ -86,14 +85,14 @@ public class InsidePaintView extends ImageView {
     private OnTouchListener onTouchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if (currentType > Common.DIRTY && currentType <= Common.BROKEN) {
+            if (currentType >= Common.DIRTY && currentType <= Common.BROKEN) {
 
                 int x = (int) event.getX();
                 int y = (int) event.getY();
-                PosEntity entity = null;
+                FaultPhotoEntity entity = null;
 
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    entity = new PosEntity(currentType);
+                    entity = new FaultPhotoEntity(currentType);
                     entity.setMaxX(max_x);
                     entity.setMaxY(max_y);
                     entity.setStart(x, y);
@@ -152,12 +151,12 @@ public class InsidePaintView extends ImageView {
     }
 
     private void paint(Canvas canvas) {
-        for (PosEntity entity : data) {
+        for (FaultPhotoEntity entity : data) {
             paint(entity, canvas);
         }
     }
 
-    private void paint(PosEntity entity, Canvas canvas) {
+    private void paint(FaultPhotoEntity entity, Canvas canvas) {
         canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(entity.getType()));
     }
 
@@ -175,7 +174,7 @@ public class InsidePaintView extends ImageView {
         builder.show();
     }
 
-    public PosEntity getPosEntity(){
+    public FaultPhotoEntity getPosEntity(){
         if(data.isEmpty()){
             return null;
         }

@@ -1,4 +1,4 @@
-package com.df.service;
+package com.df.entry;
 
 /**
  * Created by 岩 on 13-10-22.

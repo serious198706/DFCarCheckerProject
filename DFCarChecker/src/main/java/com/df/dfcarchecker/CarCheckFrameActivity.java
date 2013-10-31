@@ -3,15 +3,14 @@ package com.df.dfcarchecker;
 import java.util.Locale;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
 import android.app.FragmentTransaction;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.NavUtils;
-import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -87,7 +86,7 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.car_check_frame, menu);
+        getMenuInflater().inflate(R.menu.menu_commit_cancle, menu);
         return true;
     }
 
@@ -100,13 +99,12 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
                 // use NavUtils in the Support Package to ensure proper handling of Up.
                 finish();
                 return true;
-            case R.id.action_done:
+            case R.id.action_commit:
                 // 提交数据
-                Toast.makeText(CarCheckFrameActivity.this, "Committing..", Toast.LENGTH_SHORT).show();
-                finish();
+                commit();
                 break;
             case R.id.action_cancel:
-                finish();
+                quitCarCheck();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -177,5 +175,50 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
             }
             return null;
         }
+    }
+
+    public void quitCarCheck() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(R.string.alert_title);
+        builder.setMessage(R.string.quitCarCheck);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // 取消
+            }
+        });
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // 退出
+                finish();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    public void commit() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(R.string.alert_title);
+        builder.setMessage(R.string.commitCarCheck);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // 取消
+            }
+        });
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // 退出
+                Toast.makeText(CarCheckFrameActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
+                finish();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

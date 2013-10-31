@@ -12,8 +12,8 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 
 import com.df.entry.CarSettings;
+import com.df.entry.FaultPhotoEntity;
 import com.df.service.Common;
-import com.df.service.PosEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,9 +22,13 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     private static View rootView;
     private static ScrollView root;
     private LayoutInflater inflater;
-    public static List<PosEntity> outsidePaintEntities;
+    public static List<FaultPhotoEntity> outsidePaintEntities;
+    public static List<FaultPhotoEntity> insidePaintEntities;
     private String paintIndex;
-    private String comment;
+    private String outsideComment;
+    private String sealIndex;
+    private String insideComment;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -42,10 +46,11 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         root.setVisibility(View.GONE);
 
         // 坐标们
-        outsidePaintEntities = new ArrayList<PosEntity>();
+        outsidePaintEntities = new ArrayList<FaultPhotoEntity>();
+        insidePaintEntities = new ArrayList<FaultPhotoEntity>();
 
-        paintIndex = "";
-        comment = "";
+        paintIndex = sealIndex = "0";
+        outsideComment = insideComment = "";
 
         return rootView;
     }
@@ -113,13 +118,19 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         }
     }
 
+    // 进入“外观”
     private void CheckOutSide() {
         Intent intent = new Intent(rootView.getContext(), CarCheckOutsideActivity.class);
+        intent.putExtra("INDEX", paintIndex);
+        intent.putExtra("COMMENT", outsideComment);
         startActivityForResult(intent, Common.IT_OUT);
     }
 
+    // 进入“内饰”
     private void CheckInside() {
         Intent intent = new Intent(rootView.getContext(), CarCheckInsideActivity.class);
+        intent.putExtra("INDEX", sealIndex);
+        intent.putExtra("COMMENT", insideComment);
         startActivityForResult(intent, Common.IT_IN);
     }
 
@@ -146,7 +157,7 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
                     try{
                         Bundle bundle = data.getExtras();
                         if(bundle != null) {
-                            String paintIndex = bundle.getString("PAINT_INDEX");
+                            String paintIndex = bundle.getString("INDEX");
                             if(paintIndex != null) {
                                 // 保存车辆漆面光洁度的选择项
                                 this.paintIndex = paintIndex;
@@ -155,7 +166,30 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
                             String comment = bundle.getString("COMMENT");
                             if(comment != null) {
                                 // 保存备注信息
-                                this.comment = comment;
+                                this.outsideComment = comment;
+                            }
+                        }
+                    }
+                    catch(NullPointerException ex) {
+
+                    }
+                }
+                break;
+            case Common.IT_IN:
+                if(resultCode == Activity.RESULT_OK) {
+                    try{
+                        Bundle bundle = data.getExtras();
+                        if(bundle != null) {
+                            String sealIndex = bundle.getString("INDEX");
+                            if(sealIndex != null) {
+                                // 保存车辆漆面光洁度的选择项
+                                this.sealIndex = sealIndex;
+                            }
+
+                            String comment = bundle.getString("COMMENT");
+                            if(comment != null) {
+                                // 保存备注信息
+                                this.insideComment = comment;
                             }
                         }
                     }
