@@ -1,4 +1,4 @@
-package com.df.service;
+package com.df.entry;
 
 /**
  * Created by 岩 on 13-9-26.
@@ -12,7 +12,7 @@ import android.graphics.BitmapFactory;
 
 import java.io.Serializable;
 
-public class PosEntity implements Serializable {
+public class FaultPhotoEntity implements Serializable {
 
     private static final long serialVersionUID = 2019904101824903278L;
 
@@ -25,9 +25,17 @@ public class PosEntity implements Serializable {
 
     private String image;
 
+    public Bitmap getBitmap() {
+        return bitmap;
+    }
+
+    public void setBitmap(Bitmap bitmap) {
+        this.bitmap = bitmap;
+    }
+
     private Bitmap bitmap = null;
 
-    public PosEntity(int type) {
+    public FaultPhotoEntity(int type) {
         this.type = type;
     }
 
@@ -61,7 +69,7 @@ public class PosEntity implements Serializable {
         return type;
     }
 
-    public String getImage() {
+    public String getImageFileName() {
         return image;
     }
 

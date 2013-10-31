@@ -6,21 +6,33 @@ import java.util.List;
 public class Brand {
     public String name;
     public String id;
-    public List<Production> productions;
-    private List<String> productionNames;
+    public List<Manufacturer> manufacturers;
+    private List<String> manufacturerNames;
 
     public Brand() {
-        productions = new ArrayList<Production>();
+        manufacturers = new ArrayList<Manufacturer>();
     }
 
-    public List<String> getProductionNames() {
-        productionNames = new ArrayList<String>();
-        productionNames.add("");
-        for(int i = 0; i < productions.size(); i++) {
-            productionNames.add(productions.get(i).name);
+    public List<String> getManufacturerNames() {
+        manufacturerNames = new ArrayList<String>();
+        manufacturerNames.add("");
+        for(int i = 0; i < manufacturers.size(); i++) {
+            manufacturerNames.add(manufacturers.get(i).name);
         }
 
-        return productionNames;
+        return manufacturerNames;
+    }
+
+    public Manufacturer getProductionById(String id) {
+        Manufacturer manufacturer = null;
+
+        for(int i = 0; i < manufacturers.size(); i++) {
+            if(manufacturers.get(i).id.equals(id)) {
+                manufacturer = manufacturers.get(i);
+            }
+        }
+
+        return manufacturer;
     }
 }
 

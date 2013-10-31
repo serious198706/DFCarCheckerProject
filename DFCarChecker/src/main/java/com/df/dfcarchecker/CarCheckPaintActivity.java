@@ -5,12 +5,16 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -25,12 +29,32 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+
+
 public class CarCheckPaintActivity extends Activity {
     private LinearLayout root;
     private OutsidePaintView outsidePaintView;
     private InsidePaintView insidePaintView;
     private StructurePaintView structurePaintView;
     private String currentPaintView;
+
+    private View targetView;
+
+    private SaveCapturedImageTask mSaveCapturedImageTask;
+
+    public enum PaintType {
+        STRUCTURE_PAINT, OUT_PAINT, IN_PAINT, NOVALUE;
+
+        public static PaintType paintType(String str)
+        {
+            try {
+                return valueOf(str);
+            }
+            catch (Exception ex) {
+                return NOVALUE;
+            }
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,14 +63,28 @@ public class CarCheckPaintActivity extends Activity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             String value = extras.getString("PAINT_TYPE");
-            if(value.equals("OUT_PAINT")) {
-                SetOutPaintLayout();
-            } else if(value.equals("IN_PAINT")) {
-                SetInPaintLayout();
-            } else if(value.equals("STRUCTURE_PAINT")) {
-                String sight = extras.getString("PAINT_SIGHT");
-                SetStructurePaintLayout(sight);
+
+            switch (PaintType.paintType(value)) {
+                case STRUCTURE_PAINT:
+                    String sight = extras.getString("PAINT_SIGHT");
+                    SetStructurePaintLayout(sight);
+                    break;
+                case OUT_PAINT:
+                    SetOutPaintLayout();
+                    break;
+                case IN_PAINT:
+                    SetInPaintLayout();
+                    break;
             }
+
+//            if(value.equals("OUT_PAINT")) {
+//                SetOutPaintLayout();
+//            } else if(value.equals("IN_PAINT")) {
+//                SetInPaintLayout();
+//            } else if(value.equals("STRUCTURE_PAINT")) {
+//                String sight = extras.getString("PAINT_SIGHT");
+//                SetStructurePaintLayout(sight);
+//            }
 
         }
 
@@ -54,10 +92,13 @@ public class CarCheckPaintActivity extends Activity {
         if(actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+        targetView = findViewById(R.id.titleLy);
     }
 
     private void SetInPaintLayout() {
         setContentView(R.layout.activity_car_check_inside_paint);
+        setTitle(R.string.in);
 
         insidePaintView = (InsidePaintView) findViewById(R.id.tile);
 
@@ -85,6 +126,7 @@ public class CarCheckPaintActivity extends Activity {
 
     private void SetOutPaintLayout() {
         setContentView(R.layout.activity_car_check_outside_paint);
+        setTitle(R.string.out);
 
         outsidePaintView = (OutsidePaintView) findViewById(R.id.tile);
 
@@ -107,6 +149,9 @@ public class CarCheckPaintActivity extends Activity {
                     case R.id.out_scrape_radio:
                         type = Common.SCRAPE;
                         break;
+                    case R.id.out_other_radio:
+                        type = Common.OTHER;
+                        break;
                 }
 
                 outsidePaintView.setType(type);
@@ -119,6 +164,7 @@ public class CarCheckPaintActivity extends Activity {
 
     private void SetStructurePaintLayout(String sight) {
         setContentView(R.layout.activity_car_check_structure_paint);
+        setTitle(R.string.structure);
         structurePaintView = (StructurePaintView) findViewById(R.id.tile);
 
         if(sight.equals("FRONT")) {
@@ -148,12 +194,17 @@ public class CarCheckPaintActivity extends Activity {
                 return true;
             case R.id.action_done:
                 // 提交数据
-
+                captureUsingCanvas();
                 finish();
                 break;
             case R.id.action_cancel:
-                // TODO:点击取消后，要将刚才进入时的操作全部回退掉
-                //outsidePaintView.Clear();
+                if(currentPaintView.equals("OUT_PAINT")) {
+                    outsidePaintView.cancel();
+                } else if(currentPaintView.equals("IN_PAINT")) {
+                    insidePaintView.cancel();
+                } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
+                    structurePaintView.cancel();
+                }
                 finish();
                 break;
             case R.id.action_clear:
@@ -171,9 +222,9 @@ public class CarCheckPaintActivity extends Activity {
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // 退出
                         if(currentPaintView.equals("OUT_PAINT")) {
-                            outsidePaintView.Clear();
+                            outsidePaintView.clear();
                         } else if(currentPaintView.equals("IN_PAINT")) {
-                            insidePaintView.Clear();
+                            insidePaintView.clear();
                         } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
                             structurePaintView.Clear();
                         }
@@ -185,18 +236,18 @@ public class CarCheckPaintActivity extends Activity {
                 break;
             case R.id.action_undo:
                 if(currentPaintView.equals("OUT_PAINT")) {
-                    outsidePaintView.Undo();
+                    outsidePaintView.undo();
                 } else if(currentPaintView.equals("IN_PAINT")) {
-                    insidePaintView.Undo();
+                    insidePaintView.undo();
                 } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
                     structurePaintView.Undo();
                 }
                 break;
             case R.id.action_redo:
                 if(currentPaintView.equals("OUT_PAINT")) {
-                    outsidePaintView.Redo();
+                    outsidePaintView.redo();
                 } else if(currentPaintView.equals("IN_PAINT")) {
-                    insidePaintView.Redo();
+                    insidePaintView.redo();
                 } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
                     structurePaintView.Redo();
                 }
@@ -227,9 +278,9 @@ public class CarCheckPaintActivity extends Activity {
                     return;
                 }
 
-                File file = new File(Environment.getExternalStorageDirectory().getPath()+"/cyp/");
+                File file = new File(Environment.getExternalStorageDirectory().getPath()+"/pictures/DFCarChecker");
                 file.mkdirs();// 创建文件夹
-                String fileName = Environment.getExternalStorageDirectory().getPath()+"/cyp/"+System.currentTimeMillis()+".jpg";
+                String fileName = Environment.getExternalStorageDirectory().getPath()+"/pictures/DFCarChecker/"+System.currentTimeMillis()+".jpg";
                 FileOutputStream b = null;
                 try {
                     b = new FileOutputStream(fileName);
@@ -264,6 +315,60 @@ public class CarCheckPaintActivity extends Activity {
             default:
                 Log.d("DFCarChecker", "拍摄故障！！");
                 break;
+        }
+    }
+
+    private void captureUsingCanvas(){
+        mSaveCapturedImageTask = new SaveCapturedImageTask();
+        mSaveCapturedImageTask.execute((Void) null);
+    }
+
+    public class SaveCapturedImageTask extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            boolean success = false;
+
+            Bitmap b = Bitmap.createBitmap(targetView.getWidth(),targetView.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas c = new Canvas(b);
+            targetView.draw(c);
+
+
+
+            String filename = Environment.getExternalStorageDirectory().getPath();
+            filename += "/Pictures/DFCarChecker/";
+
+            File file = new File(filename);
+            file.mkdirs();// 创建文件夹
+
+            if(currentPaintView.equals("OUT_PAINT")) {
+                filename += "out_paint.png";
+            } else if(currentPaintView.equals("IN_PAINT")) {
+                filename += "int_paint.png";
+            } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
+                filename += "structure_paint.png";
+            }
+
+            try {
+                FileOutputStream out = new FileOutputStream(filename);
+                b.compress(Bitmap.CompressFormat.PNG, 90, out);
+                out.close();
+                success = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mSaveCapturedImageTask = null;
+        }
+
+        @Override
+        protected void onCancelled() {
+            mSaveCapturedImageTask = null;
         }
     }
 }

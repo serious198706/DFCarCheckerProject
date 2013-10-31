@@ -12,18 +12,29 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.df.entry.FaultPhotoEntity;
+import com.df.paintview.InsidePaintPreviewView;
 import com.df.service.Common;
-import com.df.service.PosEntity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class CarCheckInsideActivity extends Activity implements View.OnClickListener  {
     private int currentGroup;
 
-    public static List<PosEntity> posEntities;
+    public static List<FaultPhotoEntity> posEntities = CarCheckIntegratedFragment.insidePaintEntities;
+
+    private String brokenParts;
+    private String dirtyParts;
+
+    private InsidePaintPreviewView insidePaintPreviewView;
+    private TextView tip;
+
+    private Spinner sealSpinner;
+    private EditText commentEdit;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,19 +47,43 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
         dirtyButton.setOnClickListener(this);
         Button cameraButton = (Button) findViewById(R.id.in_start_camera_button);
         cameraButton.setOnClickListener(this);
-        Button startPaintButton = (Button) findViewById(R.id.in_start_paint_button);
-        startPaintButton.setOnClickListener(this);
 
-        posEntities = new ArrayList<PosEntity>();
+        insidePaintPreviewView = (InsidePaintPreviewView) findViewById(R.id.in_base_image_preview);
+        insidePaintPreviewView.setOnClickListener(this);
+
+        tip = (TextView) findViewById(R.id.tipOnPreview);
+        tip.setOnClickListener(this);
+
+        sealSpinner = (Spinner) findViewById(R.id.in_seal_spinner);
+        commentEdit = (EditText) findViewById(R.id.commentEdit);
+
+        Bundle extras = getIntent().getExtras();
+        if(extras != null) {
+            String index = extras.getString("INDEX");
+            if(index != null) {
+                sealSpinner.setSelection(Integer.parseInt(index));
+            }
+
+            String comment = extras.getString("COMMENT");
+            if(comment != null) {
+                commentEdit.setText(comment);
+            }
+        }
 
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        if(!posEntities.isEmpty()) {
+            insidePaintPreviewView.setAlpha(1f);
+            insidePaintPreviewView.invalidate();
+            tip.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.car_check_frame, menu);
+        getMenuInflater().inflate(R.menu.menu_save_discard, menu);
         return true;
     }
 
@@ -58,11 +93,11 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
             case android.R.id.home:
                 finish();
                 return true;
-            case R.id.action_done:
-                // TODO 提交数据
-                finish();
+            case R.id.action_save:
+                // 保存数据
+                saveResult();
                 break;
-            case R.id.action_cancel:
+            case R.id.action_discard:
                 finish();
                 break;
         }
@@ -73,40 +108,62 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.in_choose_broken_button:
-                ChooseBroken(v);
+                ChooseBroken();
                 break;
             case R.id.in_choose_dirty_button:
-                ChooseDirty(v);
+                ChooseDirty();
                 break;
             case R.id.in_start_camera_button:
-                in_start_camera(v);
+                in_start_camera();
                 break;
-            case R.id.in_start_paint_button:
-                StartPaint(v);
+            case R.id.in_base_image_preview:
+            case R.id.tipOnPreview:
+                StartPaint();
                 break;
+
         }
     }
 
+    private void saveResult() {
+        // 创建结果意图和包括地址
+        Intent intent = new Intent();
+        intent.putExtra("INDEX", Integer.toString(sealSpinner.getSelectedItemPosition()));
+        intent.putExtra("COMMENT", commentEdit.getText().toString());
 
-    public void ChooseBroken(View v) {
+        // 关闭activity
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
+
+    public void ChooseBroken() {
         Intent intent = new Intent(this, PopupActivity.class);
         intent.putExtra("POPUP_TYPE", "IN_BROKEN");
+
+        // 如果该部位已破损，则无需再设置为脏污，所以将脏污及破损部位一起传入
+        intent.putExtra("BROKEN_PARTS", brokenParts);
+        intent.putExtra("DIRTY_PARTS", dirtyParts);
+
         startActivityForResult(intent, Common.CHOOSE_IN_BROKEN);
     }
 
-    public void ChooseDirty(View v) {
+    public void ChooseDirty() {
         Intent intent = new Intent(this, PopupActivity.class);
         intent.putExtra("POPUP_TYPE", "IN_DIRTY");
+
+        // 如果该部位已脏污，则无需再设置为破损，所以将脏污及破损部位一起传入
+        intent.putExtra("BROKEN_PARTS", brokenParts);
+        intent.putExtra("DIRTY_PARTS", dirtyParts);
+
         startActivityForResult(intent, Common.CHOOSE_IN_DIRTY);
     }
 
-    public void StartPaint(View v) {
+    public void StartPaint() {
         Intent intent = new Intent(this, CarCheckPaintActivity.class);
         intent.putExtra("PAINT_TYPE", "IN_PAINT");
         startActivityForResult(intent, Common.IN_PAINT);
     }
 
-    public void in_start_camera(View v) {
+    public void in_start_camera() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle(R.string.in_camera);
@@ -146,11 +203,13 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
                     try{
                         Bundle bundle = data.getExtras();
                         if(bundle != null) {
-                            String brokenPart = bundle.getString(Common.IN_BROKEN_RESULT);
-                            if(brokenPart != null) {
+                            String brokenParts = bundle.getString(Common.IN_BROKEN_RESULT);
+                            if(brokenParts != null) {
                                 EditText editText = (EditText) findViewById(R.id.in_broken_parts_edit);
-                                editText.setText(brokenPart);
+                                editText.setText(brokenParts);
                             }
+
+                            this.brokenParts = brokenParts;
                         }
                     }
                     catch(NullPointerException ex) {
@@ -164,11 +223,13 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
                     try{
                         Bundle bundle = data.getExtras();
                         if(bundle != null) {
-                            String dirtyPart = bundle.getString(Common.IN_DIRTY_RESULT);
-                            if(dirtyPart != null) {
+                            String dirtyParts = bundle.getString(Common.IN_DIRTY_RESULT);
+                            if(dirtyParts != null) {
                                 EditText editText = (EditText) findViewById(R.id.in_dirty_parts_edit);
-                                editText.setText(dirtyPart);
+                                editText.setText(dirtyParts);
                             }
+
+                            this.dirtyParts = dirtyParts;
                         }
                     }
                     catch(NullPointerException ex) {
@@ -187,7 +248,17 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
                 }
                 break;
             case Common.IN_PAINT:
-                Toast.makeText(CarCheckInsideActivity.this, "aa", Toast.LENGTH_LONG).show();
+                if(!posEntities.isEmpty()) {
+                    insidePaintPreviewView.setAlpha(1f);
+                    insidePaintPreviewView.invalidate();
+                    tip.setVisibility(View.GONE);
+                }
+                // 如果没点，则将图片设为半透明，添加提示文字
+                else {
+                    insidePaintPreviewView.setAlpha(0.3f);
+                    insidePaintPreviewView.invalidate();
+                    tip.setVisibility(View.VISIBLE);
+                }
                 break;
         }
     }

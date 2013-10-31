@@ -5,7 +5,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="5dp"
-            android:layout_marginRight="5dp">
+            android:layout_marginRight="5dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -31,7 +33,7 @@
             <com.df.paintview.StructurePaintPreviewView
                     android:id="@+id/structure_base_image_preview_front"
                     android:layout_width="500dp"
-                    android:layout_height="300dp"
+                    android:layout_height="335dp"
                     android:layout_centerInParent="true"
                     android:onClick="StartPaint"
                     android:alpha="0.3" />
@@ -46,7 +48,8 @@
                 android:layout_margin="1dp"
                 android:gravity="center"
                 android:text="点击以绘制"
-                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textSize="22sp"
                 android:textColor="#000000" />
         </RelativeLayout>
 
@@ -56,7 +59,7 @@
             <com.df.paintview.StructurePaintPreviewView
                 android:id="@+id/structure_base_image_preview_rear"
                 android:layout_width="500dp"
-                android:layout_height="300dp"
+                android:layout_height="302dp"
                 android:layout_centerInParent="true"
                 android:onClick="StartPaint"
                 android:alpha="0.3" />
@@ -71,7 +74,8 @@
                 android:layout_margin="1dp"
                 android:gravity="center"
                 android:text="点击以绘制"
-                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textSize="22sp"
                 android:textColor="#000000" />
         </RelativeLayout>
 
@@ -93,9 +97,13 @@
             <TableRow>
                 <Button android:id="@+id/structure_start_camera_button"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="35dp"
+                        android:layout_marginTop="5dp"
                         android:text="@string/structure_camera"
-                        android:drawableRight="@drawable/camera_item"/>
+                        android:paddingLeft="10dp"
+                        android:paddingRight="10dp"
+                        android:drawableRight="@drawable/camera"
+                        android:background="@drawable/button_custom"/>
             </TableRow>
             <TextView
                     android:layout_width="wrap_content"
@@ -123,8 +131,13 @@
                         android:layout_weight="1"
                         android:inputType="textMultiLine"
                         android:ems="10"
-                        android:id="@+id/editText"/>
+                        android:id="@+id/commentEdit"/>
             </TableRow>
+            <Button android:id="@+id/upload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="upload"
+                android:textSize="20sp"/>
         </TableLayout>
     </LinearLayout>
 </ScrollView>

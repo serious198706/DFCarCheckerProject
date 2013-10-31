@@ -9,6 +9,6 @@
     <com.df.paintview.StructurePaintView
             android:id="@+id/tile"
             android:layout_width="500dp"
-            android:layout_height="300dp" />
+            android:layout_height="335dp" />
 
 </LinearLayout>

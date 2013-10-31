@@ -7,12 +7,18 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.df.service.ImageUploadQueue;
+
 // TODO: 登录界面！！！！！
 public class MainActivity extends Activity {
+    public static ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        imageUploadQueue.startUpload(this);
     }
 
     public void EnterCarCheck(View view) {

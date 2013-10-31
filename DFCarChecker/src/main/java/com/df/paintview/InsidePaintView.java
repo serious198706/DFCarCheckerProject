@@ -14,6 +14,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -21,9 +22,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.df.dfcarchecker.CarCheckInsideActivity;
-import com.df.dfcarchecker.R;
+import com.df.entry.FaultPhotoEntity;
 import com.df.service.Common;
-import com.df.service.PosEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,8 +32,11 @@ public class InsidePaintView extends ImageView {
 
     private int currentType = Common.DIRTY;
     private boolean move;
-    private List<PosEntity> data = CarCheckInsideActivity.posEntities;
-    private List<PosEntity> undoData;
+    private List<FaultPhotoEntity> data = CarCheckInsideActivity.posEntities;
+
+    // 本次更新的坐标点，如果用户点击取消，则不将thisTimeNewData中的坐标加入到data中
+    private List<FaultPhotoEntity> thisTimeNewData;
+    private List<FaultPhotoEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
 
@@ -55,11 +58,18 @@ public class InsidePaintView extends ImageView {
     }
 
     private void init() {
-        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.car);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        String sdcardPath = Environment.getExternalStorageDirectory().toString();
+
+        bitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/in.png", options);
+
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
-        undoData = new ArrayList<PosEntity>();
+        undoData = new ArrayList<FaultPhotoEntity>();
+        thisTimeNewData = new ArrayList<FaultPhotoEntity>();
 
         this.setOnTouchListener(onTouchListener);
     }
@@ -75,19 +85,20 @@ public class InsidePaintView extends ImageView {
     private OnTouchListener onTouchListener = new OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            if (currentType > 4 && currentType <= 6) {
+            if (currentType >= Common.DIRTY && currentType <= Common.BROKEN) {
 
                 int x = (int) event.getX();
                 int y = (int) event.getY();
-                PosEntity entity;
+                FaultPhotoEntity entity = null;
 
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    entity = new PosEntity(currentType);
+                    entity = new FaultPhotoEntity(currentType);
                     entity.setMaxX(max_x);
                     entity.setMaxY(max_y);
                     entity.setStart(x, y);
                     entity.setEnd(x, y);
                     data.add(entity);
+                    thisTimeNewData.add(entity);
                 } else if(event.getAction() == MotionEvent.ACTION_MOVE){
                     entity = data.get(data.size() - 1);
                     entity.setEnd(x, y);
@@ -99,7 +110,21 @@ public class InsidePaintView extends ImageView {
                         move = false;
                     }
 
-                    showCamera();
+                    //showCamera();
+
+                    // 如果手指在屏幕上移动范围非常小
+                    if(entity == null) {
+                        entity = data.get(data.size() - 1);
+                    }
+
+                    if(entity != null) {
+                        if(Math.abs(entity.getEndX() - entity.getStartX()) < 10 &&
+                                Math.abs(entity.getEndY() - entity.getStartY()) < 10) {
+                            data.remove(entity);
+                        } else {
+                            showCamera();
+                        }
+                    }
                 }
                 invalidate();
             }
@@ -126,12 +151,12 @@ public class InsidePaintView extends ImageView {
     }
 
     private void paint(Canvas canvas) {
-        for (PosEntity entity : data) {
+        for (FaultPhotoEntity entity : data) {
             paint(entity, canvas);
         }
     }
 
-    private void paint(PosEntity entity, Canvas canvas) {
+    private void paint(FaultPhotoEntity entity, Canvas canvas) {
         canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(entity.getType()));
     }
 
@@ -149,14 +174,14 @@ public class InsidePaintView extends ImageView {
         builder.show();
     }
 
-    public PosEntity getPosEntity(){
+    public FaultPhotoEntity getPosEntity(){
         if(data.isEmpty()){
             return null;
         }
         return data.get(data.size()-1);
     }
 
-    public void Clear() {
+    public void clear() {
         if(!data.isEmpty()) {
             data.clear();
             undoData.clear();
@@ -164,7 +189,7 @@ public class InsidePaintView extends ImageView {
         }
     }
 
-    public void Undo() {
+    public void undo() {
         if(!data.isEmpty()) {
             undoData.add(data.get(data.size() - 1));
             data.remove(data.size() - 1);
@@ -172,11 +197,19 @@ public class InsidePaintView extends ImageView {
         }
     }
 
-    public void Redo() {
+    public void redo() {
         if(!undoData.isEmpty()) {
             data.add(undoData.get(undoData.size() - 1));
             undoData.remove(undoData.size() - 1);
             invalidate();
+        }
+    }
+
+    public void cancel() {
+        if(!thisTimeNewData.isEmpty()) {
+            for(int i = 0; i < thisTimeNewData.size(); i++) {
+                data.remove(thisTimeNewData.get(i));
+            }
         }
     }
 }

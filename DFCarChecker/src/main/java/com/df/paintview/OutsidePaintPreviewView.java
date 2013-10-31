@@ -17,8 +17,8 @@ import android.widget.ImageView;
 
 import com.df.dfcarchecker.CarCheckOutsideActivity;
 import com.df.dfcarchecker.R;
+import com.df.entry.FaultPhotoEntity;
 import com.df.service.Common;
-import com.df.service.PosEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +27,10 @@ public class OutsidePaintPreviewView extends ImageView {
 
     private int currentType;
     private boolean move;
-    private List<PosEntity> data;
+    private List<FaultPhotoEntity> data;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
+    private Bitmap otherBitmap;
 
     private int max_x, max_y;
 
@@ -54,23 +55,23 @@ public class OutsidePaintPreviewView extends ImageView {
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
 
-        bitmap = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/out.png", options);
+        bitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/out.png", options);
 
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
-        data = new ArrayList<PosEntity>();
+        data = new ArrayList<FaultPhotoEntity>();
 
         colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
+        otherBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_other);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        HandelPosEntitiesDueToDifferentResolution();
+        data = CarCheckOutsideActivity.posEntities;
         canvas.drawBitmap(bitmap, 0, 0, null);
         paint(canvas);
-
     }
 
     public void setType(int type) {
@@ -82,36 +83,19 @@ public class OutsidePaintPreviewView extends ImageView {
         paint.setAntiAlias(true);
         paint.setColor(Color.BLUE);
         paint.setAlpha(0x80);//半透明
-
-        switch (type) {
-            case Common.COLOR_DIFF:
-                paint.setStyle(Paint.Style.FILL_AND_STROKE);//填充并且填充
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.SCRATCH:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.TRANS:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-            case Common.SCRAPE:
-                paint.setStyle(Paint.Style.STROKE); //加粗
-                paint.setStrokeWidth(4); //宽度
-                break;
-        }
+        paint.setStyle(Paint.Style.STROKE); //加粗
+        paint.setStrokeWidth(4); //宽度
 
         return paint;
     }
 
     private void paint(Canvas canvas) {
-        for (PosEntity entity : data) {
+        for (FaultPhotoEntity entity : data) {
             paint(entity, canvas);
         }
     }
 
-    private void paint(PosEntity entity, Canvas canvas) {
+    private void paint(FaultPhotoEntity entity, Canvas canvas) {
         int type = entity.getType();
 
         switch (type) {
@@ -163,10 +147,13 @@ public class OutsidePaintPreviewView extends ImageView {
                 canvas.drawRect(rectF, getPaint(type));
 
                 return;
+            case Common.OTHER:
+                canvas.drawBitmap(otherBitmap, entity.getStartX(), entity.getStartY(), null);
+                return;
         }
     }
 
-    public PosEntity getPosEntity(){
+    public FaultPhotoEntity getPosEntity(){
         if(data.isEmpty()){
             return null;
         }
@@ -176,11 +163,11 @@ public class OutsidePaintPreviewView extends ImageView {
     private void HandelPosEntitiesDueToDifferentResolution() {
         data.clear();
 
-        for(PosEntity posEntity : CarCheckOutsideActivity.posEntities) {
+        for(FaultPhotoEntity faultPhotoEntity : CarCheckOutsideActivity.posEntities) {
             // 因为不能对原entities做修改，所以此处要做些特殊处理，采用值传递方式
-            PosEntity temp = new PosEntity(posEntity.getType());
-            temp.setStart(posEntity.getStartX(), posEntity.getStartY());
-            temp.setEnd(posEntity.getEndX(), posEntity.getEndY());
+            FaultPhotoEntity temp = new FaultPhotoEntity(faultPhotoEntity.getType());
+            temp.setStart(faultPhotoEntity.getStartX(), faultPhotoEntity.getStartY());
+            temp.setEnd(faultPhotoEntity.getEndX(), faultPhotoEntity.getEndY());
 
             // 这些max要乘以2的原因是，在后面的getStartX()等方法调用时，max是按照大图的max来计算的
             temp.setMaxX((int)(max_x * 1.5));
@@ -188,9 +175,9 @@ public class OutsidePaintPreviewView extends ImageView {
             data.add(temp);
         }
 
-        for(PosEntity posEntity : data) {
-            posEntity.setStart((int)(posEntity.getStartX() / 1.5), (int)(posEntity.getStartY() / 1.5));
-            posEntity.setEnd((int)(posEntity.getEndX() / 1.5), (int)(posEntity.getEndY() / 1.5));
+        for(FaultPhotoEntity faultPhotoEntity : data) {
+            faultPhotoEntity.setStart((int)(faultPhotoEntity.getStartX() / 1.5), (int)(faultPhotoEntity.getStartY() / 1.5));
+            faultPhotoEntity.setEnd((int)(faultPhotoEntity.getEndX() / 1.5), (int)(faultPhotoEntity.getEndY() / 1.5));
         }
     }
 }

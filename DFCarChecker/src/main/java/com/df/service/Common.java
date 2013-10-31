@@ -43,8 +43,9 @@ public class Common {
     public static final int SCRATCH = 2;
     public static final int TRANS = 3;
     public static final int SCRAPE = 4;
-    public static final int DIRTY = 5;
-    public static final int BROKEN = 6;
+    public static final int OTHER = 5;
+    public static final int DIRTY = 6;
+    public static final int BROKEN = 7;
 
     // TODO 加入事故检查绘图类型代码
 

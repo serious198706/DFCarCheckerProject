@@ -27,4 +27,16 @@ public class Country {
 
         return brandNames;
     }
+
+    public Brand getBrandById(String id) {
+        Brand brand = null;
+
+        for(int i = 0; i < brands.size(); i++) {
+            if(brands.get(i).id.equals(id)) {
+                brand = brands.get(i);
+            }
+        }
+
+        return brand;
+    }
 }

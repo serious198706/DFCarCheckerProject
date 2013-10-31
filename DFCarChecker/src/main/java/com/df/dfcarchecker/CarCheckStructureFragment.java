@@ -2,12 +2,16 @@ package com.df.dfcarchecker;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,10 +21,16 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.df.entry.FaultPhotoEntity;
 import com.df.paintview.StructurePaintPreviewView;
 import com.df.service.Common;
-import com.df.service.PosEntity;
+import com.df.service.Helper;
+import com.df.service.SoapService;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,8 +43,8 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
     private LayoutInflater inflater;
     private int currentGroup;
 
-    public static List<PosEntity> posEntitiesFront;
-    public static List<PosEntity> posEntitiesRear;
+    public static List<FaultPhotoEntity> posEntitiesFront;
+    public static List<FaultPhotoEntity> posEntitiesRear;
 
     private StructurePaintPreviewView structurePaintPreviewViewFront;
     private StructurePaintPreviewView structurePaintPreviewViewRear;
@@ -43,6 +53,10 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
 
     public static Bitmap previewBitmapFront;
     public static Bitmap previewBitmapRear;
+
+    private Button uploadButton;
+
+    private UploadPictureTask mUploadPictureTask;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,12 +72,12 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
-        posEntitiesFront = new ArrayList<PosEntity>();
-        posEntitiesRear = new ArrayList<PosEntity>();
+        posEntitiesFront = new ArrayList<FaultPhotoEntity>();
+        posEntitiesRear = new ArrayList<FaultPhotoEntity>();
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
 
-        previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/st_f.png", options);
+        previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/st_f", options);
         structurePaintPreviewViewFront = (StructurePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_front);
         structurePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
         structurePaintPreviewViewFront.setOnClickListener(this);
@@ -71,7 +85,7 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         tipFront = (TextView)rootView.findViewById(R.id.tipOnPreviewFront);
         tipFront.setOnClickListener(this);
 
-        previewBitmapRear = BitmapFactory.decodeFile(sdcardPath + "/cheyipai/st_r.png", options);
+        previewBitmapRear = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/st_r.png", options);
         structurePaintPreviewViewRear = (StructurePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_rear);
         structurePaintPreviewViewRear.init(previewBitmapRear, posEntitiesRear);
         structurePaintPreviewViewRear.setOnClickListener(this);
@@ -81,6 +95,9 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
 
         root = (ScrollView)rootView.findViewById(R.id.root);
         root.setVisibility(View.GONE);
+
+        uploadButton = (Button) rootView.findViewById(R.id.upload);
+        uploadButton.setOnClickListener(this);
 
         return rootView;
     }
@@ -98,6 +115,9 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
                 break;
             case R.id.structure_start_camera_button:
                 structure_start_camera(v);
+                break;
+            case R.id.upload:
+                uploadPicture();
                 break;
         }
     }
@@ -131,7 +151,11 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
                 Toast.makeText(rootView.getContext(), "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(intent, Common.PHOTO_FOR_INSIDE_GROUP);
+
+                Uri fileUri = Helper.getOutputMediaFileUri("structure_f_2"); // create a file to save the image
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+
+                startActivityForResult(intent, Common.PHOTO_FOR_STRUCTURE_GROUP);
             }
         });
         // Inflate and set the layout for the dialog
@@ -149,13 +173,21 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         dialog.show();
     }
 
+    private void uploadPicture() {
+        mUploadPictureTask = new UploadPictureTask(rootView.getContext());
+        mUploadPictureTask.execute((Void) null);
+    }
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
             case Common.PHOTO_FOR_STRUCTURE_GROUP:
                 if(resultCode == Activity.RESULT_OK) {
-                    Bitmap image = (Bitmap) data.getExtras().get("data");
-                    //img.setImageBitmap(image);
+                    //bitmapToUpload = (Bitmap) data.getExtras().get("data");
+                    // Upload();
+
+                    //imageView.setImageBitmap(bitmapToUpload);
                 } else {
                     Toast.makeText(rootView.getContext(),
                             "error occured during opening camera", Toast.LENGTH_SHORT)
@@ -191,6 +223,71 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
                 }
 
                 break;
+        }
+    }
+
+    private class UploadPictureTask extends AsyncTask<Void, Void, Boolean> {
+        Context context;
+
+        private UploadPictureTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute()
+        {
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            boolean success = false;
+
+            SoapService soapService = new SoapService();
+
+            // 设置soap的配置
+            soapService.setUtils("http://192.168.100.6:50/ReportService.svc",
+                    "http://cheyiju/IReportService/SaveCarPictureTagKey",
+                    "SaveCarPictureTagKey");
+
+            JSONObject jsonObject = new JSONObject();
+            try {
+                // TODO: 更改命名方式
+                jsonObject.put("PictureName", "structure_f_2.jpg");
+                jsonObject.put("StartPoint", "187,90");
+                jsonObject.put("EndPoint", "255, 103");
+                jsonObject.put("UniqueId", "199");
+                // 绘图类型 -
+                jsonObject.put("Type", "0");
+                jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+            } catch (JSONException e) {
+
+            }
+
+            File f = new File("/mnt/sdcard/Pictures/DFCarChecker/structure_f_2.jpg");
+            Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
+
+            success = soapService.uploadPicture(root.getContext(), bitmap, jsonObject.toString());
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mUploadPictureTask = null;
+
+            if(success) {
+
+            } else {
+
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mUploadPictureTask = null;
         }
     }
 

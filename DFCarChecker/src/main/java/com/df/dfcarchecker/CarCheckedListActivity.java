@@ -1,24 +1,36 @@
 package com.df.dfcarchecker;
 
 import android.app.ActionBar;
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
+import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.df.entry.Brand;
+import com.df.entry.Country;
+import com.df.entry.Manufacturer;
+import com.df.entry.Series;
+import com.df.service.SoapService;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,6 +43,10 @@ public class CarCheckedListActivity extends Activity {
     private ListView list;
     private int lastPos = 0;
     private SimpleAdapter adapter;
+
+    private ProgressDialog progressDialog;
+    private SoapService soapService;
+    private String result;
 
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
@@ -76,6 +92,8 @@ public class CarCheckedListActivity extends Activity {
             list.clearFocus();
         }
     };
+    private RefreshCheckedCarListTask mRefreshCheckedCarListTask;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,13 +200,105 @@ public class CarCheckedListActivity extends Activity {
                 }
                 return true;
             case R.id.action_refresh:
-                // 提交数据
+                // 刷新车辆
                 list.setSelection(lastPos);
                 list.clearChoices();
                 list.clearFocus();
                 list.invalidate();
+
+                refresh();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void refresh() {
+        mRefreshCheckedCarListTask = new RefreshCheckedCarListTask(this);
+        mRefreshCheckedCarListTask.execute((Void) null);
+    }
+
+    private class RefreshCheckedCarListTask extends AsyncTask<Void, Void, Boolean> {
+        Context context;
+
+        private RefreshCheckedCarListTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute()
+        {
+            progressDialog = ProgressDialog.show(context, "提醒",
+                    "正在获取车辆信息，请稍候。。", false, false);
+        }
+
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            // TODO: attempt authentication against a network service.
+            boolean success = false;
+
+            try {
+                JSONObject jsonObject = new JSONObject();
+
+                // SeriesId + userID + key
+                jsonObject.put("StartNumber", 1);
+                jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+
+                soapService = new SoapService();
+
+                // 设置soap的配置
+                soapService.setUtils("http://192.168.100.6:50/ReportService.svc",
+                        "http://cheyiju/IReportService/ListCheckedCarsInfoByUserid",
+                        "ListCheckedCarsInfoByUserid");
+
+                success = soapService.communicateWithServer(context, jsonObject.toString());
+
+                // TODO: 加入用户是否登录的状态改变
+
+                // 传输失败，获取错误信息并显示
+                if(!success) {
+                    Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
+                } else {
+                    result = soapService.getResultMessage();
+                }
+            } catch (JSONException e) {
+                Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
+                return false;
+            }
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mRefreshCheckedCarListTask = null;
+
+            progressDialog.dismiss();
+
+            if (success) {
+
+                try {
+                    // 开始位为[，表示传输的是全部信息
+                    if(result.startsWith("[")) {
+                        JSONArray jsonArray = new JSONArray(result);
+
+                        // 用来存储车辆配置信息的jsonobject list
+                        List<JSONObject> jsonObjects = new ArrayList<JSONObject>();
+                    }
+
+
+                } catch (JSONException e) {
+                    Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
+                }
+            } else {
+                Log.d("DFCarChecker", "连接错误！");
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mRefreshCheckedCarListTask = null;
+        }
     }
 }

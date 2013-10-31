@@ -13,8 +13,8 @@
 
         <com.df.paintview.OutsidePaintView
                 android:id="@+id/tile"
-                android:layout_width="600dp"
-                android:layout_height="805dp" />
+                android:layout_width="500dp"
+                android:layout_height="703dp" />
 
     </LinearLayout>
 </LinearLayout>

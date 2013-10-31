@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 车体结构检查 -->
+    <string name="structure">结构检查</string>
+    <string name="structure_start_paint">绘制车体结构缺陷</string>
+    <string name="structure_camera">拍摄机舱组照片</string>
+
+    <string-array name="structure_camera_cato_item">
+        <item>机舱全景</item>
+        <item>前部</item>
+        <item>后部</item>
+    </string-array>
+
+    <string name="structure_camera_overview">机舱全景</string>
+    <string name="structure_camera_front">前部</string>
+    <string name="structure_camera_rear">后部</string>
+    <string name="structure_comment">车体结构检查说明：</string>
+</resources>
