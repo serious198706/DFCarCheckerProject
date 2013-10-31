@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
@@ -300,13 +299,13 @@ public class CarCheckPaintActivity extends Activity {
 
                 if(currentPaintView.equals("OUT_PAINT")) {
                     Toast.makeText(this, "图片保存路径"+fileName, 0).show();
-                    outsidePaintView.getPosEntity().setImage(fileName);
+                    outsidePaintView.getPosEntity().setImageFileName(fileName);
                 } else if(currentPaintView.equals("IN_PAINT")) {
                     Toast.makeText(this, "图片保存路径"+fileName, 0).show();
-                    insidePaintView.getPosEntity().setImage(fileName);
+                    insidePaintView.getPosEntity().setImageFileName(fileName);
                 } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
                     Toast.makeText(this, "图片保存路径"+fileName, 0).show();
-                    structurePaintView.getPosEntity().setImage(fileName);
+                    structurePaintView.getPosEntity().setImageFileName(fileName);
                 }
 
                 break;

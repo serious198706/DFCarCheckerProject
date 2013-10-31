@@ -1,6 +1,7 @@
 package com.df.service;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Environment;
 
@@ -48,24 +49,29 @@ public final class ImageUploadQueue {
         this.context = context;
     }
 
-    public int getSize(FaultPhotoEntity entity) {
-        return faultQueue.size();
+    public int getSize(String part) {
+        switch (Part.part(part)) {
+            case STRUCTURE:
+                return structureQueue.size();
+            case OUT:
+                return outsideQueue.size();
+            case IN:
+                return insideQueue.size();
+            case ENGINEROOM:
+                return engineRoomQueue.size();
+            case FAULT:
+                return faultQueue.size();
+            default:
+                return 0;
+        }
     }
 
-    public int getSize(StructurePhotoEntity entity) {
-        return structureQueue.size();
-    }
-
-    public int getSize(EngineRoomPhotoEntity entity) {
-        return engineRoomQueue.size();
-    }
-
-    public int getSize(OutsidePhotoEntity entity) {
-        return outsideQueue.size();
-    }
-
-    public int getSize(InsidePhotoEntity entity) {
-        return insideQueue.size();
+    public int getSize() {
+        return structureQueue.size() +
+                outsideQueue.size() +
+                insideQueue.size() +
+                engineRoomQueue.size() +
+                faultQueue.size();
     }
 
     public FaultPhotoEntity getImage() {
@@ -120,9 +126,29 @@ public final class ImageUploadQueue {
             public void run() {
                 while(true) {
                     // 当照片池中还有照片，并且上传线程没有运行时，开启新的上传线程
-                    if((getSize() != 0) && (mUploadPictureTask == null)) {
+                    if((getSize("STRUCTURE") != 0) && (mUploadPictureTask == null)) {
                         mUploadPictureTask = new UploadPictureTask(context);
-                        mUploadPictureTask.execute((Void) null);
+                        mUploadPictureTask.execute("STRUCTURE");
+                    }
+
+                    if((getSize("OUT") != 0) && (mUploadPictureTask == null)) {
+                        mUploadPictureTask = new UploadPictureTask(context);
+                        mUploadPictureTask.execute("OUT");
+                    }
+
+                    if((getSize("IN") != 0) && (mUploadPictureTask == null)) {
+                        mUploadPictureTask = new UploadPictureTask(context);
+                        mUploadPictureTask.execute("IN");
+                    }
+
+                    if((getSize("ENGINEROOM") != 0) && (mUploadPictureTask == null)) {
+                        mUploadPictureTask = new UploadPictureTask(context);
+                        mUploadPictureTask.execute("ENGINEROOM");
+                    }
+
+                    if((getSize("FAULT") != 0) && (mUploadPictureTask == null)) {
+                        mUploadPictureTask = new UploadPictureTask(context);
+                        mUploadPictureTask.execute("FAULT");
                     }
                 }
             }
@@ -131,8 +157,11 @@ public final class ImageUploadQueue {
         thread.run();
     }
 
-    private class UploadPictureTask extends AsyncTask<Void, Void, Boolean> {
+
+    // 上传图片
+    private class UploadPictureTask extends AsyncTask<String, Void, Boolean> {
         Context context;
+        private Bitmap bitmap;
 
         public UploadPictureTask(Context context) {
             this.context = context;
@@ -145,7 +174,7 @@ public final class ImageUploadQueue {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
+        protected Boolean doInBackground(String... params) {
             boolean success;
 
             SoapService soapService = new SoapService();
@@ -198,6 +227,20 @@ public final class ImageUploadQueue {
         @Override
         protected void onCancelled() {
             mUploadPictureTask = null;
+        }
+    }
+
+    public enum Part {
+        STRUCTURE, OUT, IN, ENGINEROOM, FAULT, NOVALUE;
+
+        public static Part part(String str)
+        {
+            try {
+                return valueOf(str);
+            }
+            catch (Exception ex) {
+                return NOVALUE;
+            }
         }
     }
 }

@@ -338,8 +338,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     // 从服务器获取车辆配置
     private void getCarSettingsFromServer(String seriesId) {
-        mGetCarSettingsTask = new GetCarSettingsTask(rootView.getContext());
-        mGetCarSettingsTask.execute(seriesId);
+        //mGetCarSettingsTask = new GetCarSettingsTask(rootView.getContext());
+        //mGetCarSettingsTask.execute(seriesId);
     }
 
     // 更新配置信息

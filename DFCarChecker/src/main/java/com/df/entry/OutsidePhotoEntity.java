@@ -2,6 +2,11 @@ package com.df.entry;
 
 import android.graphics.Bitmap;
 
+import com.df.dfcarchecker.LoginActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * Created by 岩 on 13-10-31.
  */
@@ -32,5 +37,22 @@ public class OutsidePhotoEntity {
 
     public void setPart(int part) {
         this.part = part;
+    }
+
+    public String getJsonString() {
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("PictureName", this.imageFileName);
+            jsonObject.put("UniqueId", "199");
+            // 绘图类型
+            jsonObject.put("Part", part);
+            jsonObject.put("UserId", LoginActivity.userInfo.getId());
+            jsonObject.put("Key", LoginActivity.userInfo.getKey());
+        } catch (JSONException e) {
+
+        }
+
+        return jsonObject.toString();
     }
 }

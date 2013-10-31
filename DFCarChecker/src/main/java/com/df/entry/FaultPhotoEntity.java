@@ -4,26 +4,27 @@ package com.df.entry;
  * Created by 岩 on 13-9-26.
  */
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
+import com.df.dfcarchecker.LoginActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 
 public class FaultPhotoEntity implements Serializable {
-
-    private static final long serialVersionUID = 2019904101824903278L;
-
     private int start_x, start_y;
     private int end_x, end_y;
-
     private int max_x, max_y;
+    private int type ;  //1色差 2划痕 3变型 4刮蹭 5其他
 
-    private int type ;  //1色差2划痕3变型4刮蹭
+    private String imageFileName;
+    private Bitmap bitmap = null;
 
-    private String image;
+    public FaultPhotoEntity(int type) {
+        this.type = type;
+    }
 
     public Bitmap getBitmap() {
         return bitmap;
@@ -33,11 +34,6 @@ public class FaultPhotoEntity implements Serializable {
         this.bitmap = bitmap;
     }
 
-    private Bitmap bitmap = null;
-
-    public FaultPhotoEntity(int type) {
-        this.type = type;
-    }
 
     public void setStart(int x,int y){
         this.start_x = x;
@@ -70,11 +66,11 @@ public class FaultPhotoEntity implements Serializable {
     }
 
     public String getImageFileName() {
-        return image;
+        return imageFileName;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageFileName(String imageFileName) {
+        this.imageFileName = imageFileName;
     }
 
     public void setMaxX(int max_x) {
@@ -84,4 +80,23 @@ public class FaultPhotoEntity implements Serializable {
     public void setMaxY(int max_y) {
         this.max_y = max_y;
     }
+
+    public String getJsonString() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("PictureName", this.imageFileName);
+            jsonObject.put("StartPoint", Integer.toString(getStartX()) + "," + Integer.toString(getStartY()));
+            jsonObject.put("EndPoint", Integer.toString(getEndX()) + "," + Integer.toString(getEndY()));
+            jsonObject.put("UniqueId", "199");
+            // 绘图类型
+            jsonObject.put("Type", getType());
+            jsonObject.put("UserId", LoginActivity.userInfo.getId());
+            jsonObject.put("Key", LoginActivity.userInfo.getKey());
+        } catch (JSONException e) {
+
+        }
+
+        return jsonObject.toString();
+    }
+
 }

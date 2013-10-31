@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.df.entry.FaultPhotoEntity;
+import com.df.entry.StructurePhotoEntity;
 import com.df.paintview.StructurePaintPreviewView;
 import com.df.service.Common;
 import com.df.service.Helper;
@@ -43,8 +44,8 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
     private LayoutInflater inflater;
     private int currentGroup;
 
-    public static List<FaultPhotoEntity> posEntitiesFront;
-    public static List<FaultPhotoEntity> posEntitiesRear;
+    public static List<StructurePhotoEntity> posEntitiesFront;
+    public static List<StructurePhotoEntity> posEntitiesRear;
 
     private StructurePaintPreviewView structurePaintPreviewViewFront;
     private StructurePaintPreviewView structurePaintPreviewViewRear;
@@ -72,8 +73,8 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
-        posEntitiesFront = new ArrayList<FaultPhotoEntity>();
-        posEntitiesRear = new ArrayList<FaultPhotoEntity>();
+        posEntitiesFront = new ArrayList<StructurePhotoEntity>();
+        posEntitiesRear = new ArrayList<StructurePhotoEntity>();
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
 
@@ -94,7 +95,7 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         tipRear.setOnClickListener(this);
 
         root = (ScrollView)rootView.findViewById(R.id.root);
-        root.setVisibility(View.GONE);
+        //root.setVisibility(View.GONE);
 
         uploadButton = (Button) rootView.findViewById(R.id.upload);
         uploadButton.setOnClickListener(this);

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.df.dfcarchecker.CarCheckStructureFragment;
 import com.df.dfcarchecker.R;
 import com.df.entry.FaultPhotoEntity;
+import com.df.entry.StructurePhotoEntity;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class StructurePaintPreviewView extends ImageView {
 
     private int currentType;
     private boolean move;
-    private List<FaultPhotoEntity> data;
+    private List<StructurePhotoEntity> data;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
 
@@ -42,7 +43,7 @@ public class StructurePaintPreviewView extends ImageView {
         //init();
     }
 
-    public void init(Bitmap bitmap, List<FaultPhotoEntity> entities) {
+    public void init(Bitmap bitmap, List<StructurePhotoEntity> entities) {
         this.bitmap = bitmap;
 
         data = entities;
@@ -69,23 +70,23 @@ public class StructurePaintPreviewView extends ImageView {
     }
 
     private void paint(Canvas canvas) {
-        for (FaultPhotoEntity entity : data) {
+        for (StructurePhotoEntity entity : data) {
             paint(entity, canvas);
         }
     }
 
-    private void paint(FaultPhotoEntity entity, Canvas canvas) {
+    private void paint(StructurePhotoEntity entity, Canvas canvas) {
         canvas.drawBitmap(colorDiffBitmap, entity.getStartX(), entity.getStartY(), null);
     }
 
-    public FaultPhotoEntity getPosEntity(){
+    public StructurePhotoEntity getPosEntity(){
         if(data.isEmpty()){
             return null;
         }
         return data.get(data.size()-1);
     }
 
-    public void setPosEntities(List<FaultPhotoEntity> entities) {
+    public void setPosEntities(List<StructurePhotoEntity> entities) {
         data = entities;
     }
 
@@ -96,9 +97,9 @@ public class StructurePaintPreviewView extends ImageView {
             return;
         }
 
-        for(FaultPhotoEntity faultPhotoEntity : CarCheckStructureFragment.posEntitiesFront) {
+        for(StructurePhotoEntity faultPhotoEntity : CarCheckStructureFragment.posEntitiesFront) {
             // 因为不能对原entities做修改，所以此处要做些特殊处理，采用值传递方式
-            FaultPhotoEntity temp = new FaultPhotoEntity(faultPhotoEntity.getType());
+            StructurePhotoEntity temp = new StructurePhotoEntity(faultPhotoEntity.getType());
             temp.setStart(faultPhotoEntity.getStartX(), faultPhotoEntity.getStartY());
             temp.setEnd(faultPhotoEntity.getEndX(), faultPhotoEntity.getEndY());
 
@@ -108,7 +109,7 @@ public class StructurePaintPreviewView extends ImageView {
             data.add(temp);
         }
 
-        for(FaultPhotoEntity faultPhotoEntity : data) {
+        for(StructurePhotoEntity faultPhotoEntity : data) {
             faultPhotoEntity.setStart((int)(faultPhotoEntity.getStartX() / 1.5), (int)(faultPhotoEntity.getStartY() / 1.5));
             faultPhotoEntity.setEnd((int)(faultPhotoEntity.getEndX() / 1.5), (int)(faultPhotoEntity.getEndY() / 1.5));
         }

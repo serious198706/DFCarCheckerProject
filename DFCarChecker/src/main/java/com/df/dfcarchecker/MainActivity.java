@@ -18,7 +18,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imageUploadQueue.startUpload(this);
+        //imageUploadQueue.startUpload(this);
     }
 
     public void EnterCarCheck(View view) {

@@ -20,6 +20,7 @@ import android.widget.ImageView;
 
 import com.df.dfcarchecker.R;
 import com.df.entry.FaultPhotoEntity;
+import com.df.entry.StructurePhotoEntity;
 import com.df.service.Common;
 
 import java.util.ArrayList;
@@ -29,11 +30,11 @@ public class StructurePaintView extends ImageView {
 
     private int currentType = Common.COLOR_DIFF;
     private boolean move;
-    private List<FaultPhotoEntity> data;
+    private List<StructurePhotoEntity> data;
 
     // 本次更新的坐标点，如果用户点击取消，则不将thisTimeNewData中的坐标加入到data中
-    private List<FaultPhotoEntity> thisTimeNewData;
-    private List<FaultPhotoEntity> undoData;
+    private List<StructurePhotoEntity> thisTimeNewData;
+    private List<StructurePhotoEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
 
@@ -54,15 +55,15 @@ public class StructurePaintView extends ImageView {
         //init();
     }
 
-    public void init(Bitmap bitmap, List<FaultPhotoEntity> entities) {
+    public void init(Bitmap bitmap, List<StructurePhotoEntity> entities) {
         this.bitmap = bitmap;
         data = entities;
 
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
-        undoData = new ArrayList<FaultPhotoEntity>();
-        thisTimeNewData = new ArrayList<FaultPhotoEntity>();
+        undoData = new ArrayList<StructurePhotoEntity>();
+        thisTimeNewData = new ArrayList<StructurePhotoEntity>();
 
         colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
         this.setOnTouchListener(onTouchListener);
@@ -85,10 +86,10 @@ public class StructurePaintView extends ImageView {
             if (currentType > 0 && currentType <= 4) {
                 int x = (int) event.getX();
                 int y = (int) event.getY();
-                FaultPhotoEntity entity;
+                StructurePhotoEntity entity;
 
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    entity = new FaultPhotoEntity(currentType);
+                    entity = new StructurePhotoEntity(currentType);
                     entity.setMaxX(max_x);
                     entity.setMaxY(max_y);
                     entity.setStart(x, y);
@@ -116,12 +117,12 @@ public class StructurePaintView extends ImageView {
     }
 
     private void paint(Canvas canvas) {
-        for (FaultPhotoEntity entity : data) {
+        for (StructurePhotoEntity entity : data) {
             paint(entity, canvas);
         }
     }
 
-    private void paint(FaultPhotoEntity entity, Canvas canvas) {
+    private void paint(StructurePhotoEntity entity, Canvas canvas) {
         canvas.drawBitmap(colorDiffBitmap, entity.getStartX(), entity.getStartY(), null);
     }
 
@@ -139,7 +140,7 @@ public class StructurePaintView extends ImageView {
         builder.show();
     }
 
-    public FaultPhotoEntity getPosEntity(){
+    public StructurePhotoEntity getPosEntity(){
         if(data.isEmpty()){
             return null;
         }
