@@ -21,11 +21,12 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.df.entry.FaultPhotoEntity;
+import com.df.entry.PhotoEntity;
 import com.df.entry.StructurePhotoEntity;
 import com.df.paintview.StructurePaintPreviewView;
 import com.df.service.Common;
 import com.df.service.Helper;
+import com.df.service.ImageUploadQueue;
 import com.df.service.SoapService;
 
 import org.json.JSONException;
@@ -42,7 +43,7 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
     private static View rootView;
     private static ScrollView root;
     private LayoutInflater inflater;
-    private int currentGroup;
+    private int currentPart;
 
     public static List<StructurePhotoEntity> posEntitiesFront;
     public static List<StructurePhotoEntity> posEntitiesRear;
@@ -58,6 +59,10 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
     private Button uploadButton;
 
     private UploadPictureTask mUploadPictureTask;
+
+    private long currentTimeMillis;
+
+    private ImageUploadQueue imageUploadQueue;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -99,6 +104,8 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
 
         uploadButton = (Button) rootView.findViewById(R.id.upload);
         uploadButton.setOnClickListener(this);
+
+        imageUploadQueue = ImageUploadQueue.getInstance();
 
         return rootView;
     }
@@ -146,14 +153,15 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         builder.setItems(R.array.structure_camera_cato_item, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                currentGroup = i;
-                String group = getResources().getStringArray(R.array.structure_camera_cato_item)[currentGroup];
+                currentPart = i;
+                String group = getResources().getStringArray(R.array.structure_camera_cato_item)[currentPart];
 
                 Toast.makeText(rootView.getContext(), "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
 
-                Uri fileUri = Helper.getOutputMediaFileUri("structure_f_2"); // create a file to save the image
+                currentTimeMillis = System.currentTimeMillis();
+                Uri fileUri = Helper.getOutputMediaFileUri(currentTimeMillis); // create a file to save the image
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
                 startActivityForResult(intent, Common.PHOTO_FOR_STRUCTURE_GROUP);
@@ -185,10 +193,23 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         switch (requestCode) {
             case Common.PHOTO_FOR_STRUCTURE_GROUP:
                 if(resultCode == Activity.RESULT_OK) {
-                    //bitmapToUpload = (Bitmap) data.getExtras().get("data");
-                    // Upload();
+                    // 组织JsonString
+                    JSONObject jsonObject = new JSONObject();
 
-                    //imageView.setImageBitmap(bitmapToUpload);
+                    try {
+                        jsonObject.put("Group", "Frame");
+                        jsonObject.put("Part", Integer.toString(currentPart));
+                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                    } catch (JSONException e) {
+
+                    }
+
+                    PhotoEntity photoEntity = new PhotoEntity();
+                    photoEntity.setFileName(Helper.getOutputMediaFileUri(currentTimeMillis).getPath());
+                    photoEntity.setJsonString(jsonObject.toString());
+
+                    imageUploadQueue.addImage(photoEntity);
                 } else {
                     Toast.makeText(rootView.getContext(),
                             "error occured during opening camera", Toast.LENGTH_SHORT)
@@ -248,14 +269,14 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
             SoapService soapService = new SoapService();
 
             // 设置soap的配置
-            soapService.setUtils("http://192.168.100.6:50/ReportService.svc",
+            soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
                     "http://cheyiju/IReportService/SaveCarPictureTagKey",
                     "SaveCarPictureTagKey");
 
             JSONObject jsonObject = new JSONObject();
             try {
                 // TODO: 更改命名方式
-                jsonObject.put("PictureName", "structure_f_2.jpg");
+                jsonObject.put("PictureName", Long.toString(currentTimeMillis));
                 jsonObject.put("StartPoint", "187,90");
                 jsonObject.put("EndPoint", "255, 103");
                 jsonObject.put("UniqueId", "199");
@@ -267,7 +288,8 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
 
             }
 
-            File f = new File("/mnt/sdcard/Pictures/DFCarChecker/structure_f_2.jpg");
+            PhotoEntity photoEntity = imageUploadQueue.getEntity();
+            File f = new File(photoEntity.getFileName());
             Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
 
             success = soapService.uploadPicture(root.getContext(), bitmap, jsonObject.toString());

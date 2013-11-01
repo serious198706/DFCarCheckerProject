@@ -17,8 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.df.entry.FaultPhotoEntity;
+import com.df.entry.PhotoEntity;
 import com.df.paintview.InsidePaintPreviewView;
 import com.df.service.Common;
+import com.df.service.ImageUploadQueue;
 
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
     private int currentGroup;
 
     public static List<FaultPhotoEntity> posEntities = CarCheckIntegratedFragment.insidePaintEntities;
+    public static List<PhotoEntity> photoEntities = CarCheckIntegratedFragment.outsidePhotoEntities;
 
     private String brokenParts;
     private String dirtyParts;
@@ -122,17 +125,6 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
                 break;
 
         }
-    }
-
-    private void saveResult() {
-        // 创建结果意图和包括地址
-        Intent intent = new Intent();
-        intent.putExtra("INDEX", Integer.toString(sealSpinner.getSelectedItemPosition()));
-        intent.putExtra("COMMENT", commentEdit.getText().toString());
-
-        // 关闭activity
-        setResult(Activity.RESULT_OK, intent);
-        finish();
     }
 
     public void ChooseBroken() {
@@ -263,4 +255,25 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
         }
     }
 
+    private void saveResult() {
+        // 创建结果意图和包括地址
+        Intent intent = new Intent();
+        intent.putExtra("INDEX", Integer.toString(sealSpinner.getSelectedItemPosition()));
+        intent.putExtra("COMMENT", commentEdit.getText().toString());
+
+        addPhotosToQueue();
+
+        // 关闭activity
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
+
+    // 只有在保存时才提交照片
+    private void addPhotosToQueue() {
+        ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
+
+        for(int i = 0; i < photoEntities.size(); i++) {
+            imageUploadQueue.addImage(photoEntities.get(i));
+        }
+    }
 }

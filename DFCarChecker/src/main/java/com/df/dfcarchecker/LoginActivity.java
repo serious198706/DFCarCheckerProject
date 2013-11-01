@@ -20,6 +20,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.df.service.Common;
 import com.df.service.SoapService;
 import com.df.entry.UserInfo;
 
@@ -225,7 +226,7 @@ public class LoginActivity extends Activity {
                 soapService = new SoapService();
 
                 // 设置soap的配置
-                soapService.setUtils("http://192.168.100.6:50/userManageService.svc",
+                soapService.setUtils(Common.SERVER_ADDRESS + Common.USER_MANAGE_SERVICE,
                         "http://cheyiju/IUserManageService/UserLogin",
                         "UserLogin");
 

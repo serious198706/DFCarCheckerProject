@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.df.service.ImageUploadQueue;
+import com.df.service.QueueScanService;
 
 // TODO: 登录界面！！！！！
 public class MainActivity extends Activity {
@@ -19,6 +20,9 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         //imageUploadQueue.startUpload(this);
+
+        Intent intent = new Intent(this, QueueScanService.class);
+        startService(intent);
     }
 
     public void EnterCarCheck(View view) {

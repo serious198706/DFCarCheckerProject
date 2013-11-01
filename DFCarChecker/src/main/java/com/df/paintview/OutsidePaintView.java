@@ -15,17 +15,26 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.df.dfcarchecker.CarCheckOutsideActivity;
+import com.df.dfcarchecker.LoginActivity;
 import com.df.dfcarchecker.R;
 import com.df.entry.FaultPhotoEntity;
+import com.df.entry.PhotoEntity;
 import com.df.service.Common;
+import com.df.service.Helper;
+import com.df.service.ImageUploadQueue;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +44,7 @@ public class OutsidePaintView extends ImageView {
     private int currentType = Common.COLOR_DIFF;
     private boolean move;
     private List<FaultPhotoEntity> data = CarCheckOutsideActivity.posEntities;
+    private List<PhotoEntity> photoEntities = CarCheckOutsideActivity.photoEntities;
 
     // 本次更新的坐标点，如果用户点击取消，则不将thisTimeNewData中的坐标加入到data中
     private List<FaultPhotoEntity> thisTimeNewData;
@@ -44,6 +54,10 @@ public class OutsidePaintView extends ImageView {
     private Bitmap otherBitmap;
 
     private int max_x, max_y;
+
+    private long currentTimeMillis;
+
+    private ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
 
     public OutsidePaintView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -257,6 +271,11 @@ public class OutsidePaintView extends ImageView {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                currentTimeMillis = System.currentTimeMillis();
+                Uri fileUri = Helper.getOutputMediaFileUri(currentTimeMillis); // create a file to save the image
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+
                 ((Activity)getContext()).startActivityForResult(intent, 1);
             }
         });
@@ -300,6 +319,41 @@ public class OutsidePaintView extends ImageView {
             for(int i = 0; i < thisTimeNewData.size(); i++) {
                 data.remove(thisTimeNewData.get(i));
             }
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case 1:
+                if(resultCode == Activity.RESULT_OK) {
+                    // 组织JsonString
+                    JSONObject jsonObject = new JSONObject();
+
+                    try {
+                        jsonObject.put("PictureName", Long.toString(currentTimeMillis));
+                        jsonObject.put("StartPoint", Integer.toString(getPosEntity().getStartX()) + "," +
+                                Integer.toString(getPosEntity().getStartY()));
+                        jsonObject.put("EndPoint", Integer.toString(getPosEntity().getEndX()) + "," +
+                                Integer.toString(getPosEntity().getEndY()));
+                        jsonObject.put("UniqueId", "199");
+                        // 绘图类型 -
+                        jsonObject.put("Type", currentType);
+                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                    } catch (JSONException e) {
+
+                    }
+
+                    PhotoEntity photoEntity = new PhotoEntity();
+                    photoEntity.setFileName(Helper.getOutputMediaFileUri(currentTimeMillis).getPath());
+                    photoEntity.setJsonString(jsonObject.toString());
+
+                    photoEntities.add(photoEntity);
+                    // imageUploadQueue.addImage(photoEntity);
+                    // 暂时不加入照片池，等保存时才提交
+                } else {
+                }
+                break;
         }
     }
 }

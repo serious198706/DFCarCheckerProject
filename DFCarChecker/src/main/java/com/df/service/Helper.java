@@ -109,8 +109,8 @@ public class Helper {
 
 
     /** Create a file Uri for saving an image*/
-    public static Uri getOutputMediaFileUri(String fileName){
-        return Uri.fromFile(getOutputMediaFile(fileName));
+    public static Uri getOutputMediaFileUri(long fileName){
+        return Uri.fromFile(getOutputMediaFile(Long.toString(fileName)));
     }
 
     /** Create a File for saving an image*/

@@ -67,7 +67,7 @@ public class SoapService implements ISoapService {
         } catch (Exception e) {
             Log.d("DFCarChecker", e.getMessage());
 
-            errorMessage = "无法连接到服务器！";
+            errorMessage = "无法连接到服务器！" + e.getMessage();
             resultMessage = "";
             return false;
         }
@@ -85,8 +85,6 @@ public class SoapService implements ISoapService {
 
         // 成功
         if(flag.equals("0")) {
-
-
             errorMessage = "";
             return true;
         }
@@ -115,8 +113,13 @@ public class SoapService implements ISoapService {
         try {
             trans.call(this.soapAction, envelope);
         } catch (Exception e) {
-            Log.d("DFCarChecker", "IOException");
+            Log.d("DFCarChecker", "无法连接到服务器：" + e.getMessage());
+
+            errorMessage = "无法连接到服务器！" + e.getMessage();
+            resultMessage = "";
             e.printStackTrace();
+
+            return false;
         }
 
         // 收到的结果
@@ -180,14 +183,15 @@ public class SoapService implements ISoapService {
         try {
             trans.call(this.soapAction, envelope);
             Log.d("DFCarChecker", "upload Successful!");
-        } catch (IOException e) {
-            Log.d("DFCarChecker", "IOException");
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            Log.d("DFCarChecker", "XmlPullParserException");
-            e.printStackTrace();
         } catch (Exception e) {
-            Log.d("DFCarChecker", e.getMessage());
+            Log.d("DFCarChecker", "无法连接到服务器：" + e.getMessage());
+
+            errorMessage = "无法连接到服务器！" + e.getMessage();
+            resultMessage = "";
+
+            e.printStackTrace();
+
+            return false;
         }
 
         // 收到的结果
@@ -202,13 +206,15 @@ public class SoapService implements ISoapService {
 
         // 成功
         if(result.equals("0")) {
-            // JSON格式数据            resultMessage = soapObject.getProperty(1).toString();
-
+            // JSON格式数据
+            resultMessage = soapObject.getProperty(1).toString();
+            errorMessage = "";
             return true;
         }
         // 失败
         else {
             Log.d("DFCarChecker", resultMessage);
+            errorMessage = resultMessage;
             return false;
         }
     }
@@ -230,14 +236,15 @@ public class SoapService implements ISoapService {
         try {
             trans.call(this.soapAction, envelope);
             Log.d("DFCarChecker", "send Successful!");
-        } catch (IOException e) {
-            Log.d("DFCarChecker", "IOException");
-            e.printStackTrace();
-        } catch (XmlPullParserException e) {
-            Log.d("DFCarChecker", "XmlPullParserException");
-            e.printStackTrace();
         } catch (Exception e) {
-            Log.d("DFCarChecker", e.getMessage());
+            Log.d("DFCarChecker", "无法连接到服务器：" + e.getMessage());
+
+            errorMessage = "无法连接到服务器！" + e.getMessage();
+            resultMessage = "";
+
+            e.printStackTrace();
+
+            return false;
         }
 
         // 收到的结果

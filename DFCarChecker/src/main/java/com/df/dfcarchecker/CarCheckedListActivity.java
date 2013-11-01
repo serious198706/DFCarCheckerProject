@@ -26,6 +26,7 @@ import com.df.entry.Brand;
 import com.df.entry.Country;
 import com.df.entry.Manufacturer;
 import com.df.entry.Series;
+import com.df.service.Common;
 import com.df.service.SoapService;
 
 import org.json.JSONArray;
@@ -248,7 +249,7 @@ public class CarCheckedListActivity extends Activity {
                 soapService = new SoapService();
 
                 // 设置soap的配置
-                soapService.setUtils("http://192.168.100.6:50/ReportService.svc",
+                soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
                         "http://cheyiju/IReportService/ListCheckedCarsInfoByUserid",
                         "ListCheckedCarsInfoByUserid");
 

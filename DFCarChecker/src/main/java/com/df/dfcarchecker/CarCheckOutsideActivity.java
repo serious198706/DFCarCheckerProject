@@ -17,8 +17,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.df.entry.FaultPhotoEntity;
+import com.df.entry.PhotoEntity;
 import com.df.paintview.OutsidePaintPreviewView;
 import com.df.service.Common;
+import com.df.service.ImageUploadQueue;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
     private Spinner paintSpinner;
     private EditText commentEdit;
     public static List<FaultPhotoEntity> posEntities = CarCheckIntegratedFragment.outsidePaintEntities;
+    public static List<PhotoEntity> photoEntities = CarCheckIntegratedFragment.outsidePhotoEntities;
     private OutsidePaintPreviewView outsidePaintPreviewView;
     private TextView tip;
     private String brokenParts;
@@ -220,8 +223,19 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
         intent.putExtra("INDEX", Integer.toString(paintSpinner.getSelectedItemPosition()));
         intent.putExtra("COMMENT", commentEdit.getText().toString());
 
+        addPhotosToQueue();
+
         // 关闭activity
         setResult(Activity.RESULT_OK, intent);
         finish();
+    }
+
+    // 只有在保存时才提交照片
+    private void addPhotosToQueue() {
+        ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
+
+        for(int i = 0; i < photoEntities.size(); i++) {
+            imageUploadQueue.addImage(photoEntities.get(i));
+        }
     }
 }

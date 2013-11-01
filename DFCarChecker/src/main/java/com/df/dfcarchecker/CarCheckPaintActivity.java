@@ -332,8 +332,6 @@ public class CarCheckPaintActivity extends Activity {
             Canvas c = new Canvas(b);
             targetView.draw(c);
 
-
-
             String filename = Environment.getExternalStorageDirectory().getPath();
             filename += "/Pictures/DFCarChecker/";
 

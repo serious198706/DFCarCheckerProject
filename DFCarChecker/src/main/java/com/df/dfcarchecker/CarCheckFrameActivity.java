@@ -5,25 +5,35 @@ import java.util.Locale;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.df.entry.UserInfo;
+import com.df.service.Common;
 import com.df.service.CustomViewPager;
+import com.df.service.SoapService;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class CarCheckFrameActivity extends FragmentActivity implements ActionBar.TabListener {
     private CarCheckBasicInfoFragment carCheckBasicInfoFragment;
     private CarCheckStructureFragment carCheckStructureFragment;
     private CarCheckIntegratedFragment carCheckIntegratedFragment;
 
-
+    private CommitDataTask mCommitDataTask;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -212,7 +222,10 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                // 退出
+                // 提交
+                mCommitDataTask = new CommitDataTask();
+                mCommitDataTask.execute((Void) null);
+
                 Toast.makeText(CarCheckFrameActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
                 finish();
             }
@@ -220,5 +233,95 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        quitCarCheck();
+    }
+
+
+    public class CommitDataTask extends AsyncTask<Void, Void, Boolean> {
+        Context context;
+        SoapService soapService;
+
+        private CommitDataTask() {
+
+        }
+
+        private CommitDataTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            boolean success = false;
+
+//            try {
+//                soapService = new SoapService();
+//
+//                // 设置soap的配置
+//                soapService.setUtils("http://192.168.100.6:50/UserManageService.svc",
+//                        "http://cheyiju/IUserManageService/GetCustomerIpAddress",
+//                        "GetCustomerIpAddress");
+//
+//                success = soapService.sendIpAddress();
+//            } catch (Exception e) {
+//                Log.d("DFCarChecker", "Json解析错误: " + e.getMessage());
+//            }
+
+            try {
+                // 登录
+                JSONObject jsonObject = new JSONObject();
+
+                jsonObject.put("Userid", LoginActivity.userInfo.getId());
+                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                jsonObject.put("UniqueId", "199");
+                jsonObject.put("JsonString", "{}");
+
+                soapService = new SoapService();
+
+                // 设置soap的配置
+                soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
+                        "http://cheyiju/IUserManageService/SaveCarCheckInfo",
+                        "SaveCarCheckInfo");
+
+                success = soapService.login(context, jsonObject.toString());
+//
+//                // 登录失败，获取错误信息并显示
+//                if(!success) {
+//                    Log.d("DFCarChecker", "Login error:" + soapService.getErrorMessage());
+//                } else {
+//                    userInfo = new UserInfo();
+//
+//                    try {
+//                        JSONObject userJsonObject = new JSONObject(soapService.getResultMessage());
+//
+//                        // 保存用户的UserId和此次登陆的Key
+//                        userInfo.setId(userJsonObject.getString("UserId"));
+//                        userInfo.setKey(userJsonObject.getString("Key"));
+//                    } catch (Exception e) {
+//                        Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
+//                        return false;
+//                    }
+//                }
+            } catch (JSONException e) {
+                Log.d("DFCarChecker", "Json解析错误: " + e.getMessage());
+            }
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mCommitDataTask = null;
+
+
+        }
+
+        @Override
+        protected void onCancelled() {
+            mCommitDataTask = null;
+        }
     }
 }

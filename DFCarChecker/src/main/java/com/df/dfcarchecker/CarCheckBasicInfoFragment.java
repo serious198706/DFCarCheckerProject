@@ -32,6 +32,7 @@ import com.df.entry.Model;
 import com.df.entry.Manufacturer;
 import com.df.entry.Series;
 import com.df.entry.VehicleModel;
+import com.df.service.Common;
 import com.df.service.Helper;
 import com.df.service.SoapService;
 import com.df.service.VehicleModelParser;
@@ -338,8 +339,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     // 从服务器获取车辆配置
     private void getCarSettingsFromServer(String seriesId) {
-        //mGetCarSettingsTask = new GetCarSettingsTask(rootView.getContext());
-        //mGetCarSettingsTask.execute(seriesId);
+        mGetCarSettingsTask = new GetCarSettingsTask(rootView.getContext());
+        mGetCarSettingsTask.execute(seriesId);
     }
 
     // 更新配置信息
@@ -506,7 +507,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                 Series series = manufacturer.serieses.get(lastSeriesIndex - 1);
                 Model model = series.models.get(lastModelIndex - 1);
 
-                getCarSettingsFromServer(series.id);
+                getCarSettingsFromServer(series.id + "," + model.id);
 
                 brandString = manufacturerSpinner.getSelectedItem().toString() + " " +
                         seriesSpinner.getSelectedItem().toString() + " " +
@@ -922,6 +923,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private class GetCarSettingsTask extends AsyncTask<String, Void, Boolean> {
         Context context;
         String seriesId;
+        String modelId;
 
         String modelName = "";
         List<String> modelNames;
@@ -934,6 +936,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         Series series = null;
         Model model = null;
         String config = null;
+        String category = null;
+        String figure = null;
 
         private GetCarSettingsTask(Context context) {
             this.context = context;
@@ -957,24 +961,28 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         protected Boolean doInBackground(String... params) {
             boolean success = false;
 
-            seriesId = params[0];
+            // 传输seriesId和modelId
+            if(!params[0].equals("")) {
+                // 从传入的参数中解析出seriesId和modelId
+                String temp[] = params[0].split(",");
+                seriesId = temp[0];
+                modelId = temp[1];
 
-            // 传输seriesId
-            if(!seriesId.equals("")) {
                 try {
                     JSONObject jsonObject = new JSONObject();
 
                     // SeriesId + userID + key
                     jsonObject.put("SeriesId", seriesId);
+                    jsonObject.put("ModelId", modelId);
                     jsonObject.put("UserId", LoginActivity.userInfo.getId());
                     jsonObject.put("Key", LoginActivity.userInfo.getKey());
 
                     soapService = new SoapService();
 
                     // 设置soap的配置
-                    soapService.setUtils("http://192.168.100.6:50/ReportService.svc",
-                            "http://cheyiju/IReportService/GetOptionsBySeriesId",
-                            "GetOptionsBySeriesId");
+                    soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
+                            "http://cheyiju/IReportService/GetOptionsBySeriesIdAndModelId",
+                            "GetOptionsBySeriesIdAndModelId");
 
                     success = soapService.communicateWithServer(context, jsonObject.toString());
 
@@ -1013,7 +1021,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     soapService = new SoapService();
 
                     // 设置soap的配置
-                    soapService.setUtils("http://192.168.100.6:50/ReportService.svc",
+                    soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
                             "http://cheyiju/IReportService/GetCarConfigInfoByVin",
                             "GetCarConfigInfoByVin");
 
@@ -1023,7 +1031,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                     // 传输失败，获取错误信息并显示
                     if(!success) {
-                        Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
+                        String error = "获取车辆配置信息失败：" + soapService.getErrorMessage();
+                        Log.d("DFCarChecker", error);
+                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                     } else {
                         result = soapService.getResultMessage();
                     }
@@ -1137,6 +1147,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     else if(result.startsWith("{")) {
                         JSONObject jsonObject = new JSONObject(result);
                         config = jsonObject.getString("config");
+                        category = jsonObject.getString("category");
+                        figure = jsonObject.getString("figure");
 
                         // 因为是从车型选择中选择的，所以品牌输入框不需要设置文字
                     }

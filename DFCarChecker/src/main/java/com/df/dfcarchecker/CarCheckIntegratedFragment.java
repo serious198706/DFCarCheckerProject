@@ -13,6 +13,7 @@ import android.widget.Spinner;
 
 import com.df.entry.CarSettings;
 import com.df.entry.FaultPhotoEntity;
+import com.df.entry.PhotoEntity;
 import com.df.service.Common;
 
 import java.util.ArrayList;
@@ -23,7 +24,9 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     private static ScrollView root;
     private LayoutInflater inflater;
     public static List<FaultPhotoEntity> outsidePaintEntities;
+    public static List<PhotoEntity> outsidePhotoEntities;
     public static List<FaultPhotoEntity> insidePaintEntities;
+    public static List<PhotoEntity> insidePhotoEntities;
     private String paintIndex;
     private String outsideComment;
     private String sealIndex;
@@ -48,6 +51,10 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         // 坐标们
         outsidePaintEntities = new ArrayList<FaultPhotoEntity>();
         insidePaintEntities = new ArrayList<FaultPhotoEntity>();
+
+        // 照片们
+        outsidePhotoEntities = new ArrayList<PhotoEntity>();
+        insidePhotoEntities = new ArrayList<PhotoEntity>();
 
         paintIndex = sealIndex = "0";
         outsideComment = insideComment = "";

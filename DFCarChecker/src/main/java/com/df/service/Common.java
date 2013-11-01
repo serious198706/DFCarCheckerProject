@@ -47,6 +47,12 @@ public class Common {
     public static final int DIRTY = 6;
     public static final int BROKEN = 7;
 
+    public static final String TAG = "DFCarChecker";
+
+    public static final String SERVER_ADDRESS = "http://wcf.268v.com:8008/";
+
+    public static final String USER_MANAGE_SERVICE = "userManageService.svc";
+    public static final String REPORT_SERVICE = "ReportService.svc";
     // TODO 加入事故检查绘图类型代码
 
 }
