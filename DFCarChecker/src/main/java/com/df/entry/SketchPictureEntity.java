@@ -2,6 +2,7 @@ package com.df.entry;
 
 import android.graphics.Bitmap;
 
+import com.df.dfcarchecker.CarCheckBasicInfoFragment;
 import com.df.dfcarchecker.LoginActivity;
 
 import org.json.JSONException;
@@ -36,7 +37,7 @@ public class SketchPictureEntity {
 
         try {
             jsonObject.put("PictureName", this.imageFileName);
-            jsonObject.put("UniqueId", "199");
+            jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
             // 绘图类型
             jsonObject.put("Part", part);
             jsonObject.put("UserId", LoginActivity.userInfo.getId());

@@ -123,250 +123,233 @@
                     android:layout_weight="1"
                     android:layout_marginRight="8dp"
                     android:editable="false"/>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/csi_category"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="8dp"/>
-                <Spinner
-                    android:id="@+id/csi_category_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:entries="@array/csi_category_item"/>
-            </TableRow>
-
-            <TableRow>
+                <!--<TextView-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:text="@string/csi_category"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:textSize="18sp"-->
+                    <!--android:layout_marginLeft="8dp"/>-->
+                <!--<Spinner-->
+                    <!--android:id="@+id/csi_category_spinner"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:entries="@array/csi_category_item"/>-->
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:text="@string/csi_driveType"
                     android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:textSize="18sp"/>
                 <Spinner
                     android:id="@+id/csi_driveType_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:entries="@array/csi_driveType_item"
-                    android:layout_marginRight="8dp"/>
+                    android:entries="@array/csi_driveType_item"/>
+            </TableRow>
+            <TableRow>
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:text="@string/csi_transmission"
                     android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="8dp"/>
+                    android:textSize="18sp"/>
                 <Spinner
                     android:id="@+id/csi_transmission_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
+                    android:layout_marginRight="8dp"
                     android:entries="@array/csi_transmission_item"/>
-            </TableRow>
-
-            <TableRow>
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:text="@string/csi_airbag"
                     android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:textSize="18sp"/>
                 <Spinner
                     android:id="@+id/csi_airbag_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:entries="@array/csi_airbag_number"
-                    android:layout_marginRight="8dp"/>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/csi_abs"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="8dp"/>
-                <Spinner
-                    android:id="@+id/csi_abs_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:entries="@array/existornot"/>
+                    android:entries="@array/csi_airbag_number"/>
             </TableRow>
 
             <TableRow>
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
+                    android:text="@string/csi_abs"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <Spinner
+                    android:id="@+id/csi_abs_spinner"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:entries="@array/existornot"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
                     android:text="@string/csi_powerSteering"
                     android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:textSize="18sp"/>
                 <Spinner
                     android:id="@+id/csi_powerSteering_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:entries="@array/existornot"
-                    android:layout_marginRight="8dp"/>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/csi_powerWindows"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="8dp"/>
-                <Spinner
-                    android:id="@+id/csi_powerWindows_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:entries="@array/csi_powerWindows_items"/>
+                    android:entries="@array/existornot"/>
             </TableRow>
 
             <TableRow>
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
+                    android:text="@string/csi_powerWindows"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <Spinner
+                    android:id="@+id/csi_powerWindows_spinner"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:entries="@array/csi_powerWindows_items"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
                     android:text="@string/csi_sunroof"
                     android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:textSize="18sp"/>
                 <Spinner
                     android:id="@+id/csi_sunroof_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:entries="@array/csi_sunroof_items"
-                    android:layout_marginRight="8dp"/>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/csi_airConditioning"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="8dp"/>
-                <Spinner
-                    android:id="@+id/csi_airConditioning_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:entries="@array/csi_airConditioning_items"/>
+                    android:entries="@array/csi_sunroof_items"/>
             </TableRow>
 
             <TableRow>
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
+                    android:text="@string/csi_airConditioning"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <Spinner
+                    android:id="@+id/csi_airConditioning_spinner"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:entries="@array/csi_airConditioning_items"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
                     android:text="@string/csi_leatherSeats"
                     android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:textSize="18sp"/>
                 <Spinner
                     android:id="@+id/csi_leatherSeats_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:entries="@array/csi_leatherSeats_items"
-                    android:layout_marginRight="8dp"/>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/csi_powerSeats"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="8dp"/>
-                <Spinner
-                    android:id="@+id/csi_powerSeats_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:entries="@array/csi_powerSeats_items"/>
+                    android:entries="@array/csi_leatherSeats_items"/>
             </TableRow>
 
             <TableRow>
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
+                    android:text="@string/csi_powerSeats"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <Spinner
+                    android:id="@+id/csi_powerSeats_spinner"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:entries="@array/csi_powerSeats_items"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
                     android:text="@string/csi_powerMirror"
                     android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:textSize="18sp"/>
                 <Spinner
                     android:id="@+id/csi_powerMirror_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:entries="@array/csi_powerMirror_items"
-                    android:layout_marginRight="8dp"/>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/csi_reversingRadar"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="8dp"/>
-                <Spinner
-                    android:id="@+id/csi_reversingRadar_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:entries="@array/csi_reversingRadar_items"/>
+                    android:entries="@array/csi_powerMirror_items"/>
             </TableRow>
 
             <TableRow>
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
+                    android:text="@string/csi_reversingRadar"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <Spinner
+                    android:id="@+id/csi_reversingRadar_spinner"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:entries="@array/csi_reversingRadar_items"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
                     android:text="@string/csi_reversingCamera"
                     android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:textSize="18sp"/>
                 <Spinner
                     android:id="@+id/csi_reversingCamera_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:entries="@array/csi_reversingCamera_items"
-                    android:layout_marginRight="8dp"/>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/csi_ccs"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="8dp"/>
-                <Spinner
-                    android:id="@+id/csi_ccs_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:entries="@array/csi_ccs_items"/>
+                    android:entries="@array/csi_reversingCamera_items"/>
             </TableRow>
 
             <TableRow>
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
+                    android:text="@string/csi_ccs"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <Spinner
+                    android:id="@+id/csi_ccs_spinner"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:entries="@array/csi_ccs_items"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
                     android:text="@string/csi_softCloseDoors"
                     android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:textSize="18sp"/>
                 <Spinner
                     android:id="@+id/csi_softCloseDoors_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:entries="@array/existornot"
-                    android:layout_marginRight="8dp"/>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/csi_rearPowerSeats"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="8dp"/>
-                <Spinner
-                    android:id="@+id/csi_rearPowerSeats_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:entries="@array/existornot"/>
             </TableRow>
 
@@ -374,28 +357,28 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
+                    android:text="@string/csi_rearPowerSeats"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <Spinner
+                    android:id="@+id/csi_rearPowerSeats_spinner"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:entries="@array/existornot"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
                     android:text="@string/csi_ahc"
                     android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:textSize="18sp"/>
                 <Spinner
                     android:id="@+id/csi_ahc_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:entries="@array/existornot"
-                    android:layout_marginRight="8dp"/>
-                <TextView
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:text="@string/csi_parkingAssist"
-                    android:layout_weight="1"
-                    android:textSize="18sp"
-                    android:layout_marginLeft="8dp"/>
-                <Spinner
-                    android:id="@+id/csi_parkAssist_spinner"
-                    android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
                     android:entries="@array/existornot"/>
             </TableRow>
 
@@ -403,23 +386,29 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
+                    android:text="@string/csi_parkingAssist"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <Spinner
+                    android:id="@+id/csi_parkAssist_spinner"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:entries="@array/existornot"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
                     android:text="@string/csi_clapBoard"
                     android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
                     android:textSize="18sp"/>
                 <Spinner
                     android:id="@+id/csi_clapBoard_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:entries="@array/existornot"
-                    android:layout_marginRight="8dp"/>
-                <TextView android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="8dp"/>
-                <TextView android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"/>
+                    android:entries="@array/existornot"/>
             </TableRow>
             <!-- 隐藏配置信息结束 -->
 

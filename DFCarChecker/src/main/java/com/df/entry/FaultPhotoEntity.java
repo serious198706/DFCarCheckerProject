@@ -6,6 +6,7 @@ package com.df.entry;
 
 import android.graphics.Bitmap;
 
+import com.df.dfcarchecker.CarCheckBasicInfoFragment;
 import com.df.dfcarchecker.LoginActivity;
 
 import org.json.JSONException;
@@ -87,7 +88,7 @@ public class FaultPhotoEntity implements Serializable {
             jsonObject.put("PictureName", this.imageFileName);
             jsonObject.put("StartPoint", Integer.toString(getStartX()) + "," + Integer.toString(getStartY()));
             jsonObject.put("EndPoint", Integer.toString(getEndX()) + "," + Integer.toString(getEndY()));
-            jsonObject.put("UniqueId", "199");
+            jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
             // 绘图类型
             jsonObject.put("Type", getType());
             jsonObject.put("UserId", LoginActivity.userInfo.getId());

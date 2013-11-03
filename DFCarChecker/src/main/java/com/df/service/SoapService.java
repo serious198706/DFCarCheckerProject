@@ -39,9 +39,9 @@ public class SoapService implements ISoapService {
 
     public String getErrorMessage() { return errorMessage; }
     public String getResultMessage() { return resultMessage; }
-
     public UserInfo getUserInfo() { return userInfo; }
 
+    // 登陆
     public boolean login(Context context, String jsonString) {
         errorMessage = "";
         resultMessage = "";
@@ -96,6 +96,7 @@ public class SoapService implements ISoapService {
         }
     }
 
+    // 其他通讯，如提交信息等
     public boolean communicateWithServer(Context context, String jsonString) {
         errorMessage = "";
         resultMessage = "";
@@ -145,6 +146,7 @@ public class SoapService implements ISoapService {
         }
     }
 
+    // 上传照片
     public boolean uploadPicture(Context context, Bitmap bitmap, String jsonString) {
         errorMessage = "";
         resultMessage = "";
@@ -257,7 +259,8 @@ public class SoapService implements ISoapService {
 
         // 成功
         if(result.equals("0")) {
-            // JSON格式数据            resultMessage = soapObject.getProperty(1).toString();
+            // JSON格式数据
+            resultMessage = soapObject.getProperty(1).toString();
 
             return true;
         }

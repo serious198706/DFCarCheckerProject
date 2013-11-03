@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.df.entry.CarSettings;
 import com.df.entry.FaultPhotoEntity;
@@ -78,6 +80,43 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         updateUi();
         root.setVisibility(View.VISIBLE);
     }
+
+    public static void setGearType(String gearType) {
+        // 手动档
+        TextView manuallyTextView = (TextView)rootView.findViewById(R.id.it_gear_manually_row);
+        TableRow manuallyRow1 = (TableRow)rootView.findViewById(R.id.it_gear_manually_row_1);
+        TableRow manuallyRow2 = (TableRow)rootView.findViewById(R.id.it_gear_manually_row_2);
+        TableRow manuallyRow3 = (TableRow)rootView.findViewById(R.id.it_gear_manually_row_3);
+        TextView autoTextView = (TextView)rootView.findViewById(R.id.it_gear_auto_row);
+        TableRow autoRow1 = (TableRow)rootView.findViewById(R.id.it_gear_auto_row_1);
+        TableRow autoRow2 = (TableRow)rootView.findViewById(R.id.it_gear_auto_row_2);
+        TableRow autoRow3 = (TableRow)rootView.findViewById(R.id.it_gear_auto_row_3);
+
+        if(gearType.equals("MT")) {
+            manuallyTextView.setVisibility(View.VISIBLE);
+            manuallyRow1.setVisibility(View.VISIBLE);
+            manuallyRow2.setVisibility(View.VISIBLE);
+            manuallyRow3.setVisibility(View.VISIBLE);
+
+            autoTextView.setVisibility(View.GONE);
+            autoRow1.setVisibility(View.GONE);
+            autoRow2.setVisibility(View.GONE);
+            autoRow3.setVisibility(View.GONE);
+        }
+        // 自动档
+        else {
+            manuallyTextView.setVisibility(View.GONE);
+            manuallyRow1.setVisibility(View.GONE);
+            manuallyRow2.setVisibility(View.GONE);
+            manuallyRow3.setVisibility(View.GONE);
+
+            autoTextView.setVisibility(View.VISIBLE);
+            autoRow1.setVisibility(View.VISIBLE);
+            autoRow2.setVisibility(View.VISIBLE);
+            autoRow3.setVisibility(View.VISIBLE);
+        }
+    }
+
 
     private static void updateUi() {
         CarSettings carSettings = CarCheckBasicInfoFragment.mCarSettings;

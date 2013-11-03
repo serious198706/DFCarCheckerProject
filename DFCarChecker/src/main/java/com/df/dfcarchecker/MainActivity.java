@@ -10,7 +10,6 @@ import android.view.View;
 import com.df.service.ImageUploadQueue;
 import com.df.service.QueueScanService;
 
-// TODO: 登录界面！！！！！
 public class MainActivity extends Activity {
     public static ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
 
@@ -49,6 +48,8 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // 退出
+                Intent intent = new Intent(MainActivity.this, QueueScanService.class);
+                stopService(intent);
                 finish();
             }
         });

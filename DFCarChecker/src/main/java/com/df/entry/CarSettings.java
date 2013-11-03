@@ -2,11 +2,7 @@ package com.df.entry;
 
 import android.util.Log;
 
-import com.df.dfcarchecker.R;
-
 import org.json.JSONObject;
-
-import java.util.Map;
 
 /**
  * Created by 岩 on 13-10-16.
@@ -35,6 +31,13 @@ public class CarSettings {
     private String parkAssist;
     private String clapBoard;
 
+    // 1：三厢四门车、2：三厢两门车、3：两厢两门车、4：两厢四门车:、5：面包车
+
+    // inside:      1 - d4s4,       2 - d2s4,       3 - d2s4,       4 - d4s4,       5 - van_i
+    // outside:     1 - r3d4,       2 - r3d2,       3 - r2d2,       4 - r2d4,       5 - van_o
+    // structure:   1 - d4_f/d4_r,  2 - d2_f/d2_r,  3 - d2_f/d2_r,  4 - d4_f/d4_r,  5 - d4_f/d4_r
+    private String figure;
+
     private String exist = "有";
 
     public CarSettings() {
@@ -60,6 +63,27 @@ public class CarSettings {
         ahc = "";
         parkAssist = "";
         clapBoard = "";
+    }
+
+    private void clearSettings() {
+        airbag = "";
+        abs = "";
+        powerSteering = "";
+        powerWindows = "";
+        sunroof = "";
+        airConditioning = "";
+        leatherSeats = "";
+        powerSeats = "";
+        powerMirror = "";
+        reversingRadar = "";
+        reversingCamera = "";
+        ccs = "";
+        softCloseDoors = "";
+        rearPowerSeats = "";
+        ahc = "";
+        parkAssist = "";
+        clapBoard = "";
+        figure = "";
     }
 
     // 厂牌型号
@@ -97,6 +121,14 @@ public class CarSettings {
             return "0";
     }
 
+    public String getFigure() {
+        return figure;
+    }
+
+    public void setFigure(String figure) {
+        this.figure = figure;
+    }
+
     // 变速器形式
     public void setTransmission(String transmission) {
         this.transmission = transmission;
@@ -112,6 +144,9 @@ public class CarSettings {
             return "4";
         else
             return "0";
+    }
+    public String getTransmissionText() {
+        return transmission;
     }
 
     // 气囊
@@ -335,14 +370,18 @@ public class CarSettings {
     }
 
     public void setConfig(String config) {
+        // 在每次设置配置信息时，要先将之前设置的配置信息清除
+        clearSettings();
+
         String[] configs = config.split(",");
 
         String exist = "有";
 
         for(int i = 0; i < configs.length; i++) {
-            // TODO: 车辆类型什么时候传来？
             if(configs[i].equals("category")) {
                 setCategory(configs[i]);
+            } else if(configs[i].equals("figure")) {
+                setFigure(configs[i]);
             } else if(configs[i].equals("airBags")) {
                 setAirbag(exist);
             } else if(configs[i].equals("abs")) {

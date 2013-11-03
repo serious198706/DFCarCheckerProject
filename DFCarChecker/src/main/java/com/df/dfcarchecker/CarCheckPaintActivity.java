@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -75,16 +76,6 @@ public class CarCheckPaintActivity extends Activity {
                     SetInPaintLayout();
                     break;
             }
-
-//            if(value.equals("OUT_PAINT")) {
-//                SetOutPaintLayout();
-//            } else if(value.equals("IN_PAINT")) {
-//                SetInPaintLayout();
-//            } else if(value.equals("STRUCTURE_PAINT")) {
-//                String sight = extras.getString("PAINT_SIGHT");
-//                SetStructurePaintLayout(sight);
-//            }
-
         }
 
         ActionBar actionBar = getActionBar();
@@ -99,7 +90,12 @@ public class CarCheckPaintActivity extends Activity {
         setContentView(R.layout.activity_car_check_inside_paint);
         setTitle(R.string.in);
 
+        // 根据CarSettings的figure设定图片
+        int figure = Integer.parseInt(CarCheckBasicInfoFragment.mCarSettings.getFigure());
+        Bitmap bitmap = getBitmapFromFigure(figure, "IN");
+
         insidePaintView = (InsidePaintView) findViewById(R.id.tile);
+        insidePaintView.init(bitmap, CarCheckInsideActivity.posEntities);
 
         RadioGroup radioGroup = (RadioGroup)findViewById(R.id.in_radio_group);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -127,7 +123,12 @@ public class CarCheckPaintActivity extends Activity {
         setContentView(R.layout.activity_car_check_outside_paint);
         setTitle(R.string.out);
 
+        // 根据CarSettings的figure设定图片
+        int figure = Integer.parseInt(CarCheckBasicInfoFragment.mCarSettings.getFigure());
+        Bitmap bitmap = getBitmapFromFigure(figure, "OUT");
+
         outsidePaintView = (OutsidePaintView) findViewById(R.id.tile);
+        outsidePaintView.init(bitmap, CarCheckOutsideActivity.posEntities);
 
         RadioGroup radioGroup = (RadioGroup)findViewById(R.id.out_radio_group);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -367,5 +368,58 @@ public class CarCheckPaintActivity extends Activity {
         protected void onCancelled() {
             mSaveCapturedImageTask = null;
         }
+    }
+
+    // 根据不同的检测步骤和figure，返回不同的图片
+    private Bitmap getBitmapFromFigure(int figure, String step) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        String path = Environment.getExternalStorageDirectory().toString();
+        path += "/.cheyipai/";
+        String name = "";
+
+        if(step.equals("OUT")) {
+            // 外观图
+            switch (figure) {
+                case 1:
+                    name = "r3d4";
+                    break;
+                case 2:
+                    name = "r3d2";
+                    break;
+                case 3:
+                    name = "r2d2";
+                    break;
+                case 4:
+                    name = "r2d4";
+                    break;
+                case 5:
+                    name = "van_o";
+                    break;
+            }
+        } else {
+            // 内饰图
+            switch (figure) {
+                case 1:
+                    name = "d4s4";
+                    break;
+                case 2:
+                    name = "d2s4";
+                    break;
+                case 3:
+                    name = "d2s4";
+                    break;
+                case 4:
+                    name = "d4s4";
+                    break;
+                case 5:
+                    name = "van_i";
+                    break;
+            }
+        }
+
+
+        return BitmapFactory.decodeFile(path + name, options);
     }
 }

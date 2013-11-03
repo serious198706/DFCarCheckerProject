@@ -57,7 +57,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     // 内容TableLayout
     private TableLayout tableLayout;
 
-    private LinearLayout brand;
+    private LinearLayout contentLayout;
     private EditText vin_edit;
     private Button brandOkButton;
     private Button brandSelectButton;
@@ -81,7 +81,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private FileInputStream fis = null;
 
     private EditText brandEdit;
-    private EditText volumeEdit;
+    private EditText displacementEdit;
 
     private String volumeString = null;
     private String brandString = null;
@@ -108,6 +108,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     private GetCarSettingsTask mGetCarSettingsTask = null;
 
+    public static String uniqueId;
+
     // 每一个部位的序号关联：
     // 第一个表示序号，
     // 第二个表示该序号所对应的TableRow的id，
@@ -128,7 +130,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         // <editor-fold defaultstate="collapsed" desc="各种View的初始化">
         tableLayout = (TableLayout) rootView.findViewById(R.id.bi_content_table);
 
-        brand = (LinearLayout) rootView.findViewById(R.id.brand_input);
+        contentLayout = (LinearLayout) rootView.findViewById(R.id.brand_input);
 
         Button vinButton = (Button) rootView.findViewById(R.id.bi_vin_button);
         vinButton.setOnClickListener(this);
@@ -141,14 +143,17 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         brandSelectButton.setEnabled(false);
         brandSelectButton.setOnClickListener(this);
 
+        // 实车与行驶本照片
         Button matchButton = (Button) rootView.findViewById(R.id.picture_match_button);
         matchButton.setOnClickListener(this);
 
         vin_edit = (EditText) rootView.findViewById(R.id.bi_vin_edit);
         brandEdit = (EditText) rootView.findViewById(R.id.bi_brand_edit);
-        volumeEdit = (EditText) rootView.findViewById(R.id.csi_displacement_edit);
+        displacementEdit = (EditText) rootView.findViewById(R.id.csi_displacement_edit);
 
         runEdit = (EditText) rootView.findViewById(R.id.bi_run_edit);
+
+        // 只允许小数点后两位
         runEdit.addTextChangedListener(new TextWatcher()
         {
             public void afterTextChanged(Editable edt)
@@ -167,6 +172,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
         });
 
+        // 购车发票
         ticketSpinner = (Spinner) rootView.findViewById(R.id.ct_buy_tickets_spinner);
         ticketSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -190,6 +196,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             }
         });
 
+        // 最后过户日期
         lastTransferCountSpinner = (Spinner) rootView.findViewById(R.id.ci_transfer_count_spinner);
         lastTransferCountSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -208,6 +215,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             }
         });
 
+        // 商业保险
         businessInsuranceSpinner = (Spinner) rootView.findViewById(R.id.ct_business_insurance_spinner);
         businessInsuranceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -226,11 +234,14 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             }
         });
 
+        // 牌照号码
         carNumberEdit = (EditText) rootView.findViewById(R.id.ci_car_number_edit);
 
+        // 出厂日期
         manufactureYearSpinner = (Spinner) rootView.findViewById(R.id.ci_manufacture_year_spinner);
         manufactureMonthSpinner = (Spinner) rootView.findViewById(R.id.ci_manufacture_month_spinner);
 
+        // 进口车手续
         portedProcedureRow = (TableRow) rootView.findViewById(R.id.ct_ported_procedure);
 
         // 初始化所有的Spinner
@@ -254,6 +265,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         dummy.add("LJDBAA33630037414");
         // 0
         dummy.add("LVVDB12A86D193156");
+        // 两厢
+        dummy.add("LVFAC2AD87K000028");
 
         SetSpinnerData(R.id.bi_vin_spinner, dummy, rootView);
 
@@ -269,6 +282,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             e.printStackTrace();
         }
 
+        // 开启一个新的线程解析xml文件
         if(vehicleModel == null) {
             Thread thread = new Thread(new Runnable(){
                 @Override
@@ -334,7 +348,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         // 传参数为空，表示提交的为VIN
         getCarSettingsFromServer("");
 
-        brand.setVisibility(View.VISIBLE);
+        uniqueId = vinString.substring(vinString.length() - 3, vinString.length());
     }
 
     // 从服务器获取车辆配置
@@ -345,14 +359,18 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     // 更新配置信息
     private void updateUIAccordingToCarSettings() {
+        // 设置厂牌型号的EditText
         brandEdit.setText(mCarSettings.getBrand());
-        volumeEdit.setText(mCarSettings.getDisplacement());
 
-        // TODO: 顺带更新其他Spinner
+        // 设置排量EditText
+        displacementEdit.setText(mCarSettings.getDisplacement());
+
+        // 根据是否进口更改手续选项
         if(isPorted) {
             portedProcedureRow.setVisibility(View.VISIBLE);
         }
 
+        // 改动配置信息中的Spinner
         setSpinnerSelection(R.id.csi_driveType_spinner, Integer.parseInt(mCarSettings.getDriveType()));
         setSpinnerSelection(R.id.csi_transmission_spinner, Integer.parseInt(mCarSettings.getTransmission()));
         setSpinnerSelection(R.id.csi_airbag_spinner, Integer.parseInt(mCarSettings.getAirbag()));
@@ -373,6 +391,11 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         setSpinnerSelection(R.id.csi_parkAssist_spinner, Integer.parseInt(mCarSettings.getParkAssist()));
         setSpinnerSelection(R.id.csi_clapBoard_spinner, Integer.parseInt(mCarSettings.getClapBoard()));
 
+        // 发动“车体结构检查”里显示的图片
+        CarCheckStructureFragment.setFigureImage(Integer.parseInt(mCarSettings.getFigure()));
+
+        // 改动“综合检查”里的档位类型选项
+        CarCheckIntegratedFragment.setGearType(mCarSettings.getTransmissionText());
     }
 
     private void setSpinnerSelection(final int spinnerId, int selection) {
@@ -449,7 +472,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         if(tableLayout.getVisibility() != View.VISIBLE) {
             tableLayout.setVisibility(View.VISIBLE);
             CarCheckIntegratedFragment.ShowContent();
-            CarCheckStructureFragment.ShowContent();
+            CarCheckStructureFragment.showContent();
         }
     }
 
@@ -1033,7 +1056,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     if(!success) {
                         String error = "获取车辆配置信息失败：" + soapService.getErrorMessage();
                         Log.d("DFCarChecker", error);
-                        Toast.makeText(context, error, Toast.LENGTH_SHORT).show();
                     } else {
                         result = soapService.getResultMessage();
                     }
@@ -1078,6 +1100,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                             series = manufacturer.getSerialById(jsonObject.getString("seriesId"));
                             model = series.getModelById(jsonObject.getString("modelId"));
                             config = jsonObject.getString("config");
+                            category = jsonObject.getString("category");
+                            figure = jsonObject.getString("figure");
 
                             modelNames.add(manufacturer.name + " " + series.name + " " + model.name);
                         }
@@ -1106,6 +1130,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                                     series = manufacturer.getSerialById(jsonObject.getString("seriesId"));
                                     model = series.getModelById(jsonObject.getString("modelId"));
                                     config = jsonObject.getString("config");
+                                    category = jsonObject.getString("category");
+                                    figure = jsonObject.getString("figure");
 
                                     // 根据用户选择的车型的id，记录车型选择spinner的位置
                                     lastCountryIndex = vehicleModel.getCountryNames().indexOf(country.name);
@@ -1123,6 +1149,10 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                                 // 设置配置信息
                                 mCarSettings.setConfig(config);
+
+                                // 设置车型分类，以用于图片类型判断
+                                mCarSettings.setCategory(category);
+                                mCarSettings.setFigure(figure);
 
                                 setCarSettingsSpinners(model.getName());
 
@@ -1142,13 +1172,25 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                         AlertDialog dialog = builder.create();
                         dialog.show();
+
+                        contentLayout.setVisibility(View.VISIBLE);
                     }
                     // 开始位为{，表示传输的是配置信息
-                    else if(result.startsWith("{")) {
+                    else {
                         JSONObject jsonObject = new JSONObject(result);
                         config = jsonObject.getString("config");
                         category = jsonObject.getString("category");
                         figure = jsonObject.getString("figure");
+
+                        // 设置配置信息
+                        mCarSettings.setConfig(config);
+
+                        // 设置车型分类，以用于图片类型判断
+                        mCarSettings.setCategory(category);
+                        mCarSettings.setFigure(figure);
+
+                        // 更新UI
+                        updateUIAccordingToCarSettings();
 
                         // 因为是从车型选择中选择的，所以品牌输入框不需要设置文字
                     }
@@ -1173,6 +1215,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                     AlertDialog dialog = builder.create();
                     dialog.show();
+                } else {
+                    Toast.makeText(context, soapService.getErrorMessage(), Toast.LENGTH_LONG).show();
                 }
             }
         }

@@ -5,8 +5,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,10 +20,13 @@ import android.widget.Toast;
 
 import com.df.entry.FaultPhotoEntity;
 import com.df.entry.PhotoEntity;
+import com.df.entry.StructurePhotoEntity;
 import com.df.paintview.OutsidePaintPreviewView;
+import com.df.paintview.StructurePaintPreviewView;
 import com.df.service.Common;
 import com.df.service.ImageUploadQueue;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CarCheckOutsideActivity extends Activity implements View.OnClickListener {
@@ -41,7 +46,11 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
         setContentView(R.layout.fragment_car_check_outside);
 
         // 点击图片进入绘制界面
+        int figure = Integer.parseInt(CarCheckBasicInfoFragment.mCarSettings.getFigure());
+        Bitmap previewViewBitmap = getBitmapFromFigure(figure);
+
         outsidePaintPreviewView = (OutsidePaintPreviewView) findViewById(R.id.out_base_image_preview);
+        outsidePaintPreviewView.init(previewViewBitmap, posEntities);
         outsidePaintPreviewView.setOnClickListener(this);
 
         // 选择表面有破损的零部件
@@ -237,5 +246,33 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
         for(int i = 0; i < photoEntities.size(); i++) {
             imageUploadQueue.addImage(photoEntities.get(i));
         }
+    }
+
+    private Bitmap getBitmapFromFigure(int figure) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        String path = Environment.getExternalStorageDirectory().toString();
+        path += "/.cheyipai/";
+
+        // 默认为三厢四门图
+        String name = "r3d4";
+
+        switch (figure) {
+            case 2:
+                name = "r3d2";
+                break;
+            case 3:
+                name = "r2d2";
+                break;
+            case 4:
+                name = "r2d4";
+                break;
+            case 5:
+                name = "van_o";
+                break;
+        }
+
+        return BitmapFactory.decodeFile(path + name, options);
     }
 }

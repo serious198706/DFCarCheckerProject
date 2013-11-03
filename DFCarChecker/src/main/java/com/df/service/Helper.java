@@ -11,12 +11,24 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.net.ContentHandler;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.ShortBufferException;
+import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.SecretKeySpec;
 
 /**
  * Created by on 13-8-30.
@@ -166,5 +178,59 @@ public class Helper {
         }
 
         return (vin.substring(8, 9).equals(Integer.toString(value % 11).replace("10", "X")));
+    }
+
+    public static String convertStreamToString(java.io.InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
+    }
+
+    private static String libString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnop qrstuvwxyz1234567890<>\"/";
+    private static String mixString = "rios3nvmxj0z1kqhp9lweub\"y6t cgfdaAZ/DC2GB8JMSXF>5VHN7KLQEW<R4TIYUOP";
+
+    public static String encodeFile(String srcString) {
+        String dstString = "";
+
+        for(int i = 0; i < srcString.length(); i++) {
+            for(int j = 0; j < libString.length(); j++) {
+                if(srcString.charAt(i) == libString.charAt(j)) {
+                    dstString += mixString.charAt(j);
+                } else {
+                    dstString += srcString.charAt(i);
+                }
+            }
+        }
+
+        return dstString;
+    }
+
+    public static String decodeFile(String srcString) {
+        String dstString = "";
+
+        for(int i = 0; i < srcString.length(); i++) {
+            for(int j = 0; j < mixString.length(); j++) {
+                if(srcString.charAt(i) == libString.charAt(j)) {
+                    dstString += libString.charAt(j);
+                }
+            }
+        }
+
+        return dstString;
+    }
+
+    private static String IV = "AAAAAAAAAAAAAAAA";
+
+    public static byte[] encrypt(String plainText, String encryptionKey) throws Exception {
+        Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
+        SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
+        cipher.init(Cipher.ENCRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));
+        return cipher.doFinal(plainText.getBytes("UTF-8"));
+    }
+
+    public static String decrypt(byte[] cipherText, String encryptionKey) throws Exception{
+        Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
+        SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
+        cipher.init(Cipher.DECRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));
+        return new String(cipher.doFinal(cipherText),"UTF-8");
     }
 }

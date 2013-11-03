@@ -56,26 +56,22 @@ public class InsidePaintView extends ImageView {
 
     public InsidePaintView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+        //init();
     }
 
     public InsidePaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        //init();
     }
 
     public InsidePaintView(Context context) {
         super(context);
-        init();
+        //init();
     }
 
-    private void init() {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-        String sdcardPath = Environment.getExternalStorageDirectory().toString();
-
-        bitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/in.png", options);
+    public void init(Bitmap bitmap, List<FaultPhotoEntity> entities) {
+        this.bitmap = bitmap;
+        data = entities;
 
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();

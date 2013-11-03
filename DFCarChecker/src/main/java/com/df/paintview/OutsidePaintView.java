@@ -61,38 +61,25 @@ public class OutsidePaintView extends ImageView {
 
     public OutsidePaintView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+        //init();
     }
 
     public OutsidePaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        //init();
     }
 
     public OutsidePaintView(Context context) {
         super(context);
-        init();
+        //init();
     }
 
-    private void init() {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-        String sdcardPath = Environment.getExternalStorageDirectory().toString();
-
-        bitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/out.png", options);
+    public void init(Bitmap bitmap, List<FaultPhotoEntity> entities) {
+        this.bitmap = bitmap;
+        data = entities;
 
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
-
-       // float scaleWidth = ((float) 1200) / max_x;
-       // float scaleHeight = scaleWidth;
-        // CREATE A MATRIX FOR THE MANIPULATION
-      //  Matrix matrix = new Matrix();
-        // RESIZE THE BIT MAP
-      //  matrix.postScale(scaleWidth, scaleHeight);
-
-     //   bitmap = Bitmap.createBitmap(tempbitmap, 0, 0, max_x, max_y, matrix,  false);
 
         undoData = new ArrayList<FaultPhotoEntity>();
         thisTimeNewData = new ArrayList<FaultPhotoEntity>();

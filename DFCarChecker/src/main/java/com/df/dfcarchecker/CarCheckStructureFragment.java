@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,6 +32,7 @@ import com.df.service.SoapService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -48,8 +50,8 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
     public static List<StructurePhotoEntity> posEntitiesFront;
     public static List<StructurePhotoEntity> posEntitiesRear;
 
-    private StructurePaintPreviewView structurePaintPreviewViewFront;
-    private StructurePaintPreviewView structurePaintPreviewViewRear;
+    private static StructurePaintPreviewView structurePaintPreviewViewFront;
+    private static StructurePaintPreviewView structurePaintPreviewViewRear;
     private TextView tipFront;
     private TextView tipRear;
 
@@ -71,7 +73,6 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         this.inflater = inflater;
         rootView = inflater.inflate(R.layout.fragment_car_check_structure, container, false);
 
-        // TODO:
         Button cameraButton = (Button)rootView.findViewById(R.id.structure_start_camera_button);
         cameraButton.setOnClickListener(this);
 
@@ -83,7 +84,7 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
 
-        previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/st_f", options);
+        previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4_f", options);
         structurePaintPreviewViewFront = (StructurePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_front);
         structurePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
         structurePaintPreviewViewFront.setOnClickListener(this);
@@ -91,7 +92,7 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         tipFront = (TextView)rootView.findViewById(R.id.tipOnPreviewFront);
         tipFront.setOnClickListener(this);
 
-        previewBitmapRear = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/st_r.png", options);
+        previewBitmapRear = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4_r", options);
         structurePaintPreviewViewRear = (StructurePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_rear);
         structurePaintPreviewViewRear.init(previewBitmapRear, posEntitiesRear);
         structurePaintPreviewViewRear.setOnClickListener(this);
@@ -100,7 +101,7 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         tipRear.setOnClickListener(this);
 
         root = (ScrollView)rootView.findViewById(R.id.root);
-        //root.setVisibility(View.GONE);
+        root.setVisibility(View.GONE);
 
         uploadButton = (Button) rootView.findViewById(R.id.upload);
         uploadButton.setOnClickListener(this);
@@ -130,8 +131,36 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         }
     }
 
-    public static void ShowContent() {
+    public static void showContent() {
         root.setVisibility(View.VISIBLE);
+    }
+
+    // 设定要显示的图
+    public static void setFigureImage(int figure) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        String path = Environment.getExternalStorageDirectory().toString();
+        path += "/.cheyipai/";
+
+        // 默认为4门图
+        String front = "d4_f";
+        String rear = "d4_r";
+
+        // 只有当figure为2、3时才是2门图
+        switch (figure) {
+            case 2:
+            case 3:
+                front = "d2_f";
+                rear = "d2_r";
+                break;
+        }
+
+        previewBitmapFront = BitmapFactory.decodeFile(path + front, options);
+        structurePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
+
+        previewBitmapRear = BitmapFactory.decodeFile(path + rear, options);
+        structurePaintPreviewViewRear.init(previewBitmapRear, posEntitiesRear);
     }
 
     public void StartPaint(String frontOrRear) {
@@ -201,6 +230,7 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
                         jsonObject.put("Part", Integer.toString(currentPart));
                         jsonObject.put("UserId", LoginActivity.userInfo.getId());
                         jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                        jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
                     } catch (JSONException e) {
 
                     }

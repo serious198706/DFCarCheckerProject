@@ -6,7 +6,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,7 +53,12 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
         Button cameraButton = (Button) findViewById(R.id.in_start_camera_button);
         cameraButton.setOnClickListener(this);
 
+        // 点击图片进入绘制界面
+        int figure = Integer.parseInt(CarCheckBasicInfoFragment.mCarSettings.getFigure());
+        Bitmap previewViewBitmap = getBitmapFromFigure(figure);
+
         insidePaintPreviewView = (InsidePaintPreviewView) findViewById(R.id.in_base_image_preview);
+        insidePaintPreviewView.init(previewViewBitmap, posEntities);
         insidePaintPreviewView.setOnClickListener(this);
 
         tip = (TextView) findViewById(R.id.tipOnPreview);
@@ -275,5 +282,34 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
         for(int i = 0; i < photoEntities.size(); i++) {
             imageUploadQueue.addImage(photoEntities.get(i));
         }
+    }
+
+    //  1 - d4s4,       2 - d2s4,       3 - d2s4,       4 - d4s4,       5 - van_i
+    private Bitmap getBitmapFromFigure(int figure) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        String path = Environment.getExternalStorageDirectory().toString();
+        path += "/.cheyipai/";
+
+        // 默认为三厢四门图
+        String name = "d4s4";
+
+        switch (figure) {
+            case 2:
+                name = "d2s4";
+                break;
+            case 3:
+                name = "d2s4";
+                break;
+            case 4:
+                name = "d4s4";
+                break;
+            case 5:
+                name = "van_i";
+                break;
+        }
+
+        return BitmapFactory.decodeFile(path + name, options);
     }
 }

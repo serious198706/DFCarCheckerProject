@@ -215,56 +215,99 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="@string/it_gear_manually"
-            android:visibility="gone"/>
+            android:text="@string/it_gear_manually"/>
+        <TableRow android:id="@+id/it_gear_manually_row_1">
+            <TextView android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="@string/it_gear_manually_1">
+            </TextView>
+            <Spinner android:id="@+id/it_gear_manually_spinner_1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/yes_no">
+            </Spinner>
+        </TableRow>
+        <TableRow android:id="@+id/it_gear_manually_row_2">
+            <TextView android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="@string/it_gear_manually_2">
+            </TextView>
+            <Spinner android:id="@+id/it_gear_manually_spinner_2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/yes_no">
+            </Spinner>
+        </TableRow>
+        <TableRow android:id="@+id/it_gear_manually_row_3">
+            <TextView android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="@string/it_gear_manually_3">
+            </TextView>
+            <Spinner android:id="@+id/it_gear_manually_spinner_3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:entries="@array/yes_no">
+            </Spinner>
+        </TableRow>
+
+
         <TextView android:id="@+id/it_gear_auto_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:text="@string/it_gear_auto"/>
-
-        <TableRow>
+        <TableRow android:id="@+id/it_gear_auto_row_1">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
                 android:text="@string/it_gear_auto_1">
             </TextView>
-            <Spinner android:id="@+id/it_gear_spinner_1"
+            <Spinner android:id="@+id/it_gear_auto_spinner_1"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:entries="@array/yes_no">
             </Spinner>
         </TableRow>
-        <TableRow>
+        <TableRow android:id="@+id/it_gear_auto_row_2">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
                 android:text="@string/it_gear_auto_2">
             </TextView>
-            <Spinner android:id="@+id/it_gear_spinner_2"
+            <Spinner android:id="@+id/it_gear_auto_spinner_2"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:entries="@array/yes_no">
             </Spinner>
         </TableRow>
-        <TableRow>
+        <TableRow android:id="@+id/it_gear_auto_row_3">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
                 android:text="@string/it_gear_auto_3">
             </TextView>
-            <Spinner android:id="@+id/it_gear_spinner_3"
+            <Spinner android:id="@+id/it_gear_auto_spinner_3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:entries="@array/yes_no">
             </Spinner>
         </TableRow>
+
 
         <!-- 功能检查 -->
         <LinearLayout android:layout_width="wrap_content"

@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import com.df.dfcarchecker.CarCheckOutsideActivity;
 import com.df.dfcarchecker.R;
 import com.df.entry.FaultPhotoEntity;
+import com.df.entry.StructurePhotoEntity;
 import com.df.service.Common;
 
 import java.util.ArrayList;
@@ -36,31 +37,25 @@ public class OutsidePaintPreviewView extends ImageView {
 
     public OutsidePaintPreviewView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+        //init();
     }
 
     public OutsidePaintPreviewView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        //init();
     }
 
     public OutsidePaintPreviewView(Context context) {
         super(context);
-        init();
+        //init();
     }
 
-    private void init() {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-        String sdcardPath = Environment.getExternalStorageDirectory().toString();
-
-        bitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/out.png", options);
+    public void init(Bitmap bitmap, List<FaultPhotoEntity> entities) {
+        this.bitmap = bitmap;
+        data = entities;
 
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
-
-        data = new ArrayList<FaultPhotoEntity>();
 
         colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
         otherBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_other);
