@@ -6,27 +6,24 @@ package com.df.paintview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.os.Environment;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.df.dfcarchecker.CarCheckInsideActivity;
-import com.df.dfcarchecker.CarCheckOutsideActivity;
-import com.df.entry.FaultPhotoEntity;
+import com.df.dfcarchecker.CarCheckExteriorActivity;
+import com.df.dfcarchecker.CarCheckInteriorActivity;
+import com.df.entry.PosEntity;
 import com.df.service.Common;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class InsidePaintPreviewView extends ImageView {
 
     private int currentType;
     private boolean move;
-    private List<FaultPhotoEntity> data;
+    private List<PosEntity> data;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
 
@@ -47,7 +44,7 @@ public class InsidePaintPreviewView extends ImageView {
         //init();
     }
 
-    public void init(Bitmap bitmap, List<FaultPhotoEntity> entities) {
+    public void init(Bitmap bitmap, List<PosEntity> entities) {
         this.bitmap = bitmap;
         data = entities;
 
@@ -58,7 +55,7 @@ public class InsidePaintPreviewView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        data = CarCheckInsideActivity.posEntities;
+        data = CarCheckInteriorActivity.posEntities;
         canvas.drawBitmap(bitmap, 0, 0, null);
         paint(canvas);
     }
@@ -83,16 +80,16 @@ public class InsidePaintPreviewView extends ImageView {
     }
 
     private void paint(Canvas canvas) {
-        for (FaultPhotoEntity entity : data) {
+        for (PosEntity entity : data) {
             paint(entity, canvas);
         }
     }
 
-    private void paint(FaultPhotoEntity entity, Canvas canvas) {
+    private void paint(PosEntity entity, Canvas canvas) {
         canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(entity.getType()));
     }
 
-    public FaultPhotoEntity getPosEntity(){
+    public PosEntity getPosEntity(){
         if(data.isEmpty()){
             return null;
         }
@@ -102,11 +99,11 @@ public class InsidePaintPreviewView extends ImageView {
     private void HandelPosEntitiesDueToDifferentResolution() {
         data.clear();
 
-        for(FaultPhotoEntity faultPhotoEntity : CarCheckOutsideActivity.posEntities) {
+        for(PosEntity posEntity : CarCheckExteriorActivity.posEntities) {
             // 因为不能对原entities做修改，所以此处要做些特殊处理，采用值传递方式
-            FaultPhotoEntity temp = new FaultPhotoEntity(faultPhotoEntity.getType());
-            temp.setStart(faultPhotoEntity.getStartX(), faultPhotoEntity.getStartY());
-            temp.setEnd(faultPhotoEntity.getEndX(), faultPhotoEntity.getEndY());
+            PosEntity temp = new PosEntity(posEntity.getType());
+            temp.setStart(posEntity.getStartX(), posEntity.getStartY());
+            temp.setEnd(posEntity.getEndX(), posEntity.getEndY());
 
             // 这些max要乘以2的原因是，在后面的getStartX()等方法调用时，max是按照大图的max来计算的
             temp.setMaxX(max_x * 2);
@@ -114,9 +111,9 @@ public class InsidePaintPreviewView extends ImageView {
             data.add(temp);
         }
 
-        for(FaultPhotoEntity faultPhotoEntity : data) {
-            faultPhotoEntity.setStart(faultPhotoEntity.getStartX() / 2, faultPhotoEntity.getStartY() / 2);
-            faultPhotoEntity.setEnd(faultPhotoEntity.getEndX() / 2, faultPhotoEntity.getEndY() / 2);
+        for(PosEntity posEntity : data) {
+            posEntity.setStart(posEntity.getStartX() / 2, posEntity.getStartY() / 2);
+            posEntity.setEnd(posEntity.getEndX() / 2, posEntity.getEndY() / 2);
         }
     }
 }

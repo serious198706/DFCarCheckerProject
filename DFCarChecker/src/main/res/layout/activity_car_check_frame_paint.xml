@@ -6,7 +6,7 @@
         android:layout_height="wrap_content"
         android:gravity="center">
 
-    <com.df.paintview.StructurePaintView
+    <com.df.paintview.FramePaintView
             android:id="@+id/tile"
             android:layout_width="500dp"
             android:layout_height="335dp" />

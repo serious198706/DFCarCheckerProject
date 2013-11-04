@@ -9,6 +9,7 @@
         <item>机舱全景</item>
         <item>前部</item>
         <item>后部</item>
+        <item>其他</item>
     </string-array>
 
     <string name="structure_camera_overview">机舱全景</string>

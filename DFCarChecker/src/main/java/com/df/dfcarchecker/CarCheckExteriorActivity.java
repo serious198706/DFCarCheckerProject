@@ -6,9 +6,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,32 +20,36 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.df.entry.FaultPhotoEntity;
+import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
-import com.df.entry.StructurePhotoEntity;
 import com.df.paintview.OutsidePaintPreviewView;
-import com.df.paintview.StructurePaintPreviewView;
 import com.df.service.Common;
+import com.df.service.Helper;
 import com.df.service.ImageUploadQueue;
 
-import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
 
-public class CarCheckOutsideActivity extends Activity implements View.OnClickListener {
-    private int currentShotGroup;
+public class CarCheckExteriorActivity extends Activity implements View.OnClickListener {
+    private int currentShotPart;
     private EditText brokenEdit;
     private Spinner paintSpinner;
     private EditText commentEdit;
-    public static List<FaultPhotoEntity> posEntities = CarCheckIntegratedFragment.outsidePaintEntities;
+    public static List<PosEntity> posEntities = CarCheckIntegratedFragment.outsidePaintEntities;
     public static List<PhotoEntity> photoEntities = CarCheckIntegratedFragment.outsidePhotoEntities;
     private OutsidePaintPreviewView outsidePaintPreviewView;
     private TextView tip;
     private String brokenParts;
 
+    private ImageUploadQueue imageUploadQueue;
+    private long currentTimeMillis;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_car_check_outside);
+        setContentView(R.layout.fragment_car_check_exterior);
 
         // 点击图片进入绘制界面
         int figure = Integer.parseInt(CarCheckBasicInfoFragment.mCarSettings.getFigure());
@@ -92,6 +98,8 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
             outsidePaintPreviewView.invalidate();
             tip.setVisibility(View.GONE);
         }
+
+        imageUploadQueue = ImageUploadQueue.getInstance();
     }
 
 
@@ -149,12 +157,17 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
         builder.setItems(R.array.out_camera_cato_item, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                currentShotGroup = i;
-                String group = getResources().getStringArray(R.array.out_camera_cato_item)[currentShotGroup];
+                currentShotPart = i;
+                String group = getResources().getStringArray(R.array.out_camera_cato_item)[currentShotPart];
 
-                Toast.makeText(CarCheckOutsideActivity.this, "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
+                Toast.makeText(CarCheckExteriorActivity.this, "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+
+                currentTimeMillis = System.currentTimeMillis();
+                Uri fileUri = Helper.getOutputMediaFileUri(currentTimeMillis); // create a file to save the image
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+
                 startActivityForResult(intent, Common.PHOTO_FOR_OUTSIDE_GROUP);
             }
         });
@@ -171,8 +184,8 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
 
     private void StartPaint() {
         Intent intent = new Intent(this, CarCheckPaintActivity.class);
-        intent.putExtra("PAINT_TYPE", "OUT_PAINT");
-        startActivityForResult(intent, Common.OUT_PAINT);
+        intent.putExtra("PAINT_TYPE", "EX_PAINT");
+        startActivityForResult(intent, Common.EX_PAINT);
     }
 
 
@@ -201,15 +214,62 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
                 break;
             case Common.PHOTO_FOR_OUTSIDE_GROUP:
                 if(resultCode == Activity.RESULT_OK) {
-                    Bitmap image = (Bitmap) data.getExtras().get("data");
-                    //img.setImageBitmap(image);
+                    // 组织JsonString
+                    JSONObject jsonObject = new JSONObject();
+
+                    try {
+                        JSONObject photoJsonObject = new JSONObject();
+                        String currentPart = "";
+
+                        switch (currentShotPart) {
+                            case 0:
+                                currentPart = "leftFront45";
+                                break;
+                            case 1:
+                                currentPart = "rightFront45";
+                                break;
+                            case 2:
+                                currentPart = "left";
+                                break;
+                            case 3:
+                                currentPart = "right";
+                                break;
+                            case 4:
+                                currentPart = "leftRear45";
+                                break;
+                            case 5:
+                                currentPart = "rightRear45";
+                                break;
+                            case 6:
+                                currentPart = "other";
+                                break;
+                        }
+
+                        photoJsonObject.put("part", currentPart);
+
+                        jsonObject.put("Group", "exterior");
+                        jsonObject.put("Part", "standard");
+                        jsonObject.put("PhotoData", photoJsonObject.toString());
+                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                        jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
+                    } catch (JSONException e) {
+
+                    }
+
+                    PhotoEntity photoEntity = new PhotoEntity();
+                    photoEntity.setFileName(Helper.getOutputMediaFileUri(currentTimeMillis).getPath());
+                    photoEntity.setJsonString(jsonObject.toString());
+
+                    // 立刻上传
+                    imageUploadQueue.addImage(photoEntity);
                 } else {
-                    Toast.makeText(CarCheckOutsideActivity.this,
+                    Toast.makeText(CarCheckExteriorActivity.this,
                             "相机打开错误", Toast.LENGTH_SHORT)
                             .show();
                 }
                 break;
-            case Common.OUT_PAINT:
+            case Common.EX_PAINT:
                 // 如果有点，则将图片设为不透明，去掉提示文字
                 if(!posEntities.isEmpty()) {
                     outsidePaintPreviewView.setAlpha(1f);
@@ -245,6 +305,11 @@ public class CarCheckOutsideActivity extends Activity implements View.OnClickLis
 
         for(int i = 0; i < photoEntities.size(); i++) {
             imageUploadQueue.addImage(photoEntities.get(i));
+        }
+
+        // 加入照片池后，将本身的photoEntities删除，以免重复上传
+        while(!photoEntities.isEmpty()) {
+            photoEntities.remove(0);
         }
     }
 

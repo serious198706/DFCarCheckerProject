@@ -1,5 +1,9 @@
 package com.df.entry;
 
+/**
+ * Created by 岩 on 13-9-26.
+ */
+
 import android.graphics.Bitmap;
 
 import com.df.dfcarchecker.CarCheckBasicInfoFragment;
@@ -8,19 +12,18 @@ import com.df.dfcarchecker.LoginActivity;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by 岩 on 13-10-31.
- */
-public class StructurePhotoEntity {
+import java.io.Serializable;
+
+public class PosEntity implements Serializable {
     private int start_x, start_y;
     private int end_x, end_y;
     private int max_x, max_y;
-    private int type ;
+    private int type ;  //1色差 2划痕 3变型 4刮蹭 5其他
 
     private String imageFileName;
     private Bitmap bitmap = null;
 
-    public StructurePhotoEntity(int type) {
+    public PosEntity(int type) {
         this.type = type;
     }
 
@@ -84,7 +87,7 @@ public class StructurePhotoEntity {
         try {
             jsonObject.put("PictureName", this.imageFileName);
             jsonObject.put("StartPoint", Integer.toString(getStartX()) + "," + Integer.toString(getStartY()));
-            jsonObject.put("EndPoint", "");
+            jsonObject.put("EndPoint", Integer.toString(getEndX()) + "," + Integer.toString(getEndY()));
             jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
             // 绘图类型
             jsonObject.put("Type", getType());

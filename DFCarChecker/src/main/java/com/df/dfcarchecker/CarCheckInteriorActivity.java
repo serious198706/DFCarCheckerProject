@@ -7,8 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,18 +20,22 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.df.entry.FaultPhotoEntity;
+import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
 import com.df.paintview.InsidePaintPreviewView;
 import com.df.service.Common;
+import com.df.service.Helper;
 import com.df.service.ImageUploadQueue;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
-public class CarCheckInsideActivity extends Activity implements View.OnClickListener  {
-    private int currentGroup;
+public class CarCheckInteriorActivity extends Activity implements View.OnClickListener  {
+    private int currentShotPart;
 
-    public static List<FaultPhotoEntity> posEntities = CarCheckIntegratedFragment.insidePaintEntities;
+    public static List<PosEntity> posEntities = CarCheckIntegratedFragment.insidePaintEntities;
     public static List<PhotoEntity> photoEntities = CarCheckIntegratedFragment.outsidePhotoEntities;
 
     private String brokenParts;
@@ -40,11 +46,13 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
 
     private Spinner sealSpinner;
     private EditText commentEdit;
+    private long currentTimeMillis;
+    private ImageUploadQueue imageUploadQueue;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_car_check_inside);
+        setContentView(R.layout.fragment_car_check_interior);
 
         Button brokenButton = (Button) findViewById(R.id.in_choose_broken_button);
         brokenButton.setOnClickListener(this);
@@ -88,6 +96,8 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
             insidePaintPreviewView.invalidate();
             tip.setVisibility(View.GONE);
         }
+
+        imageUploadQueue = ImageUploadQueue.getInstance();
     }
 
     @Override
@@ -169,12 +179,17 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
         builder.setItems(R.array.in_camera_cato_item, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                currentGroup = i;
-                String group = getResources().getStringArray(R.array.in_camera_cato_item)[currentGroup];
+                currentShotPart = i;
+                String group = getResources().getStringArray(R.array.in_camera_cato_item)[currentShotPart];
 
-                Toast.makeText(CarCheckInsideActivity.this, "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
+                Toast.makeText(CarCheckInteriorActivity.this, "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
 
                 Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+
+                currentTimeMillis = System.currentTimeMillis();
+                Uri fileUri = Helper.getOutputMediaFileUri(currentTimeMillis); // create a file to save the image
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
+
                 startActivityForResult(intent, Common.PHOTO_FOR_INSIDE_GROUP);
             }
         });
@@ -238,10 +253,57 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
                 break;
             case Common.PHOTO_FOR_INSIDE_GROUP:
                 if(resultCode == Activity.RESULT_OK) {
-                    Bitmap image = (Bitmap) data.getExtras().get("data");
-                    //img.setImageBitmap(image);
-                } else {
-                    Toast.makeText(CarCheckInsideActivity.this,
+                    // 组织JsonString
+                    JSONObject jsonObject = new JSONObject();
+
+                    try {
+                        JSONObject photoJsonObject = new JSONObject();
+                        String currentPart = "";
+
+                        switch (currentShotPart) {
+                            case 0:
+                                currentPart = "workbench";
+                                break;
+                            case 1:
+                                currentPart = "steeringWheel";
+                                break;
+                            case 2:
+                                currentPart = "dashboard";
+                                break;
+                            case 3:
+                                currentPart = "leftDoor+steeringWheel";
+                                break;
+                            case 4:
+                                currentPart = "rearSeats";
+                                break;
+                            case 5:
+                                currentPart = "coDriverSeat";
+                                break;
+                            case 6:
+                                currentPart = "other";
+                                break;
+                        }
+
+                        photoJsonObject.put("part", currentPart);
+
+                        jsonObject.put("Group", "interior");
+                        jsonObject.put("Part", "standard");
+                        jsonObject.put("PhotoData", photoJsonObject.toString());
+                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                        jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
+                    } catch (JSONException e) {
+
+                    }
+
+                    PhotoEntity photoEntity = new PhotoEntity();
+                    photoEntity.setFileName(Helper.getOutputMediaFileUri(currentTimeMillis).getPath());
+                    photoEntity.setJsonString(jsonObject.toString());
+
+                    // 立刻上传
+                    imageUploadQueue.addImage(photoEntity);
+                }  else {
+                    Toast.makeText(CarCheckInteriorActivity.this,
                             "error occured during opening camera", Toast.LENGTH_SHORT)
                             .show();
                 }
@@ -281,6 +343,11 @@ public class CarCheckInsideActivity extends Activity implements View.OnClickList
 
         for(int i = 0; i < photoEntities.size(); i++) {
             imageUploadQueue.addImage(photoEntities.get(i));
+        }
+
+        // 加入照片池后，将本身的photoEntities删除，以免重复上传
+        while(!photoEntities.isEmpty()) {
+            photoEntities.remove(0);
         }
     }
 

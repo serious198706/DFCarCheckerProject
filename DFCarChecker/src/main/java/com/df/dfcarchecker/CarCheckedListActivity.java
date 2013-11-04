@@ -235,7 +235,6 @@ public class CarCheckedListActivity extends Activity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
             boolean success = false;
 
             try {
@@ -255,11 +254,14 @@ public class CarCheckedListActivity extends Activity {
 
                 success = soapService.communicateWithServer(context, jsonObject.toString());
 
-                // TODO: 加入用户是否登录的状态改变
-
                 // 传输失败，获取错误信息并显示
                 if(!success) {
                     Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
+                    if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
+                        Toast.makeText(CarCheckedListActivity.this, "连接错误，请重新登陆！", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(CarCheckedListActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                    }
                 } else {
                     result = soapService.getResultMessage();
                 }

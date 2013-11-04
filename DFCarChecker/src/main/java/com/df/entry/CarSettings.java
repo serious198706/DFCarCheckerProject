@@ -8,7 +8,54 @@ import org.json.JSONObject;
  * Created by 岩 on 13-10-16.
  */
 public class CarSettings {
-    private String brand;
+    private Country country;
+    private Brand brand;
+    private Manufacturer manufacturer;
+    private Series series;
+
+    public Country getCountry() {
+        return country;
+    }
+
+    public void setCountry(Country country) {
+        this.country = country;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
+    }
+
+    public Manufacturer getManufacturer() {
+        return manufacturer;
+    }
+
+    public void setManufacturer(Manufacturer manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    public Series getSeries() {
+        return series;
+    }
+
+    public void setSeries(Series series) {
+        this.series = series;
+    }
+
+    public Model getModel() {
+        return model;
+    }
+
+    public void setModel(Model model) {
+        this.model = model;
+    }
+
+    private Model model;
+
+    private String brandString;
     private String displacement;
     private String category;
     private String driveType;
@@ -39,9 +86,10 @@ public class CarSettings {
     private String figure;
 
     private String exist = "有";
+    private String notExist = "无";
 
     public CarSettings() {
-        brand = "";
+        brandString = "";
         displacement = "";
         category = "";
         driveType = "";
@@ -87,11 +135,11 @@ public class CarSettings {
     }
 
     // 厂牌型号
-    public void setBrand(String brand) {
-        this.brand = brand;
+    public void setBrandString(String brandString) {
+        this.brandString = brandString;
     }
-    public String getBrand() {
-        return brand;
+    public String getBrandString() {
+        return brandString;
     }
 
     // 排量
@@ -154,7 +202,7 @@ public class CarSettings {
         this.airbag = airbag;
     }
     public String getAirbag() {
-        if(airbag.equals(exist))
+        if(!airbag.equals(notExist))
             return "0";
         else
             return "5";
@@ -341,7 +389,7 @@ public class CarSettings {
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
 
-            brand = "一汽奥迪 100 1.6 MT";
+            brandString = "一汽奥迪 100 1.6 MT";
             displacement = jsonObject.getString("displacement");
             category = jsonObject.getString("category");
             driveType = jsonObject.getString("driveType");

@@ -49,7 +49,7 @@ public class QueueScanService extends Service {
                             Log.d(Common.TAG, "正在上传...");
                         }
 
-                        wait(1000);
+                        wait(3000);
                     } catch (Exception e) {
                     }
                 }

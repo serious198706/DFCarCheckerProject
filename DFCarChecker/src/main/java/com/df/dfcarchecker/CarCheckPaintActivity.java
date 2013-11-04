@@ -15,35 +15,59 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
-import com.df.paintview.InsidePaintView;
-import com.df.paintview.OutsidePaintView;
-import com.df.paintview.StructurePaintView;
+import com.df.entry.PosEntity;
+import com.df.entry.PhotoEntity;
+import com.df.paintview.ExteriorPaintView;
+import com.df.paintview.FramePaintView;
+import com.df.paintview.InteriorPaintView;
+import com.df.paintview.PaintView;
 import com.df.service.Common;
+import com.df.service.Helper;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 
 public class CarCheckPaintActivity extends Activity {
-    private LinearLayout root;
-    private OutsidePaintView outsidePaintView;
-    private InsidePaintView insidePaintView;
-    private StructurePaintView structurePaintView;
+    private ExteriorPaintView exteriorPaintView;
+    private InteriorPaintView interiorPaintView;
+    private FramePaintView framePaintView;
     private String currentPaintView;
 
+    // 用来截图的View
     private View targetView;
 
+    // 草图保存线程
     private SaveCapturedImageTask mSaveCapturedImageTask;
 
+    // 保存草图
+    private static List<PhotoEntity> sketchPhotoEntities;
+
+    // 当前绘图类型
+    private int currentType = 0;
+
+    // 结构检查的视角
+    private String sight;
+
+    // 一个HashMap
+    private Map<String, View> map = new HashMap<String, View>();
+
+    // 绘图类的父类
+    PaintView paintView;
+
+    // 当用户退出时，进行的选择
+    boolean choise = false;
+
     public enum PaintType {
-        STRUCTURE_PAINT, OUT_PAINT, IN_PAINT, NOVALUE;
+        FRAME_PAINT, EX_PAINT, IN_PAINT, NOVALUE;
 
         public static PaintType paintType(String str)
         {
@@ -62,18 +86,21 @@ public class CarCheckPaintActivity extends Activity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String value = extras.getString("PAINT_TYPE");
+            currentPaintView = extras.getString("PAINT_TYPE");
 
-            switch (PaintType.paintType(value)) {
-                case STRUCTURE_PAINT:
-                    String sight = extras.getString("PAINT_SIGHT");
-                    SetStructurePaintLayout(sight);
+            switch (PaintType.paintType(currentPaintView)) {
+                // 外观检查绘图
+                case EX_PAINT:
+                    setExPaintLayout();
                     break;
-                case OUT_PAINT:
-                    SetOutPaintLayout();
-                    break;
+                // 内饰检查绘图
                 case IN_PAINT:
-                    SetInPaintLayout();
+                    setInPaintLayout();
+                    break;
+                // 结构检查绘图
+                case FRAME_PAINT:
+                    sight = extras.getString("PAINT_SIGHT");
+                    setFramePaintLayout(sight);
                     break;
             }
         }
@@ -83,99 +110,108 @@ public class CarCheckPaintActivity extends Activity {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
+        // 截图需要
         targetView = findViewById(R.id.titleLy);
+
+        sketchPhotoEntities = CarCheckBasicInfoFragment.sketchPhotoEntities;
+
+        map.put("EX_PAINT", exteriorPaintView);
+        map.put("IN_PAINT", interiorPaintView);
+        map.put("FRAME_PAINT", framePaintView);
     }
 
-    private void SetInPaintLayout() {
-        setContentView(R.layout.activity_car_check_inside_paint);
+    private void setInPaintLayout() {
+        setContentView(R.layout.activity_car_check_interior_paint);
         setTitle(R.string.in);
 
         // 根据CarSettings的figure设定图片
         int figure = Integer.parseInt(CarCheckBasicInfoFragment.mCarSettings.getFigure());
         Bitmap bitmap = getBitmapFromFigure(figure, "IN");
 
-        insidePaintView = (InsidePaintView) findViewById(R.id.tile);
-        insidePaintView.init(bitmap, CarCheckInsideActivity.posEntities);
+        // 初始化绘图View
+        interiorPaintView = (InteriorPaintView) findViewById(R.id.tile);
+        interiorPaintView.init(bitmap, CarCheckInteriorActivity.posEntities);
 
+        // 选择当前绘图类型
         RadioGroup radioGroup = (RadioGroup)findViewById(R.id.in_radio_group);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                int type = 0;
 
                 switch (i) {
                     case R.id.in_dirty_radio:
-                        type = Common.DIRTY;
+                        currentType = Common.DIRTY;
                         break;
                     case R.id.in_broken_radio:
-                        type = Common.BROKEN;
+                        currentType = Common.BROKEN;
                         break;
                 }
 
-                insidePaintView.setType(type);
+                interiorPaintView.setType(currentType);
             }
         });
-
-        currentPaintView = "IN_PAINT";
     }
 
-    private void SetOutPaintLayout() {
-        setContentView(R.layout.activity_car_check_outside_paint);
+    private void setExPaintLayout() {
+        setContentView(R.layout.activity_car_check_exterior_paint);
         setTitle(R.string.out);
 
         // 根据CarSettings的figure设定图片
         int figure = Integer.parseInt(CarCheckBasicInfoFragment.mCarSettings.getFigure());
-        Bitmap bitmap = getBitmapFromFigure(figure, "OUT");
+        Bitmap bitmap = getBitmapFromFigure(figure, "EX");
 
-        outsidePaintView = (OutsidePaintView) findViewById(R.id.tile);
-        outsidePaintView.init(bitmap, CarCheckOutsideActivity.posEntities);
+        // 初始化绘图View
+        exteriorPaintView = (ExteriorPaintView) findViewById(R.id.tile);
+        exteriorPaintView.init(bitmap, CarCheckExteriorActivity.posEntities);
 
+        // 选择当前绘图类型
         RadioGroup radioGroup = (RadioGroup)findViewById(R.id.out_radio_group);
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                int type = 0;
+                currentType = 0;
 
                 switch (i) {
                     case R.id.out_color_diff_radio:
-                        type = Common.COLOR_DIFF;
+                        currentType = Common.COLOR_DIFF;
                         break;
                     case R.id.out_scratch_radio:
-                        type = Common.SCRATCH;
+                        currentType = Common.SCRATCH;
                         break;
                     case R.id.out_trans_radio:
-                        type = Common.TRANS;
+                        currentType = Common.TRANS;
                         break;
                     case R.id.out_scrape_radio:
-                        type = Common.SCRAPE;
+                        currentType = Common.SCRAPE;
                         break;
                     case R.id.out_other_radio:
-                        type = Common.OTHER;
+                        currentType = Common.OTHER;
                         break;
                 }
 
-                outsidePaintView.setType(type);
+                exteriorPaintView.setType(currentType);
             }
         });
-
-        currentPaintView = "OUT_PAINT";
     }
 
 
-    private void SetStructurePaintLayout(String sight) {
-        setContentView(R.layout.activity_car_check_structure_paint);
+    private void setFramePaintLayout(String sight) {
+        setContentView(R.layout.activity_car_check_frame_paint);
         setTitle(R.string.structure);
-        structurePaintView = (StructurePaintView) findViewById(R.id.tile);
+
+        // 初始化绘图View
+        framePaintView = (FramePaintView) findViewById(R.id.tile);
 
         if(sight.equals("FRONT")) {
-            structurePaintView.init(CarCheckStructureFragment.previewBitmapFront, CarCheckStructureFragment.posEntitiesFront);
+            framePaintView.init(CarCheckFrameFragment.previewBitmapFront,
+                    CarCheckFrameFragment.posEntitiesFront);
         } else {
-            structurePaintView.init(CarCheckStructureFragment.previewBitmapRear, CarCheckStructureFragment.posEntitiesRear);
+            framePaintView.init(CarCheckFrameFragment.previewBitmapRear,
+                    CarCheckFrameFragment.posEntitiesRear);
         }
 
-        structurePaintView.setType(Common.COLOR_DIFF);
-
-        currentPaintView = "STRUCTURE_PAINT";
+        // 选择当前绘图类型（结构检查只有一个）
+        framePaintView.setType(Common.COLOR_DIFF);
     }
 
     @Override
@@ -185,132 +221,162 @@ public class CarCheckPaintActivity extends Activity {
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        paintView = (PaintView)map.get(currentPaintView);
+
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                // 用户确认返回上一层
+                alertUser(R.string.out_cancel_confirm);
                 return true;
             case R.id.action_done:
                 // 提交数据
-                captureUsingCanvas();
+                captureResultImage();
                 finish();
                 break;
             case R.id.action_cancel:
-                if(currentPaintView.equals("OUT_PAINT")) {
-                    outsidePaintView.cancel();
-                } else if(currentPaintView.equals("IN_PAINT")) {
-                    insidePaintView.cancel();
-                } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
-                    structurePaintView.cancel();
-                }
-                finish();
+                // 用户确认放弃更改
+                alertUser(R.string.out_cancel_confirm);
                 break;
             case R.id.action_clear:
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                // 用户确认清除数据
+                alertUser(R.string.out_clear_confirm);
 
-                builder.setTitle(R.string.alert_title);
-                builder.setMessage(R.string.out_clear_confirm);
-                builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // 取消
-                    }
-                });
-                builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        // 退出
-                        if(currentPaintView.equals("OUT_PAINT")) {
-                            outsidePaintView.clear();
-                        } else if(currentPaintView.equals("IN_PAINT")) {
-                            insidePaintView.clear();
-                        } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
-                            structurePaintView.Clear();
-                        }
-                    }
-                });
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                if(choise) {
+                    paintView.clear();
+                }
                 break;
             case R.id.action_undo:
-                if(currentPaintView.equals("OUT_PAINT")) {
-                    outsidePaintView.undo();
-                } else if(currentPaintView.equals("IN_PAINT")) {
-                    insidePaintView.undo();
-                } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
-                    structurePaintView.Undo();
-                }
+                // 回退
+                paintView.undo();
                 break;
             case R.id.action_redo:
-                if(currentPaintView.equals("OUT_PAINT")) {
-                    outsidePaintView.redo();
-                } else if(currentPaintView.equals("IN_PAINT")) {
-                    insidePaintView.redo();
-                } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
-                    structurePaintView.Redo();
-                }
+                // 重做
+                paintView.redo();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    // 截图并保存
+    private void captureResultImage(){
+        mSaveCapturedImageTask = new SaveCapturedImageTask();
+        mSaveCapturedImageTask.execute((Void) null);
+    }
+
+    // 提醒用户
+    private void alertUser(int msgId) {
+        paintView = (PaintView)map.get(currentPaintView);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+        builder.setTitle(R.string.alert_title);
+        builder.setMessage(msgId);
+        builder.setNegativeButton(R.string.cancel, null);
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // 退出
+                paintView.cancel();
+                finish();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (resultCode) {
+            // 拍摄完成后，各种组织
             case Activity.RESULT_OK:
-                if(data==null){
-                    return;
+                String group = "";
+                int startX, startY, endX, endY;
+                int radius = 0;
+                long currentTimeMillis;
+
+                // 照片集合
+                List<PhotoEntity> photoEntities = paintView.getPhotoEntities();
+
+                // 获取绘图父类实体
+                paintView = (PaintView)map.get(currentPaintView);
+
+                // 获取坐标们
+                PosEntity posEntity = paintView.getPosEntity();
+                startX = posEntity.getStartX();
+                startY = posEntity.getStartY();
+                endX = posEntity.getEndX();
+                endY = posEntity.getEndY();
+
+                // 如果是“变形”，即圆
+                if(currentType == 3) {
+                    // 计算半径
+                    int dx = Math.abs(endX - startX);
+                    int dy = Math.abs(endY- startY);
+                    int dr = (int)Math.sqrt(dx * dx + dy * dy);
+
+                    // 计算圆心
+                    int x0 = (startX + endX) / 2;
+                    int y0 = (startY + endY) / 2;
+
+                    startX = x0;
+                    startY = y0;
+                    endX = endY = 0;
+                    radius = dr;
                 }
 
-                String sdStatus = Environment.getExternalStorageState();
-
-                // 检测sd是否可用
-                if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
-                    Toast.makeText(this, "SD卡不可用", Toast.LENGTH_SHORT).show();
-                    return;
+                // 如果是结构，则要特殊处理 ----- 艹，结构老是要特殊处理
+                if(currentPaintView.equals("FRAME_PAINT")) {
+                    photoEntities = paintView.getPhotoEntities(sight);
                 }
 
-                Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+                // 获取当前文件名
+                currentTimeMillis = paintView.getCurrentTimeMillis();
 
-                if (bitmap == null) {
-                    return;
-                }
+                // 组织JsonString
+                JSONObject jsonObject = new JSONObject();
 
-                File file = new File(Environment.getExternalStorageDirectory().getPath()+"/pictures/DFCarChecker");
-                file.mkdirs();// 创建文件夹
-                String fileName = Environment.getExternalStorageDirectory().getPath()+"/pictures/DFCarChecker/"+System.currentTimeMillis()+".jpg";
-                FileOutputStream b = null;
                 try {
-                    b = new FileOutputStream(fileName);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        if (b != null) {
-                            b.flush();
-                            b.close();
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    JSONObject photoJsonObject = new JSONObject();
+
+                    jsonObject.put("Group", group);
+
+                    // 如果是结构检查
+                    if(currentPaintView.equals("FRAME_PAINT")) {
+                        jsonObject.put("Part", sight.toLowerCase());
+                        photoJsonObject.put("x", startX);
+                        photoJsonObject.put("y", startY);
+                    } else {
+                        jsonObject.put("Part", "fault");
+                        photoJsonObject.put("type", currentType);
+                        photoJsonObject.put("startX", startX);
+                        photoJsonObject.put("startY", startY);
+                        photoJsonObject.put("endX", endX);
+                        photoJsonObject.put("endY", endY);
+                        photoJsonObject.put("radius", radius);
+
                     }
+
+                    jsonObject.put("PhotoData", photoJsonObject.toString());
+                    jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
+                    jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                    jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                } catch (Exception e) {
+
                 }
 
-                if(currentPaintView.equals("OUT_PAINT")) {
-                    Toast.makeText(this, "图片保存路径"+fileName, 0).show();
-                    outsidePaintView.getPosEntity().setImageFileName(fileName);
-                } else if(currentPaintView.equals("IN_PAINT")) {
-                    Toast.makeText(this, "图片保存路径"+fileName, 0).show();
-                    insidePaintView.getPosEntity().setImageFileName(fileName);
-                } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
-                    Toast.makeText(this, "图片保存路径"+fileName, 0).show();
-                    structurePaintView.getPosEntity().setImageFileName(fileName);
-                }
+                PhotoEntity photoEntity = new PhotoEntity();
+                photoEntity.setFileName(Helper.getOutputMediaFileUri(currentTimeMillis).getPath());
+                photoEntity.setJsonString(jsonObject.toString());
 
+                // 暂时不加入照片池，只放入各自的List，等保存时再提交
+                photoEntities.add(photoEntity);
                 break;
             case Activity.RESULT_CANCELED:
+                paintView = (PaintView)map.get(currentPaintView);
+                paintView.undo();
                 break;
             default:
                 Log.d("DFCarChecker", "拍摄故障！！");
@@ -318,42 +384,86 @@ public class CarCheckPaintActivity extends Activity {
         }
     }
 
-    private void captureUsingCanvas(){
-        mSaveCapturedImageTask = new SaveCapturedImageTask();
-        mSaveCapturedImageTask.execute((Void) null);
-    }
-
+    // 保存草图的线程
     public class SaveCapturedImageTask extends AsyncTask<Void, Void, Boolean> {
-
         @Override
         protected Boolean doInBackground(Void... params) {
             boolean success = false;
 
-            Bitmap b = Bitmap.createBitmap(targetView.getWidth(),targetView.getHeight(), Bitmap.Config.ARGB_8888);
+            Bitmap b = Bitmap.createBitmap(targetView.getWidth(),targetView.getHeight(),
+                    Bitmap.Config.ARGB_8888);
             Canvas c = new Canvas(b);
             targetView.draw(c);
 
-            String filename = Environment.getExternalStorageDirectory().getPath();
-            filename += "/Pictures/DFCarChecker/";
+            String path = Environment.getExternalStorageDirectory().getPath();
+            path += "/Pictures/DFCarChecker/";
 
-            File file = new File(filename);
+            File file = new File(path);
             file.mkdirs();// 创建文件夹
 
-            if(currentPaintView.equals("OUT_PAINT")) {
-                filename += "out_paint.png";
-            } else if(currentPaintView.equals("IN_PAINT")) {
-                filename += "int_paint.png";
-            } else if(currentPaintView.equals("STRUCTURE_PAINT")) {
-                filename += "structure_paint.png";
+            String filename = "";
+            String group = "";
+
+            switch (PaintType.paintType(currentPaintView)) {
+                case EX_PAINT:
+                    filename = "sketch_o";
+                    group = "exterior";
+                    break;
+                case IN_PAINT:
+                    filename = "sketch_i";
+                    group = "interior";
+                    break;
+                case FRAME_PAINT:
+                    if(sight.equals("FRONT"))
+                        filename = "sketch_sf";
+                    else
+                        filename = "sketch_sr";
+                    group = "frame";
+                    break;
             }
 
             try {
-                FileOutputStream out = new FileOutputStream(filename);
+                FileOutputStream out = new FileOutputStream(path + filename);
                 b.compress(Bitmap.CompressFormat.PNG, 90, out);
                 out.close();
                 success = true;
             } catch (Exception e) {
                 e.printStackTrace();
+            }
+
+            // 组织jsonString
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+                jsonObject.put("Group", group);
+
+                // 如果是结构检查
+                if(currentPaintView.equals("FRAME_PAINT")) {
+                    if(sight.equals("FRONT"))
+                        jsonObject.put("Part", "fSketch");
+                    else
+                        jsonObject.put("Part", "rSketch");
+                }
+                // 其他类型的检查
+                else {
+                    jsonObject.put("Part", "sketch");
+                }
+
+                jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
+                jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+            } catch (JSONException e) {
+
+            }
+
+            PhotoEntity photoEntity = new PhotoEntity();
+            photoEntity.setFileName(filename);
+            photoEntity.setJsonString(jsonObject.toString());
+
+            // TODO: 先保存，等最后提交时再上传
+            // 此图只传一次，所以如果已存在，则不必再保存，只更新图片即可
+            if(!sketchPhotoEntities.contains(photoEntity)) {
+                sketchPhotoEntities.add(photoEntity);
             }
 
             return success;
@@ -379,7 +489,7 @@ public class CarCheckPaintActivity extends Activity {
         path += "/.cheyipai/";
         String name = "";
 
-        if(step.equals("OUT")) {
+        if(step.equals("EX")) {
             // 外观图
             switch (figure) {
                 case 1:
@@ -419,7 +529,18 @@ public class CarCheckPaintActivity extends Activity {
             }
         }
 
-
         return BitmapFactory.decodeFile(path + name, options);
     }
+
+    @Override
+    public void onBackPressed() {
+        if(currentPaintView.equals("EX_PAINT")) {
+            exteriorPaintView.cancel();
+        } else if(currentPaintView.equals("IN_PAINT")) {
+            interiorPaintView.cancel();
+        } else if(currentPaintView.equals("FRAME_PAINT")) {
+            framePaintView.cancel();
+        }
+    }
+
 }

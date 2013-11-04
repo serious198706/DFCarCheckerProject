@@ -686,7 +686,6 @@
                     android:layout_weight="1"/>
             </TableRow>
 
-            <!-- TODO 商险，好好处理，该隐藏的隐藏该出现的出现 -->
             <TableRow>
                 <TextView
                     android:layout_height="wrap_content"

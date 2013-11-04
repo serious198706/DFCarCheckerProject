@@ -7,7 +7,6 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -20,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.df.entry.UserInfo;
 import com.df.service.Common;
 import com.df.service.CustomViewPager;
 import com.df.service.SoapService;
@@ -28,9 +26,9 @@ import com.df.service.SoapService;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CarCheckFrameActivity extends FragmentActivity implements ActionBar.TabListener {
+public class CarCheckViewPagerActivity extends FragmentActivity implements ActionBar.TabListener {
     private CarCheckBasicInfoFragment carCheckBasicInfoFragment;
-    private CarCheckStructureFragment carCheckStructureFragment;
+    private CarCheckFrameFragment carCheckFrameFragment;
     private CarCheckIntegratedFragment carCheckIntegratedFragment;
 
     private CommitDataTask mCommitDataTask;
@@ -52,10 +50,10 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_car_check_frame);
+        setContentView(R.layout.activity_car_check_viewpager);
 
         carCheckBasicInfoFragment = new CarCheckBasicInfoFragment();
-        carCheckStructureFragment = new CarCheckStructureFragment();
+        carCheckFrameFragment = new CarCheckFrameFragment();
         carCheckIntegratedFragment = new CarCheckIntegratedFragment();
 
         // Set up the action bar.
@@ -107,7 +105,7 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
                 // This is called when the Home (Up) button is pressed in the action bar.
                 // Create a simple intent that starts the hierarchical parent activity and
                 // use NavUtils in the Support Package to ensure proper handling of Up.
-                finish();
+                quitCarCheck();
                 return true;
             case R.id.action_commit:
                 // 提交数据
@@ -157,7 +155,7 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
                     fragment = carCheckBasicInfoFragment;
                     break;
                 case 1:
-                    fragment = carCheckStructureFragment;
+                    fragment = carCheckFrameFragment;
                     break;
                 case 2:
                     fragment = carCheckIntegratedFragment;
@@ -226,7 +224,7 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
                 mCommitDataTask = new CommitDataTask();
                 mCommitDataTask.execute((Void) null);
 
-                Toast.makeText(CarCheckFrameActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
+                Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
                 finish();
             }
         });
@@ -257,28 +255,60 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
         protected Boolean doInBackground(Void... params) {
             boolean success = false;
 
-//            try {
-//                soapService = new SoapService();
-//
-//                // 设置soap的配置
-//                soapService.setUtils("http://192.168.100.6:50/UserManageService.svc",
-//                        "http://cheyiju/IUserManageService/GetCustomerIpAddress",
-//                        "GetCustomerIpAddress");
-//
-//                success = soapService.sendIpAddress();
-//            } catch (Exception e) {
-//                Log.d("DFCarChecker", "Json解析错误: " + e.getMessage());
-//            }
-
             try {
-                // 登录
-                JSONObject jsonObject = new JSONObject();
+                // 组织车辆检测信息的json
+                JSONObject root = new JSONObject();
 
-                jsonObject.put("Userid", LoginActivity.userInfo.getId());
-                jsonObject.put("Key", LoginActivity.userInfo.getKey());
-                jsonObject.put("UniqueId", "199");
-                jsonObject.put("JsonString", "{}");
+                // 基本信息
+                JSONObject features = new JSONObject();
 
+                JSONObject procedures = new JSONObject();
+
+                // 综合检查
+                JSONObject conditions = new JSONObject();
+
+                // 综合检查 - 外观检查
+                JSONObject exterior = new JSONObject();
+
+                // 综合检查 - 内饰检查
+                JSONObject interior = new JSONObject();
+
+                // 综合检查 - 发动机检查
+                JSONObject engine = new JSONObject();
+
+                // 综合检查 - 变速箱检查
+                JSONObject gearbox = new JSONObject();
+
+                // 综合检查 - 功能检查
+                JSONObject function = new JSONObject();
+
+                // 综合检查 - 底盘检查
+                JSONObject chassis = new JSONObject();
+
+                // 综合检查 - 泡水检查
+                JSONObject flooded = new JSONObject();
+
+                // 综合检查 - 备注
+                JSONObject comment = new JSONObject();
+
+
+                // 基本信息 - 配置信息
+                features.put("options", carCheckBasicInfoFragment.generateOptionsJsonString());
+
+                // 基本信息 - 手续信息
+                features.put("procedures", procedures.toString());
+
+                conditions.put("exterior", exterior.toString());
+                conditions.put("interior", interior.toString());
+                conditions.put("engine", engine.toString());
+                conditions.put("gearbox", gearbox.toString());
+                conditions.put("function", function.toString());
+                conditions.put("chassis", chassis.toString());
+                conditions.put("flooded", flooded.toString());
+                conditions.put("comment", comment.toString());
+
+                root.put("features", features.toString());
+                root.put("conditions", conditions.toString());
                 soapService = new SoapService();
 
                 // 设置soap的配置
@@ -286,25 +316,14 @@ public class CarCheckFrameActivity extends FragmentActivity implements ActionBar
                         "http://cheyiju/IUserManageService/SaveCarCheckInfo",
                         "SaveCarCheckInfo");
 
-                success = soapService.login(context, jsonObject.toString());
-//
-//                // 登录失败，获取错误信息并显示
-//                if(!success) {
-//                    Log.d("DFCarChecker", "Login error:" + soapService.getErrorMessage());
-//                } else {
-//                    userInfo = new UserInfo();
-//
-//                    try {
-//                        JSONObject userJsonObject = new JSONObject(soapService.getResultMessage());
-//
-//                        // 保存用户的UserId和此次登陆的Key
-//                        userInfo.setId(userJsonObject.getString("UserId"));
-//                        userInfo.setKey(userJsonObject.getString("Key"));
-//                    } catch (Exception e) {
-//                        Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
-//                        return false;
-//                    }
-//                }
+                success = soapService.communicateWithServer(context, root.toString());
+
+                // 登录失败，获取错误信息并显示
+                if(!success) {
+                    Log.d("DFCarChecker", "Login error:" + soapService.getErrorMessage());
+                } else {
+
+                }
             } catch (JSONException e) {
                 Log.d("DFCarChecker", "Json解析错误: " + e.getMessage());
             }

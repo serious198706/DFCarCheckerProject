@@ -6,11 +6,12 @@
     <string name="out_scratch">  划痕</string>
     <string name="out_trans">  变形</string>
     <string name="out_scrape">  刮蹭</string>
-    <string name="out_other">  其它</string>
+    <string name="out_other">  其他</string>
     <string name="out_broken_parts">表面有破损的零部件：</string>
     <string name="out_start_paint">绘制车身表面缺陷</string>
     <string name="action_clear">清除</string>
     <string name="out_clear_confirm">确定清除？</string>
+    <string name="out_cancel_confirm">确定放弃更改？</string>
     <string name="action_undo">撤销</string>
     <string name="action_redo">恢复</string>
 
@@ -69,6 +70,7 @@
         <item>右侧</item>
         <item>左后45°</item>
         <item>右后45°</item>
+        <item>其他</item>
     </string-array>
 
     <string name="out_comment">车身检查说明：</string>

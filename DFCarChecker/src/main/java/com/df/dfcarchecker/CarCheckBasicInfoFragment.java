@@ -30,6 +30,7 @@ import com.df.entry.CarSettings;
 import com.df.entry.Country;
 import com.df.entry.Model;
 import com.df.entry.Manufacturer;
+import com.df.entry.PhotoEntity;
 import com.df.entry.Series;
 import com.df.entry.VehicleModel;
 import com.df.service.Common;
@@ -120,6 +121,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private String result;
     private ProgressDialog progressDialog;
 
+    public static List<PhotoEntity> sketchPhotoEntities;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                             Bundle savedInstanceState) {
@@ -142,6 +145,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         brandSelectButton = (Button) rootView.findViewById(R.id.bi_brand_select_button);
         brandSelectButton.setEnabled(false);
         brandSelectButton.setOnClickListener(this);
+
+        sketchPhotoEntities = new ArrayList<PhotoEntity>();
 
         // 实车与行驶本照片
         Button matchButton = (Button) rootView.findViewById(R.id.picture_match_button);
@@ -348,6 +353,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         // 传参数为空，表示提交的为VIN
         getCarSettingsFromServer("");
 
+        // 根据vin产生uniqueId（对应一次检测）
         uniqueId = vinString.substring(vinString.length() - 3, vinString.length());
     }
 
@@ -360,7 +366,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     // 更新配置信息
     private void updateUIAccordingToCarSettings() {
         // 设置厂牌型号的EditText
-        brandEdit.setText(mCarSettings.getBrand());
+        brandEdit.setText(mCarSettings.getBrandString());
 
         // 设置排量EditText
         displacementEdit.setText(mCarSettings.getDisplacement());
@@ -392,12 +398,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         setSpinnerSelection(R.id.csi_clapBoard_spinner, Integer.parseInt(mCarSettings.getClapBoard()));
 
         // 发动“车体结构检查”里显示的图片
-        CarCheckStructureFragment.setFigureImage(Integer.parseInt(mCarSettings.getFigure()));
+        CarCheckFrameFragment.setFigureImage(Integer.parseInt(mCarSettings.getFigure()));
 
         // 改动“综合检查”里的档位类型选项
         CarCheckIntegratedFragment.setGearType(mCarSettings.getTransmissionText());
     }
 
+    // 设置配置信息中的Spinner，并与综合检查中的Spinner产生联动
     private void setSpinnerSelection(final int spinnerId, int selection) {
         final Spinner spinner = (Spinner) rootView.findViewById(spinnerId);
         spinner.setSelection(selection);
@@ -405,59 +412,64 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (view.getId()) {
+                Spinner spinner = (Spinner)rootView.findViewById(adapterView.getId());
+                String selectedItemText = spinner.getSelectedItem().toString();
+                
+                switch (spinnerId) {
                     case R.id.csi_airbag_spinner:
-                        mCarSettings.setAirbag(view.toString());
+                        mCarSettings.setAirbag(selectedItemText);
                         break;
                     case R.id.csi_abs_spinner:
-                        mCarSettings.setAbs(view.toString());
+                        mCarSettings.setAbs(selectedItemText);
                         break;
                     case R.id.csi_powerSteering_spinner:
-                        mCarSettings.setPowerSteering(view.toString());
+                        mCarSettings.setPowerSteering(selectedItemText);
                         break;
                     case R.id.csi_powerWindows_spinner:
-                        mCarSettings.setPowerWindows(view.toString());
+                        mCarSettings.setPowerWindows(selectedItemText);
                         break;
                     case R.id.csi_sunroof_spinner:
-                        mCarSettings.setSunroof(view.toString());
+                        mCarSettings.setSunroof(selectedItemText);
                         break;
                     case R.id.csi_airConditioning_spinner:
-                        mCarSettings.setAirConditioning(view.toString());
+                        mCarSettings.setAirConditioning(selectedItemText);
                         break;
                     case R.id.csi_leatherSeats_spinner:
-                        mCarSettings.setLeatherSeats(view.toString());
+                        mCarSettings.setLeatherSeats(selectedItemText);
                         break;
                     case R.id.csi_powerSeats_spinner:
-                        mCarSettings.setPowerSeats(view.toString());
+                        mCarSettings.setPowerSeats(selectedItemText);
                         break;
                     case R.id.csi_powerMirror_spinner:
-                        mCarSettings.setPowerMirror(view.toString());
+                        mCarSettings.setPowerMirror(selectedItemText);
                         break;
                     case R.id.csi_reversingRadar_spinner:
-                        mCarSettings.setReversingRadar(view.toString());
+                        mCarSettings.setReversingRadar(selectedItemText);
                         break;
                     case R.id.csi_reversingCamera_spinner:
-                        mCarSettings.setReversingCamera(view.toString());
+                        mCarSettings.setReversingCamera(selectedItemText);
                         break;
                     case R.id.csi_ccs_spinner:
-                        mCarSettings.setCcs(view.toString());
+                        mCarSettings.setCcs(selectedItemText);
                         break;
                     case R.id.csi_softCloseDoors_spinner:
-                        mCarSettings.setSoftCloseDoors(view.toString());
+                        mCarSettings.setSoftCloseDoors(selectedItemText);
                         break;
                     case R.id.csi_rearPowerSeats_spinner:
-                        mCarSettings.setRearPowerSeats(view.toString());
+                        mCarSettings.setRearPowerSeats(selectedItemText);
                         break;
                     case R.id.csi_ahc_spinner:
-                        mCarSettings.setAhc(view.toString());
+                        mCarSettings.setAhc(selectedItemText);
                         break;
                     case R.id.csi_parkAssist_spinner:
-                        mCarSettings.setParkAssist(view.toString());
+                        mCarSettings.setParkAssist(selectedItemText);
                         break;
                     case R.id.csi_clapBoard_spinner:
-                        mCarSettings.setClapBoard(view.toString());
+                        mCarSettings.setClapBoard(selectedItemText);
                         break;
                 }
+
+                CarCheckIntegratedFragment.updateAssociatedSpinners();
             }
 
             @Override
@@ -472,7 +484,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         if(tableLayout.getVisibility() != View.VISIBLE) {
             tableLayout.setVisibility(View.VISIBLE);
             CarCheckIntegratedFragment.ShowContent();
-            CarCheckStructureFragment.showContent();
+            CarCheckFrameFragment.showContent();
         }
     }
 
@@ -541,7 +553,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     volumeString = volumeString.substring(0, 3);
                 }
 
-                mCarSettings.setBrand(brandString);
+                mCarSettings.setBrandString(brandString);
                 mCarSettings.setDisplacement(volumeString);
 
                 setCarSettingsSpinners(model.getName());
@@ -572,6 +584,64 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         VehicleModelParser parser = new VehicleModelParser();
         vehicleModel = parser.parseVehicleModelXml(fis);
     }
+
+    // 生成最终的配置信息jsonString
+    public String generateOptionsJsonString() {
+        JSONObject options = new JSONObject();
+
+        try {
+            options.put("vin", vin_edit.getText().toString());
+            options.put("country", mCarSettings.getCountry().name);
+            options.put("countryId", Integer.parseInt(mCarSettings.getCountry().id));
+            options.put("brand", mCarSettings.getBrand().name);
+            options.put("brandId", Integer.parseInt(mCarSettings.getBrand().id));
+            options.put("manufacturer", mCarSettings.getManufacturer().name);
+            options.put("manufacturerId", Integer.parseInt(mCarSettings.getManufacturer().id));
+            options.put("series", mCarSettings.getSeries().name);
+            options.put("seriesId", Integer.parseInt(mCarSettings.getSeries().id));
+            options.put("model", mCarSettings.getModel().name);
+            options.put("modelId", Integer.parseInt(mCarSettings.getModel().id));
+            options.put("displacement", displacementEdit.getText().toString());
+
+            String[] categoryArray = getResources().getStringArray(R.array.csi_category_item);
+            options.put("category", categoryArray[Integer.parseInt(mCarSettings.getCategory())]);
+//            options.put("driveType", );
+//            options.put("transmission", );
+//            options.put("airBags", );
+//            options.put("abs", );
+//            options.put("powerSteering", );
+//            options.put("powerWindows", );
+//            options.put("sunroof", );
+//            options.put("airConditioning", );
+//            options.put("leatherSeats", );
+//            options.put("powerSeats", );
+//            options.put("powerMirror", );
+//            options.put("reversingRadar", );
+//            options.put("reversingCamera", );
+//            options.put("ccs", );
+//            options.put("softCloseDoors", );
+//            options.put("rearPowerSeats", );
+//            options.put("ahc", );
+//            options.put("parkAssist", );
+//            options.put("clapboard", );
+        } catch (JSONException e) {
+
+        }
+
+        return options.toString();
+    }
+
+    // 生成最终的配置信息jsonString
+//    public String generateProceduresJsonString() {
+//        JSONObject jsonObject = new JSONObject();
+//
+//        try {
+//            jsonObject.put("vin", vin_edit.getText().toString());
+//            jsonObject.put("country", );
+//        } catch (JSONException e) {
+//
+//        }
+//    }
 
 
     // <editor-fold defaultstate="collapsed" desc="设置各种Spinner">
@@ -752,7 +822,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         lastModelIndex = 0;
     }
 
-    // 设置车辆配置Spinner（所有的）
+    // 设置车辆配置Spinner
     private void setCarSettingsSpinners(String modelString) {
         // 将排量框设置文字
         if(modelString.length() >= 3)
@@ -1009,8 +1079,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                     success = soapService.communicateWithServer(context, jsonObject.toString());
 
-                    // TODO: 加入用户是否登录的状态改变
-
                     // 传输失败，获取错误信息并显示
                     if(!success) {
                         Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
@@ -1050,12 +1118,16 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                     success = soapService.communicateWithServer(context, jsonObject.toString());
 
-                    // TODO: 加入用户是否登录的状态改变
-
                     // 传输失败，获取错误信息并显示
                     if(!success) {
-                        String error = "获取车辆配置信息失败：" + soapService.getErrorMessage();
-                        Log.d("DFCarChecker", error);
+                        Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
+
+                        if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
+                            Toast.makeText(rootView.getContext(), "连接错误，请重新登陆！", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
+                            startActivity(intent);
+                        }
+
                     } else {
                         result = soapService.getResultMessage();
                     }
@@ -1145,7 +1217,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                                 }
 
                                 // 将品牌框设置文字
-                                mCarSettings.setBrand(modelName);
+                                mCarSettings.setBrandString(modelName);
+
+                                mCarSettings.setCountry(country);
+                                mCarSettings.setBrand(brand);
+                                mCarSettings.setManufacturer(manufacturer);
+                                mCarSettings.setSeries(series);
+                                mCarSettings.setModel(model);
 
                                 // 设置配置信息
                                 mCarSettings.setConfig(config);

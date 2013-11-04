@@ -30,7 +30,7 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.CarCheckFrameActivity"
+            android:name=".CarCheckViewPagerActivity"
             android:label="@string/title_activity_car_check_frame" >
         </activity>
         <activity
@@ -50,11 +50,11 @@
             android:label="@string/out" >
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.CarCheckOutsideActivity"
+            android:name=".CarCheckExteriorActivity"
             android:label="@string/out" >
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.CarCheckInsideActivity"
+            android:name=".CarCheckInteriorActivity"
             android:label="@string/in" >
         </activity>
         <activity

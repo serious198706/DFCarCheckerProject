@@ -10,84 +10,77 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 
-import com.df.dfcarchecker.CarCheckInsideActivity;
-import com.df.dfcarchecker.LoginActivity;
-import com.df.entry.FaultPhotoEntity;
+import com.df.dfcarchecker.CarCheckInteriorActivity;
 import com.df.entry.PhotoEntity;
+import com.df.entry.PosEntity;
 import com.df.service.Common;
 import com.df.service.Helper;
 import com.df.service.ImageUploadQueue;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-public class InsidePaintView extends ImageView {
+public class InteriorPaintView extends PaintView {
 
     private int currentType = Common.DIRTY;
     private boolean move;
-    private List<FaultPhotoEntity> data = CarCheckInsideActivity.posEntities;
+    private List<PosEntity> data = CarCheckInteriorActivity.posEntities;
+    private List<PhotoEntity> photoEntities = CarCheckInteriorActivity.photoEntities;
 
     // 本次更新的坐标点，如果用户点击取消，则不将thisTimeNewData中的坐标加入到data中
-    private List<FaultPhotoEntity> thisTimeNewData;
-    private List<FaultPhotoEntity> undoData;
+    private List<PosEntity> thisTimeNewData;
+    private List<PosEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
 
     private int max_x, max_y;
 
     private long currentTimeMillis;
+    public long getCurrentTimeMillis() {return currentTimeMillis;}
 
     private ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
 
-    public InsidePaintView(Context context, AttributeSet attrs, int defStyle) {
+    public InteriorPaintView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         //init();
     }
 
-    public InsidePaintView(Context context, AttributeSet attrs) {
+    public InteriorPaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
         //init();
     }
 
-    public InsidePaintView(Context context) {
+    public InteriorPaintView(Context context) {
         super(context);
         //init();
     }
 
-    public void init(Bitmap bitmap, List<FaultPhotoEntity> entities) {
+    public void init(Bitmap bitmap, List<PosEntity> entities) {
         this.bitmap = bitmap;
         data = entities;
 
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
-        undoData = new ArrayList<FaultPhotoEntity>();
-        thisTimeNewData = new ArrayList<FaultPhotoEntity>();
+        undoData = new ArrayList<PosEntity>();
+        thisTimeNewData = new ArrayList<PosEntity>();
 
         this.setOnTouchListener(onTouchListener);
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    public void onDraw(Canvas canvas) {
         canvas.drawBitmap(bitmap, 0, 0, null);
         paint(canvas);
-
     }
 
     private OnTouchListener onTouchListener = new OnTouchListener() {
@@ -97,10 +90,10 @@ public class InsidePaintView extends ImageView {
 
                 int x = (int) event.getX();
                 int y = (int) event.getY();
-                FaultPhotoEntity entity = null;
+                PosEntity entity = null;
 
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    entity = new FaultPhotoEntity(currentType);
+                    entity = new PosEntity(currentType);
                     entity.setMaxX(max_x);
                     entity.setMaxY(max_y);
                     entity.setStart(x, y);
@@ -159,12 +152,12 @@ public class InsidePaintView extends ImageView {
     }
 
     private void paint(Canvas canvas) {
-        for (FaultPhotoEntity entity : data) {
+        for (PosEntity entity : data) {
             paint(entity, canvas);
         }
     }
 
-    private void paint(FaultPhotoEntity entity, Canvas canvas) {
+    private void paint(PosEntity entity, Canvas canvas) {
         canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(entity.getType()));
     }
 
@@ -183,15 +176,27 @@ public class InsidePaintView extends ImageView {
                 ((Activity)getContext()).startActivityForResult(intent, 1);
             }
         });
-        builder.setNegativeButton("取消", null);
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                undo();
+            }
+        });
         builder.show();
     }
 
-    public FaultPhotoEntity getPosEntity(){
+    public PosEntity getPosEntity(){
         if(data.isEmpty()){
             return null;
         }
         return data.get(data.size()-1);
+    }
+
+    public List<PhotoEntity> getPhotoEntities() { return photoEntities; }
+    public List<PhotoEntity> getPhotoEntities(String sight) { return null; }
+
+    public String getGroup() {
+        return "interior";
     }
 
     public void clear() {
@@ -223,40 +228,6 @@ public class InsidePaintView extends ImageView {
             for(int i = 0; i < thisTimeNewData.size(); i++) {
                 data.remove(thisTimeNewData.get(i));
             }
-        }
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case 1:
-                if(resultCode == Activity.RESULT_OK) {
-                    // 组织JsonString
-                    JSONObject jsonObject = new JSONObject();
-
-                    try {
-                        jsonObject.put("PictureName", Long.toString(currentTimeMillis));
-                        jsonObject.put("StartPoint", Integer.toString(getPosEntity().getStartX()) + "," +
-                                Integer.toString(getPosEntity().getStartY()));
-                        jsonObject.put("EndPoint", Integer.toString(getPosEntity().getEndX()) + "," +
-                                Integer.toString(getPosEntity().getEndY()));
-                        jsonObject.put("UniqueId", "199");
-                        // 绘图类型 -
-                        jsonObject.put("Type", currentType);
-                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
-                    } catch (JSONException e) {
-
-                    }
-
-                    PhotoEntity photoEntity = new PhotoEntity();
-                    photoEntity.setFileName(Helper.getOutputMediaFileUri(currentTimeMillis).getPath());
-                    photoEntity.setJsonString(jsonObject.toString());
-
-                    // imageUploadQueue.addImage(photoEntity);
-                    // 暂时不加入照片池，等保存时才提交
-                } else {
-                }
-                break;
         }
     }
 }

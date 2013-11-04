@@ -133,11 +133,6 @@
                         android:ems="10"
                         android:id="@+id/commentEdit"/>
             </TableRow>
-            <Button android:id="@+id/upload"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="upload"
-                android:textSize="20sp"/>
         </TableLayout>
     </LinearLayout>
 </ScrollView>

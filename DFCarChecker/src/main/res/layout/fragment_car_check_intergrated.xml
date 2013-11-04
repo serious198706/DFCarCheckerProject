@@ -210,7 +210,6 @@
             android:layout_height="2dp"
             android:background="#000"/>
 
-        <!-- TODO:2选1 -->
         <TextView android:id="@+id/it_gear_manually_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

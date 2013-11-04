@@ -2,13 +2,11 @@ package com.df.dfcarchecker;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -18,37 +16,36 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ScrollView;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
-import com.df.entry.StructurePhotoEntity;
 import com.df.paintview.StructurePaintPreviewView;
 import com.df.service.Common;
 import com.df.service.Helper;
 import com.df.service.ImageUploadQueue;
-import com.df.service.SoapService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by 岩 on 13-10-8.
  */
-public class CarCheckStructureFragment extends Fragment implements View.OnClickListener  {
+public class CarCheckFrameFragment extends Fragment implements View.OnClickListener  {
     private static View rootView;
     private static ScrollView root;
     private LayoutInflater inflater;
-    private int currentPart;
+    private int currentShotPart;
 
-    public static List<StructurePhotoEntity> posEntitiesFront;
-    public static List<StructurePhotoEntity> posEntitiesRear;
+    public static List<PosEntity> posEntitiesFront;
+    public static List<PosEntity> posEntitiesRear;
+
+    public static List<PhotoEntity> photoEntitiesFront;
+    public static List<PhotoEntity> photoEntitiesRear;
 
     private static StructurePaintPreviewView structurePaintPreviewViewFront;
     private static StructurePaintPreviewView structurePaintPreviewViewRear;
@@ -57,10 +54,6 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
 
     public static Bitmap previewBitmapFront;
     public static Bitmap previewBitmapRear;
-
-    private Button uploadButton;
-
-    private UploadPictureTask mUploadPictureTask;
 
     private long currentTimeMillis;
 
@@ -71,7 +64,7 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.inflater = inflater;
-        rootView = inflater.inflate(R.layout.fragment_car_check_structure, container, false);
+        rootView = inflater.inflate(R.layout.fragment_car_check_frame, container, false);
 
         Button cameraButton = (Button)rootView.findViewById(R.id.structure_start_camera_button);
         cameraButton.setOnClickListener(this);
@@ -79,11 +72,13 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
-        posEntitiesFront = new ArrayList<StructurePhotoEntity>();
-        posEntitiesRear = new ArrayList<StructurePhotoEntity>();
+        posEntitiesFront = new ArrayList<PosEntity>();
+        posEntitiesRear = new ArrayList<PosEntity>();
+
+        photoEntitiesFront = new ArrayList<PhotoEntity>();
+        photoEntitiesRear = new ArrayList<PhotoEntity>();
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
-
         previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4_f", options);
         structurePaintPreviewViewFront = (StructurePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_front);
         structurePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
@@ -103,9 +98,6 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         root = (ScrollView)rootView.findViewById(R.id.root);
         root.setVisibility(View.GONE);
 
-        uploadButton = (Button) rootView.findViewById(R.id.upload);
-        uploadButton.setOnClickListener(this);
-
         imageUploadQueue = ImageUploadQueue.getInstance();
 
         return rootView;
@@ -124,9 +116,6 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
                 break;
             case R.id.structure_start_camera_button:
                 structure_start_camera(v);
-                break;
-            case R.id.upload:
-                uploadPicture();
                 break;
         }
     }
@@ -165,7 +154,7 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
 
     public void StartPaint(String frontOrRear) {
         Intent intent = new Intent(rootView.getContext(), CarCheckPaintActivity.class);
-        intent.putExtra("PAINT_TYPE", "STRUCTURE_PAINT");
+        intent.putExtra("PAINT_TYPE", "FRAME_PAINT");
 
         // 设定视角
         intent.putExtra("PAINT_SIGHT", frontOrRear);
@@ -182,8 +171,8 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         builder.setItems(R.array.structure_camera_cato_item, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                currentPart = i;
-                String group = getResources().getStringArray(R.array.structure_camera_cato_item)[currentPart];
+                currentShotPart = i;
+                String group = getResources().getStringArray(R.array.structure_camera_cato_item)[currentShotPart];
 
                 Toast.makeText(rootView.getContext(), "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
 
@@ -211,11 +200,6 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
         dialog.show();
     }
 
-    private void uploadPicture() {
-        mUploadPictureTask = new UploadPictureTask(rootView.getContext());
-        mUploadPictureTask.execute((Void) null);
-    }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -226,8 +210,29 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
                     JSONObject jsonObject = new JSONObject();
 
                     try {
-                        jsonObject.put("Group", "Frame");
-                        jsonObject.put("Part", Integer.toString(currentPart));
+                        JSONObject photoJsonObject = new JSONObject();
+
+                        String currentPart = "";
+
+                        switch (currentShotPart) {
+                            case 0:
+                                currentPart = "overview";
+                                break;
+                            case 1:
+                                currentPart = "front";
+                                break;
+                            case 2:
+                                currentPart = "rear";
+                                break;
+                            case 3:
+                                currentPart = "other";
+                                break;
+                        }
+
+                        photoJsonObject.put("part", currentPart);
+
+                        jsonObject.put("Group", "engineRoom");
+                        jsonObject.put("PhotoData", photoJsonObject.toString());
                         jsonObject.put("UserId", LoginActivity.userInfo.getId());
                         jsonObject.put("Key", LoginActivity.userInfo.getKey());
                         jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
@@ -239,10 +244,11 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
                     photoEntity.setFileName(Helper.getOutputMediaFileUri(currentTimeMillis).getPath());
                     photoEntity.setJsonString(jsonObject.toString());
 
+                    // 拍摄完成后立刻上传
                     imageUploadQueue.addImage(photoEntity);
                 } else {
                     Toast.makeText(rootView.getContext(),
-                            "error occured during opening camera", Toast.LENGTH_SHORT)
+                            "相机打开错误！", Toast.LENGTH_SHORT)
                             .show();
                 }
                 break;
@@ -277,71 +283,4 @@ public class CarCheckStructureFragment extends Fragment implements View.OnClickL
                 break;
         }
     }
-
-    private class UploadPictureTask extends AsyncTask<Void, Void, Boolean> {
-        Context context;
-
-        private UploadPictureTask(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected void onPreExecute()
-        {
-
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-            boolean success = false;
-
-            SoapService soapService = new SoapService();
-
-            // 设置soap的配置
-            soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                    "http://cheyiju/IReportService/SaveCarPictureTagKey",
-                    "SaveCarPictureTagKey");
-
-            JSONObject jsonObject = new JSONObject();
-            try {
-                // TODO: 更改命名方式
-                jsonObject.put("PictureName", Long.toString(currentTimeMillis));
-                jsonObject.put("StartPoint", "187,90");
-                jsonObject.put("EndPoint", "255, 103");
-                jsonObject.put("UniqueId", "199");
-                // 绘图类型 -
-                jsonObject.put("Type", "0");
-                jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                jsonObject.put("Key", LoginActivity.userInfo.getKey());
-            } catch (JSONException e) {
-
-            }
-
-            PhotoEntity photoEntity = imageUploadQueue.getEntity();
-            File f = new File(photoEntity.getFileName());
-            Bitmap bitmap = BitmapFactory.decodeFile(f.getAbsolutePath());
-
-            success = soapService.uploadPicture(root.getContext(), bitmap, jsonObject.toString());
-
-            return success;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mUploadPictureTask = null;
-
-            if(success) {
-
-            } else {
-
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mUploadPictureTask = null;
-        }
-    }
-
 }

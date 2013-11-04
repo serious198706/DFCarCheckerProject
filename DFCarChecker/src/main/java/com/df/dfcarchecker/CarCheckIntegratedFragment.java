@@ -14,7 +14,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.df.entry.CarSettings;
-import com.df.entry.FaultPhotoEntity;
+import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
 import com.df.service.Common;
 
@@ -25,9 +25,9 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     private static View rootView;
     private static ScrollView root;
     private LayoutInflater inflater;
-    public static List<FaultPhotoEntity> outsidePaintEntities;
+    public static List<PosEntity> outsidePaintEntities;
     public static List<PhotoEntity> outsidePhotoEntities;
-    public static List<FaultPhotoEntity> insidePaintEntities;
+    public static List<PosEntity> insidePaintEntities;
     public static List<PhotoEntity> insidePhotoEntities;
     private String paintIndex;
     private String outsideComment;
@@ -51,8 +51,8 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         root.setVisibility(View.GONE);
 
         // 坐标们
-        outsidePaintEntities = new ArrayList<FaultPhotoEntity>();
-        insidePaintEntities = new ArrayList<FaultPhotoEntity>();
+        outsidePaintEntities = new ArrayList<PosEntity>();
+        insidePaintEntities = new ArrayList<PosEntity>();
 
         // 照片们
         outsidePhotoEntities = new ArrayList<PhotoEntity>();
@@ -77,7 +77,7 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     }
 
     public static void ShowContent() {
-        updateUi();
+        updateAssociatedSpinners();
         root.setVisibility(View.VISIBLE);
     }
 
@@ -118,7 +118,7 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     }
 
 
-    private static void updateUi() {
+    public static void updateAssociatedSpinners() {
         CarSettings carSettings = CarCheckBasicInfoFragment.mCarSettings;
 
         setSpinnerSelection(R.id.it_airBag_spinner, Integer.parseInt(carSettings.getAirbag()));
@@ -166,7 +166,7 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
 
     // 进入“外观”
     private void CheckOutSide() {
-        Intent intent = new Intent(rootView.getContext(), CarCheckOutsideActivity.class);
+        Intent intent = new Intent(rootView.getContext(), CarCheckExteriorActivity.class);
         intent.putExtra("INDEX", paintIndex);
         intent.putExtra("COMMENT", outsideComment);
         startActivityForResult(intent, Common.IT_OUT);
@@ -174,7 +174,7 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
 
     // 进入“内饰”
     private void CheckInside() {
-        Intent intent = new Intent(rootView.getContext(), CarCheckInsideActivity.class);
+        Intent intent = new Intent(rootView.getContext(), CarCheckInteriorActivity.class);
         intent.putExtra("INDEX", sealIndex);
         intent.putExtra("COMMENT", insideComment);
         startActivityForResult(intent, Common.IT_IN);

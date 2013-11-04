@@ -3,7 +3,7 @@
               android:layout_height="match_parent"
               android:orientation="vertical" >
 
-    <include layout="@layout/activity_car_check_outside_paint_menu"/>
+    <include layout="@layout/activity_car_check_exterior_paint_menu"/>
 
     <LinearLayout
             android:id="@+id/titleLy"
@@ -11,7 +11,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center">
 
-        <com.df.paintview.OutsidePaintView
+        <com.df.paintview.ExteriorPaintView
                 android:id="@+id/tile"
                 android:layout_width="500dp"
                 android:layout_height="703dp" />

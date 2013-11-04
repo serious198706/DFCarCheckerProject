@@ -11,10 +11,9 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.df.dfcarchecker.CarCheckStructureFragment;
+import com.df.dfcarchecker.CarCheckFrameFragment;
 import com.df.dfcarchecker.R;
-import com.df.entry.FaultPhotoEntity;
-import com.df.entry.StructurePhotoEntity;
+import com.df.entry.PosEntity;
 
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class StructurePaintPreviewView extends ImageView {
 
     private int currentType;
     private boolean move;
-    private List<StructurePhotoEntity> data;
+    private List<PosEntity> data;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
 
@@ -43,7 +42,7 @@ public class StructurePaintPreviewView extends ImageView {
         //init();
     }
 
-    public void init(Bitmap bitmap, List<StructurePhotoEntity> entities) {
+    public void init(Bitmap bitmap, List<PosEntity> entities) {
         this.bitmap = bitmap;
 
         data = entities;
@@ -51,7 +50,7 @@ public class StructurePaintPreviewView extends ImageView {
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
-        //data = new ArrayList<FaultPhotoEntity>();
+        //data = new ArrayList<PosEntity>();
 
         colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
     }
@@ -70,36 +69,36 @@ public class StructurePaintPreviewView extends ImageView {
     }
 
     private void paint(Canvas canvas) {
-        for (StructurePhotoEntity entity : data) {
+        for (PosEntity entity : data) {
             paint(entity, canvas);
         }
     }
 
-    private void paint(StructurePhotoEntity entity, Canvas canvas) {
+    private void paint(PosEntity entity, Canvas canvas) {
         canvas.drawBitmap(colorDiffBitmap, entity.getStartX(), entity.getStartY(), null);
     }
 
-    public StructurePhotoEntity getPosEntity(){
+    public PosEntity getPosEntity(){
         if(data.isEmpty()){
             return null;
         }
         return data.get(data.size()-1);
     }
 
-    public void setPosEntities(List<StructurePhotoEntity> entities) {
+    public void setPosEntities(List<PosEntity> entities) {
         data = entities;
     }
 
     private void HandelPosEntitiesDueToDifferentResolution() {
         data.clear();
 
-        if(CarCheckStructureFragment.posEntitiesFront.isEmpty()) {
+        if(CarCheckFrameFragment.posEntitiesFront.isEmpty()) {
             return;
         }
 
-        for(StructurePhotoEntity faultPhotoEntity : CarCheckStructureFragment.posEntitiesFront) {
+        for(PosEntity faultPhotoEntity : CarCheckFrameFragment.posEntitiesFront) {
             // 因为不能对原entities做修改，所以此处要做些特殊处理，采用值传递方式
-            StructurePhotoEntity temp = new StructurePhotoEntity(faultPhotoEntity.getType());
+            PosEntity temp = new PosEntity(faultPhotoEntity.getType());
             temp.setStart(faultPhotoEntity.getStartX(), faultPhotoEntity.getStartY());
             temp.setEnd(faultPhotoEntity.getEndX(), faultPhotoEntity.getEndY());
 
@@ -109,7 +108,7 @@ public class StructurePaintPreviewView extends ImageView {
             data.add(temp);
         }
 
-        for(StructurePhotoEntity faultPhotoEntity : data) {
+        for(PosEntity faultPhotoEntity : data) {
             faultPhotoEntity.setStart((int)(faultPhotoEntity.getStartX() / 1.5), (int)(faultPhotoEntity.getStartY() / 1.5));
             faultPhotoEntity.setEnd((int)(faultPhotoEntity.getEndX() / 1.5), (int)(faultPhotoEntity.getEndY() / 1.5));
         }

@@ -1,20 +1,10 @@
 package com.df.service;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Environment;
-import android.util.Log;
 
-import com.df.dfcarchecker.LoginActivity;
-import com.df.entry.FaultPhotoEntity;
 import com.df.entry.PhotoEntity;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;

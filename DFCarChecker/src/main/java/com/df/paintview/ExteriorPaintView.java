@@ -16,39 +16,31 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.df.dfcarchecker.CarCheckOutsideActivity;
-import com.df.dfcarchecker.LoginActivity;
+import com.df.dfcarchecker.CarCheckExteriorActivity;
 import com.df.dfcarchecker.R;
-import com.df.entry.FaultPhotoEntity;
+import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
 import com.df.service.Common;
 import com.df.service.Helper;
-import com.df.service.ImageUploadQueue;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class OutsidePaintView extends ImageView {
+public class ExteriorPaintView extends PaintView {
 
     private int currentType = Common.COLOR_DIFF;
     private boolean move;
-    private List<FaultPhotoEntity> data = CarCheckOutsideActivity.posEntities;
-    private List<PhotoEntity> photoEntities = CarCheckOutsideActivity.photoEntities;
+    private List<PosEntity> data = CarCheckExteriorActivity.posEntities;
+    private List<PhotoEntity> photoEntities = CarCheckExteriorActivity.photoEntities;
 
     // 本次更新的坐标点，如果用户点击取消，则不将thisTimeNewData中的坐标加入到data中
-    private List<FaultPhotoEntity> thisTimeNewData;
-    private List<FaultPhotoEntity> undoData;
+    private List<PosEntity> thisTimeNewData;
+    private List<PosEntity> undoData;
     private Bitmap bitmap;
     private Bitmap colorDiffBitmap;
     private Bitmap otherBitmap;
@@ -57,32 +49,32 @@ public class OutsidePaintView extends ImageView {
 
     private long currentTimeMillis;
 
-    private ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
+    public long getCurrentTimeMillis() {return currentTimeMillis;}
 
-    public OutsidePaintView(Context context, AttributeSet attrs, int defStyle) {
+    public ExteriorPaintView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         //init();
     }
 
-    public OutsidePaintView(Context context, AttributeSet attrs) {
+    public ExteriorPaintView(Context context, AttributeSet attrs) {
         super(context, attrs);
         //init();
     }
 
-    public OutsidePaintView(Context context) {
+    public ExteriorPaintView(Context context) {
         super(context);
         //init();
     }
 
-    public void init(Bitmap bitmap, List<FaultPhotoEntity> entities) {
+    public void init(Bitmap bitmap, List<PosEntity> entities) {
         this.bitmap = bitmap;
         data = entities;
 
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
-        undoData = new ArrayList<FaultPhotoEntity>();
-        thisTimeNewData = new ArrayList<FaultPhotoEntity>();
+        undoData = new ArrayList<PosEntity>();
+        thisTimeNewData = new ArrayList<PosEntity>();
 
         colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
         otherBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_other);
@@ -90,11 +82,9 @@ public class OutsidePaintView extends ImageView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+    public void onDraw(Canvas canvas) {
         canvas.drawBitmap(bitmap, 0, 0, null);
         paint(canvas);
-
     }
 
     private OnTouchListener onTouchListener = new OnTouchListener() {
@@ -103,10 +93,10 @@ public class OutsidePaintView extends ImageView {
             if (currentType > 0 && currentType <= 5) {
                 int x = (int) event.getX();
                 int y = (int) event.getY();
-                FaultPhotoEntity entity = null;
+                PosEntity entity = null;
 
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    entity = new FaultPhotoEntity(currentType);
+                    entity = new PosEntity(currentType);
                     entity.setMaxX(max_x);
                     entity.setMaxY(max_y);
                     entity.setStart(x, y);
@@ -171,30 +161,16 @@ public class OutsidePaintView extends ImageView {
         paint.setStyle(Paint.Style.STROKE); //加粗
         paint.setStrokeWidth(4); //宽度
 
-//        switch (type) {
-//            case Common.COLOR_DIFF:
-//            case Common.OTHER:
-//                paint.setStyle(Paint.Style.FILL_AND_STROKE);//填充并且填充
-//                paint.setStrokeWidth(4); //宽度
-//                break;
-//            case Common.SCRATCH:
-//            case Common.TRANS:
-//            case Common.SCRAPE:
-//                paint.setStyle(Paint.Style.STROKE); //加粗
-//                paint.setStrokeWidth(4); //宽度
-//                break;
-//        }
-
         return paint;
     }
 
     private void paint(Canvas canvas) {
-        for (FaultPhotoEntity entity : data) {
+        for (PosEntity entity : data) {
             paint(entity, canvas);
         }
     }
 
-    private void paint(FaultPhotoEntity entity, Canvas canvas) {
+    private void paint(PosEntity entity, Canvas canvas) {
         int type = entity.getType();
 
         switch (type) {
@@ -205,12 +181,16 @@ public class OutsidePaintView extends ImageView {
                 canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(type));
                 return ;
             case Common.TRANS:
-                int dx = Math.abs(entity.getEndX()-entity.getStartX());
-                int dy = Math.abs(entity.getEndY()-entity.getStartY());
-                int dr = (int)Math.sqrt(dx*dx+dy*dy);
-                int x0 = (entity.getStartX()+entity.getEndX())/2;
-                int y0 = (entity.getStartY()+entity.getEndY())/2;
-                canvas.drawCircle(x0, y0, dr/2, getPaint(type));
+                // 计算半径
+                int dx = Math.abs(entity.getEndX() - entity.getStartX());
+                int dy = Math.abs(entity.getEndY() - entity.getStartY());
+                int dr = (int)Math.sqrt(dx * dx + dy * dy);
+
+                // 计算圆心
+                int x0 = (entity.getStartX() + entity.getEndX()) / 2;
+                int y0 = (entity.getStartY() + entity.getEndY()) / 2;
+
+                canvas.drawCircle(x0, y0, dr / 2, getPaint(type));
                 return;
             case Common.SCRAPE:
                 RectF rectF = null;
@@ -266,17 +246,30 @@ public class OutsidePaintView extends ImageView {
                 ((Activity)getContext()).startActivityForResult(intent, 1);
             }
         });
-        builder.setNegativeButton("取消", null);
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                undo();
+            }
+        });
         builder.show();
     }
 
-    public FaultPhotoEntity getPosEntity(){
+    public PosEntity getPosEntity(){
         if(data.isEmpty()){
             return null;
         }
         return data.get(data.size()-1);
     }
 
+    public List<PhotoEntity> getPhotoEntities() { return photoEntities; }
+    public List<PhotoEntity> getPhotoEntities(String sight) { return null; }
+
+    public String getGroup() {
+        return "exterior";
+    }
+
+    @Override
     public void clear() {
         if(!data.isEmpty()) {
             data.clear();
@@ -285,6 +278,7 @@ public class OutsidePaintView extends ImageView {
         }
     }
 
+    @Override
     public void undo() {
         if(!data.isEmpty()) {
             undoData.add(data.get(data.size() - 1));
@@ -293,6 +287,7 @@ public class OutsidePaintView extends ImageView {
         }
     }
 
+    @Override
     public void redo() {
         if(!undoData.isEmpty()) {
             data.add(undoData.get(undoData.size() - 1));
@@ -301,46 +296,12 @@ public class OutsidePaintView extends ImageView {
         }
     }
 
+    @Override
     public void cancel() {
         if(!thisTimeNewData.isEmpty()) {
             for(int i = 0; i < thisTimeNewData.size(); i++) {
                 data.remove(thisTimeNewData.get(i));
             }
-        }
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        switch (requestCode) {
-            case 1:
-                if(resultCode == Activity.RESULT_OK) {
-                    // 组织JsonString
-                    JSONObject jsonObject = new JSONObject();
-
-                    try {
-                        jsonObject.put("PictureName", Long.toString(currentTimeMillis));
-                        jsonObject.put("StartPoint", Integer.toString(getPosEntity().getStartX()) + "," +
-                                Integer.toString(getPosEntity().getStartY()));
-                        jsonObject.put("EndPoint", Integer.toString(getPosEntity().getEndX()) + "," +
-                                Integer.toString(getPosEntity().getEndY()));
-                        jsonObject.put("UniqueId", "199");
-                        // 绘图类型 -
-                        jsonObject.put("Type", currentType);
-                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
-                    } catch (JSONException e) {
-
-                    }
-
-                    PhotoEntity photoEntity = new PhotoEntity();
-                    photoEntity.setFileName(Helper.getOutputMediaFileUri(currentTimeMillis).getPath());
-                    photoEntity.setJsonString(jsonObject.toString());
-
-                    photoEntities.add(photoEntity);
-                    // imageUploadQueue.addImage(photoEntity);
-                    // 暂时不加入照片池，等保存时才提交
-                } else {
-                }
-                break;
         }
     }
 }

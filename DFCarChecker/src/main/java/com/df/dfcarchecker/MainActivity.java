@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
     }
 
     public void EnterCarCheck(View view) {
-        Intent intent = new Intent(this, CarCheckFrameActivity.class);
+        Intent intent = new Intent(this, CarCheckViewPagerActivity.class);
         startActivity(intent);
     }
 
