@@ -93,7 +93,7 @@
                           android:text="@string/out_paint"
                           android:textSize="18sp"
                           android:layout_weight="1"/>
-                <Spinner android:id="@+id/out_paint_spinner"
+                <Spinner android:id="@+id/out_smooth_spinner"
                          android:layout_width="0dp"
                          android:layout_height="wrap_content"
                          android:layout_weight="2"

@@ -267,7 +267,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                 // 综合检查
                 JSONObject conditions = new JSONObject();
 
-                // 综合检查 - 外观检查
+
                 JSONObject exterior = new JSONObject();
 
                 // 综合检查 - 内饰检查
@@ -296,10 +296,15 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                 features.put("options", carCheckBasicInfoFragment.generateOptionsJsonString());
 
                 // 基本信息 - 手续信息
-                features.put("procedures", procedures.toString());
+                features.put("procedures", carCheckBasicInfoFragment.generateProceduresJsonString());
 
-                conditions.put("exterior", exterior.toString());
-                conditions.put("interior", interior.toString());
+                // 综合检查 - 外观检查
+                conditions.put("exterior", CarCheckExteriorActivity.generateExteriorJsonString());
+
+                // 综合检查 - 内饰检查m
+                conditions.put("interior", CarCheckInteriorActivity.generateInteriorJsonString());
+
+
                 conditions.put("engine", engine.toString());
                 conditions.put("gearbox", gearbox.toString());
                 conditions.put("function", function.toString());

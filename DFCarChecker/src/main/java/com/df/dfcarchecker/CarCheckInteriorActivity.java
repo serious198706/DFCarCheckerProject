@@ -32,6 +32,9 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import static com.df.service.Helper.getEditText;
+import static com.df.service.Helper.getSpinnerSelectedText;
+
 public class CarCheckInteriorActivity extends Activity implements View.OnClickListener  {
     private int currentShotPart;
 
@@ -44,8 +47,8 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     private InsidePaintPreviewView insidePaintPreviewView;
     private TextView tip;
 
-    private Spinner sealSpinner;
-    private EditText commentEdit;
+    private static Spinner sealSpinner;
+    private static EditText commentEdit;
     private long currentTimeMillis;
     private ImageUploadQueue imageUploadQueue;
 
@@ -73,7 +76,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         tip.setOnClickListener(this);
 
         sealSpinner = (Spinner) findViewById(R.id.in_seal_spinner);
-        commentEdit = (EditText) findViewById(R.id.commentEdit);
+        commentEdit = (EditText) findViewById(R.id.in_comment_edit);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null) {
@@ -378,5 +381,18 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         }
 
         return BitmapFactory.decodeFile(path + name, options);
+    }
+
+    public static String generateInteriorJsonString() {
+        JSONObject interior = new JSONObject();
+
+        try {
+            interior.put("sealingStrip", sealSpinner.getSelectedItem().toString());
+            interior.put("comment", commentEdit.getText().toString());
+        } catch (JSONException e) {
+
+        }
+
+        return interior.toString();
     }
 }

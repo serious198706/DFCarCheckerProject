@@ -118,7 +118,7 @@
                           android:text="@string/in_seal"
                           android:textSize="18sp"
                           android:layout_weight="1"/>
-                <Spinner android:id="@+id/in_seal_spinner"
+                <Spinner android:id="@+id/in_sealingStrip_spinner"
                          android:layout_width="0dp"
                          android:layout_height="wrap_content"
                          android:layout_weight="2"
@@ -174,7 +174,7 @@
                         android:layout_weight="1"
                         android:inputType="textMultiLine"
                         android:ems="10"
-                        android:id="@+id/commentEdit"/>
+                        android:id="@+id/in_comment_edit"/>
             </TableRow>
         </TableLayout>
     </LinearLayout>

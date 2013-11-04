@@ -404,7 +404,7 @@
                     android:layout_marginLeft="8dp"
                     android:textSize="18sp"/>
                 <Spinner
-                    android:id="@+id/csi_clapBoard_spinner"
+                    android:id="@+id/csi_clapboard_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -439,7 +439,7 @@
                     android:text="@string/ci_reg_location"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ci_reg_location_spinner"
+                <Spinner android:id="@+id/ci_regArea_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"/>
@@ -451,7 +451,7 @@
                     android:text="@string/ci_car_number"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <EditText android:id="@+id/ci_car_number_edit"
+                <EditText android:id="@+id/ci_plateNumber_edit"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"/>
@@ -463,7 +463,7 @@
                     android:text="@string/ci_licence_type"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <EditText android:id="@+id/ci_licence_type_edit"
+                <EditText android:id="@+id/ci_licenceModel_edit"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"
@@ -477,11 +477,11 @@
                     android:text="@string/ci_car_type"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ci_car_type_spinner"
+                <Spinner android:id="@+id/ci_vehicleType_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:entries="@array/ci_car_type_arrays"/>
+                    android:entries="@array/ci_vehicleType_items"/>
             </TableRow>
             <TableRow>
                 <TextView
@@ -490,11 +490,11 @@
                     android:text="@string/ci_use"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ci_use_spinner"
+                <Spinner android:id="@+id/ci_useCharacter_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:entries="@array/ci_use_items"/>
+                    android:entries="@array/ci_useCharacter_items"/>
             </TableRow>
             <TableRow>
                 <TextView
@@ -504,7 +504,7 @@
                     android:layout_weight="1"
                     android:textSize="18sp"/>
                 <EditText
-                    android:id="@+id/bi_run_edit"
+                    android:id="@+id/bi_mileAge_edit"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -523,7 +523,7 @@
                     android:text="@string/ci_car_color"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ci_car_color_spinner"
+                <Spinner android:id="@+id/ci_exteriorColor_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"/>
@@ -535,13 +535,13 @@
                     android:text="@string/ci_first_log_time"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ci_first_log_year_spinner"
+                <Spinner android:id="@+id/ci_regYear_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:textAlignment="center"
                     android:layout_weight="1"
                     android:prompt="@string/prompt"/>
-                <Spinner android:id="@+id/ci_first_log_month_spinner"
+                <Spinner android:id="@+id/ci_regMonth_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"/>
@@ -553,11 +553,11 @@
                     android:text="@string/ci_manufacture_time"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ci_manufacture_year_spinner"
+                <Spinner android:id="@+id/ci_builtYear_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"/>
-                <Spinner android:id="@+id/ci_manufacture_month_spinner"
+                <Spinner android:id="@+id/ci_builtMonth_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"/>
@@ -569,13 +569,13 @@
                     android:text="@string/ct_buy_tickets"
                     android:layout_weight="2"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ct_buy_tickets_spinner"
+                <Spinner android:id="@+id/ct_invoice_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:entries="@array/ct_tickets"/>
+                    android:entries="@array/ct_invoice_items"/>
                 <EditText
-                    android:id="@+id/ct_buy_tickets_edit"
+                    android:id="@+id/ct_invoice_edit"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
@@ -600,11 +600,11 @@
                     android:text="@string/ct_extra_tax_certification"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ct_extra_tax_certification_spinner"
+                <Spinner android:id="@+id/ct_surtax_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:entries="@array/ct_extra_tax_certification_type"/>
+                    android:entries="@array/ct_surtax_items"/>
             </TableRow>
             <TableRow>
                 <TextView
@@ -613,7 +613,7 @@
                     android:text="@string/ci_transfer_count"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ci_transfer_count_spinner"
+                <Spinner android:id="@+id/ci_transferCount_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"/>
@@ -625,11 +625,11 @@
                     android:text="@string/ci_last_transfer_time"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ci_last_transfer_year_spinner"
+                <Spinner android:id="@+id/ci_transferLastYear_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"/>
-                <Spinner android:id="@+id/ci_last_transfer_month_spinner"
+                <Spinner android:id="@+id/ci_transferLastMonth_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"/>
@@ -641,11 +641,11 @@
                     android:text="@string/ct_yearly_check_available_date"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ct_yearly_check_available_date_year_spinner"
+                <Spinner android:id="@+id/ct_annualInspectionYear_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"/>
-                <Spinner android:id="@+id/ct_yearly_check_available_date_month_spinner"
+                <Spinner android:id="@+id/ct_annualInspectionMonth_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"/>
@@ -657,11 +657,11 @@
                     android:text="@string/ct_available_date"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ct_available_date_year_spinner"
+                <Spinner android:id="@+id/ct_compulsoryInsuranceYear_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"/>
-                <Spinner android:id="@+id/ct_available_date_month_spinner"
+                <Spinner android:id="@+id/ct_compulsoryInsuranceMonth_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"/>
@@ -673,12 +673,12 @@
                     android:text="@string/ci_pictures"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <EditText android:id="@+id/picture_match_edit"
+                <EditText android:id="@+id/ct_licencePhotoMatch_edit"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:editable="false"
                     android:layout_weight="1"/>
-                <Button android:id="@+id/picture_match_button"
+                <Button android:id="@+id/ct_licencePhotoMatch_button"
                     android:layout_width="0dp"
                     android:layout_height="35dp"
                     android:text="@string/choose"
@@ -693,13 +693,13 @@
                     android:text="@string/ct_business_insurance"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ct_business_insurance_spinner"
+                <Spinner android:id="@+id/ct_insurance_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:entries="@array/ct_business_insurance_type"/>
+                    android:entries="@array/ct_insurance_items"/>
             </TableRow>
-            <TableLayout android:id="@+id/ct_business_table"
+            <TableLayout android:id="@+id/ct_insurance_table"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <TableRow>
@@ -709,11 +709,11 @@
                         android:text="@string/ct_business_insurance_area"
                         android:layout_weight="1"
                         android:textSize="18sp"/>
-                    <Spinner android:id="@+id/ct_business_insurance_area_spinner"
+                    <Spinner android:id="@+id/ct_insuranceRegion_spinner"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="2"
-                        android:entries="@array/ct_business_insurance_area_type"/>
+                        android:entries="@array/ct_insuranceRegion_items"/>
                 </TableRow>
                 <TableRow>
                     <TextView
@@ -722,7 +722,7 @@
                         android:text="@string/ct_business_insurance_money"
                         android:layout_weight="1"
                         android:textSize="18sp"/>
-                    <EditText android:id="@+id/ct_business_insurance_money_edit"
+                    <EditText android:id="@+id/ct_insuranceAmount_edit"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="1"
@@ -739,11 +739,11 @@
                         android:text="@string/ct_business_insurance_available_date"
                         android:layout_weight="1"
                         android:textSize="18sp"/>
-                    <Spinner android:id="@+id/ct_business_insurance_available_date_year_spinner"
+                    <Spinner android:id="@+id/ct_insuranceExpiryYear_spinner"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="1"/>
-                    <Spinner android:id="@+id/ct_business_insurance_available_date_month_spinner"
+                    <Spinner android:id="@+id/ct_insuranceExpiryMonth_spinner"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="1"/>
@@ -755,11 +755,11 @@
                         android:text="@string/ct_business_insurance_company"
                         android:layout_weight="1"
                         android:textSize="18sp"/>
-                    <Spinner android:id="@+id/ct_business_insurance_company_spinner"
+                    <Spinner android:id="@+id/ct_insuranceCompany_spinner"
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="2"
-                        android:entries="@array/ct_business_insurance_companies"/>
+                        android:entries="@array/ct_insuranceCompany_items"/>
                 </TableRow>
             </TableLayout>
 
@@ -771,11 +771,11 @@
                     android:text="@string/ct_ported_procedure"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ct_ported_procedure_spinner"
+                <Spinner android:id="@+id/ct_importProcedures_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:entries="@array/ct_ported_prodecure_items"/>
+                    android:entries="@array/ct_importProcedures_items"/>
             </TableRow>
             <TableRow>
                 <TextView
@@ -784,11 +784,11 @@
                     android:text="@string/ct_backup_tire"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ct_backup_tire_spinner"
+                <Spinner android:id="@+id/ct_spareTire_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"
-                    android:entries="@array/ct_backup_tire_items"/>
+                    android:entries="@array/ct_spareTire_items"/>
             </TableRow>
 
             <TableRow>
@@ -798,7 +798,7 @@
                     android:text="@string/ct_backup_key"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <Spinner android:id="@+id/ct_backup_key_spinner"
+                <Spinner android:id="@+id/ct_spareKey_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"
@@ -811,7 +811,7 @@
                     android:text="@string/ci_seller_name"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <EditText android:id="@+id/ci_seller_name_edit"
+                <EditText android:id="@+id/ci_ownerName_edit"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"/>
@@ -823,7 +823,7 @@
                     android:text="@string/ci_seller_id_number"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <EditText android:id="@+id/ci_seller_id_number_edit"
+                <EditText android:id="@+id/ci_ownerIdNumber_edit"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"/>
@@ -835,7 +835,7 @@
                     android:text="@string/ci_seller_phone_number"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <EditText android:id="@+id/ci_seller_phone_number_edit"
+                <EditText android:id="@+id/ci_ownerPhone_edit"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:inputType="phone"
@@ -848,11 +848,11 @@
                     android:text="@string/ex_exchange_type"
                     android:layout_weight="2"
                     android:textSize="18sp"/>
-                <Spinner
+                <Spinner android:id="@+id/ex_transferAgree_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="4"
-                    android:entries="@array/ex_exchange_types"/>
+                    android:entries="@array/ex_transferAgree_items"/>
             </TableRow>
             <!-- 手续录入部分结束 -->
 
@@ -876,13 +876,12 @@
                     android:text="@string/cbi_comment"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <EditText
+                <EditText android:id="@+id/ct_transferRequire_edit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="textMultiLine"
-                    android:ems="10"
-                    android:id="@+id/commentEdit"/>
+                    android:ems="10"/>
             </TableRow>
 
             <ImageView android:id="@+id/imageFileName"

@@ -50,6 +50,8 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.df.service.Helper.SetSpinnerData;
+import static com.df.service.Helper.getEditText;
+import static com.df.service.Helper.getSpinnerSelectedText;
 
 public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickListener {
     private static View rootView;
@@ -149,14 +151,14 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         sketchPhotoEntities = new ArrayList<PhotoEntity>();
 
         // 实车与行驶本照片
-        Button matchButton = (Button) rootView.findViewById(R.id.picture_match_button);
+        Button matchButton = (Button) rootView.findViewById(R.id.ct_licencePhotoMatch_button);
         matchButton.setOnClickListener(this);
 
         vin_edit = (EditText) rootView.findViewById(R.id.bi_vin_edit);
         brandEdit = (EditText) rootView.findViewById(R.id.bi_brand_edit);
         displacementEdit = (EditText) rootView.findViewById(R.id.csi_displacement_edit);
 
-        runEdit = (EditText) rootView.findViewById(R.id.bi_run_edit);
+        runEdit = (EditText) rootView.findViewById(R.id.bi_mileAge_edit);
 
         // 只允许小数点后两位
         runEdit.addTextChangedListener(new TextWatcher()
@@ -178,18 +180,18 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         });
 
         // 购车发票
-        ticketSpinner = (Spinner) rootView.findViewById(R.id.ct_buy_tickets_spinner);
+        ticketSpinner = (Spinner) rootView.findViewById(R.id.ct_invoice_spinner);
         ticketSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // 有发票
                 if(i <= 1) {
-                    Helper.showView(true, rootView, R.id.ct_buy_tickets_edit);
+                    Helper.showView(true, rootView, R.id.ct_invoice_edit);
                     Helper.showView(true, rootView, R.id.yuan);
                     Helper.showView(false, rootView, R.id.placeholder);
                 } else {
                     // 无发票
-                    Helper.showView(false, rootView, R.id.ct_buy_tickets_edit);
+                    Helper.showView(false, rootView, R.id.ct_invoice_edit);
                     Helper.showView(false, rootView, R.id.yuan);
                     Helper.showView(true, rootView, R.id.placeholder);
                 }
@@ -202,7 +204,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         });
 
         // 最后过户日期
-        lastTransferCountSpinner = (Spinner) rootView.findViewById(R.id.ci_transfer_count_spinner);
+        lastTransferCountSpinner = (Spinner) rootView.findViewById(R.id.ci_transferCount_spinner);
         lastTransferCountSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -221,15 +223,15 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         });
 
         // 商业保险
-        businessInsuranceSpinner = (Spinner) rootView.findViewById(R.id.ct_business_insurance_spinner);
+        businessInsuranceSpinner = (Spinner) rootView.findViewById(R.id.ct_insurance_spinner);
         businessInsuranceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // 保险随车出售
                 if(i == 0) {
-                    Helper.showView(true, rootView, R.id.ct_business_table);
+                    Helper.showView(true, rootView, R.id.ct_insurance_table);
                 } else {
-                    Helper.showView(false, rootView, R.id.ct_business_table);
+                    Helper.showView(false, rootView, R.id.ct_insurance_table);
                 }
             }
 
@@ -240,11 +242,11 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         });
 
         // 牌照号码
-        carNumberEdit = (EditText) rootView.findViewById(R.id.ci_car_number_edit);
+        carNumberEdit = (EditText) rootView.findViewById(R.id.ci_plateNumber_edit);
 
         // 出厂日期
-        manufactureYearSpinner = (Spinner) rootView.findViewById(R.id.ci_manufacture_year_spinner);
-        manufactureMonthSpinner = (Spinner) rootView.findViewById(R.id.ci_manufacture_month_spinner);
+        manufactureYearSpinner = (Spinner) rootView.findViewById(R.id.ci_builtYear_spinner);
+        manufactureMonthSpinner = (Spinner) rootView.findViewById(R.id.ci_builtMonth_spinner);
 
         // 进口车手续
         portedProcedureRow = (TableRow) rootView.findViewById(R.id.ct_ported_procedure);
@@ -316,7 +318,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             case R.id.bi_brand_ok_button:
                 showContent();
                 break;
-            case R.id.picture_match_button:
+            case R.id.ct_licencePhotoMatch_button:
                 PictureMatch();
                 break;
             case R.id.bi_brand_select_button:
@@ -395,7 +397,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         setSpinnerSelection(R.id.csi_rearPowerSeats_spinner, Integer.parseInt(mCarSettings.getRearPowerSeats()));
         setSpinnerSelection(R.id.csi_ahc_spinner, Integer.parseInt(mCarSettings.getAhc()));
         setSpinnerSelection(R.id.csi_parkAssist_spinner, Integer.parseInt(mCarSettings.getParkAssist()));
-        setSpinnerSelection(R.id.csi_clapBoard_spinner, Integer.parseInt(mCarSettings.getClapBoard()));
+        setSpinnerSelection(R.id.csi_clapboard_spinner, Integer.parseInt(mCarSettings.getClapBoard()));
 
         // 发动“车体结构检查”里显示的图片
         CarCheckFrameFragment.setFigureImage(Integer.parseInt(mCarSettings.getFigure()));
@@ -464,7 +466,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     case R.id.csi_parkAssist_spinner:
                         mCarSettings.setParkAssist(selectedItemText);
                         break;
-                    case R.id.csi_clapBoard_spinner:
+                    case R.id.csi_clapboard_spinner:
                         mCarSettings.setClapBoard(selectedItemText);
                         break;
                 }
@@ -603,27 +605,27 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             options.put("modelId", Integer.parseInt(mCarSettings.getModel().id));
             options.put("displacement", displacementEdit.getText().toString());
 
-            String[] categoryArray = getResources().getStringArray(R.array.csi_category_item);
+            String[] categoryArray = rootView.getResources().getStringArray(R.array.csi_category_item);
             options.put("category", categoryArray[Integer.parseInt(mCarSettings.getCategory())]);
-//            options.put("driveType", );
-//            options.put("transmission", );
-//            options.put("airBags", );
-//            options.put("abs", );
-//            options.put("powerSteering", );
-//            options.put("powerWindows", );
-//            options.put("sunroof", );
-//            options.put("airConditioning", );
-//            options.put("leatherSeats", );
-//            options.put("powerSeats", );
-//            options.put("powerMirror", );
-//            options.put("reversingRadar", );
-//            options.put("reversingCamera", );
-//            options.put("ccs", );
-//            options.put("softCloseDoors", );
-//            options.put("rearPowerSeats", );
-//            options.put("ahc", );
-//            options.put("parkAssist", );
-//            options.put("clapboard", );
+            options.put("driveType", getSpinnerSelectedText(rootView, R.id.csi_driveType_spinner));
+            options.put("transmission", getSpinnerSelectedText(rootView, R.id.csi_transmission_spinner));
+            options.put("airBags", getSpinnerSelectedText(rootView, R.id.csi_airbag_spinner));
+            options.put("abs", getSpinnerSelectedText(rootView, R.id.csi_abs_spinner));
+            options.put("powerSteering", getSpinnerSelectedText(rootView, R.id.csi_powerSteering_spinner));
+            options.put("powerWindows", getSpinnerSelectedText(rootView, R.id.csi_powerWindows_spinner));
+            options.put("sunroof", getSpinnerSelectedText(rootView, R.id.csi_sunroof_spinner));
+            options.put("airConditioning", getSpinnerSelectedText(rootView, R.id.csi_airConditioning_spinner));
+            options.put("leatherSeats", getSpinnerSelectedText(rootView, R.id.csi_leatherSeats_spinner));
+            options.put("powerSeats", getSpinnerSelectedText(rootView, R.id.csi_powerSeats_spinner));
+            options.put("powerMirror", getSpinnerSelectedText(rootView, R.id.csi_powerMirror_spinner));
+            options.put("reversingRadar", getSpinnerSelectedText(rootView, R.id.csi_reversingRadar_spinner));
+            options.put("reversingCamera", getSpinnerSelectedText(rootView, R.id.csi_reversingCamera_spinner));
+            options.put("ccs", getSpinnerSelectedText(rootView, R.id.csi_ccs_spinner));
+            options.put("softCloseDoors", getSpinnerSelectedText(rootView, R.id.csi_softCloseDoors_spinner));
+            options.put("rearPowerSeats", getSpinnerSelectedText(rootView, R.id.csi_rearPowerSeats_spinner));
+            options.put("ahc", getSpinnerSelectedText(rootView, R.id.csi_ahc_spinner));
+            options.put("parkAssist", getSpinnerSelectedText(rootView, R.id.csi_parkAssist_spinner));
+            options.put("clapboard", getSpinnerSelectedText(rootView, R.id.csi_clapboard_spinner));
         } catch (JSONException e) {
 
         }
@@ -631,17 +633,50 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         return options.toString();
     }
 
-    // 生成最终的配置信息jsonString
-//    public String generateProceduresJsonString() {
-//        JSONObject jsonObject = new JSONObject();
-//
-//        try {
-//            jsonObject.put("vin", vin_edit.getText().toString());
-//            jsonObject.put("country", );
-//        } catch (JSONException e) {
-//
-//        }
-//    }
+    //生成最终的配置信息jsonString
+    public String generateProceduresJsonString() {
+        JSONObject procedures = new JSONObject();
+
+        try {
+            procedures.put("regArea", getSpinnerSelectedText(rootView, R.id.ci_regArea_spinner));
+            procedures.put("plateNumber", getEditText(rootView, R.id.ci_plateNumber_edit));
+            procedures.put("licenseModel", getEditText(rootView, R.id.ci_licenceModel_edit));
+            procedures.put("vehicleType", getSpinnerSelectedText(rootView, R.id.ci_vehicleType_spinner));
+            procedures.put("useCharacter", getSpinnerSelectedText(rootView, R.id.ci_useCharacter_spinner));
+            procedures.put("mileage", Integer.parseInt(getEditText(rootView, R.id.bi_mileAge_edit)));
+            procedures.put("exteriorColor", getSpinnerSelectedText(rootView, R.id.ci_exteriorColor_spinner));
+            //procedures.put("regDate", );
+            //procedures.put("builtDate", );
+            procedures.put("invoice", getSpinnerSelectedText(rootView, R.id.ct_invoice_spinner));
+            procedures.put("invoicePrice", getEditText(rootView, R.id.ct_invoice_edit));
+            procedures.put("surtax", getSpinnerSelectedText(rootView, R.id.ct_surtax_spinner));
+            procedures.put("transferCount", getSpinnerSelectedText(rootView, R.id.ci_transferCount_spinner));
+            //procedures.put("transferLastDate", );
+            //procedures.put("annualInspection", );
+            //procedures.put("compulsoryInsurance", );
+            procedures.put("licensePhotoMatch", getEditText(rootView, R.id.ct_licencePhotoMatch_edit));
+            procedures.put("insurance", getSpinnerSelectedText(rootView, R.id.ct_insurance_spinner));
+            procedures.put("insuranceRegion", getSpinnerSelectedText(rootView, R.id.ct_insuranceRegion_spinner));
+            procedures.put("insuranceAmount", getSpinnerSelectedText(rootView, R.id.ct_insuranceAmount_edit));
+            //procedures.put("insuranceExpiryDate", );
+            procedures.put("insuranceCompany", getSpinnerSelectedText(rootView, R.id.ct_insuranceCompany_spinner));
+            procedures.put("importProcedures", getSpinnerSelectedText(rootView, R.id.ct_importProcedures_spinner));
+            procedures.put("spareTire", getSpinnerSelectedText(rootView, R.id.ct_spareTire_spinner));
+            procedures.put("spareKey", getSpinnerSelectedText(rootView, R.id.ct_spareKey_spinner));
+            procedures.put("ownerName", getEditText(rootView, R.id.ci_ownerName_edit));
+            procedures.put("ownerIdNumber", getEditText(rootView, R.id.ci_ownerIdNumber_edit));
+            procedures.put("ownerPhone", getEditText(rootView, R.id.ci_ownerPhone_edit));
+            procedures.put("transferAgree", getSpinnerSelectedText(rootView, R.id.ex_transferAgree_spinner));
+            procedures.put("transferRequire", getEditText(rootView, R.id.ct_transferRequire_edit));
+        } catch (JSONException e) {
+
+        }
+
+        return procedures.toString();
+    }
+
+
+
 
 
     // <editor-fold defaultstate="collapsed" desc="设置各种Spinner">
@@ -854,12 +889,12 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     {
         String[] provinceArray = getResources().getStringArray(R.array.ci_province);
         List<String> province = Helper.StringArray2List(provinceArray);
-        SetSpinnerData(R.id.ci_reg_location_spinner, province, rootView);
+        SetSpinnerData(R.id.ci_regArea_spinner, province, rootView);
 
         String[] provinceAbbreviationArray = getResources().getStringArray(R.array.ci_province_abbreviation);
         final List<String> provinceAbbreviation = Helper.StringArray2List(provinceAbbreviationArray);
 
-        Spinner regLocationSpinner = (Spinner) rootView.findViewById(R.id.ci_reg_location_spinner);
+        Spinner regLocationSpinner = (Spinner) rootView.findViewById(R.id.ci_regArea_spinner);
         regLocationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -879,38 +914,38 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         String[] colorArray = getResources().getStringArray(R.array.ci_car_color_arrays);
         List<String> colorList = Helper.StringArray2List(colorArray);
 
-        SetSpinnerData(R.id.ci_car_color_spinner, colorList, rootView);
+        SetSpinnerData(R.id.ci_exteriorColor_spinner, colorList, rootView);
     }
 
     // 初次登记时间
     private void setFirstLogTimeSpinner()
     {
-        SetSpinnerData(R.id.ci_first_log_year_spinner, Helper.GetYearList(20), rootView);
-        SetSpinnerData(R.id.ci_first_log_month_spinner, Helper.GetMonthList(), rootView);
+        SetSpinnerData(R.id.ci_regYear_spinner, Helper.GetYearList(20), rootView);
+        SetSpinnerData(R.id.ci_regMonth_spinner, Helper.GetMonthList(), rootView);
 
-        firstLogYearSpinner = (Spinner) rootView.findViewById(R.id.ci_first_log_year_spinner);
+        firstLogYearSpinner = (Spinner) rootView.findViewById(R.id.ci_regYear_spinner);
         firstLogYearSpinner.setSelection(17);
         firstLogYearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // 出厂日期不能晚于登记日期
                 List<String> temp = Helper.GetYearList(20);
-                SetSpinnerData(R.id.ci_manufacture_year_spinner, temp.subList(0, i + 1), rootView);
+                SetSpinnerData(R.id.ci_builtYear_spinner, temp.subList(0, i + 1), rootView);
                 manufactureYearSpinner.setSelection(i);
 
                 // 最后过户时间不能早于登记日期
-                SetSpinnerData(R.id.ci_last_transfer_year_spinner, temp.subList(i, temp.size()), rootView);
+                SetSpinnerData(R.id.ci_transferLastYear_spinner, temp.subList(i, temp.size()), rootView);
 
                 // 年检有效期、交强险有效期不能早于登记日期
                 int from = Integer.parseInt(temp.get(i));
                 int to = Calendar.getInstance().get(Calendar.YEAR) + 2;
 
-                SetSpinnerData(R.id.ct_yearly_check_available_date_year_spinner, Helper.GetNumbersList(from, to), rootView);
-                SetSpinnerData(R.id.ct_available_date_year_spinner, Helper.GetNumbersList(from, to), rootView);
-                SetSpinnerData(R.id.ct_business_insurance_available_date_year_spinner, Helper.GetNumbersList(from, to), rootView);
+                SetSpinnerData(R.id.ct_annualInspectionYear_spinner, Helper.GetNumbersList(from, to), rootView);
+                SetSpinnerData(R.id.ct_compulsoryInsuranceYear_spinner, Helper.GetNumbersList(from, to), rootView);
+                SetSpinnerData(R.id.ct_insuranceExpiryYear_spinner, Helper.GetNumbersList(from, to), rootView);
 
                 // 商险有效期不能早于登记日期
-                SetSpinnerData(R.id.ct_business_insurance_available_date_year_spinner, temp.subList(i, temp.size()), rootView);
+                SetSpinnerData(R.id.ct_insuranceExpiryYear_spinner, temp.subList(i, temp.size()), rootView);
             }
 
             @Override
@@ -919,12 +954,12 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             }
         });
 
-        firstLogMonthSpinner = (Spinner) rootView.findViewById(R.id.ci_first_log_month_spinner);
+        firstLogMonthSpinner = (Spinner) rootView.findViewById(R.id.ci_regMonth_spinner);
         firstLogMonthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 List<String> temp = Helper.GetMonthList();
-                SetSpinnerData(R.id.ci_manufacture_month_spinner, temp.subList(0, i + 1), rootView);
+                SetSpinnerData(R.id.ci_builtMonth_spinner, temp.subList(0, i + 1), rootView);
             }
 
             @Override
@@ -937,39 +972,39 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     // 出厂日期
     private void setManufactureTimeSpinner()
     {
-        SetSpinnerData(R.id.ci_manufacture_year_spinner, Helper.GetYearList(20), rootView);
-        SetSpinnerData(R.id.ci_manufacture_month_spinner, Helper.GetMonthList(), rootView);
+        SetSpinnerData(R.id.ci_builtYear_spinner, Helper.GetYearList(20), rootView);
+        SetSpinnerData(R.id.ci_builtMonth_spinner, Helper.GetMonthList(), rootView);
     }
 
     // 过户次数
     private void setTransferCountSpinner()
     {
-        SetSpinnerData(R.id.ci_transfer_count_spinner, Helper.GetNumbersList(0, 15), rootView);
+        SetSpinnerData(R.id.ci_transferCount_spinner, Helper.GetNumbersList(0, 15), rootView);
     }
 
     // 最后过户时间
     private void setLastTransferTimeSpinner()
     {
-        SetSpinnerData(R.id.ci_last_transfer_year_spinner, Helper.GetYearList(17), rootView);
-        SetSpinnerData(R.id.ci_last_transfer_month_spinner, Helper.GetMonthList(), rootView);
+        SetSpinnerData(R.id.ci_transferLastYear_spinner, Helper.GetYearList(17), rootView);
+        SetSpinnerData(R.id.ci_transferLastMonth_spinner, Helper.GetMonthList(), rootView);
     }
 
     // 年检有效期
     private void setYearlyCheckAvailableDateSpinner() {
-        SetSpinnerData(R.id.ct_yearly_check_available_date_year_spinner, Helper.GetYearList(2), rootView);
-        SetSpinnerData(R.id.ct_yearly_check_available_date_month_spinner, Helper.GetMonthList(), rootView);
+        SetSpinnerData(R.id.ct_annualInspectionYear_spinner, Helper.GetYearList(2), rootView);
+        SetSpinnerData(R.id.ct_annualInspectionMonth_spinner, Helper.GetMonthList(), rootView);
     }
 
     // 有效期至（交强险）
     private void setAvailableDateYearSpinner() {
-        SetSpinnerData(R.id.ct_available_date_year_spinner, Helper.GetYearList(2), rootView);
-        SetSpinnerData(R.id.ct_available_date_month_spinner, Helper.GetMonthList(), rootView);
+        SetSpinnerData(R.id.ct_compulsoryInsuranceYear_spinner, Helper.GetYearList(2), rootView);
+        SetSpinnerData(R.id.ct_compulsoryInsuranceMonth_spinner, Helper.GetMonthList(), rootView);
     }
 
     // 商险有效期
     private void setBusinessInsuranceAvailableDateYearSpinner() {
-        SetSpinnerData(R.id.ct_business_insurance_available_date_year_spinner, Helper.GetYearList(19), rootView);
-        SetSpinnerData(R.id.ct_business_insurance_available_date_month_spinner, Helper.GetMonthList(), rootView);
+        SetSpinnerData(R.id.ct_insuranceExpiryYear_spinner, Helper.GetYearList(19), rootView);
+        SetSpinnerData(R.id.ct_insuranceExpiryMonth_spinner, Helper.GetMonthList(), rootView);
     }
 
     public void PictureMatch()
@@ -989,7 +1024,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             public void onClick(DialogInterface dialog, int id) {
                 // 相符
                 match = true;
-                EditText editText = (EditText)rootView.findViewById(R.id.picture_match_edit);
+                EditText editText = (EditText)rootView.findViewById(R.id.ct_licencePhotoMatch_edit);
                 String matches = getResources().getString(R.string.ci_attention_match);
                 String notmatch = getResources().getString(R.string.ci_attention_notmatch);
                 editText.setText(match ? matches : notmatch);
@@ -999,7 +1034,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             public void onClick(DialogInterface dialog, int id) {
                 // 不符
                 match = false;
-                EditText editText = (EditText)rootView.findViewById(R.id.picture_match_edit);
+                EditText editText = (EditText)rootView.findViewById(R.id.ct_licencePhotoMatch_edit);
                 String matches = getResources().getString(R.string.ci_attention_match);
                 String notmatch = getResources().getString(R.string.ci_attention_notmatch);
                 editText.setText(match ? matches : notmatch);

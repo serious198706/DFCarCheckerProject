@@ -6,6 +6,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -232,5 +233,17 @@ public class Helper {
         SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
         cipher.init(Cipher.DECRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));
         return new String(cipher.doFinal(cipherText),"UTF-8");
+    }
+
+    public static String getSpinnerSelectedText(View view, int spinnerId) {
+        Spinner spinner = (Spinner)view.findViewById(spinnerId);
+
+        return spinner.getSelectedItem().toString();
+    }
+
+    public static String getEditText(View view, int editId) {
+        EditText editText = (EditText)view.findViewById(editId);
+
+        return editText.getText().toString();
     }
 }

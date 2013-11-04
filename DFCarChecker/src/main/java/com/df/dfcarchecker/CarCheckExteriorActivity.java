@@ -35,8 +35,8 @@ import java.util.List;
 public class CarCheckExteriorActivity extends Activity implements View.OnClickListener {
     private int currentShotPart;
     private EditText brokenEdit;
-    private Spinner paintSpinner;
-    private EditText commentEdit;
+    private static Spinner smoothSpinner;
+    private static EditText commentEdit;
     public static List<PosEntity> posEntities = CarCheckIntegratedFragment.outsidePaintEntities;
     public static List<PhotoEntity> photoEntities = CarCheckIntegratedFragment.outsidePhotoEntities;
     private OutsidePaintPreviewView outsidePaintPreviewView;
@@ -72,7 +72,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         tip = (TextView)findViewById(R.id.tipOnPreview);
 
         // 车辆漆面光洁度
-        paintSpinner = (Spinner) findViewById(R.id.out_paint_spinner);
+        smoothSpinner = (Spinner) findViewById(R.id.out_smooth_spinner);
 
         // 备注
         commentEdit = (EditText) findViewById(R.id.out_comment_edit);
@@ -81,7 +81,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         if(extras != null) {
             String paintIndex = extras.getString("INDEX");
             if(paintIndex != null) {
-                paintSpinner.setSelection(Integer.parseInt(paintIndex));
+                smoothSpinner.setSelection(Integer.parseInt(paintIndex));
             }
 
             String comment = extras.getString("COMMENT");
@@ -289,7 +289,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
     private void saveResult() {
         // 创建结果意图和包括地址
         Intent intent = new Intent();
-        intent.putExtra("INDEX", Integer.toString(paintSpinner.getSelectedItemPosition()));
+        intent.putExtra("INDEX", Integer.toString(smoothSpinner.getSelectedItemPosition()));
         intent.putExtra("COMMENT", commentEdit.getText().toString());
 
         addPhotosToQueue();
@@ -339,5 +339,18 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         }
 
         return BitmapFactory.decodeFile(path + name, options);
+    }
+
+    public static String generateExteriorJsonString() {
+        JSONObject exterior = new JSONObject();
+
+        try {
+            exterior.put("smooth", smoothSpinner.getSelectedItem().toString());
+            exterior.put("comment", commentEdit.getText().toString());
+        } catch (JSONException e) {
+
+        }
+
+        return exterior.toString();
     }
 }

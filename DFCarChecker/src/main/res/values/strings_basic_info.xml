@@ -174,7 +174,7 @@
     <string name="ci">车辆信息</string>
     <string name="ci_licence_type">行驶证品牌型号：</string>
     <string name="ci_car_type">行驶证车辆类型：</string>
-    <string-array name="ci_car_type_arrays">
+    <string-array name="ci_vehicleType_items">
         <item>微型客车</item>
         <item>小型客车、轿车</item>
         <item>中型客车</item>
@@ -288,7 +288,7 @@
     <string name="ci_last_transfer_time">最后过户时间：</string>
 
     <string name="ci_use">使用性质：</string>
-    <string-array name="ci_use_items">
+    <string-array name="ci_useCharacter_items">
         <item>非营运</item>
         <item>营运</item>
         <item>营转非</item>
@@ -307,7 +307,7 @@
     <string name="ci_attention_done">确定</string>
 
     <string name="ct_buy_tickets">购车发票：</string>
-    <string-array name="ct_tickets">
+    <string-array name="ct_invoice_items">
         <item>有票有工商章</item>
         <item>有票无工商章</item>
         <item>过户票</item>
@@ -316,14 +316,14 @@
     <string name="ci_money">元</string>
 
     <string name="ct_extra_tax_certification">附加税证：</string>
-    <string-array name="ct_extra_tax_certification_type">
+    <string-array name="ct_surtax_items">
         <item>有-征税</item>
         <item>有-免税</item>
         <item>无</item>
     </string-array>
 
     <string name="ct_backup_tire">备胎</string>
-    <string-array name="ct_backup_tire_items">
+    <string-array name="ct_spareTire_items">
         <item>有</item>
         <item>无</item>
         <item>未见</item>
@@ -334,14 +334,14 @@
     <string name="ct_available_date">交强险有效期：</string>
 
     <string name="ct_business_insurance">商业保险：</string>
-    <string-array name="ct_business_insurance_type">
+    <string-array name="ct_insurance_items">
         <item>有-随车出售</item>
         <item>有-不随车出售</item>
         <item>无</item>
     </string-array>
 
     <string name="ct_business_insurance_area">商险地域：</string>
-    <string-array name="ct_business_insurance_area_type">
+    <string-array name="ct_insuranceRegion_items">
         <item>本市</item>
         <item>外地</item>
     </string-array>
@@ -350,7 +350,7 @@
     <string name="ct_business_insurance_available_date">商险有效期：</string>
     <string name="ct_business_insurance_company">商险公司：</string>
 
-    <string-array name="ct_business_insurance_companies">
+    <string-array name="ct_insuranceCompany_items">
         <item>人保</item>
         <item>太保</item>
         <item>平安</item>
@@ -377,13 +377,13 @@
     </string-array>
 
     <string name="ct_ported_procedure">进口车手续：</string>
-    <string-array name="ct_ported_prodecure_items">
+    <string-array name="ct_importProcedures_items">
         <item>大贸</item>
         <item>小贸</item>
     </string-array>
 
     <string name="ex_exchange_type">过户要求：</string>
-    <string-array name="ex_exchange_types">
+    <string-array name="ex_transferAgree_items">
         <item>本市过户</item>
         <item>外迁过户</item>
         <item>不限(无补贴)</item>
