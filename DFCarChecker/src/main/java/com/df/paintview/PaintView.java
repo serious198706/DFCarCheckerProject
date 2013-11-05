@@ -39,4 +39,5 @@ public abstract class PaintView extends ImageView {
     public abstract List<PhotoEntity> getPhotoEntities(String sight);
     public abstract long getCurrentTimeMillis();
     public abstract String getGroup();
+    public abstract int getType();
 }

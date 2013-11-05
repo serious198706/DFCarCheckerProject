@@ -125,6 +125,7 @@ public class FramePaintView extends PaintView {
     public void setType(int type) {
         this.currentType = type;
     }
+    public int getType() {return this.currentType;}
 
     private void paint(Canvas canvas) {
         for (PosEntity entity : data) {
@@ -154,7 +155,6 @@ public class FramePaintView extends PaintView {
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                undo();
             }
         });
         builder.show();

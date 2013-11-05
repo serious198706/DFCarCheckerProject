@@ -136,7 +136,7 @@ public class InteriorPaintView extends PaintView {
     public void setType(int type) {
         this.currentType = type;
     }
-
+    public int getType() {return this.currentType;}
 
     private Paint getPaint(int type) {
         Paint paint = new Paint();
@@ -179,7 +179,6 @@ public class InteriorPaintView extends PaintView {
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                undo();
             }
         });
         builder.show();

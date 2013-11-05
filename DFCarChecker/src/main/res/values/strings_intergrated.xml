@@ -195,32 +195,35 @@
     <string name="it_curtain">隔物板（伸缩帘）：</string>
 
     <string name="it_engine">发动机检查：</string>
-    <string name="it_engine_start">发动机可正常启动：</string>
-    <string name="it_engine_steady">发动机怠速平稳：</string>
-    <string name="it_engine_sound">发动机怠速无异响：</string>
-    <string name="it_engine_gas_color">目测发动机排气颜色：</string>
+    <string name="it_engineStarted">发动机可正常启动：</string>
+    <string name="it_engineSteady">发动机怠速平稳：</string>
+    <string name="it_engineStrangeNoices">发动机怠速无异响：</string>
+    <string name="it_engineExhaustColor">目测发动机排气颜色：</string>
 
-    <string-array name="it_engine_gas_color_item">
+    <string-array name="it_engineExhaustColor_items">
         <item>无色</item>
         <item>黑</item>
         <item>蓝</item>
     </string-array>
 
-    <string name="it_engine_oil_leak">发动机无漏液现象：</string>
-    <string name="it_engine_pipe">舱内的线路及管路无老化的现象：</string>
+    <string name="it_engineFluid">发动机无漏液现象：</string>
+    <!-- string name="it_engine_pipe">舱内的线路及管路无老化的现象：</string -->
+
     <string name="it_gear">变速箱检查</string>
-    <string name="it_gear_manually">手动档：</string>
-    <string name="it_gear_manually_1">离合器踩踏轻便，无异常沉重感：</string>
-    <string name="it_gear_manually_2">各档位切换清晰、轻便，无涩滞感：</string>
-    <string name="it_gear_manually_3">档把的晃动间隙在合理范围内：</string>
-    <string name="it_gear_auto">自动档</string>
-    <string name="it_gear_auto_1">原地挂档的冲击感在合理范围内：</string>
-    <string name="it_gear_auto_2">各档位切换清晰、轻便，无涩滞感：</string>
-    <string name="it_gear_auto_3">档把的晃动间隙在合理范围内：</string>
-    <string name="it_gear_clear">档位是否清晰、不松晃：</string>
+    <string name="it_gearMt">手动档：</string>
+    <string name="it_gearMtClutch">离合器踩踏轻便，无异常沉重感：</string>
+    <string name="it_gearMtShiftEasy">各档位切换清晰、轻便，无涩滞感：</string>
+    <string name="it_gearMtShiftSpace">档把的晃动间隙在合理范围内：</string>
+    <string name="it_gearAt">自动档</string>
+    <string name="it_gearAtShiftShock">原地挂档的冲击感在合理范围内：</string>
+    <string name="it_gearAtShiftNoise">各档位切换时无异响：</string>
+    <string name="it_gearAtShiftEasy">各档位切换清晰、轻便，无涩滞感：</string>
+
+    <!--string name="it_gear_clear">档位是否清晰、不松晃：</string>
     <string name="it_gear_push_sound">离合器踩下是否有异响：</string>
     <string name="it_gear_release_sound">离合器松开是否有异响：</string>
-    <string name="it_gear_oil_leak">变速箱漏油：</string>
+    <string name="it_gear_oil_leak">变速箱漏油：</string-->
+
     <string name="it_comment">综合检查说明：</string>
     <string name="it_other">其他检查</string>
     <string name="it_other_water">泡水检查</string>

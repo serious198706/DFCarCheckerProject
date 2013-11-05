@@ -92,6 +92,7 @@ public class CarSettings {
         brandString = "";
         displacement = "";
         category = "";
+        figure = "";
         driveType = "";
         transmission = "";
         airbag = "";

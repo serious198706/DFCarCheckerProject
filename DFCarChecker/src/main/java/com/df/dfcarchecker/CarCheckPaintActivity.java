@@ -25,6 +25,7 @@ import com.df.paintview.InteriorPaintView;
 import com.df.paintview.PaintView;
 import com.df.service.Common;
 import com.df.service.Helper;
+import com.df.service.SoapService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,7 +50,7 @@ public class CarCheckPaintActivity extends Activity {
     private SaveCapturedImageTask mSaveCapturedImageTask;
 
     // 保存草图
-    private static List<PhotoEntity> sketchPhotoEntities;
+    public static List<PhotoEntity> sketchPhotoEntities;
 
     // 当前绘图类型
     private int currentType = 0;
@@ -289,99 +290,103 @@ public class CarCheckPaintActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String group = "";
+        int startX, startY, endX, endY;
+        int radius = 0;
+        long currentTimeMillis = 0;
+
+        // 获取绘图父类实体
+        paintView = (PaintView)map.get(currentPaintView);
+
         switch (resultCode) {
             // 拍摄完成后，各种组织
             case Activity.RESULT_OK:
-                String group = "";
-                int startX, startY, endX, endY;
-                int radius = 0;
-                long currentTimeMillis;
-
-                // 照片集合
-                List<PhotoEntity> photoEntities = paintView.getPhotoEntities();
-
-                // 获取绘图父类实体
-                paintView = (PaintView)map.get(currentPaintView);
-
-                // 获取坐标们
-                PosEntity posEntity = paintView.getPosEntity();
-                startX = posEntity.getStartX();
-                startY = posEntity.getStartY();
-                endX = posEntity.getEndX();
-                endY = posEntity.getEndY();
-
-                // 如果是“变形”，即圆
-                if(currentType == 3) {
-                    // 计算半径
-                    int dx = Math.abs(endX - startX);
-                    int dy = Math.abs(endY- startY);
-                    int dr = (int)Math.sqrt(dx * dx + dy * dy);
-
-                    // 计算圆心
-                    int x0 = (startX + endX) / 2;
-                    int y0 = (startY + endY) / 2;
-
-                    startX = x0;
-                    startY = y0;
-                    endX = endY = 0;
-                    radius = dr;
-                }
-
-                // 如果是结构，则要特殊处理 ----- 艹，结构老是要特殊处理
-                if(currentPaintView.equals("FRAME_PAINT")) {
-                    photoEntities = paintView.getPhotoEntities(sight);
-                }
-
                 // 获取当前文件名
                 currentTimeMillis = paintView.getCurrentTimeMillis();
-
-                // 组织JsonString
-                JSONObject jsonObject = new JSONObject();
-
-                try {
-                    JSONObject photoJsonObject = new JSONObject();
-
-                    jsonObject.put("Group", group);
-
-                    // 如果是结构检查
-                    if(currentPaintView.equals("FRAME_PAINT")) {
-                        jsonObject.put("Part", sight.toLowerCase());
-                        photoJsonObject.put("x", startX);
-                        photoJsonObject.put("y", startY);
-                    } else {
-                        jsonObject.put("Part", "fault");
-                        photoJsonObject.put("type", currentType);
-                        photoJsonObject.put("startX", startX);
-                        photoJsonObject.put("startY", startY);
-                        photoJsonObject.put("endX", endX);
-                        photoJsonObject.put("endY", endY);
-                        photoJsonObject.put("radius", radius);
-
-                    }
-
-                    jsonObject.put("PhotoData", photoJsonObject.toString());
-                    jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
-                    jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                    jsonObject.put("Key", LoginActivity.userInfo.getKey());
-                } catch (Exception e) {
-
-                }
-
-                PhotoEntity photoEntity = new PhotoEntity();
-                photoEntity.setFileName(Helper.getOutputMediaFileUri(currentTimeMillis).getPath());
-                photoEntity.setJsonString(jsonObject.toString());
-
-                // 暂时不加入照片池，只放入各自的List，等保存时再提交
-                photoEntities.add(photoEntity);
                 break;
             case Activity.RESULT_CANCELED:
-                paintView = (PaintView)map.get(currentPaintView);
-                paintView.undo();
+                // 获取当前文件名
+                currentTimeMillis = 0;
                 break;
             default:
                 Log.d("DFCarChecker", "拍摄故障！！");
                 break;
         }
+
+        // 照片集合
+        List<PhotoEntity> photoEntities = paintView.getPhotoEntities();
+
+        // 获取坐标们
+        PosEntity posEntity = paintView.getPosEntity();
+        startX = posEntity.getStartX();
+        startY = posEntity.getStartY();
+        endX = posEntity.getEndX();
+        endY = posEntity.getEndY();
+
+        // 如果是“变形”，即圆
+        if(currentType == 3) {
+            // 计算半径
+            int dx = Math.abs(endX - startX);
+            int dy = Math.abs(endY- startY);
+            int dr = (int)Math.sqrt(dx * dx + dy * dy);
+
+            // 计算圆心
+            int x0 = (startX + endX) / 2;
+            int y0 = (startY + endY) / 2;
+
+            startX = x0;
+            startY = y0;
+            endX = endY = 0;
+            radius = dr;
+        }
+
+        // 如果是结构，则要特殊处理 ----- 艹，结构老是要特殊处理
+        if(currentPaintView.equals("FRAME_PAINT")) {
+            photoEntities = paintView.getPhotoEntities(sight);
+        }
+
+        // 组织JsonString
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            JSONObject photoJsonObject = new JSONObject();
+
+            jsonObject.put("Group", paintView.getGroup());
+
+            // 如果是结构检查
+            if(currentPaintView.equals("FRAME_PAINT")) {
+                jsonObject.put("Part", sight.toLowerCase());
+                photoJsonObject.put("x", startX);
+                photoJsonObject.put("y", startY);
+            } else {
+                jsonObject.put("Part", "fault");
+                photoJsonObject.put("type", paintView.getType());
+                photoJsonObject.put("startX", startX);
+                photoJsonObject.put("startY", startY);
+                photoJsonObject.put("endX", endX);
+                photoJsonObject.put("endY", endY);
+                photoJsonObject.put("radius", radius);
+            }
+
+            jsonObject.put("PhotoData", photoJsonObject);
+            jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
+            jsonObject.put("UserId", LoginActivity.userInfo.getId());
+            jsonObject.put("Key", LoginActivity.userInfo.getKey());
+        } catch (Exception e) {
+            Log.d("DFCarChecker", "Json组织错误：" + e.getMessage());
+        }
+
+        // 如果文件名为0，则表示此点无照片
+        String fileName = (currentTimeMillis == 0 ? "" : Long.toString(currentTimeMillis) + "" +
+                ".jpg");
+
+        // 组建PhotoEntity
+        PhotoEntity photoEntity = new PhotoEntity();
+        photoEntity.setFileName(fileName);
+        photoEntity.setJsonString(jsonObject.toString());
+
+        // 暂时不加入照片池，只放入各自的List，等保存时再提交
+        photoEntities.add(photoEntity);
     }
 
     // 保存草图的线程
@@ -534,13 +539,7 @@ public class CarCheckPaintActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if(currentPaintView.equals("EX_PAINT")) {
-            exteriorPaintView.cancel();
-        } else if(currentPaintView.equals("IN_PAINT")) {
-            interiorPaintView.cancel();
-        } else if(currentPaintView.equals("FRAME_PAINT")) {
-            framePaintView.cancel();
-        }
+        alertUser(R.string.out_cancel_confirm);
     }
 
 }

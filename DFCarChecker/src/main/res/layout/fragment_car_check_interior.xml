@@ -29,7 +29,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <com.df.paintview.InsidePaintPreviewView
+            <com.df.paintview.InteriorPaintPreviewView
                 android:id="@+id/in_base_image_preview"
                 android:layout_width="500dp"
                 android:layout_height="691dp"

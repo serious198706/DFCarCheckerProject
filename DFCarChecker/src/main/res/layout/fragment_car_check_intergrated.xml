@@ -116,9 +116,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/it_engine_start">
+                android:text="@string/it_engineStarted">
             </TextView>
-            <Spinner android:id="@+id/it_engine_start_spinner"
+            <Spinner android:id="@+id/it_engineStarted_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -130,9 +130,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/it_engine_steady">
+                android:text="@string/it_engineSteady">
             </TextView>
-            <Spinner android:id="@+id/it_engine_steady_spinner"
+            <Spinner android:id="@+id/it_engineSteady_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -144,9 +144,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/it_engine_sound">
+                android:text="@string/it_engineStrangeNoices">
             </TextView>
-            <Spinner android:id="@+id/it_engine_sound_spinner"
+            <Spinner android:id="@+id/it_engineStrangeNoices_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -158,13 +158,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/it_engine_gas_color">
+                android:text="@string/it_engineExhaustColor">
             </TextView>
-            <Spinner android:id="@+id/it_engine_gas_color_spinner"
+            <Spinner android:id="@+id/it_engineExhaustColor_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:entries="@array/it_engine_gas_color_item">
+                android:entries="@array/it_engineExhaustColor_items">
             </Spinner>
         </TableRow>
         <TableRow>
@@ -172,9 +172,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/it_engine_oil_leak">
+                android:text="@string/it_engineFluid">
             </TextView>
-            <Spinner android:id="@+id/it_engine_oil_leak_spinner"
+            <Spinner android:id="@+id/it_engineFluid_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -214,15 +214,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="@string/it_gear_manually"/>
+            android:text="@string/it_gearMt"/>
         <TableRow android:id="@+id/it_gear_manually_row_1">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/it_gear_manually_1">
+                android:text="@string/it_gearMtClutch">
             </TextView>
-            <Spinner android:id="@+id/it_gear_manually_spinner_1"
+            <Spinner android:id="@+id/it_gearMtClutch_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -234,9 +234,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/it_gear_manually_2">
+                android:text="@string/it_gearMtShiftEasy">
             </TextView>
-            <Spinner android:id="@+id/it_gear_manually_spinner_2"
+            <Spinner android:id="@+id/it_gearMtShiftEasy_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -248,9 +248,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/it_gear_manually_3">
+                android:text="@string/it_gearMtShiftSpace">
             </TextView>
-            <Spinner android:id="@+id/it_gear_manually_spinner_3"
+            <Spinner android:id="@+id/it_gearMtShiftSpace_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -263,15 +263,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"
-            android:text="@string/it_gear_auto"/>
+            android:text="@string/it_gearAt"/>
         <TableRow android:id="@+id/it_gear_auto_row_1">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/it_gear_auto_1">
+                android:text="@string/it_gearAtShiftShock">
             </TextView>
-            <Spinner android:id="@+id/it_gear_auto_spinner_1"
+            <Spinner android:id="@+id/it_gearAtShiftShock_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -283,9 +283,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/it_gear_auto_2">
+                android:text="@string/it_gearAtShiftNoise">
             </TextView>
-            <Spinner android:id="@+id/it_gear_auto_spinner_2"
+            <Spinner android:id="@+id/it_gearAtShiftNoise_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -297,9 +297,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textSize="18sp"
-                android:text="@string/it_gear_auto_3">
+                android:text="@string/it_gearAtShiftEasy">
             </TextView>
-            <Spinner android:id="@+id/it_gear_auto_spinner_3"
+            <Spinner android:id="@+id/it_gearAtShiftEasy_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -343,7 +343,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_engine_indicator">
             </TextView>
-            <Spinner android:id="@+id/it_engine_indicator_spinner"
+            <Spinner android:id="@+id/it_engineFault_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -357,7 +357,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_oil_indicator">
             </TextView>
-            <Spinner android:id="@+id/it_oil_indicator_spinner"
+            <Spinner android:id="@+id/it_oilPressure_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -372,7 +372,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_handbreak_indicator">
             </TextView>
-            <Spinner android:id="@+id/it_handbreak_indicator_spinner"
+            <Spinner android:id="@+id/it_parkingBrake_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -386,7 +386,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_water_temp_indicator">
             </TextView>
-            <Spinner android:id="@+id/it_water_temp_indicator_spinner"
+            <Spinner android:id="@+id/it_waterTemp_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -400,7 +400,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_revolution_counter">
             </TextView>
-            <Spinner android:id="@+id/it_revolution_counter_spinner"
+            <Spinner android:id="@+id/it_tachometer_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -414,7 +414,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_odometer">
             </TextView>
-            <Spinner android:id="@+id/it_odometer_spinner"
+            <Spinner android:id="@+id/it_milometer_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -662,7 +662,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_chassis_lf_good">
             </TextView>
-            <Spinner android:id="@+id/it_chassis_lf_good_spinner"
+            <Spinner android:id="@+id/it_chassisLeftFront_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -676,7 +676,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_chassis_rf_good">
             </TextView>
-            <Spinner android:id="@+id/it_chassis_rf_good_spinner"
+            <Spinner android:id="@+id/it_chassisRightFront_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -690,7 +690,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_chassis_lr_good">
             </TextView>
-            <Spinner android:id="@+id/it_chassis_lr_good_spinner"
+            <Spinner android:id="@+id/it_chassisLeftRear_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -704,7 +704,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_chassis_rr_good">
             </TextView>
-            <Spinner android:id="@+id/it_chassis_rr_good_spinner"
+            <Spinner android:id="@+id/it_chassisRightRear_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -718,7 +718,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_chassis_good">
             </TextView>
-            <Spinner android:id="@+id/it_chassis_good_spinner"
+            <Spinner android:id="@+id/it_chassisPerfect_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -732,7 +732,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_chassis_engine_good">
             </TextView>
-            <Spinner android:id="@+id/it_chassis_engine_good_spinner"
+            <Spinner android:id="@+id/it_chassisEngineBottom_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -746,7 +746,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_chassis_gear_good">
             </TextView>
-            <Spinner android:id="@+id/it_chassis_gear_good_spinner"
+            <Spinner android:id="@+id/it_chassisGearboxBottom_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -796,7 +796,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_water_cabin_smoke">
             </TextView>
-            <Spinner android:id="@+id/it_water_cabin_smoke_spinner"
+            <Spinner android:id="@+id/it_waterCigarLighter_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -810,7 +810,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_water_cabin_ashtray">
             </TextView>
-            <Spinner android:id="@+id/it_water_cabin_ashtray_spinner"
+            <Spinner android:id="@+id/it_waterAshtray_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -824,7 +824,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_water_cabin_belt">
             </TextView>
-            <Spinner android:id="@+id/it_water_cabin_belt_spinner"
+            <Spinner android:id="@+id/it_waterSeatBelts_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -838,7 +838,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_water_cabin_cushion">
             </TextView>
-            <Spinner android:id="@+id/it_water_cabin_cushion_spinner"
+            <Spinner android:id="@+id/it_waterReatSeats_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -852,7 +852,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_water_back_corner">
             </TextView>
-            <Spinner android:id="@+id/it_water_back_corner_spinner"
+            <Spinner android:id="@+id/it_waterTrunkCorner_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -866,7 +866,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_water_back_tire">
             </TextView>
-            <Spinner android:id="@+id/it_water_back_tire_spinner"
+            <Spinner android:id="@+id/it_waterSpareTireGroove_spinner"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -901,7 +901,7 @@
                 android:layout_weight="1"
                 android:inputType="textMultiLine"
                 android:ems="10"
-                android:id="@+id/ct_transferRequire_edit"/>
+                android:id="@+id/it_comment_edit"/>
         </TableRow>
     </TableLayout>
 </ScrollView>

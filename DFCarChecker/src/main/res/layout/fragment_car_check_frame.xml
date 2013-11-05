@@ -30,7 +30,7 @@
         <RelativeLayout android:orientation="horizontal"
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content">
-            <com.df.paintview.StructurePaintPreviewView
+            <com.df.paintview.FramePaintPreviewView
                     android:id="@+id/structure_base_image_preview_front"
                     android:layout_width="500dp"
                     android:layout_height="335dp"
@@ -56,7 +56,7 @@
         <RelativeLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <com.df.paintview.StructurePaintPreviewView
+            <com.df.paintview.FramePaintPreviewView
                 android:id="@+id/structure_base_image_preview_rear"
                 android:layout_width="500dp"
                 android:layout_height="302dp"

@@ -246,4 +246,8 @@ public class Helper {
 
         return editText.getText().toString();
     }
+
+    public static String getDateString(String year, String month) {
+        return year + "-" + (month.length() == 1 ? "0" + month : month);
+    }
 }

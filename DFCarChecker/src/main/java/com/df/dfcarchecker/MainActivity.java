@@ -48,8 +48,6 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // 退出
-                Intent intent = new Intent(MainActivity.this, QueueScanService.class);
-                stopService(intent);
                 finish();
             }
         });

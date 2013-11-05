@@ -50,6 +50,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import static com.df.service.Helper.SetSpinnerData;
+import static com.df.service.Helper.getDateString;
 import static com.df.service.Helper.getEditText;
 import static com.df.service.Helper.getSpinnerSelectedText;
 
@@ -65,7 +66,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private Button brandOkButton;
     private Button brandSelectButton;
     private boolean match;
-    public static int[] carSets;
 
     // 在型号选择对话框中的五个spinner
     private Spinner countrySpinner;
@@ -112,13 +112,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private GetCarSettingsTask mGetCarSettingsTask = null;
 
     public static String uniqueId;
-
-    // 每一个部位的序号关联：
-    // 第一个表示序号，
-    // 第二个表示该序号所对应的TableRow的id，
-    // 第三个表示该TableRow是否应该显示，
-    // 第四个表示该序号所对应的Spinner id，
-    // 第五个表示该Spinner目前的选择项
 
     private String result;
     private ProgressDialog progressDialog;
@@ -313,7 +306,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.bi_vin_button:
-                getCarSettings();
+                checkVinAndGetCarSettings();
                 break;
             case R.id.bi_brand_ok_button:
                 showContent();
@@ -322,13 +315,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                 PictureMatch();
                 break;
             case R.id.bi_brand_select_button:
-                selectBrand();
+                selectCarBrand();
                 break;
         }
     }
 
     // 检查VIN并获取车辆配置
-    private void getCarSettings() {
+    private void checkVinAndGetCarSettings() {
         String vinString = vin_edit.getText().toString();
         Spinner dummySpinner = (Spinner) rootView.findViewById(R.id.bi_vin_spinner);
         vinString = dummySpinner.getSelectedItem().toString();
@@ -365,10 +358,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         mGetCarSettingsTask.execute(seriesId);
     }
 
-    // 更新配置信息
-    private void updateUIAccordingToCarSettings() {
+    // 更新UI
+    private void updateUi() {
         // 设置厂牌型号的EditText
         brandEdit.setText(mCarSettings.getBrandString());
+
+        brandOkButton.setEnabled(true);
+        brandSelectButton.setEnabled(true);
 
         // 设置排量EditText
         displacementEdit.setText(mCarSettings.getDisplacement());
@@ -490,8 +486,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         }
     }
 
-    // 选择车辆型号
-    private void selectBrand() {
+    // 选择厂牌型号
+    private void selectCarBrand() {
         AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
 
         // Get the layout inflater
@@ -560,7 +556,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                 setCarSettingsSpinners(model.getName());
 
-                updateUIAccordingToCarSettings();
+                //updateUi();
             }
         });
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -587,8 +583,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         vehicleModel = parser.parseVehicleModelXml(fis);
     }
 
-    // 生成最终的配置信息jsonString
-    public String generateOptionsJsonString() {
+    // <editor-fold defaultstate="collapsed" desc="生成JsonString">
+    // 生成配置信息jsonString
+    public JSONObject generateOptionsJsonObject() {
         JSONObject options = new JSONObject();
 
         try {
@@ -610,31 +607,48 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             options.put("driveType", getSpinnerSelectedText(rootView, R.id.csi_driveType_spinner));
             options.put("transmission", getSpinnerSelectedText(rootView, R.id.csi_transmission_spinner));
             options.put("airBags", getSpinnerSelectedText(rootView, R.id.csi_airbag_spinner));
-            options.put("abs", getSpinnerSelectedText(rootView, R.id.csi_abs_spinner));
-            options.put("powerSteering", getSpinnerSelectedText(rootView, R.id.csi_powerSteering_spinner));
-            options.put("powerWindows", getSpinnerSelectedText(rootView, R.id.csi_powerWindows_spinner));
-            options.put("sunroof", getSpinnerSelectedText(rootView, R.id.csi_sunroof_spinner));
-            options.put("airConditioning", getSpinnerSelectedText(rootView, R.id.csi_airConditioning_spinner));
-            options.put("leatherSeats", getSpinnerSelectedText(rootView, R.id.csi_leatherSeats_spinner));
-            options.put("powerSeats", getSpinnerSelectedText(rootView, R.id.csi_powerSeats_spinner));
-            options.put("powerMirror", getSpinnerSelectedText(rootView, R.id.csi_powerMirror_spinner));
-            options.put("reversingRadar", getSpinnerSelectedText(rootView, R.id.csi_reversingRadar_spinner));
-            options.put("reversingCamera", getSpinnerSelectedText(rootView, R.id.csi_reversingCamera_spinner));
-            options.put("ccs", getSpinnerSelectedText(rootView, R.id.csi_ccs_spinner));
-            options.put("softCloseDoors", getSpinnerSelectedText(rootView, R.id.csi_softCloseDoors_spinner));
-            options.put("rearPowerSeats", getSpinnerSelectedText(rootView, R.id.csi_rearPowerSeats_spinner));
-            options.put("ahc", getSpinnerSelectedText(rootView, R.id.csi_ahc_spinner));
-            options.put("parkAssist", getSpinnerSelectedText(rootView, R.id.csi_parkAssist_spinner));
-            options.put("clapboard", getSpinnerSelectedText(rootView, R.id.csi_clapboard_spinner));
+
+            if(!getSpinnerSelectedText(rootView, R.id.csi_abs_spinner).equals("无"))
+                options.put("abs", getSpinnerSelectedText(rootView, R.id.csi_abs_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_powerSteering_spinner).equals("无"))
+                options.put("powerSteering", getSpinnerSelectedText(rootView, R.id.csi_powerSteering_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_powerWindows_spinner).equals("无"))
+                options.put("powerWindows", getSpinnerSelectedText(rootView, R.id.csi_powerWindows_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_sunroof_spinner).equals("无"))
+                options.put("sunroof", getSpinnerSelectedText(rootView, R.id.csi_sunroof_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_airConditioning_spinner).equals("无"))
+                options.put("airConditioning", getSpinnerSelectedText(rootView, R.id.csi_airConditioning_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_leatherSeats_spinner).equals("无"))
+                options.put("leatherSeats", getSpinnerSelectedText(rootView, R.id.csi_leatherSeats_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_powerSeats_spinner).equals("无"))
+                options.put("powerSeats", getSpinnerSelectedText(rootView, R.id.csi_powerSeats_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_powerMirror_spinner).equals("无"))
+                options.put("powerMirror", getSpinnerSelectedText(rootView, R.id.csi_powerMirror_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_reversingRadar_spinner).equals("无"))
+                options.put("reversingRadar", getSpinnerSelectedText(rootView, R.id.csi_reversingRadar_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_reversingCamera_spinner).equals("无"))
+                options.put("reversingCamera", getSpinnerSelectedText(rootView, R.id.csi_reversingCamera_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_ccs_spinner).equals("无"))
+                options.put("ccs", getSpinnerSelectedText(rootView, R.id.csi_ccs_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_softCloseDoors_spinner).equals("无"))
+                options.put("softCloseDoors", getSpinnerSelectedText(rootView, R.id.csi_softCloseDoors_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_rearPowerSeats_spinner).equals("无"))
+                options.put("rearPowerSeats", getSpinnerSelectedText(rootView, R.id.csi_rearPowerSeats_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_ahc_spinner).equals("无"))
+                options.put("ahc", getSpinnerSelectedText(rootView, R.id.csi_ahc_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_parkAssist_spinner).equals("无"))
+                options.put("parkAssist", getSpinnerSelectedText(rootView, R.id.csi_parkAssist_spinner));
+            if(!getSpinnerSelectedText(rootView, R.id.csi_clapboard_spinner).equals("无"))
+                options.put("clapboard", getSpinnerSelectedText(rootView, R.id.csi_clapboard_spinner));
         } catch (JSONException e) {
 
         }
 
-        return options.toString();
+        return options;
     }
 
-    //生成最终的配置信息jsonString
-    public String generateProceduresJsonString() {
+    //生成手续信息jsonString
+    public JSONObject generateProceduresJsonObject() {
         JSONObject procedures = new JSONObject();
 
         try {
@@ -643,22 +657,34 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             procedures.put("licenseModel", getEditText(rootView, R.id.ci_licenceModel_edit));
             procedures.put("vehicleType", getSpinnerSelectedText(rootView, R.id.ci_vehicleType_spinner));
             procedures.put("useCharacter", getSpinnerSelectedText(rootView, R.id.ci_useCharacter_spinner));
-            procedures.put("mileage", Integer.parseInt(getEditText(rootView, R.id.bi_mileAge_edit)));
+            procedures.put("mileage", getEditText(rootView, R.id.bi_mileAge_edit));
             procedures.put("exteriorColor", getSpinnerSelectedText(rootView, R.id.ci_exteriorColor_spinner));
-            //procedures.put("regDate", );
-            //procedures.put("builtDate", );
+            procedures.put("regDate", getDateString(getSpinnerSelectedText(rootView,
+                    R.id.ci_regYear_spinner), getSpinnerSelectedText(rootView,
+                    R.id.ci_regMonth_spinner)));
+            procedures.put("builtDate", getDateString(getSpinnerSelectedText(rootView,
+                    R.id.ci_builtYear_spinner), getSpinnerSelectedText(rootView,
+                    R.id.ci_builtMonth_spinner)));
             procedures.put("invoice", getSpinnerSelectedText(rootView, R.id.ct_invoice_spinner));
             procedures.put("invoicePrice", getEditText(rootView, R.id.ct_invoice_edit));
             procedures.put("surtax", getSpinnerSelectedText(rootView, R.id.ct_surtax_spinner));
             procedures.put("transferCount", getSpinnerSelectedText(rootView, R.id.ci_transferCount_spinner));
-            //procedures.put("transferLastDate", );
-            //procedures.put("annualInspection", );
-            //procedures.put("compulsoryInsurance", );
+            procedures.put("transferLastDate", getDateString(getSpinnerSelectedText(rootView,
+                    R.id.ci_transferLastYear_spinner), getSpinnerSelectedText(rootView,
+                    R.id.ci_transferLastMonth_spinner)));
+            procedures.put("annualInspection", getDateString(getSpinnerSelectedText(rootView,
+                    R.id.ct_annualInspectionYear_spinner), getSpinnerSelectedText(rootView,
+                    R.id.ct_annualInspectionMonth_spinner)));
+            procedures.put("compulsoryInsurance", getDateString(getSpinnerSelectedText(rootView,
+                    R.id.ct_compulsoryInsuranceYear_spinner), getSpinnerSelectedText(rootView,
+                    R.id.ct_compulsoryInsuranceMonth_spinner)));
             procedures.put("licensePhotoMatch", getEditText(rootView, R.id.ct_licencePhotoMatch_edit));
             procedures.put("insurance", getSpinnerSelectedText(rootView, R.id.ct_insurance_spinner));
             procedures.put("insuranceRegion", getSpinnerSelectedText(rootView, R.id.ct_insuranceRegion_spinner));
-            procedures.put("insuranceAmount", getSpinnerSelectedText(rootView, R.id.ct_insuranceAmount_edit));
-            //procedures.put("insuranceExpiryDate", );
+            procedures.put("insuranceAmount", getEditText(rootView, R.id.ct_insuranceAmount_edit));
+            procedures.put("insuranceExpiryDate", getDateString(getSpinnerSelectedText(rootView,
+                    R.id.ct_insuranceExpiryYear_spinner), getSpinnerSelectedText(rootView,
+                    R.id.ct_insuranceExpiryMonth_spinner)));
             procedures.put("insuranceCompany", getSpinnerSelectedText(rootView, R.id.ct_insuranceCompany_spinner));
             procedures.put("importProcedures", getSpinnerSelectedText(rootView, R.id.ct_importProcedures_spinner));
             procedures.put("spareTire", getSpinnerSelectedText(rootView, R.id.ct_spareTire_spinner));
@@ -672,12 +698,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         }
 
-        return procedures.toString();
+        return procedures;
     }
-
-
-
-
+    // </editor-fold>
 
     // <editor-fold defaultstate="collapsed" desc="设置各种Spinner">
     // 设置国家Spinner
@@ -1046,7 +1069,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="GetCarSettingsTask">
+    // <editor-fold defaultstate="collapsed" desc="获取车辆配置信息的Task">
 
     private class GetCarSettingsTask extends AsyncTask<String, Void, Boolean> {
         Context context;
@@ -1218,68 +1241,66 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                         builder.setTitle(R.string.bi_select_model);
 
-                        String[] tempArray = new String[modelNames.size()];
+                        String[] tempArray = new String[modelNames.size() + 1];
 
                         for(int i = 0; i < modelNames.size(); i++) {
                             tempArray[i] = modelNames.get(i);
                         }
 
+                        // 加入一个“其他”，当用户点击时，直接弹出型号选择页面
+                        tempArray[modelNames.size()] = "其他";
+
                         builder.setItems(tempArray, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                modelName = modelNames.get(i);
-                                jsonObject = jsonObjects.get(i);
+                                if(i == modelNames.size()) {
+                                    selectCarBrand();
+                                } else {
+                                    modelName = modelNames.get(i);
+                                    jsonObject = jsonObjects.get(i);
 
-                                try {
-                                    country = vehicleModel.getCountryById(jsonObject.getString("countryId"));
-                                    brand = country.getBrandById(jsonObject.getString("brandId"));
-                                    manufacturer = brand.getProductionById(jsonObject.getString("manufacturerId"));
-                                    series = manufacturer.getSerialById(jsonObject.getString("seriesId"));
-                                    model = series.getModelById(jsonObject.getString("modelId"));
-                                    config = jsonObject.getString("config");
-                                    category = jsonObject.getString("category");
-                                    figure = jsonObject.getString("figure");
+                                    try {
+                                        country = vehicleModel.getCountryById(jsonObject.getString("countryId"));
+                                        brand = country.getBrandById(jsonObject.getString("brandId"));
+                                        manufacturer = brand.getProductionById(jsonObject.getString("manufacturerId"));
+                                        series = manufacturer.getSerialById(jsonObject.getString("seriesId"));
+                                        model = series.getModelById(jsonObject.getString("modelId"));
+                                        config = jsonObject.getString("config");
+                                        category = jsonObject.getString("category");
+                                        figure = jsonObject.getString("figure");
 
-                                    // 根据用户选择的车型的id，记录车型选择spinner的位置
-                                    lastCountryIndex = vehicleModel.getCountryNames().indexOf(country.name);
-                                    lastBrandIndex = country.getBrandNames().indexOf(brand.name);
-                                    lastManufacturerIndex = brand.getManufacturerNames().indexOf(manufacturer.name);
-                                    lastSeriesIndex = manufacturer.getSerialNames().indexOf(series.name);
-                                    lastModelIndex = series.getModelNames().indexOf(model.name);
+                                        // 根据用户选择的车型的id，记录车型选择spinner的位置
+                                        lastCountryIndex = vehicleModel.getCountryNames().indexOf(country.name);
+                                        lastBrandIndex = country.getBrandNames().indexOf(brand.name);
+                                        lastManufacturerIndex = brand.getManufacturerNames().indexOf(manufacturer.name);
+                                        lastSeriesIndex = manufacturer.getSerialNames().indexOf(series.name);
+                                        lastModelIndex = series.getModelNames().indexOf(model.name);
 
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    // 将品牌框设置文字
+                                    mCarSettings.setBrandString(modelName);
+
+                                    mCarSettings.setCountry(country);
+                                    mCarSettings.setBrand(brand);
+                                    mCarSettings.setManufacturer(manufacturer);
+                                    mCarSettings.setSeries(series);
+                                    mCarSettings.setModel(model);
+
+                                    // 设置配置信息
+                                    mCarSettings.setConfig(config);
+
+                                    // 设置车型分类，以用于图片类型判断
+                                    mCarSettings.setCategory(category);
+                                    mCarSettings.setFigure(figure);
+
+                                    setCarSettingsSpinners(model.getName());
+
+                                    // 更新UI
+                                    updateUi();
                                 }
-
-                                // 将品牌框设置文字
-                                mCarSettings.setBrandString(modelName);
-
-                                mCarSettings.setCountry(country);
-                                mCarSettings.setBrand(brand);
-                                mCarSettings.setManufacturer(manufacturer);
-                                mCarSettings.setSeries(series);
-                                mCarSettings.setModel(model);
-
-                                // 设置配置信息
-                                mCarSettings.setConfig(config);
-
-                                // 设置车型分类，以用于图片类型判断
-                                mCarSettings.setCategory(category);
-                                mCarSettings.setFigure(figure);
-
-                                setCarSettingsSpinners(model.getName());
-
-                                // 更新UI
-                                updateUIAccordingToCarSettings();
-
-                                brandOkButton.setEnabled(true);
-                                brandSelectButton.setEnabled(true);
-                            }
-                        });
-
-                        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // 取消
                             }
                         });
 
@@ -1303,9 +1324,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                         mCarSettings.setFigure(figure);
 
                         // 更新UI
-                        updateUIAccordingToCarSettings();
-
-                        // 因为是从车型选择中选择的，所以品牌输入框不需要设置文字
+                        updateUi();
                     }
                 } catch (JSONException e) {
                     Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());

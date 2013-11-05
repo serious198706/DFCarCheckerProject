@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
-import com.df.paintview.InsidePaintPreviewView;
+import com.df.paintview.InteriorPaintPreviewView;
 import com.df.service.Common;
 import com.df.service.Helper;
 import com.df.service.ImageUploadQueue;
@@ -31,9 +31,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-
-import static com.df.service.Helper.getEditText;
-import static com.df.service.Helper.getSpinnerSelectedText;
 
 public class CarCheckInteriorActivity extends Activity implements View.OnClickListener  {
     private int currentShotPart;
@@ -44,7 +41,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     private String brokenParts;
     private String dirtyParts;
 
-    private InsidePaintPreviewView insidePaintPreviewView;
+    private InteriorPaintPreviewView interiorPaintPreviewView;
     private TextView tip;
 
     private static Spinner sealSpinner;
@@ -68,14 +65,14 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         int figure = Integer.parseInt(CarCheckBasicInfoFragment.mCarSettings.getFigure());
         Bitmap previewViewBitmap = getBitmapFromFigure(figure);
 
-        insidePaintPreviewView = (InsidePaintPreviewView) findViewById(R.id.in_base_image_preview);
-        insidePaintPreviewView.init(previewViewBitmap, posEntities);
-        insidePaintPreviewView.setOnClickListener(this);
+        interiorPaintPreviewView = (InteriorPaintPreviewView) findViewById(R.id.in_base_image_preview);
+        interiorPaintPreviewView.init(previewViewBitmap, posEntities);
+        interiorPaintPreviewView.setOnClickListener(this);
 
         tip = (TextView) findViewById(R.id.tipOnPreview);
         tip.setOnClickListener(this);
 
-        sealSpinner = (Spinner) findViewById(R.id.in_seal_spinner);
+        sealSpinner = (Spinner) findViewById(R.id.in_sealingStrip_spinner);
         commentEdit = (EditText) findViewById(R.id.in_comment_edit);
 
         Bundle extras = getIntent().getExtras();
@@ -95,8 +92,8 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         if(!posEntities.isEmpty()) {
-            insidePaintPreviewView.setAlpha(1f);
-            insidePaintPreviewView.invalidate();
+            interiorPaintPreviewView.setAlpha(1f);
+            interiorPaintPreviewView.invalidate();
             tip.setVisibility(View.GONE);
         }
 
@@ -291,7 +288,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
 
                         jsonObject.put("Group", "interior");
                         jsonObject.put("Part", "standard");
-                        jsonObject.put("PhotoData", photoJsonObject.toString());
+                        jsonObject.put("PhotoData", photoJsonObject);
                         jsonObject.put("UserId", LoginActivity.userInfo.getId());
                         jsonObject.put("Key", LoginActivity.userInfo.getKey());
                         jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
@@ -300,7 +297,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
                     }
 
                     PhotoEntity photoEntity = new PhotoEntity();
-                    photoEntity.setFileName(Helper.getOutputMediaFileUri(currentTimeMillis).getPath());
+                    photoEntity.setFileName(Long.toString(currentTimeMillis) + ".jpg");
                     photoEntity.setJsonString(jsonObject.toString());
 
                     // 立刻上传
@@ -313,14 +310,14 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
                 break;
             case Common.IN_PAINT:
                 if(!posEntities.isEmpty()) {
-                    insidePaintPreviewView.setAlpha(1f);
-                    insidePaintPreviewView.invalidate();
+                    interiorPaintPreviewView.setAlpha(1f);
+                    interiorPaintPreviewView.invalidate();
                     tip.setVisibility(View.GONE);
                 }
                 // 如果没点，则将图片设为半透明，添加提示文字
                 else {
-                    insidePaintPreviewView.setAlpha(0.3f);
-                    insidePaintPreviewView.invalidate();
+                    interiorPaintPreviewView.setAlpha(0.3f);
+                    interiorPaintPreviewView.invalidate();
                     tip.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -348,9 +345,17 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
             imageUploadQueue.addImage(photoEntities.get(i));
         }
 
+        for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
+            imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
+        }
+
         // 加入照片池后，将本身的photoEntities删除，以免重复上传
         while(!photoEntities.isEmpty()) {
             photoEntities.remove(0);
+        }
+
+        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
+            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
         }
     }
 
@@ -383,7 +388,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         return BitmapFactory.decodeFile(path + name, options);
     }
 
-    public static String generateInteriorJsonString() {
+    public static JSONObject generateInteriorJsonObject() {
         JSONObject interior = new JSONObject();
 
         try {
@@ -393,6 +398,6 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
 
         }
 
-        return interior.toString();
+        return interior;
     }
 }

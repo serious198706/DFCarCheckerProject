@@ -57,7 +57,7 @@ public final class ImageUploadQueue {
         String path = Environment.getExternalStorageDirectory().getPath();
         path += "/Pictures/DFCarChecker/";
 
-        File file = new File(fileName);
+        File file = new File(path + fileName);
         boolean deleted = file.delete();
 
         return deleted;

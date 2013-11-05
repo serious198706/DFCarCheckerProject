@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.df.service.Common;
 import com.df.service.CustomViewPager;
+import com.df.service.QueueScanService;
 import com.df.service.SoapService;
 
 import org.json.JSONException;
@@ -199,6 +201,8 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // 退出
+                Intent intent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
+                stopService(intent);
                 finish();
             }
         });
@@ -256,72 +260,66 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
             boolean success = false;
 
             try {
-                // 组织车辆检测信息的json
+                // root节点
                 JSONObject root = new JSONObject();
 
                 // 基本信息
                 JSONObject features = new JSONObject();
 
-                JSONObject procedures = new JSONObject();
+                // 基本信息 - 配置信息
+                features.put("options", carCheckBasicInfoFragment.generateOptionsJsonObject());
+
+                // 基本信息 - 手续信息
+                features.put("procedures", carCheckBasicInfoFragment.generateProceduresJsonObject());
 
                 // 综合检查
                 JSONObject conditions = new JSONObject();
 
-
-                JSONObject exterior = new JSONObject();
+                // 综合检查 - 外观检查
+                conditions.put("exterior", CarCheckExteriorActivity.generateExteriorJsonObject());
 
                 // 综合检查 - 内饰检查
-                JSONObject interior = new JSONObject();
+                conditions.put("interior", CarCheckInteriorActivity.generateInteriorJsonObject());
 
                 // 综合检查 - 发动机检查
-                JSONObject engine = new JSONObject();
+                conditions.put("engine", CarCheckIntegratedFragment.generateEngineJsonObject());
 
                 // 综合检查 - 变速箱检查
-                JSONObject gearbox = new JSONObject();
+                conditions.put("gearbox", CarCheckIntegratedFragment.generateGearboxJsonObject());
 
                 // 综合检查 - 功能检查
-                JSONObject function = new JSONObject();
+                conditions.put("function", CarCheckIntegratedFragment.generateFunctionJsonObject());
 
                 // 综合检查 - 底盘检查
-                JSONObject chassis = new JSONObject();
+                conditions.put("chassis", CarCheckIntegratedFragment.generateChassisJsonObject());
 
                 // 综合检查 - 泡水检查
-                JSONObject flooded = new JSONObject();
+                conditions.put("flooded", CarCheckIntegratedFragment.generateFloodedJsonObject());
 
                 // 综合检查 - 备注
-                JSONObject comment = new JSONObject();
+                conditions.put("comment", CarCheckIntegratedFragment.generateCommentJsonObject());
 
-
-                // 基本信息 - 配置信息
-                features.put("options", carCheckBasicInfoFragment.generateOptionsJsonString());
-
-                // 基本信息 - 手续信息
-                features.put("procedures", carCheckBasicInfoFragment.generateProceduresJsonString());
-
-                // 综合检查 - 外观检查
-                conditions.put("exterior", CarCheckExteriorActivity.generateExteriorJsonString());
-
-                // 综合检查 - 内饰检查m
-                conditions.put("interior", CarCheckInteriorActivity.generateInteriorJsonString());
-
-
-                conditions.put("engine", engine.toString());
-                conditions.put("gearbox", gearbox.toString());
-                conditions.put("function", function.toString());
-                conditions.put("chassis", chassis.toString());
-                conditions.put("flooded", flooded.toString());
-                conditions.put("comment", comment.toString());
-
-                root.put("features", features.toString());
-                root.put("conditions", conditions.toString());
+                root.put("features", features);
+                root.put("conditions", conditions);
                 soapService = new SoapService();
 
                 // 设置soap的配置
                 soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                        "http://cheyiju/IUserManageService/SaveCarCheckInfo",
+                        "http://cheyiju/IReportService/SaveCarCheckInfo",
                         "SaveCarCheckInfo");
 
-                success = soapService.communicateWithServer(context, root.toString());
+                JSONObject jsonObject = new JSONObject();
+
+                try {
+                    jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
+                    jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                    jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                    jsonObject.put("JsonString", root);
+                } catch (JSONException e) {
+
+                }
+
+                success = soapService.communicateWithServer(context, jsonObject.toString());
 
                 // 登录失败，获取错误信息并显示
                 if(!success) {

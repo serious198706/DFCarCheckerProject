@@ -21,7 +21,7 @@ import android.widget.Toast;
 
 import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
-import com.df.paintview.StructurePaintPreviewView;
+import com.df.paintview.FramePaintPreviewView;
 import com.df.service.Common;
 import com.df.service.Helper;
 import com.df.service.ImageUploadQueue;
@@ -47,8 +47,8 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
     public static List<PhotoEntity> photoEntitiesFront;
     public static List<PhotoEntity> photoEntitiesRear;
 
-    private static StructurePaintPreviewView structurePaintPreviewViewFront;
-    private static StructurePaintPreviewView structurePaintPreviewViewRear;
+    private static FramePaintPreviewView framePaintPreviewViewFront;
+    private static FramePaintPreviewView framePaintPreviewViewRear;
     private TextView tipFront;
     private TextView tipRear;
 
@@ -58,6 +58,8 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
     private long currentTimeMillis;
 
     private ImageUploadQueue imageUploadQueue;
+
+    private int photoShotCount[] = {0, 0, 0, 0};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -80,17 +82,17 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
         previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4_f", options);
-        structurePaintPreviewViewFront = (StructurePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_front);
-        structurePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
-        structurePaintPreviewViewFront.setOnClickListener(this);
+        framePaintPreviewViewFront = (FramePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_front);
+        framePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
+        framePaintPreviewViewFront.setOnClickListener(this);
 
         tipFront = (TextView)rootView.findViewById(R.id.tipOnPreviewFront);
         tipFront.setOnClickListener(this);
 
         previewBitmapRear = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4_r", options);
-        structurePaintPreviewViewRear = (StructurePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_rear);
-        structurePaintPreviewViewRear.init(previewBitmapRear, posEntitiesRear);
-        structurePaintPreviewViewRear.setOnClickListener(this);
+        framePaintPreviewViewRear = (FramePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_rear);
+        framePaintPreviewViewRear.init(previewBitmapRear, posEntitiesRear);
+        framePaintPreviewViewRear.setOnClickListener(this);
 
         tipRear = (TextView)rootView.findViewById(R.id.tipOnPreviewRear);
         tipRear.setOnClickListener(this);
@@ -146,10 +148,10 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         }
 
         previewBitmapFront = BitmapFactory.decodeFile(path + front, options);
-        structurePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
+        framePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
 
         previewBitmapRear = BitmapFactory.decodeFile(path + rear, options);
-        structurePaintPreviewViewRear.init(previewBitmapRear, posEntitiesRear);
+        framePaintPreviewViewRear.init(previewBitmapRear, posEntitiesRear);
     }
 
     public void StartPaint(String frontOrRear) {
@@ -168,10 +170,21 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         LayoutInflater inflater = this.inflater;
 
         builder.setTitle(R.string.structure_camera);
-        builder.setItems(R.array.structure_camera_cato_item, new DialogInterface.OnClickListener() {
+
+        String[] itemArray = rootView.getResources().getStringArray(R.array
+                .structure_camera_cato_item);
+
+        for(int i = 0; i < itemArray.length; i++) {
+            itemArray[i] += " (";
+            itemArray[i] += Integer.toString(photoShotCount[i]);
+            itemArray[i] += ") ";
+        }
+
+        builder.setItems(itemArray, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 currentShotPart = i;
+
                 String group = getResources().getStringArray(R.array.structure_camera_cato_item)[currentShotPart];
 
                 Toast.makeText(rootView.getContext(), "正在拍摄" + group + "组", Toast.LENGTH_LONG).show();
@@ -232,7 +245,7 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
                         photoJsonObject.put("part", currentPart);
 
                         jsonObject.put("Group", "engineRoom");
-                        jsonObject.put("PhotoData", photoJsonObject.toString());
+                        jsonObject.put("PhotoData", photoJsonObject);
                         jsonObject.put("UserId", LoginActivity.userInfo.getId());
                         jsonObject.put("Key", LoginActivity.userInfo.getKey());
                         jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
@@ -241,8 +254,10 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
                     }
 
                     PhotoEntity photoEntity = new PhotoEntity();
-                    photoEntity.setFileName(Helper.getOutputMediaFileUri(currentTimeMillis).getPath());
+                    photoEntity.setFileName(Long.toString(currentTimeMillis) + ".jpg");
                     photoEntity.setJsonString(jsonObject.toString());
+
+                    photoShotCount[currentShotPart]++;
 
                     // 拍摄完成后立刻上传
                     imageUploadQueue.addImage(photoEntity);
@@ -256,27 +271,27 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
                 // 前视角
                 // 如果有点，则将图片设为不透明，去掉提示文字
                 if(!posEntitiesFront.isEmpty()) {
-                    structurePaintPreviewViewFront.setAlpha(1f);
-                    structurePaintPreviewViewFront.setPosEntities(this.posEntitiesFront);
-                    structurePaintPreviewViewFront.invalidate();
+                    framePaintPreviewViewFront.setAlpha(1f);
+                    framePaintPreviewViewFront.setPosEntities(this.posEntitiesFront);
+                    framePaintPreviewViewFront.invalidate();
                     tipFront.setVisibility(View.GONE);
                 }
                 // 如果没点，则将图片设为半透明，添加提示文字
                 else {
-                    structurePaintPreviewViewFront.setAlpha(0.3f);
-                    structurePaintPreviewViewFront.invalidate();
+                    framePaintPreviewViewFront.setAlpha(0.3f);
+                    framePaintPreviewViewFront.invalidate();
                     tipFront.setVisibility(View.VISIBLE);
                 }
 
                 // 后视角
                 if(!posEntitiesRear.isEmpty()) {
-                    structurePaintPreviewViewRear.setAlpha(1f);
-                    structurePaintPreviewViewRear.setPosEntities(this.posEntitiesRear);
-                    structurePaintPreviewViewRear.invalidate();
+                    framePaintPreviewViewRear.setAlpha(1f);
+                    framePaintPreviewViewRear.setPosEntities(this.posEntitiesRear);
+                    framePaintPreviewViewRear.invalidate();
                     tipRear.setVisibility(View.GONE);
                 } else {
-                    structurePaintPreviewViewRear.setAlpha(0.3f);
-                    structurePaintPreviewViewRear.invalidate();
+                    framePaintPreviewViewRear.setAlpha(0.3f);
+                    framePaintPreviewViewRear.invalidate();
                     tipRear.setVisibility(View.VISIBLE);
                 }
 

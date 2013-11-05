@@ -27,7 +27,7 @@
         <RelativeLayout
                       android:layout_width="match_parent"
                       android:layout_height="wrap_content">
-            <com.df.paintview.OutsidePaintPreviewView
+            <com.df.paintview.ExteriorPaintPreviewView
                     android:id="@+id/out_base_image_preview"
                        android:layout_width="500dp"
                        android:layout_height="703dp"

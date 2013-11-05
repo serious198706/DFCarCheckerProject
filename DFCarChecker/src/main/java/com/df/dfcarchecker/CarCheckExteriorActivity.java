@@ -22,7 +22,7 @@ import android.widget.Toast;
 
 import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
-import com.df.paintview.OutsidePaintPreviewView;
+import com.df.paintview.ExteriorPaintPreviewView;
 import com.df.service.Common;
 import com.df.service.Helper;
 import com.df.service.ImageUploadQueue;
@@ -39,7 +39,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
     private static EditText commentEdit;
     public static List<PosEntity> posEntities = CarCheckIntegratedFragment.outsidePaintEntities;
     public static List<PhotoEntity> photoEntities = CarCheckIntegratedFragment.outsidePhotoEntities;
-    private OutsidePaintPreviewView outsidePaintPreviewView;
+    private ExteriorPaintPreviewView exteriorPaintPreviewView;
     private TextView tip;
     private String brokenParts;
 
@@ -55,9 +55,9 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         int figure = Integer.parseInt(CarCheckBasicInfoFragment.mCarSettings.getFigure());
         Bitmap previewViewBitmap = getBitmapFromFigure(figure);
 
-        outsidePaintPreviewView = (OutsidePaintPreviewView) findViewById(R.id.out_base_image_preview);
-        outsidePaintPreviewView.init(previewViewBitmap, posEntities);
-        outsidePaintPreviewView.setOnClickListener(this);
+        exteriorPaintPreviewView = (ExteriorPaintPreviewView) findViewById(R.id.out_base_image_preview);
+        exteriorPaintPreviewView.init(previewViewBitmap, posEntities);
+        exteriorPaintPreviewView.setOnClickListener(this);
 
         // 选择表面有破损的零部件
         Button brokenButton = (Button) findViewById(R.id.out_choose_broken_button);
@@ -94,8 +94,8 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         if(!posEntities.isEmpty()) {
-            outsidePaintPreviewView.setAlpha(1f);
-            outsidePaintPreviewView.invalidate();
+            exteriorPaintPreviewView.setAlpha(1f);
+            exteriorPaintPreviewView.invalidate();
             tip.setVisibility(View.GONE);
         }
 
@@ -249,7 +249,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
 
                         jsonObject.put("Group", "exterior");
                         jsonObject.put("Part", "standard");
-                        jsonObject.put("PhotoData", photoJsonObject.toString());
+                        jsonObject.put("PhotoData", photoJsonObject);
                         jsonObject.put("UserId", LoginActivity.userInfo.getId());
                         jsonObject.put("Key", LoginActivity.userInfo.getKey());
                         jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
@@ -258,7 +258,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
                     }
 
                     PhotoEntity photoEntity = new PhotoEntity();
-                    photoEntity.setFileName(Helper.getOutputMediaFileUri(currentTimeMillis).getPath());
+                    photoEntity.setFileName(Long.toString(currentTimeMillis) + ".jpg");
                     photoEntity.setJsonString(jsonObject.toString());
 
                     // 立刻上传
@@ -272,14 +272,14 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
             case Common.EX_PAINT:
                 // 如果有点，则将图片设为不透明，去掉提示文字
                 if(!posEntities.isEmpty()) {
-                    outsidePaintPreviewView.setAlpha(1f);
-                    outsidePaintPreviewView.invalidate();
+                    exteriorPaintPreviewView.setAlpha(1f);
+                    exteriorPaintPreviewView.invalidate();
                     tip.setVisibility(View.GONE);
                 }
                 // 如果没点，则将图片设为半透明，添加提示文字
                 else {
-                    outsidePaintPreviewView.setAlpha(0.3f);
-                    outsidePaintPreviewView.invalidate();
+                    exteriorPaintPreviewView.setAlpha(0.3f);
+                    exteriorPaintPreviewView.invalidate();
                     tip.setVisibility(View.VISIBLE);
                 }
                 break;
@@ -307,9 +307,17 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
             imageUploadQueue.addImage(photoEntities.get(i));
         }
 
+        for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
+            imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
+        }
+
         // 加入照片池后，将本身的photoEntities删除，以免重复上传
         while(!photoEntities.isEmpty()) {
             photoEntities.remove(0);
+        }
+
+        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
+            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
         }
     }
 
@@ -341,7 +349,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         return BitmapFactory.decodeFile(path + name, options);
     }
 
-    public static String generateExteriorJsonString() {
+    public static JSONObject generateExteriorJsonObject() {
         JSONObject exterior = new JSONObject();
 
         try {
@@ -351,6 +359,6 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
 
         }
 
-        return exterior.toString();
+        return exterior;
     }
 }

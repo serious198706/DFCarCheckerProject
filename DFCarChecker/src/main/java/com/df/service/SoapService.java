@@ -152,11 +152,17 @@ public class SoapService implements ISoapService {
         resultMessage = "";
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        byte[] byteArray = null;
+        byte[] newByteArray = null;
 
         // 将图片转换成流
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream);
-        byte[] byteArray = stream.toByteArray();
-        byte[] newByteArray = null;
+        // 有可能有的缺陷没有照片
+        if(bitmap != null) {
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream);
+            byteArray = stream.toByteArray();
+        } else {
+            byteArray = new byte[0];
+        }
 
         // 在图片流后面加上分隔符 #:
         jsonString = "#:" + jsonString;
@@ -189,7 +195,6 @@ public class SoapService implements ISoapService {
             Log.d("DFCarChecker", "无法连接到服务器：" + e.getMessage());
 
             errorMessage = "无法连接到服务器！" + e.getMessage();
-            resultMessage = "";
 
             e.printStackTrace();
 
@@ -209,7 +214,6 @@ public class SoapService implements ISoapService {
         // 成功
         if(result.equals("0")) {
             // JSON格式数据
-            resultMessage = soapObject.getProperty(1).toString();
             errorMessage = "";
             return true;
         }
