@@ -5,6 +5,7 @@ import java.util.Locale;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.df.service.Common;
 import com.df.service.CustomViewPager;
+import com.df.service.ImageUploadQueue;
 import com.df.service.QueueScanService;
 import com.df.service.SoapService;
 
@@ -225,11 +227,8 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // 提交
-                mCommitDataTask = new CommitDataTask();
+                mCommitDataTask = new CommitDataTask(CarCheckViewPagerActivity.this);
                 mCommitDataTask.execute((Void) null);
-
-                Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
-                finish();
             }
         });
 
@@ -246,6 +245,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
     public class CommitDataTask extends AsyncTask<Void, Void, Boolean> {
         Context context;
         SoapService soapService;
+        private ProgressDialog progressDialog;
 
         private CommitDataTask() {
 
@@ -256,9 +256,20 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         }
 
         @Override
+        protected void onPreExecute()
+        {
+            progressDialog = ProgressDialog.show(context, null,
+                    "正在提交，请稍候。。", false, false);
+        }
+
+        @Override
         protected Boolean doInBackground(Void... params) {
             boolean success = false;
 
+            // 将结构检查的图片加入到照片池
+            carCheckFrameFragment.addPhotosToQueue();
+
+            // 组织最终json
             try {
                 // root节点
                 JSONObject root = new JSONObject();
@@ -326,6 +337,17 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
                 }
 
+                ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
+
+                try {
+                    // 照片未上传完成前，不能提交信息
+                    while(imageUploadQueue.getQueueSize() != 0) {
+                        //Thread.sleep(3000);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 success = soapService.communicateWithServer(context, jsonObject.toString());
 
                 // 登录失败，获取错误信息并显示
@@ -345,12 +367,19 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         protected void onPostExecute(final Boolean success) {
             mCommitDataTask = null;
 
+            progressDialog.dismiss();
 
+            if(success) {
+                Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
+                finish();
+            }
         }
 
         @Override
         protected void onCancelled() {
             mCommitDataTask = null;
+
+            progressDialog.dismiss();
         }
     }
 }

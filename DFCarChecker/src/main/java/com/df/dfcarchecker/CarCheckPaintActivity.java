@@ -24,8 +24,6 @@ import com.df.paintview.FramePaintView;
 import com.df.paintview.InteriorPaintView;
 import com.df.paintview.PaintView;
 import com.df.service.Common;
-import com.df.service.Helper;
-import com.df.service.SoapService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,7 +45,7 @@ public class CarCheckPaintActivity extends Activity {
     private View targetView;
 
     // 草图保存线程
-    private SaveCapturedImageTask mSaveCapturedImageTask;
+    private SaveSketchImageTask mSaveSketchImageTask;
 
     // 保存草图
     public static List<PhotoEntity> sketchPhotoEntities;
@@ -266,8 +264,8 @@ public class CarCheckPaintActivity extends Activity {
 
         // 如果没有缺陷点，则不要保存草图了
         if(paintView.getPosEntity() != null) {
-            mSaveCapturedImageTask = new SaveCapturedImageTask();
-            mSaveCapturedImageTask.execute((Void) null);
+            mSaveSketchImageTask = new SaveSketchImageTask();
+            mSaveSketchImageTask.execute((Void) null);
         }
     }
 
@@ -395,7 +393,7 @@ public class CarCheckPaintActivity extends Activity {
     }
 
     // 保存草图的线程
-    public class SaveCapturedImageTask extends AsyncTask<Void, Void, Boolean> {
+    public class SaveSketchImageTask extends AsyncTask<Void, Void, Boolean> {
         @Override
         protected Boolean doInBackground(Void... params) {
             boolean success = false;
@@ -486,12 +484,12 @@ public class CarCheckPaintActivity extends Activity {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mSaveCapturedImageTask = null;
+            mSaveSketchImageTask = null;
         }
 
         @Override
         protected void onCancelled() {
-            mSaveCapturedImageTask = null;
+            mSaveSketchImageTask = null;
         }
     }
 

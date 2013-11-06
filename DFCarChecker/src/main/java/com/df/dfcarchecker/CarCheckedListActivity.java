@@ -51,7 +51,7 @@ public class CarCheckedListActivity extends Activity {
     private String result;
 
     // 已检测列表的开始位
-    private static int startNumber = 1;
+    private int startNumber = 1;
 
     private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
@@ -169,6 +169,8 @@ public class CarCheckedListActivity extends Activity {
 
                 for(int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
+
+                    map = new HashMap<String, String>();
 
                     map.put("id",  jsonObject.getString("id"));
                     map.put("plateNumber", "车牌号码：" + jsonObject.getString("plateNumber"));

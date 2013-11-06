@@ -311,4 +311,37 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
                 break;
         }
     }
+
+    public void addPhotosToQueue() {
+        ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
+
+        for(int i = 0; i < photoEntitiesFront.size(); i++) {
+            imageUploadQueue.addImage(photoEntitiesFront.get(i));
+        }
+
+        // 加入照片池后，将本身的photoEntities删除，以免重复上传
+        while(!photoEntitiesFront.isEmpty()) {
+            photoEntitiesFront.remove(0);
+        }
+
+        for(int i = 0; i < photoEntitiesRear.size(); i++) {
+            imageUploadQueue.addImage(photoEntitiesRear.get(i));
+        }
+
+        // 加入照片池后，将本身的photoEntities删除，以免重复上传
+        while(!photoEntitiesRear.isEmpty()) {
+            photoEntitiesRear.remove(0);
+        }
+
+        // 将草图上传到照片池
+        if(CarCheckPaintActivity.sketchPhotoEntities != null) {
+            for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
+                imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
+            }
+
+            while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
+                CarCheckPaintActivity.sketchPhotoEntities.remove(0);
+            }
+        }
+    }
 }

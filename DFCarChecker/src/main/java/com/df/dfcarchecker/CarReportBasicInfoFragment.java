@@ -47,10 +47,8 @@ public class CarReportBasicInfoFragment extends Fragment {
     }
 
     private void parsJsonData() {
-        JSONObject jsonObject = null;
-
         try {
-            jsonObject = new JSONObject(jsonData);
+            JSONObject jsonObject = new JSONObject(jsonData);
 
             features = jsonObject.getJSONObject("features");
             options = features.getJSONObject("options");
@@ -62,7 +60,6 @@ public class CarReportBasicInfoFragment extends Fragment {
     }
 
     private void updateUi() {
-
         try {
             setTextView(rootView, R.id.vin_text, options.getString("vin"));
             String brandString = options.getString("manufacturer") + " " +
