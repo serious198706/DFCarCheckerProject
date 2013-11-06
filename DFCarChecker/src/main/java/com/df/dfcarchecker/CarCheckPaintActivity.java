@@ -262,8 +262,13 @@ public class CarCheckPaintActivity extends Activity {
 
     // 截图并保存
     private void captureResultImage(){
-        mSaveCapturedImageTask = new SaveCapturedImageTask();
-        mSaveCapturedImageTask.execute((Void) null);
+        paintView = (PaintView)map.get(currentPaintView);
+
+        // 如果没有缺陷点，则不要保存草图了
+        if(paintView.getPosEntity() != null) {
+            mSaveCapturedImageTask = new SaveCapturedImageTask();
+            mSaveCapturedImageTask.execute((Void) null);
+        }
     }
 
     // 提醒用户
@@ -454,6 +459,11 @@ public class CarCheckPaintActivity extends Activity {
                     jsonObject.put("Part", "sketch");
                 }
 
+                JSONObject photoData = new JSONObject();
+                photoData.put("height", targetView.getHeight());
+                photoData.put("width", targetView.getWidth());
+
+                jsonObject.put("PhotoData", photoData);
                 jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
                 jsonObject.put("UserId", LoginActivity.userInfo.getId());
                 jsonObject.put("Key", LoginActivity.userInfo.getKey());

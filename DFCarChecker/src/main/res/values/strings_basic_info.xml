@@ -171,6 +171,7 @@
 
     <!-- 手续录入 -->
     <string name="procedure_input">手续录入</string>
+    <string name="procedures">手续</string>
     <string name="ci">车辆信息</string>
     <string name="ci_licence_type">行驶证品牌型号：</string>
     <string name="ci_car_type">行驶证车辆类型：</string>

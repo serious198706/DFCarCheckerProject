@@ -131,7 +131,7 @@
                         android:layout_weight="1"
                         android:inputType="textMultiLine"
                         android:ems="10"
-                        android:id="@+id/ct_transferRequire_edit"/>
+                        android:id="@+id/comment_edit"/>
             </TableRow>
         </TableLayout>
     </LinearLayout>

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
@@ -249,5 +250,14 @@ public class Helper {
 
     public static String getDateString(String year, String month) {
         return year + "-" + (month.length() == 1 ? "0" + month : month);
+    }
+
+    public static void setTextView(View view, int textId, String string) {
+        TextView textView = (TextView)view.findViewById(textId);
+
+        if(string == null)
+            textView.setText("无");
+        else
+            textView.setText(string);
     }
 }

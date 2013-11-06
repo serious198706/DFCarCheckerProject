@@ -1,0 +1,906 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/root"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:focusable="true"
+            android:focusableInTouchMode="true">
+    <TableLayout android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginLeft="5dp"
+                 android:layout_marginRight="5dp">
+
+        <!-- 外观检查 -->
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/CodeFont"
+                android:text="@string/out"
+                android:drawableLeft="@drawable/outside_item"
+                android:drawablePadding="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/score_20"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+
+        <View android:layout_width="match_parent"
+              android:layout_height="2dp"
+              android:background="#000"
+              android:layout_weight="1"/>
+
+        <TableRow>
+            <Button android:id="@+id/out_button"
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:textSize="18sp"
+                    android:text="@string/out"
+                    android:background="@drawable/button_custom"/>
+        </TableRow>
+
+        <!-- 内饰检查 -->
+
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_marginTop="18dp"
+                      android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/CodeFont"
+                android:text="@string/in"
+                android:drawableLeft="@drawable/inside_item"
+                android:drawablePadding="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/score_20"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000"/>
+
+        <TableRow>
+            <Button android:id="@+id/in_button"
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="5dp"
+                    android:textSize="18sp"
+                    android:text="@string/in"
+                    android:background="@drawable/button_custom"/>
+        </TableRow>
+
+        <!-- 发动机检查 -->
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:layout_marginTop="18dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/CodeFont"
+                android:text="@string/it_engine"
+                android:drawableLeft="@drawable/engine_item"
+                android:drawablePadding="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/score_20"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000"/>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_engineStarted">
+            </TextView>
+            <TextView android:id="@+id/engineStarted_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_engineSteady">
+            </TextView>
+            <TextView android:id="@+id/engineSteady_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_engineStrangeNoices">
+            </TextView>
+            <TextView android:id="@+id/engineStrangeNoices_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_engineExhaustColor">
+            </TextView>
+            <TextView android:id="@+id/engineExhaustColor_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_engineFluid">
+            </TextView>
+            <TextView android:id="@+id/engineFluid_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+
+
+        <!-- 变速箱检查 -->
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:layout_marginTop="18dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/CodeFont"
+                android:text="@string/it_gear"
+                android:drawableLeft="@drawable/gear_item"
+                android:drawablePadding="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/score_15"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000"/>
+
+        <TextView android:id="@+id/it_gear_manually_row"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:text="@string/it_gearMt"/>
+        <TableRow android:id="@+id/it_gear_manually_row_1">
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_gearMtClutch">
+            </TextView>
+            <TextView android:id="@+id/gearMtClutch_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow android:id="@+id/it_gear_manually_row_2">
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_gearMtShiftEasy">
+            </TextView>
+            <TextView android:id="@+id/gearMtShiftEasy_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow android:id="@+id/it_gear_manually_row_3">
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_gearMtShiftSpace">
+            </TextView>
+            <TextView android:id="@+id/gearMtShiftSpace_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+
+
+        <TextView android:id="@+id/it_gear_auto_row"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:textSize="18sp"
+                  android:text="@string/it_gearAt"/>
+        <TableRow android:id="@+id/it_gear_auto_row_1">
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_gearAtShiftShock">
+            </TextView>
+            <TextView android:id="@+id/gearAtShiftShock_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow android:id="@+id/it_gear_auto_row_2">
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_gearAtShiftNoise">
+            </TextView>
+            <TextView android:id="@+id/gearAtShiftNoise_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow android:id="@+id/it_gear_auto_row_3">
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_gearAtShiftEasy">
+            </TextView>
+            <TextView android:id="@+id/gearAtShiftEasy_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+
+
+        <!-- 功能检查 -->
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:layout_marginTop="18dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/CodeFont"
+                android:text="@string/it_function"
+                android:drawableLeft="@drawable/function_item"
+                android:drawablePadding="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/score_10"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000"/>
+
+        <!-- 7个必选项 -->
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_engine_indicator">
+            </TextView>
+            <TextView android:id="@+id/engineFault_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:layout_marginRight="8dp"
+                      android:textSize="18sp">
+            </TextView>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:layout_marginLeft="8dp"
+                      android:textSize="18sp"
+                      android:text="@string/it_oil_indicator">
+            </TextView>
+            <TextView android:id="@+id/oilPressure_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_handbreak_indicator">
+            </TextView>
+            <TextView android:id="@+id/parkingBrake_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:layout_marginRight="8dp"
+                      android:textSize="18sp">
+            </TextView>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:layout_marginLeft="8dp"
+                      android:textSize="18sp"
+                      android:text="@string/it_water_temp_indicator">
+            </TextView>
+            <TextView android:id="@+id/waterTemp_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_revolution_counter">
+            </TextView>
+            <TextView android:id="@+id/tachometer_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:layout_marginRight="8dp"
+                      android:textSize="18sp">
+            </TextView>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:layout_marginLeft="8dp"
+                      android:textSize="18sp"
+                      android:text="@string/it_odometer">
+            </TextView>
+            <TextView android:id="@+id/milometer_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_audio">
+            </TextView>
+            <TextView android:id="@+id/audio_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:layout_marginRight="8dp"
+                      android:textSize="18sp">
+            </TextView>
+            <!-- 7个必选项结束 -->
+
+            <!-- 配置项 -->
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_airBag"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/airBag_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_abs"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/abs_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="8dp"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_powerWindows"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/powerWindows_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_sunroof"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/sunroof_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="8dp"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_airConditioning"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/airConditioning_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_powerSeats"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/powerSeats_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="8dp"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_powerMirror"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/powerMirror_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_reversingRadar"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/reversingRadar_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="8dp"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_reversingCamera"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/reversingCamera_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_softCloseDoors"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/softCloseDoors_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="8dp"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_rearPowerSeats"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/rearPowerSeats_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_ahc"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/ahc_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginRight="8dp"
+                android:textSize="18sp"/>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_parkAssist"
+                android:layout_weight="1"
+                android:layout_marginLeft="8dp"
+                android:textSize="18sp"/>
+            <TextView
+                android:id="@+id/parkAssist_text"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+        </TableRow>
+
+        <!-- 底盘检查 -->
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:layout_marginTop="18dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/CodeFont"
+                android:text="@string/it_chassis"
+                android:drawableLeft="@drawable/chassis_item"
+                android:drawablePadding="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/score_10"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000"/>
+        <!--TableRow>
+            <Button android:id="@+id/it_chassis_button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="18sp"
+                android:text="@string/it_chassis"/>
+        </TableRow-->
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_chassis_lf_good">
+            </TextView>
+            <TextView android:id="@+id/chassisLeftFront_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_chassis_rf_good">
+            </TextView>
+            <TextView android:id="@+id/chassisRightFront_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_chassis_lr_good">
+            </TextView>
+            <TextView android:id="@+id/chassisLeftRear_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_chassis_rr_good">
+            </TextView>
+            <TextView android:id="@+id/chassisRightRear_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_chassis_good">
+            </TextView>
+            <TextView android:id="@+id/chassisPerfect_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_chassis_engine_good">
+            </TextView>
+            <TextView android:id="@+id/chassisEngineBottom_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_chassis_gear_good">
+            </TextView>
+            <TextView android:id="@+id/chassisGearboxBottom_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+
+
+        <!-- 泡水检查 -->
+        <LinearLayout android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:orientation="horizontal"
+                      android:layout_marginTop="18dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                style="@style/CodeFont"
+                android:text="@string/it_other_water"
+                android:drawableLeft="@drawable/water_item"
+                android:drawablePadding="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="@string/score_0"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000"/>
+        <!--TableRow>
+            <Button android:id="@+id/it_other_water_button"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="18sp"
+                    android:text="@string/it_other_water"/>
+        </TableRow-->
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_water_cabin_smoke">
+            </TextView>
+            <TextView android:id="@+id/waterCigarLighter_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_water_cabin_ashtray">
+            </TextView>
+            <TextView android:id="@+id/waterAshtray_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_water_cabin_belt">
+            </TextView>
+            <TextView android:id="@+id/waterSeatBelts_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_water_cabin_cushion">
+            </TextView>
+            <TextView android:id="@+id/waterReatSeats_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_water_back_corner">
+            </TextView>
+            <TextView android:id="@+id/waterTrunkCorner_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+        <TableRow>
+            <TextView android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp"
+                      android:text="@string/it_water_back_tire">
+            </TextView>
+            <TextView android:id="@+id/waterSpareTireGroove_text"
+                      android:layout_width="0dp"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="1"
+                      android:textSize="18sp">
+            </TextView>
+        </TableRow>
+
+        <!-- 备注 -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            style="@style/CodeFont"
+            android:text="@string/comment"
+            android:drawableLeft="@drawable/comment_item"
+            android:drawablePadding="10dp"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000"/>
+        <TableRow>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:text="@string/it_comment"
+                android:layout_weight="1"
+                android:textSize="18sp"/>
+            <TextView android:id="@+id/comment_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:inputType="textMultiLine"
+                android:textSize="18sp"/>
+        </TableRow>
+    </TableLayout>
+</ScrollView>

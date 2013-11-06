@@ -343,19 +343,21 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
 
         for(int i = 0; i < photoEntities.size(); i++) {
             imageUploadQueue.addImage(photoEntities.get(i));
+
+            // 加入照片池后，将本身的photoEntities删除，以免重复上传
+            while(!photoEntities.isEmpty()) {
+                photoEntities.remove(0);
+            }
         }
 
-        for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
-            imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
-        }
+        if(CarCheckPaintActivity.sketchPhotoEntities != null) {
+            for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
+                imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
+            }
 
-        // 加入照片池后，将本身的photoEntities删除，以免重复上传
-        while(!photoEntities.isEmpty()) {
-            photoEntities.remove(0);
-        }
-
-        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
-            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
+            while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
+                CarCheckPaintActivity.sketchPhotoEntities.remove(0);
+            }
         }
     }
 

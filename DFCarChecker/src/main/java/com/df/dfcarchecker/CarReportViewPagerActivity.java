@@ -13,7 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class CarReportFrameActivity extends FragmentActivity {
+public class CarReportViewPagerActivity extends FragmentActivity {
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -30,11 +30,16 @@ public class CarReportFrameActivity extends FragmentActivity {
      */
     ViewPager mViewPager;
 
+    private String jsonData;
+    private CarReportBasicInfoFragment carReportBasicInfoFragment;
+    private CarReportFrameFragment carReportFrameFragment;
+    private CarReportIntegratedFragment carReportIntegratedFragment;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_report_frame);
-
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the app.
@@ -44,8 +49,22 @@ public class CarReportFrameActivity extends FragmentActivity {
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
+        // 让viewPager一次性缓存3个页面，可以提高viewPager的流畅性，也可以保存fragment的数据，在
+        // fragment来回切换时数据不会丢失
+        mViewPager.setOffscreenPageLimit(3);
+
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
+        Bundle bundle = getIntent().getExtras();
+
+        if(bundle != null) {
+            jsonData = bundle.getString("jsonData");
+        }
+
+        carReportBasicInfoFragment = new CarReportBasicInfoFragment(jsonData);
+        carReportFrameFragment = new CarReportFrameFragment(jsonData);
+        carReportIntegratedFragment = new CarReportIntegratedFragment(jsonData);
     }
 
     @Override
@@ -81,13 +100,13 @@ public class CarReportFrameActivity extends FragmentActivity {
             switch (position)
             {
                 case 0:
-                    fragment = new CarReportBasicInfoFragment();
+                    fragment = carReportBasicInfoFragment;
                     break;
                 case 1:
-                    fragment = new CarReportAccidentFragment();
+                    fragment = carReportFrameFragment;
                     break;
                 case 2:
-                    fragment = new CarReportResultFragment();
+                    fragment = carReportIntegratedFragment;
                     break;
             }
             return fragment;
@@ -103,11 +122,11 @@ public class CarReportFrameActivity extends FragmentActivity {
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.cr_basic_info).toUpperCase(l);
+                    return getString(R.string.title_section1).toUpperCase(l);
                 case 1:
-                    return getString(R.string.cr_accident).toUpperCase(l);
+                    return getString(R.string.title_section2).toUpperCase(l);
                 case 2:
-                    return getString(R.string.cr_result).toUpperCase(l);
+                    return getString(R.string.title_section3).toUpperCase(l);
             }
             return null;
         }

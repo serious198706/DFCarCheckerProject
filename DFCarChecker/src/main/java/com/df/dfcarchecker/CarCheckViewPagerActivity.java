@@ -299,8 +299,15 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                 // 综合检查 - 备注
                 conditions.put("comment", CarCheckIntegratedFragment.generateCommentJsonObject());
 
+                // 车体结构检查
+                JSONObject frames = new JSONObject();
+
+                // 车体结构检查 - 备注
+                frames.put("comment", CarCheckFrameFragment.generateFrameJsonObject());
+
                 root.put("features", features);
                 root.put("conditions", conditions);
+                root.put("frames", frames);
                 soapService = new SoapService();
 
                 // 设置soap的配置

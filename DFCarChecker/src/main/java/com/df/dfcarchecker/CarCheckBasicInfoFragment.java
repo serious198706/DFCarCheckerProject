@@ -267,6 +267,10 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         dummy.add("LVVDB12A86D193156");
         // 两厢
         dummy.add("LVFAC2AD87K000028");
+        // 16位
+        dummy.add("LAD23SVAXTM08271");
+        // 10位
+        dummy.add("LENYVI234N");
 
         SetSpinnerData(R.id.bi_vin_spinner, dummy, rootView);
 
@@ -322,9 +326,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     // 检查VIN并获取车辆配置
     private void checkVinAndGetCarSettings() {
-        String vinString = vin_edit.getText().toString();
+        //String vinString = vin_edit.getText().toString();
         Spinner dummySpinner = (Spinner) rootView.findViewById(R.id.bi_vin_spinner);
-        vinString = dummySpinner.getSelectedItem().toString();
+        final String vinString = dummySpinner.getSelectedItem().toString();
         vin_edit.setText(vinString);
 
         // 是否为空
@@ -336,8 +340,31 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         // 检查VIN码
         if(!Helper.isVin(vinString)) {
-            Toast.makeText(rootView.getContext(), "VIN码输入有误，请检查", Toast.LENGTH_SHORT).show();
-            vin_edit.requestFocus();
+            AlertDialog dialog = new AlertDialog.Builder(rootView.getContext())
+                    .setTitle(R.string.alert_title)
+                    .setMessage("您输入的VIN码为: " + vinString + "\n" + "系统检测到VIN码可能有误，是否确认继续提交？\n" )
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            brandEdit.setText("");
+                            brandOkButton.setEnabled(false);
+                            brandSelectButton.setEnabled(false);
+
+                            // 传参数为空，表示提交的为VIN
+                            getCarSettingsFromServer("");
+
+                            // 根据vin产生uniqueId（对应一次检测）
+                            uniqueId = vinString.substring(vinString.length() - 3, vinString.length());
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            vin_edit.requestFocus();
+                        }
+                    }).create();
+
+            dialog.show();
             return;
         }
 
@@ -396,7 +423,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         setSpinnerSelection(R.id.csi_clapboard_spinner, Integer.parseInt(mCarSettings.getClapBoard()));
 
         // 发动“车体结构检查”里显示的图片
-        CarCheckFrameFragment.setFigureImage(Integer.parseInt(mCarSettings.getFigure()));
+        if(!mCarSettings.getFigure().equals(""))
+            CarCheckFrameFragment.setFigureImage(Integer.parseInt(mCarSettings.getFigure()));
 
         // 改动“综合检查”里的档位类型选项
         CarCheckIntegratedFragment.setGearType(mCarSettings.getTransmissionText());
@@ -657,7 +685,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             procedures.put("licenseModel", getEditText(rootView, R.id.ci_licenceModel_edit));
             procedures.put("vehicleType", getSpinnerSelectedText(rootView, R.id.ci_vehicleType_spinner));
             procedures.put("useCharacter", getSpinnerSelectedText(rootView, R.id.ci_useCharacter_spinner));
-            procedures.put("mileage", getEditText(rootView, R.id.bi_mileAge_edit));
+
+            // 数字，单独判断
+            if(getEditText(rootView, R.id.bi_mileAge_edit).equals(""))
+                procedures.put("mileage", 0);
+            else
+                procedures.put("mileage", getEditText(rootView, R.id.bi_mileAge_edit));
+
             procedures.put("exteriorColor", getSpinnerSelectedText(rootView, R.id.ci_exteriorColor_spinner));
             procedures.put("regDate", getDateString(getSpinnerSelectedText(rootView,
                     R.id.ci_regYear_spinner), getSpinnerSelectedText(rootView,
@@ -666,7 +700,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     R.id.ci_builtYear_spinner), getSpinnerSelectedText(rootView,
                     R.id.ci_builtMonth_spinner)));
             procedures.put("invoice", getSpinnerSelectedText(rootView, R.id.ct_invoice_spinner));
-            procedures.put("invoicePrice", getEditText(rootView, R.id.ct_invoice_edit));
+
+            // 数字，单独判断
+            if(getEditText(rootView, R.id.ct_invoice_edit).equals(""))
+                procedures.put("invoicePrice", 0);
+            else
+                procedures.put("invoicePrice", getEditText(rootView, R.id.ct_invoice_edit));
+
             procedures.put("surtax", getSpinnerSelectedText(rootView, R.id.ct_surtax_spinner));
             procedures.put("transferCount", getSpinnerSelectedText(rootView, R.id.ci_transferCount_spinner));
             procedures.put("transferLastDate", getDateString(getSpinnerSelectedText(rootView,
@@ -681,7 +721,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             procedures.put("licensePhotoMatch", getEditText(rootView, R.id.ct_licencePhotoMatch_edit));
             procedures.put("insurance", getSpinnerSelectedText(rootView, R.id.ct_insurance_spinner));
             procedures.put("insuranceRegion", getSpinnerSelectedText(rootView, R.id.ct_insuranceRegion_spinner));
-            procedures.put("insuranceAmount", getEditText(rootView, R.id.ct_insuranceAmount_edit));
+
+            // 数字，单独判断
+            if(getEditText(rootView, R.id.ct_insuranceAmount_edit).equals(""))
+                procedures.put("insuranceAmount", getEditText(rootView, R.id.ct_insuranceAmount_edit));
+            else
+                procedures.put("insuranceAmount", 0);
+
             procedures.put("insuranceExpiryDate", getDateString(getSpinnerSelectedText(rootView,
                     R.id.ct_insuranceExpiryYear_spinner), getSpinnerSelectedText(rootView,
                     R.id.ct_insuranceExpiryMonth_spinner)));
@@ -701,6 +747,309 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         return procedures;
     }
     // </editor-fold>
+
+
+    // <editor-fold defaultstate="collapsed" desc="获取车辆配置信息的Task">
+
+    private class GetCarSettingsTask extends AsyncTask<String, Void, Boolean> {
+        Context context;
+        String seriesId;
+        String modelId;
+
+        String modelName = "";
+        List<String> modelNames;
+        JSONObject jsonObject;
+        List<JSONObject> jsonObjects;
+
+        Country country = null;
+        Brand brand = null;
+        Manufacturer manufacturer = null;
+        Series series = null;
+        Model model = null;
+        String config = null;
+        String category = null;
+        String figure = null;
+
+        private GetCarSettingsTask(Context context) {
+            this.context = context;
+            this.seriesId = null;
+        }
+
+        @Override
+        protected void onPreExecute()
+        {
+            progressDialog = ProgressDialog.show(rootView.getContext(), null,
+                    "正在获取车辆信息，请稍候。。", false, false);
+            model = null;
+            modelName = "";
+            modelNames = null;
+            jsonObject = null;
+            jsonObjects = null;
+        }
+
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            boolean success = false;
+
+            // 传输seriesId和modelId
+            if(!params[0].equals("")) {
+                // 从传入的参数中解析出seriesId和modelId
+                String temp[] = params[0].split(",");
+                seriesId = temp[0];
+                modelId = temp[1];
+
+                try {
+                    JSONObject jsonObject = new JSONObject();
+
+                    // SeriesId + userID + key
+                    jsonObject.put("SeriesId", seriesId);
+                    jsonObject.put("ModelId", modelId);
+                    jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                    jsonObject.put("Key", LoginActivity.userInfo.getKey());
+
+                    soapService = new SoapService();
+
+                    // 设置soap的配置
+                    soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
+                            "http://cheyiju/IReportService/GetOptionsBySeriesIdAndModelId",
+                            "GetOptionsBySeriesIdAndModelId");
+
+                    success = soapService.communicateWithServer(context, jsonObject.toString());
+
+                    // 传输失败，获取错误信息并显示
+                    if(!success) {
+                        Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
+
+                        if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
+                            Toast.makeText(rootView.getContext(), "连接错误，请重新登陆！", Toast.LENGTH_LONG).show();
+                            Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    } else {
+                        result = soapService.getResultMessage();
+                    }
+                } catch (JSONException e) {
+                    Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
+                    return false;
+                }
+            }
+            // 传输VIN
+            else {
+                try {
+                    JSONObject jsonObject = new JSONObject();
+
+                    // vin + userID + key
+                    jsonObject.put("Vin", vin_edit.getText().toString());
+
+                    if(LoginActivity.userInfo != null) {
+                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                    }
+
+                    soapService = new SoapService();
+
+                    // 设置soap的配置
+                    soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
+                            "http://cheyiju/IReportService/GetCarConfigInfoByVin",
+                            "GetCarConfigInfoByVin");
+
+                    success = soapService.communicateWithServer(context, jsonObject.toString());
+
+                    // 传输失败，获取错误信息并显示
+                    if(!success) {
+                        Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
+                    } else {
+                        result = soapService.getResultMessage();
+                    }
+                } catch (JSONException e) {
+                    Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
+                    return false;
+                }
+            }
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mGetCarSettingsTask = null;
+
+            progressDialog.dismiss();
+
+            // 如果成功通信
+            if (success) {
+                try {
+                    // 开始位为[，表示传输的是全部信息
+                    if(result.startsWith("[")) {
+                        JSONArray jsonArray = new JSONArray(result);
+
+                        // 用来存储车辆配置信息的jsonobject list
+                        jsonObjects = new ArrayList<JSONObject>();
+
+                        // 用来存储车辆型号的string list
+                        modelNames = new ArrayList<String>();
+
+                        // TODO: 如果获取的是空？或者有的为空有的不为空？
+                        for(int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            jsonObjects.add(jsonObject);
+                            country = vehicleModel.getCountryById(jsonObject.getString("countryId"));
+                            brand = country.getBrandById(jsonObject.getString("brandId"));
+                            manufacturer = brand.getProductionById(jsonObject.getString("manufacturerId"));
+                            series = manufacturer.getSerialById(jsonObject.getString("seriesId"));
+                            model = series.getModelById(jsonObject.getString("modelId"));
+                            config = jsonObject.getString("config");
+                            category = jsonObject.getString("category");
+                            figure = jsonObject.getString("figure");
+
+                            modelNames.add(manufacturer.name + " " + series.name + " " + model.name);
+                        }
+
+                        // 弹出一个对话框，供用户进行选择
+                        AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
+
+                        builder.setTitle(R.string.bi_select_model);
+
+                        String[] tempArray = new String[modelNames.size() + 1];
+
+                        for(int i = 0; i < modelNames.size(); i++) {
+                            tempArray[i] = modelNames.get(i);
+                        }
+
+                        // 加入一个“其他”，当用户点击时，直接弹出型号选择页面
+                        tempArray[modelNames.size()] = "其他";
+
+                        builder.setItems(tempArray, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                // 如果点击了“其他”（也就是传递回来的配置不符合现车）
+                                if(i == modelNames.size()) {
+                                    selectCarBrand();
+                                } else {
+                                    modelName = modelNames.get(i);
+                                    jsonObject = jsonObjects.get(i);
+
+                                    try {
+                                        country = vehicleModel.getCountryById(jsonObject.getString("countryId"));
+                                        brand = country.getBrandById(jsonObject.getString("brandId"));
+                                        manufacturer = brand.getProductionById(jsonObject.getString("manufacturerId"));
+                                        series = manufacturer.getSerialById(jsonObject.getString("seriesId"));
+                                        model = series.getModelById(jsonObject.getString("modelId"));
+                                        config = jsonObject.getString("config");
+                                        category = jsonObject.getString("category");
+                                        figure = jsonObject.getString("figure");
+
+                                        // 根据用户选择的车型的id，记录车型选择spinner的位置
+                                        lastCountryIndex = vehicleModel.getCountryNames().indexOf(country.name);
+                                        lastBrandIndex = country.getBrandNames().indexOf(brand.name);
+                                        lastManufacturerIndex = brand.getManufacturerNames().indexOf(manufacturer.name);
+                                        lastSeriesIndex = manufacturer.getSerialNames().indexOf(series.name);
+                                        lastModelIndex = series.getModelNames().indexOf(model.name);
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    // 将品牌框设置文字
+                                    mCarSettings.setBrandString(modelName);
+
+                                    mCarSettings.setCountry(country);
+                                    mCarSettings.setBrand(brand);
+                                    mCarSettings.setManufacturer(manufacturer);
+                                    mCarSettings.setSeries(series);
+                                    mCarSettings.setModel(model);
+
+                                    // 设置配置信息
+                                    mCarSettings.setConfig(config);
+
+                                    // 设置车型分类，以用于图片类型判断
+                                    mCarSettings.setCategory(category);
+                                    mCarSettings.setFigure(figure);
+
+                                    setCarSettingsSpinners(model.getName());
+
+                                    // 更新UI
+                                    updateUi();
+                                }
+                            }
+                        });
+
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+
+                        contentLayout.setVisibility(View.VISIBLE);
+                    }
+                    // 开始位为{，表示传输的是配置信息
+                    else {
+                        JSONObject jsonObject = new JSONObject(result);
+                        config = jsonObject.getString("config");
+                        category = jsonObject.getString("category");
+                        figure = jsonObject.getString("figure");
+
+                        // 设置配置信息
+                        mCarSettings.setConfig(config);
+
+                        // 设置车型分类，以用于图片类型判断
+                        mCarSettings.setCategory(category);
+                        mCarSettings.setFigure(figure);
+
+                        // 更新UI
+                        updateUi();
+                    }
+                } catch (JSONException e) {
+                    Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
+                }
+            }
+            // 如果失败
+            else {
+                Log.d("DFCarChecker", "连接错误！");
+
+                if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
+                    builder.setTitle(R.string.bi_select_model)
+                            .setMessage("连接失败，请重新登录！");
+
+                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    AlertDialog dialog = builder.create();
+                    dialog.show();
+                }
+                else if(soapService.getErrorMessage().equals("没有检测到任何有关此VIN的相关配置信息")) {
+                    AlertDialog dialog = new AlertDialog.Builder(this.context).setTitle(R.string
+                            .alert_title)
+                            .setMessage("没有匹配的车型")
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    selectCarBrand();
+                                    contentLayout.setVisibility(View.VISIBLE);
+                                }
+                            }).create();
+
+                    dialog.show();
+
+                    updateUi();
+                }
+                else {
+                    Toast.makeText(context, soapService.getErrorMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mGetCarSettingsTask = null;
+        }
+    }
+    // </editor-fold>
+
 
     // <editor-fold defaultstate="collapsed" desc="设置各种Spinner">
     // 设置国家Spinner
@@ -1069,294 +1418,4 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     }
     // </editor-fold>
 
-    // <editor-fold defaultstate="collapsed" desc="获取车辆配置信息的Task">
-
-    private class GetCarSettingsTask extends AsyncTask<String, Void, Boolean> {
-        Context context;
-        String seriesId;
-        String modelId;
-
-        String modelName = "";
-        List<String> modelNames;
-        JSONObject jsonObject;
-        List<JSONObject> jsonObjects;
-
-        Country country = null;
-        Brand brand = null;
-        Manufacturer manufacturer = null;
-        Series series = null;
-        Model model = null;
-        String config = null;
-        String category = null;
-        String figure = null;
-
-        private GetCarSettingsTask(Context context) {
-            this.context = context;
-            this.seriesId = null;
-        }
-
-        @Override
-        protected void onPreExecute()
-        {
-            progressDialog = ProgressDialog.show(rootView.getContext(), null,
-                    "正在获取车辆信息，请稍候。。", false, false);
-            model = null;
-            modelName = "";
-            modelNames = null;
-            jsonObject = null;
-            jsonObjects = null;
-        }
-
-
-        @Override
-        protected Boolean doInBackground(String... params) {
-            boolean success = false;
-
-            // 传输seriesId和modelId
-            if(!params[0].equals("")) {
-                // 从传入的参数中解析出seriesId和modelId
-                String temp[] = params[0].split(",");
-                seriesId = temp[0];
-                modelId = temp[1];
-
-                try {
-                    JSONObject jsonObject = new JSONObject();
-
-                    // SeriesId + userID + key
-                    jsonObject.put("SeriesId", seriesId);
-                    jsonObject.put("ModelId", modelId);
-                    jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                    jsonObject.put("Key", LoginActivity.userInfo.getKey());
-
-                    soapService = new SoapService();
-
-                    // 设置soap的配置
-                    soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                            "http://cheyiju/IReportService/GetOptionsBySeriesIdAndModelId",
-                            "GetOptionsBySeriesIdAndModelId");
-
-                    success = soapService.communicateWithServer(context, jsonObject.toString());
-
-                    // 传输失败，获取错误信息并显示
-                    if(!success) {
-                        Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
-
-                        if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
-                            Toast.makeText(rootView.getContext(), "连接错误，请重新登陆！", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
-                            startActivity(intent);
-                        }
-                    } else {
-                        result = soapService.getResultMessage();
-                    }
-                } catch (JSONException e) {
-                    Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
-                    return false;
-                }
-            }
-            // 传输VIN
-            else {
-                try {
-                    JSONObject jsonObject = new JSONObject();
-
-                    // vin + userID + key
-                    jsonObject.put("Vin", vin_edit.getText().toString());
-
-                    if(LoginActivity.userInfo != null) {
-                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
-                    }
-
-                    soapService = new SoapService();
-
-                    // 设置soap的配置
-                    soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                            "http://cheyiju/IReportService/GetCarConfigInfoByVin",
-                            "GetCarConfigInfoByVin");
-
-                    success = soapService.communicateWithServer(context, jsonObject.toString());
-
-                    // 传输失败，获取错误信息并显示
-                    if(!success) {
-                        Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
-
-                        if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
-                            Toast.makeText(rootView.getContext(), "连接错误，请重新登陆！", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
-                            startActivity(intent);
-                        }
-
-                    } else {
-                        result = soapService.getResultMessage();
-                    }
-                } catch (JSONException e) {
-                    Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
-                    return false;
-                }
-            }
-
-            return success;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mGetCarSettingsTask = null;
-
-            progressDialog.dismiss();
-
-            if (success) {
-                // outputStringJson : [{"countryId":1,"brandId":5,"manufacturerId":2,"seriesId":24,"modelId":29,"config":"powerWindows,airConditioning,sunroof,leatherSeats,powerSeats,powerMirror,reversingRadar"}]
-                // 设置车辆配置
-                // mCarSettings.setCarSettings(result);
-
-                try {
-                    // 开始位为[，表示传输的是全部信息
-                    if(result.startsWith("[")) {
-                        JSONArray jsonArray = new JSONArray(result);
-
-                        // 用来存储车辆配置信息的jsonobject list
-                        jsonObjects = new ArrayList<JSONObject>();
-
-                        // 用来存储车辆型号的string list
-                        modelNames = new ArrayList<String>();
-
-                        // TODO: 如果获取的是空？或者有的为空有的不为空？
-                        for(int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            jsonObjects.add(jsonObject);
-                            country = vehicleModel.getCountryById(jsonObject.getString("countryId"));
-                            brand = country.getBrandById(jsonObject.getString("brandId"));
-                            manufacturer = brand.getProductionById(jsonObject.getString("manufacturerId"));
-                            series = manufacturer.getSerialById(jsonObject.getString("seriesId"));
-                            model = series.getModelById(jsonObject.getString("modelId"));
-                            config = jsonObject.getString("config");
-                            category = jsonObject.getString("category");
-                            figure = jsonObject.getString("figure");
-
-                            modelNames.add(manufacturer.name + " " + series.name + " " + model.name);
-                        }
-
-                        // 弹出一个对话框，供用户进行选择
-                        AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
-
-                        builder.setTitle(R.string.bi_select_model);
-
-                        String[] tempArray = new String[modelNames.size() + 1];
-
-                        for(int i = 0; i < modelNames.size(); i++) {
-                            tempArray[i] = modelNames.get(i);
-                        }
-
-                        // 加入一个“其他”，当用户点击时，直接弹出型号选择页面
-                        tempArray[modelNames.size()] = "其他";
-
-                        builder.setItems(tempArray, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                if(i == modelNames.size()) {
-                                    selectCarBrand();
-                                } else {
-                                    modelName = modelNames.get(i);
-                                    jsonObject = jsonObjects.get(i);
-
-                                    try {
-                                        country = vehicleModel.getCountryById(jsonObject.getString("countryId"));
-                                        brand = country.getBrandById(jsonObject.getString("brandId"));
-                                        manufacturer = brand.getProductionById(jsonObject.getString("manufacturerId"));
-                                        series = manufacturer.getSerialById(jsonObject.getString("seriesId"));
-                                        model = series.getModelById(jsonObject.getString("modelId"));
-                                        config = jsonObject.getString("config");
-                                        category = jsonObject.getString("category");
-                                        figure = jsonObject.getString("figure");
-
-                                        // 根据用户选择的车型的id，记录车型选择spinner的位置
-                                        lastCountryIndex = vehicleModel.getCountryNames().indexOf(country.name);
-                                        lastBrandIndex = country.getBrandNames().indexOf(brand.name);
-                                        lastManufacturerIndex = brand.getManufacturerNames().indexOf(manufacturer.name);
-                                        lastSeriesIndex = manufacturer.getSerialNames().indexOf(series.name);
-                                        lastModelIndex = series.getModelNames().indexOf(model.name);
-
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-
-                                    // 将品牌框设置文字
-                                    mCarSettings.setBrandString(modelName);
-
-                                    mCarSettings.setCountry(country);
-                                    mCarSettings.setBrand(brand);
-                                    mCarSettings.setManufacturer(manufacturer);
-                                    mCarSettings.setSeries(series);
-                                    mCarSettings.setModel(model);
-
-                                    // 设置配置信息
-                                    mCarSettings.setConfig(config);
-
-                                    // 设置车型分类，以用于图片类型判断
-                                    mCarSettings.setCategory(category);
-                                    mCarSettings.setFigure(figure);
-
-                                    setCarSettingsSpinners(model.getName());
-
-                                    // 更新UI
-                                    updateUi();
-                                }
-                            }
-                        });
-
-                        AlertDialog dialog = builder.create();
-                        dialog.show();
-
-                        contentLayout.setVisibility(View.VISIBLE);
-                    }
-                    // 开始位为{，表示传输的是配置信息
-                    else {
-                        JSONObject jsonObject = new JSONObject(result);
-                        config = jsonObject.getString("config");
-                        category = jsonObject.getString("category");
-                        figure = jsonObject.getString("figure");
-
-                        // 设置配置信息
-                        mCarSettings.setConfig(config);
-
-                        // 设置车型分类，以用于图片类型判断
-                        mCarSettings.setCategory(category);
-                        mCarSettings.setFigure(figure);
-
-                        // 更新UI
-                        updateUi();
-                    }
-                } catch (JSONException e) {
-                    Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
-                }
-            } else {
-                Log.d("DFCarChecker", "连接错误！");
-
-                if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
-                    builder.setTitle(R.string.bi_select_model)
-                            .setMessage("连接失败，请重新登录！");
-
-                    builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
-                            startActivity(intent);
-                        }
-                    });
-
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                } else {
-                    Toast.makeText(context, soapService.getErrorMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mGetCarSettingsTask = null;
-        }
-    }
-    // </editor-fold>
 }

@@ -305,19 +305,22 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
 
         for(int i = 0; i < photoEntities.size(); i++) {
             imageUploadQueue.addImage(photoEntities.get(i));
+
+            // 加入照片池后，将本身的photoEntities删除，以免重复上传
+            while(!photoEntities.isEmpty()) {
+                photoEntities.remove(0);
+            }
         }
 
-        for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
-            imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
-        }
+        // 如果用户并未进入绘图界面就点击了“保存”
+        if(CarCheckPaintActivity.sketchPhotoEntities != null) {
+            for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
+                imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
+            }
 
-        // 加入照片池后，将本身的photoEntities删除，以免重复上传
-        while(!photoEntities.isEmpty()) {
-            photoEntities.remove(0);
-        }
-
-        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
-            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
+            while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
+                CarCheckPaintActivity.sketchPhotoEntities.remove(0);
+            }
         }
     }
 

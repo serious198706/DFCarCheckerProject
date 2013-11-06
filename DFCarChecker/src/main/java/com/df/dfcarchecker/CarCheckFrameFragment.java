@@ -32,6 +32,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.df.service.Helper.getEditText;
+
 /**
  * Created by 岩 on 13-10-8.
  */
@@ -154,6 +156,17 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         framePaintPreviewViewRear.init(previewBitmapRear, posEntitiesRear);
     }
 
+    public static JSONObject generateFrameJsonObject() {
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("comment", getEditText(rootView, R.id.comment_edit));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return jsonObject;
+    }
     public void StartPaint(String frontOrRear) {
         Intent intent = new Intent(rootView.getContext(), CarCheckPaintActivity.class);
         intent.putExtra("PAINT_TYPE", "FRAME_PAINT");

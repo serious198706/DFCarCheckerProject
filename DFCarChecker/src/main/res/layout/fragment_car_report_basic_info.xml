@@ -1,253 +1,823 @@
+<?xml version="1.0" encoding="utf-8"?>
 
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:id="@+id/root">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:tools="http://schemas.android.com/tools"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              tools:context=".CarReportBasicInfoFragment">
+    <LinearLayout android:layout_width="match_parent"
+                  android:animateLayoutChanges="true"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:layout_marginLeft="5dp"
+                  android:layout_marginRight="5dp">
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/bi_vin"
+            android:drawableLeft="@drawable/basic_info_item"
+            android:drawablePadding="10dp"
+            style="@style/CodeFont"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#000"/>
 
-    <ScrollView android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp">
-        <TableLayout android:layout_width="match_parent"
+        <TableLayout android:id="@+id/bi_content_table"
+                     android:layout_width="match_parent"
                      android:layout_height="wrap_content">
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    style="@style/CodeFont"
-                    android:text="@string/cr_basic_info" />
-            <View
-                    android:layout_width="match_parent"
-                    android:layout_height="3px"
-                    android:background="?android:attr/listDivider"/>
+
             <TableRow>
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="@string/cr_first_log_time"
-                        android:layout_weight="1"
-                        android:textSize="18sp"/>
-                <EditText
-                        android:id="@+id/cr_first_log_time_edit"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:editable="false"
-                        android:layout_weight="2"
-                        android:text="2013-08"
-                        android:textColor="@color/bright_foreground_light_disabled"/>
+                <TextView android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:text="@string/vin"
+                          android:textSize="18sp"/>
+                <TextView android:id="@+id/vin_text"
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
             </TableRow>
+
             <TableRow>
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="@string/cr_manufacture_type"
-                        android:layout_weight="1"
-                        android:textSize="18sp"/>
-                <EditText
-                        android:id="@+id/cr_manufacture_type_edit"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:editable="false"
-                        android:layout_weight="2"
-                        android:text="2.0 MT 化油器"
-                        android:textColor="@color/bright_foreground_light_disabled"/>
-            </TableRow>
-            <TableRow>
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="@string/cr_color"
-                        android:layout_weight="1"
-                        android:textSize="18sp"/>
-                <EditText
-                        android:id="@+id/cr_color_edit"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:editable="false"
-                        android:layout_weight="2"
-                        android:text="银"
-                        android:textColor="@color/bright_foreground_light_disabled"/>
-            </TableRow>
-            <TableRow>
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="@string/cr_volume"
-                        android:layout_weight="1"
-                        android:textSize="18sp"/>
-                <EditText
-                        android:id="@+id/cr_volume_edit"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:editable="false"
-                        android:layout_weight="2"
-                        android:text="1.8"
-                        android:textColor="@color/bright_foreground_light_disabled"/>
-            </TableRow>
-            <TableRow>
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="@string/cr_manufacture_time"
-                        android:layout_weight="1"
-                        android:textSize="18sp"/>
-                <EditText
-                        android:id="@+id/cr_manufacture_time_edit"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:editable="false"
-                        android:layout_weight="2"
-                        android:text="2010-03"
-                        android:textColor="@color/bright_foreground_light_disabled"/>
-            </TableRow>
-            <TableRow>
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="@string/cr_run"
-                        android:layout_weight="1"
-                        android:textSize="18sp"/>
-                <EditText
-                        android:id="@+id/cr_run_edit"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:editable="false"
-                        android:layout_weight="1"
-                        android:text="3"
-                        android:textColor="@color/bright_foreground_light_disabled"/>
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="@string/cr_kilo"
-                        android:layout_weight="1"
-                        android:textSize="18sp"/>
-            </TableRow>
-            <TableRow>
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="@string/cr_drive_type"
-                        android:layout_weight="1"
-                        android:textSize="18sp"/>
-                <EditText
-                        android:id="@+id/cr_drive_type_edit"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:editable="false"
-                        android:layout_weight="2"
-                        android:text="两驱"
-                        android:textColor="@color/bright_foreground_light_disabled"/>
-            </TableRow>
-            <TableRow>
-                <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="@string/cr_gear_type"
-                        android:layout_weight="1"
-                        android:textSize="18sp"/>
-                <EditText
-                        android:id="@+id/cr_gear_type_edit"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:editable="false"
-                        android:layout_weight="2"
-                        android:text="手动"
-                        android:textColor="@color/bright_foreground_light_disabled"/>
+                <TextView android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="1"
+                          android:text="@string/brand"
+                          android:textSize="18sp"/>
+                <TextView android:id="@+id/brand_text"
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="2"
+                          android:text="奥迪100"
+                          android:textSize="18sp"/>
             </TableRow>
 
             <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/csi"
+                android:drawableLeft="@drawable/basic_info_item"
+                android:drawablePadding="10dp"
+                style="@style/CodeFont"
+                android:layout_weight="5"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_weight="1"
+                android:background="#000"/>
+
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_displacement"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/displacement_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_driveType"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/driveType_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_transmission"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/transmission_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_airbag"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/airBags_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_abs"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/abs_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_powerSteering"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/powerSteering_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_powerWindows"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/powerWindows_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_sunroof"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/sunroof_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_airConditioning"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/airConditioning_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_leatherSeats"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/leatherSeats_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_powerSeats"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/powerSeats_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_powerMirror"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/powerMirror_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_reversingRadar"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/reversingRadar_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_reversingCamera"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/reversingCamera_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_ccs"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/ccs_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_softCloseDoors"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/softCloseDoors_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_rearPowerSeats"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/rearPowerSeats_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_ahc"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/ahc_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_parkingAssist"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/parkAssist_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/csi_clapBoard"
+                    android:layout_weight="1"
+                    android:layout_marginLeft="8dp"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/clapboard_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+            </TableRow>
+            <!-- 配置信息结束 -->
+
+            <TableRow>
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    style="@style/CodeFont"
-                    android:text="@string/cr_set_info" />
-            <View
+                    android:drawableLeft="@drawable/basic_info_item"
+                    android:drawablePadding="10dp"
+                    android:text="@string/procedures"
+                    style="@style/CodeFont"/>
+            </TableRow>
+            <TableRow>
+                <View
                     android:layout_width="match_parent"
-                    android:layout_height="3px"
-                    android:background="?android:attr/listDivider"/>
+                    android:layout_height="2dp"
+                    android:background="#000"
+                    android:layout_weight="1"
+                    />
+            </TableRow>
+
+            <!-- 手续录入部分 -->
             <TableRow>
                 <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="@string/cr_audio"
-                        android:layout_weight="1"
-                        android:textSize="18sp"/>
-                <EditText
-                        android:id="@+id/cr_audio_edit"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:editable="false"
-                        android:layout_weight="2"
-                        android:text="加装CD"
-                        android:textColor="@color/bright_foreground_light_disabled"/>
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_reg_location"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView 
+                    android:id="@+id/regArea_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:textSize="18sp"/>
             </TableRow>
             <TableRow>
                 <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="@string/cr_skylight"
-                        android:layout_weight="1"
-                        android:textSize="18sp"/>
-                <EditText
-                        android:id="@+id/cr_skylight_edit"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:editable="false"
-                        android:layout_weight="2"
-                        android:text="手动"
-                        android:textColor="@color/bright_foreground_light_disabled"/>
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_car_number"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView 
+                    android:id="@+id/plateNumber_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:textSize="18sp"/>
             </TableRow>
             <TableRow>
                 <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="@string/cr_ele_windows"
-                        android:layout_weight="1"
-                        android:textSize="18sp"/>
-                <EditText
-                        android:id="@+id/cr_ele_windows_edit"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:editable="false"
-                        android:layout_weight="2"
-                        android:text="四门"
-                        android:textColor="@color/bright_foreground_light_disabled"/>
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_licence_type"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView 
+                    android:id="@+id/licenceModel_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:textSize="18sp"/>
             </TableRow>
             <TableRow>
                 <TextView
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:text="@string/cr_ele_seats"
-                        android:layout_weight="1"
-                        android:textSize="18sp"/>
-                <EditText
-                        android:id="@+id/cr_ele_seats_edit"
-                        android:layout_height="wrap_content"
-                        android:layout_width="0dp"
-                        android:editable="false"
-                        android:layout_weight="2"
-                        android:text="带记忆"
-                        android:textColor="@color/bright_foreground_light_disabled"/>
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_car_type"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/vehicleType_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
             </TableRow>
             <TableRow>
                 <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_use"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/useCharacter_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/bi_run"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/mileAge_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/bi_kilometer"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_car_color"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/exteriorColor_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_first_log_time"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/regDate_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:textAlignment="center"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_manufacture_time"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/ci_builtDate_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ct_buy_tickets"
+                    android:layout_weight="2"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/invoice_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/ct_invoice_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/yuan"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:text="@string/ci_money"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/placeholder"
+                          android:layout_width="0dp"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="2"
+                          android:visibility="gone"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ct_extra_tax_certification"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/surtax_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_transfer_count"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/transferCount_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableRow android:id="@+id/ci_last_transfer_row">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_last_transfer_time"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/transferLastDate_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ct_yearly_check_available_date"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/annualInspectionDate_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableRow android:id="@+id/ct_available_date_row">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ct_available_date"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/compulsoryInsuranceDate_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_pictures"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/licencePhotoMatch_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:editable="false"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ct_business_insurance"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/insurance_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableLayout android:id="@+id/ct_insurance_table"
+                         android:layout_width="match_parent"
+                         android:layout_height="wrap_content">
+                <TableRow>
+                    <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:text="@string/cr_ele_rel_mirror"
+                        android:text="@string/ct_business_insurance_area"
                         android:layout_weight="1"
                         android:textSize="18sp"/>
-                <EditText
-                        android:id="@+id/cr_ele_rel_mirror_edit"
+                    <TextView android:id="@+id/insuranceRegion_text"
+                              android:layout_height="wrap_content"
+                              android:layout_width="0dp"
+                              android:layout_weight="2"
+                              android:textSize="18sp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
-                        android:editable="false"
-                        android:layout_weight="2"
-                        android:text="自动折叠"
-                        android:textColor="@color/bright_foreground_light_disabled"/>
+                        android:text="@string/ct_business_insurance_money"
+                        android:layout_weight="1"
+                        android:textSize="18sp"/>
+                    <TextView android:id="@+id/insuranceAmount_text"
+                              android:layout_height="wrap_content"
+                              android:layout_width="0dp"
+                              android:layout_weight="1"
+                              android:textSize="18sp"/>
+                    <TextView android:layout_height="wrap_content"
+                              android:layout_width="0dp"
+                              android:text="@string/ci_money"
+                              android:layout_weight="1"
+                              android:textSize="18sp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ct_business_insurance_available_date"
+                        android:layout_weight="1"
+                        android:textSize="18sp"/>
+                    <TextView android:id="@+id/insuranceExpiryDate_text"
+                              android:layout_height="wrap_content"
+                              android:layout_width="0dp"
+                              android:layout_weight="2"
+                              android:textSize="18sp"/>
+                </TableRow>
+                <TableRow>
+                    <TextView
+                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:text="@string/ct_business_insurance_company"
+                        android:layout_weight="1"
+                        android:textSize="18sp"/>
+                    <TextView android:id="@+id/insuranceCompany_text"
+                              android:layout_height="wrap_content"
+                              android:layout_width="0dp"
+                              android:layout_weight="2"
+                              android:textSize="18sp"/>
+                </TableRow>
+            </TableLayout>
+
+            <TableRow android:id="@+id/ct_ported_procedure"
+                      android:visibility="gone">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ct_ported_procedure"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/importProcedures_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ct_backup_tire"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/spareTire_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ct_backup_key"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/spareKey_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_seller_name"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/ownerName_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_seller_id_number"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/ownerIdNumber_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ci_seller_phone_number"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/ownerPhone_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ex_exchange_type"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/transferAgree_text"
+                          android:layout_height="wrap_content"
+                          android:layout_width="0dp"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
+            </TableRow>
+            <!-- 手续录入部分结束 -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:drawableLeft="@drawable/comment_item"
+                android:drawablePadding="10dp"
+                style="@style/CodeFont"
+                android:text="@string/comment"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="#000"/>
+            <TableRow>
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/cbi_comment"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/transferRequire_text"
+                          android:layout_width="match_parent"
+                          android:layout_height="wrap_content"
+                          android:layout_weight="2"
+                          android:textSize="18sp"/>
             </TableRow>
         </TableLayout>
-    </ScrollView>
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>
