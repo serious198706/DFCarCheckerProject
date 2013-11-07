@@ -275,6 +275,8 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
                     // 立刻上传
                     imageUploadQueue.addImage(photoEntity);
 
+                    photoShotCount[currentShotPart]++;
+
                     out_start_camera();
                 } else {
                     Toast.makeText(CarCheckExteriorActivity.this,
