@@ -342,6 +342,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
 
     private void saveResult() {
         // 创建结果意图和包括地址
+        // TODO: 保存已拍摄的照片数量
         Intent intent = new Intent();
         intent.putExtra("INDEX", Integer.toString(sealSpinner.getSelectedItemPosition()));
         intent.putExtra("COMMENT", commentEdit.getText().toString());
