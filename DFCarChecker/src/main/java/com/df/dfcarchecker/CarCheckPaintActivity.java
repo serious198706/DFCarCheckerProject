@@ -505,6 +505,7 @@ public class CarCheckPaintActivity extends Activity {
         if(step.equals("EX")) {
             // 外观图
             switch (figure) {
+                case 0:
                 case 1:
                     name = "r3d4";
                     break;
@@ -524,6 +525,7 @@ public class CarCheckPaintActivity extends Activity {
         } else {
             // 内饰图
             switch (figure) {
+                case 0:
                 case 1:
                     name = "d4s4";
                     break;

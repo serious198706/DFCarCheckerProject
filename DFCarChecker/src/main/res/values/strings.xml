@@ -211,5 +211,7 @@
     <string name="title_activity_car_check_vin_input">MainActivity</string>
     <string name="title_activity_startup">MainActivity</string>
 
+    <string name="ip_sellerName">请输入卖家ID：</string>
+    <string name="importPlatformConfirm">请确认以下信息：</string>
 
 </resources>

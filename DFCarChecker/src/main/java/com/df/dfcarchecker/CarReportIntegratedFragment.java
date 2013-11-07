@@ -28,7 +28,9 @@ public class CarReportIntegratedFragment extends Fragment{
     private JSONObject function;
     private JSONObject chassis;
     private JSONObject flooded;
-    private JSONObject comment;
+    private String comment;
+    private JSONObject features;
+    private JSONObject options;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -57,7 +59,10 @@ public class CarReportIntegratedFragment extends Fragment{
             function = conditions.getJSONObject("function");
             chassis = conditions.getJSONObject("chassis");
             flooded = conditions.getJSONObject("flooded");
-            comment = conditions.getJSONObject("comment");
+            comment = conditions.getString("comment");
+
+            features = jsonObject.getJSONObject("features");
+            options = features.getJSONObject("options");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -65,19 +70,23 @@ public class CarReportIntegratedFragment extends Fragment{
 
     private void updateUi() {
         try {
-            setTextView(rootView, R.id.comment_edit, comment.getString("comment"));
+            setTextView(rootView, R.id.comment_edit, comment);
 
+            setTextView(rootView, R.id.exteriorScore_text, "得分：" + exterior.getString("score"));
+            setTextView(rootView, R.id.interiorScore_text, "得分：" + interior.getString("score"));
             setTextView(rootView, R.id.engineStarted_text, engine.getString("started"));
             setTextView(rootView, R.id.engineSteady_text, engine.getString("steady"));
             setTextView(rootView, R.id.engineStrangeNoices_text, engine.getString("strangeNoices"));
             setTextView(rootView, R.id.engineExhaustColor_text, engine.getString("exhaustColor"));
             setTextView(rootView, R.id.engineFluid_text, engine.getString("fluid"));
+            setTextView(rootView, R.id.engineScore_text, "得分：" + engine.getString("score"));
             setTextView(rootView, R.id.gearMtClutch_text, gearbox.getString("mtClutch"));
             setTextView(rootView, R.id.gearMtShiftEasy_text, gearbox.getString("mtShiftEasy"));
             setTextView(rootView, R.id.gearMtShiftSpace_text, gearbox.getString("mtShiftSpace"));
             setTextView(rootView, R.id.gearAtShiftShock_text, gearbox.getString("atShiftShock"));
             setTextView(rootView, R.id.gearAtShiftNoise_text, gearbox.getString("atShiftNoise"));
             setTextView(rootView, R.id.gearAtShiftEasy_text, gearbox.getString("atShiftEasy"));
+            setTextView(rootView, R.id.gearboxScore_text, "得分：" + gearbox.getString("score"));
             setTextView(rootView, R.id.engineFault_text, function.getString("engineFault"));
             setTextView(rootView, R.id.oilPressure_text, function.getString("oilPressure"));
             setTextView(rootView, R.id.parkingBrake_text, function.getString("parkingBrake"));
@@ -137,6 +146,7 @@ public class CarReportIntegratedFragment extends Fragment{
                 setTextView(rootView, R.id.parkAssist_text, function.getString("parkAssist"));
             else
                 setTextView(rootView, R.id.parkAssist_text, null);
+            setTextView(rootView, R.id.functionScore_text, "得分：" + function.getString("score"));
             setTextView(rootView, R.id.chassisLeftFront_text, chassis.getString("leftFront"));
             setTextView(rootView, R.id.chassisRightFront_text, chassis.getString("rightFront"));
             setTextView(rootView, R.id.chassisLeftRear_text, chassis.getString("leftRear"));
@@ -144,14 +154,44 @@ public class CarReportIntegratedFragment extends Fragment{
             setTextView(rootView, R.id.chassisPerfect_text, chassis.getString("perfect"));
             setTextView(rootView, R.id.chassisEngineBottom_text, chassis.getString("engineBottom"));
             setTextView(rootView, R.id.chassisGearboxBottom_text, chassis.getString("gearboxBottom"));
+            setTextView(rootView, R.id.chassisScore_text, "得分：" + chassis.getString("score"));
             setTextView(rootView, R.id.waterCigarLighter_text, flooded.getString("cigarLighter"));
             setTextView(rootView, R.id.waterAshtray_text, flooded.getString("ashtray"));
             setTextView(rootView, R.id.waterSeatBelts_text, flooded.getString("seatBelts"));
             setTextView(rootView, R.id.waterReatSeats_text, flooded.getString("rearSeats"));
             setTextView(rootView, R.id.waterTrunkCorner_text, flooded.getString("trunkCorner"));
             setTextView(rootView, R.id.waterSpareTireGroove_text, flooded.getString("spareTireGroove"));
+
+            if(options.getString("transmission").equals("MT")) {
+                SetViewVisibility(R.id.it_gear_manually_row, View.VISIBLE);
+                SetViewVisibility(R.id.it_gear_manually_row_1, View.VISIBLE);
+                SetViewVisibility(R.id.it_gear_manually_row_2, View.VISIBLE);
+                SetViewVisibility(R.id.it_gear_manually_row_3, View.VISIBLE);
+
+                SetViewVisibility(R.id.it_gear_auto_row, View.GONE);
+                SetViewVisibility(R.id.it_gear_auto_row_1, View.GONE);
+                SetViewVisibility(R.id.it_gear_auto_row_2, View.GONE);
+                SetViewVisibility(R.id.it_gear_auto_row_3, View.GONE);
+            }
+            // 自动档
+            else {
+                SetViewVisibility(R.id.it_gear_manually_row, View.GONE);
+                SetViewVisibility(R.id.it_gear_manually_row_1, View.GONE);
+                SetViewVisibility(R.id.it_gear_manually_row_2, View.GONE);
+                SetViewVisibility(R.id.it_gear_manually_row_3, View.GONE);
+
+                SetViewVisibility(R.id.it_gear_auto_row, View.VISIBLE);
+                SetViewVisibility(R.id.it_gear_auto_row_1, View.VISIBLE);
+                SetViewVisibility(R.id.it_gear_auto_row_2, View.VISIBLE);
+                SetViewVisibility(R.id.it_gear_auto_row_3, View.VISIBLE);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void SetViewVisibility(int viewId, int visibility) {
+        View view  = (View)rootView.findViewById(viewId);
+        view.setVisibility(visibility);
     }
 }

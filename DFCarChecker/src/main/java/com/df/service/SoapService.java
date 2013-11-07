@@ -64,12 +64,17 @@ public class SoapService implements ISoapService {
         try {
             //发送请求
             trans.call(this.soapAction, envelope);
-        } catch (Exception e) {
-            Log.d("DFCarChecker", e.getMessage());
+        } catch (IOException e) {
+            if(e.getMessage() != null)
+                Log.d(Common.TAG, e.getMessage());
+            else
+                Log.d(Common.TAG, "无法连接到服务器！");
 
-            errorMessage = "无法连接到服务器！" + e.getMessage();
+            errorMessage = "无法连接到服务器！";
             resultMessage = "";
             return false;
+        } catch (XmlPullParserException e) {
+
         }
 
         // 收到的结果
@@ -91,7 +96,7 @@ public class SoapService implements ISoapService {
         // 失败
         else {
             errorMessage = resultMessage;
-            Log.d("DFCarChecker", resultMessage);
+            Log.d(Common.TAG, resultMessage);
             return false;
         }
     }
@@ -114,9 +119,12 @@ public class SoapService implements ISoapService {
         try {
             trans.call(this.soapAction, envelope);
         } catch (Exception e) {
-            Log.d("DFCarChecker", "无法连接到服务器：" + e.getMessage());
+            if(e.getMessage() != null)
+                Log.d(Common.TAG, "无法连接到服务器：" + e.getMessage());
+            else
+                Log.d(Common.TAG, "无法连接到服务器！");
 
-            errorMessage = "无法连接到服务器！" + e.getMessage();
+            errorMessage = "无法连接到服务器！";
             resultMessage = "";
             e.printStackTrace();
 
@@ -140,7 +148,7 @@ public class SoapService implements ISoapService {
         // 失败
         else {
             errorMessage = resultMessage;
-            Log.d("DFCarChecker", resultMessage);
+            Log.d(Common.TAG, resultMessage);
 
             return false;
         }
@@ -190,13 +198,13 @@ public class SoapService implements ISoapService {
 
         try {
             trans.call(this.soapAction, envelope);
-            Log.d("DFCarChecker", "upload Successful!");
         } catch (Exception e) {
-            Log.d("DFCarChecker", "无法连接到服务器：" + e.getMessage());
+            if(e.getMessage() != null)
+                Log.d(Common.TAG, "无法连接到服务器：" + e.getMessage());
+            else
+                Log.d(Common.TAG, "无法连接到服务器！");
 
-            errorMessage = "无法连接到服务器！" + e.getMessage();
-
-            e.printStackTrace();
+            errorMessage = "无法连接到服务器！";
 
             return false;
         }
@@ -206,7 +214,7 @@ public class SoapService implements ISoapService {
 
         // 成功失败标志位
         String result = soapObject.getProperty(0).toString();
-        Log.d("DFCarChecker", result);
+        Log.d(Common.TAG, result);
 
         // JSON格式数据
         resultMessage = soapObject.getPropertySafely("SaveCarPictureTagKeyResult", "").toString();
@@ -219,7 +227,7 @@ public class SoapService implements ISoapService {
         }
         // 失败
         else {
-            Log.d("DFCarChecker", resultMessage);
+            Log.d(Common.TAG, resultMessage);
             errorMessage = resultMessage;
             return false;
         }
@@ -241,14 +249,14 @@ public class SoapService implements ISoapService {
 
         try {
             trans.call(this.soapAction, envelope);
-            Log.d("DFCarChecker", "send Successful!");
         } catch (Exception e) {
-            Log.d("DFCarChecker", "无法连接到服务器：" + e.getMessage());
+            if(e.getMessage() != null)
+                Log.d(Common.TAG, "无法连接到服务器：" + e.getMessage());
+            else
+                Log.d(Common.TAG, "无法连接到服务器！" );
 
-            errorMessage = "无法连接到服务器！" + e.getMessage();
+            errorMessage = "无法连接到服务器！";
             resultMessage = "";
-
-            e.printStackTrace();
 
             return false;
         }
@@ -258,7 +266,7 @@ public class SoapService implements ISoapService {
 
         // 成功失败标志位
         String result = soapObject.getProperty(0).toString();
-        Log.d("DFCarChecker", result);
+        Log.d(Common.TAG, result);
 
 
         // 成功
@@ -270,7 +278,7 @@ public class SoapService implements ISoapService {
         }
         // 失败
         else {
-            Log.d("DFCarChecker", resultMessage);
+            Log.d(Common.TAG, resultMessage);
             return false;
         }
     }

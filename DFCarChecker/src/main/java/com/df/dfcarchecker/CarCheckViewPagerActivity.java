@@ -6,10 +6,11 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -23,19 +24,17 @@ import android.widget.Toast;
 
 import com.df.service.Common;
 import com.df.service.CustomViewPager;
-import com.df.service.ImageUploadQueue;
 import com.df.service.QueueScanService;
-import com.df.service.SoapService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class CarCheckViewPagerActivity extends FragmentActivity implements ActionBar.TabListener {
+public class CarCheckViewPagerActivity extends FragmentActivity implements ActionBar
+        .TabListener {
     private CarCheckBasicInfoFragment carCheckBasicInfoFragment;
     private CarCheckFrameFragment carCheckFrameFragment;
     private CarCheckIntegratedFragment carCheckIntegratedFragment;
 
-    private CommitDataTask mCommitDataTask;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -50,6 +49,12 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
      * The {@link ViewPager} that will host the section contents.
      */
     CustomViewPager mViewPager;
+
+    private ProgressDialog mCommitProgressDialog;
+
+    private static boolean canCommit = false;
+
+    private Intent serviceIntent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +98,12 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+
+        serviceIntent = new Intent(this, QueueScanService.class);
+        serviceIntent.putExtra("committed", canCommit);
+        serviceIntent.putExtra("JSONObject", "");
+        startService(serviceIntent);
+        registerReceiver(broadcastReceiver, new IntentFilter(QueueScanService.BROADCAST_ACTION));
     }
 
     @Override
@@ -113,7 +124,8 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                 return true;
             case R.id.action_commit:
                 // 提交数据
-                commit();
+                if(runOverAllCheck())
+                    commit();
                 break;
             case R.id.action_cancel:
                 quitCarCheck();
@@ -121,7 +133,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         }
         return super.onOptionsItemSelected(item);
     }
-    
+
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         // When the given tab is selected, switch to the corresponding page in
@@ -205,6 +217,11 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                 // 退出
                 Intent intent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
                 stopService(intent);
+
+                carCheckBasicInfoFragment = null;
+                carCheckFrameFragment = null;
+                carCheckIntegratedFragment = null;
+
                 finish();
             }
         });
@@ -227,8 +244,17 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // 提交
-                mCommitDataTask = new CommitDataTask(CarCheckViewPagerActivity.this);
-                mCommitDataTask.execute((Void) null);
+
+                // 将结构检查的图片加入到照片池
+                mCommitProgressDialog = ProgressDialog.show(CarCheckViewPagerActivity.this, null,
+                        "正在提交...", false, false);
+
+                carCheckFrameFragment.addPhotosToQueue();
+                canCommit = true;
+
+                serviceIntent.putExtra("committed", canCommit);
+                serviceIntent.putExtra("JSONObject", generateCommitJsonObject().toString());
+                startService(serviceIntent);
             }
         });
 
@@ -242,144 +268,109 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
     }
 
 
-    public class CommitDataTask extends AsyncTask<Void, Void, Boolean> {
-        Context context;
-        SoapService soapService;
-        private ProgressDialog progressDialog;
-
-        private CommitDataTask() {
-
-        }
-
-        private CommitDataTask(Context context) {
-            this.context = context;
-        }
-
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
-        protected void onPreExecute()
-        {
-            progressDialog = ProgressDialog.show(context, null,
-                    "正在提交，请稍候。。", false, false);
-        }
+        public void onReceive(Context context, Intent intent) {
+            mCommitProgressDialog.dismiss();
 
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            boolean success = false;
+            String result = intent.getExtras().getString("result");
 
-            // 将结构检查的图片加入到照片池
-            carCheckFrameFragment.addPhotosToQueue();
-
-            // 组织最终json
-            try {
-                // root节点
-                JSONObject root = new JSONObject();
-
-                // 基本信息
-                JSONObject features = new JSONObject();
-
-                // 基本信息 - 配置信息
-                features.put("options", carCheckBasicInfoFragment.generateOptionsJsonObject());
-
-                // 基本信息 - 手续信息
-                features.put("procedures", carCheckBasicInfoFragment.generateProceduresJsonObject());
-
-                // 综合检查
-                JSONObject conditions = new JSONObject();
-
-                // 综合检查 - 外观检查
-                conditions.put("exterior", CarCheckExteriorActivity.generateExteriorJsonObject());
-
-                // 综合检查 - 内饰检查
-                conditions.put("interior", CarCheckInteriorActivity.generateInteriorJsonObject());
-
-                // 综合检查 - 发动机检查
-                conditions.put("engine", CarCheckIntegratedFragment.generateEngineJsonObject());
-
-                // 综合检查 - 变速箱检查
-                conditions.put("gearbox", CarCheckIntegratedFragment.generateGearboxJsonObject());
-
-                // 综合检查 - 功能检查
-                conditions.put("function", CarCheckIntegratedFragment.generateFunctionJsonObject());
-
-                // 综合检查 - 底盘检查
-                conditions.put("chassis", CarCheckIntegratedFragment.generateChassisJsonObject());
-
-                // 综合检查 - 泡水检查
-                conditions.put("flooded", CarCheckIntegratedFragment.generateFloodedJsonObject());
-
-                // 综合检查 - 备注
-                conditions.put("comment", CarCheckIntegratedFragment.generateCommentJsonObject());
-
-                // 车体结构检查
-                JSONObject frames = new JSONObject();
-
-                // 车体结构检查 - 备注
-                frames.put("comment", CarCheckFrameFragment.generateFrameJsonObject());
-
-                root.put("features", features);
-                root.put("conditions", conditions);
-                root.put("frames", frames);
-                soapService = new SoapService();
-
-                // 设置soap的配置
-                soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                        "http://cheyiju/IReportService/SaveCarCheckInfo",
-                        "SaveCarCheckInfo");
-
-                JSONObject jsonObject = new JSONObject();
-
-                try {
-                    jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
-                    jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                    jsonObject.put("Key", LoginActivity.userInfo.getKey());
-                    jsonObject.put("JsonString", root);
-                } catch (JSONException e) {
-
-                }
-
-                ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
-
-                try {
-                    // 照片未上传完成前，不能提交信息
-                    while(imageUploadQueue.getQueueSize() != 0) {
-                        //Thread.sleep(3000);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                success = soapService.communicateWithServer(context, jsonObject.toString());
-
-                // 登录失败，获取错误信息并显示
-                if(!success) {
-                    Log.d("DFCarChecker", "Login error:" + soapService.getErrorMessage());
-                } else {
-
-                }
-            } catch (JSONException e) {
-                Log.d("DFCarChecker", "Json解析错误: " + e.getMessage());
-            }
-
-            return success;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mCommitDataTask = null;
-
-            progressDialog.dismiss();
-
-            if(success) {
+            // 提交成功
+            if(result.equals("0")) {
                 Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
-                finish();
             }
+
+            // 停止服务
+            Intent serviceIntent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
+            stopService(serviceIntent);
+
+            // 注销广播接收器
+            unregisterReceiver(broadcastReceiver);
+
+            // 各种置空
+            carCheckBasicInfoFragment = null;
+            carCheckFrameFragment = null;
+            carCheckIntegratedFragment = null;
+
+            // 关闭界面
+            finish();
+        }
+    };
+
+    private boolean runOverAllCheck() {
+        boolean checkThrough = false;
+
+        checkThrough = carCheckBasicInfoFragment.runOverAllCheck();
+        if(!checkThrough) {
+            mViewPager.setCurrentItem(0);
+            return checkThrough;
         }
 
-        @Override
-        protected void onCancelled() {
-            mCommitDataTask = null;
+        checkThrough = carCheckFrameFragment.runOverAllCheck();
+        if(!checkThrough) {
+            mViewPager.setCurrentItem(1);
+            return checkThrough;
+        }
 
-            progressDialog.dismiss();
+        return checkThrough;
+    }
+
+    private JSONObject generateCommitJsonObject() {
+        try {
+            // root节点
+            JSONObject root = new JSONObject();
+
+            // 基本信息
+            JSONObject features = new JSONObject();
+
+            // 基本信息 - 配置信息
+            features.put("options", carCheckBasicInfoFragment.generateOptionsJsonObject());
+
+            // 基本信息 - 手续信息
+            features.put("procedures", carCheckBasicInfoFragment.generateProceduresJsonObject());
+
+            // 综合检查
+            JSONObject conditions = new JSONObject();
+
+            // 综合检查 - 外观检查
+            conditions.put("exterior", CarCheckExteriorActivity.generateExteriorJsonObject());
+
+            // 综合检查 - 内饰检查
+            conditions.put("interior", CarCheckInteriorActivity.generateInteriorJsonObject());
+
+            // 综合检查 - 发动机检查
+            conditions.put("engine", CarCheckIntegratedFragment.generateEngineJsonObject());
+
+            // 综合检查 - 变速箱检查
+            conditions.put("gearbox", CarCheckIntegratedFragment.generateGearboxJsonObject());
+
+            // 综合检查 - 功能检查
+            conditions.put("function", CarCheckIntegratedFragment.generateFunctionJsonObject());
+
+            // 综合检查 - 底盘检查
+            conditions.put("chassis", CarCheckIntegratedFragment.generateChassisJsonObject());
+
+            // 综合检查 - 泡水检查
+            conditions.put("flooded", CarCheckIntegratedFragment.generateFloodedJsonObject());
+
+            // 综合检查 - 备注
+            conditions.put("comment", CarCheckIntegratedFragment.generateCommentString());
+
+            // 车体结构检查
+            JSONObject frames = new JSONObject();
+
+            // 车体结构检查 - 备注
+            frames.put("comment", CarCheckFrameFragment.generateFrameJsonString());
+
+            root.put("features", features);
+            root.put("conditions", conditions);
+            root.put("frames", frames);
+
+            return root;
+        } catch (JSONException e) {
+            Log.d(Common.TAG, "Json组织失败。");
+
+            return null;
         }
     }
 }

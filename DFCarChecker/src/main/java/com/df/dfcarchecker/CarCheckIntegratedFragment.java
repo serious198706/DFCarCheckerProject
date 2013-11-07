@@ -371,15 +371,7 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         return flooded;
     }
 
-    public static JSONObject generateCommentJsonObject() {
-        JSONObject comment = new JSONObject();
-
-        try {
-            comment.put("comment", getEditText(rootView, R.id.it_comment_edit));
-        } catch (JSONException e) {
-
-        }
-
-        return comment;
+    public static String generateCommentString() {
+        return getEditText(rootView, R.id.it_comment_edit);
     }
 }

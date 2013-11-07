@@ -1050,6 +1050,38 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     }
     // </editor-fold>
 
+    public boolean runOverAllCheck() {
+        int id2Check[] = {R.id.ci_licenceModel_edit,
+        R.id.bi_mileAge_edit,
+        R.id.ct_invoice_edit,
+        R.id.ct_licencePhotoMatch_edit,
+        R.id.ct_insuranceAmount_edit,
+        R.id.ci_ownerName_edit,
+        R.id.ci_ownerIdNumber_edit,
+        R.id.ci_ownerPhone_edit};
+
+        for(int i = 0; i < id2Check.length; i++) {
+            if(id2Check[i] == R.id.ct_invoice_edit) {
+                // 如果选择了无购车发票
+                if(ticketSpinner.getSelectedItemPosition() > 1)
+                    continue;
+            }
+
+            if(id2Check[i] == R.id.ct_insuranceAmount_edit) {
+                // 如果选择了无商险
+                if(businessInsuranceSpinner.getSelectedItemPosition() >= 1)
+                    continue;
+            }
+
+            if(Helper.getEditText(rootView, id2Check[i]).equals("")) {
+                Helper.setEditError(rootView, id2Check[i]);
+                Helper.setEditFocus(rootView, id2Check[i]);
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     // <editor-fold defaultstate="collapsed" desc="设置各种Spinner">
     // 设置国家Spinner

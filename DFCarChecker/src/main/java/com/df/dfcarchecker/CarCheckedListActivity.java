@@ -2,22 +2,25 @@ package com.df.dfcarchecker;
 
 import android.app.ActionBar;
 import android.app.ActivityOptions;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
-import android.os.Environment;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 import android.view.ActionMode;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -25,16 +28,10 @@ import android.widget.Toast;
 import com.df.service.Common;
 import com.df.service.SoapService;
 
-import org.apache.http.conn.BasicEofSensorWatcher;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -49,6 +46,11 @@ public class CarCheckedListActivity extends Activity {
     private ProgressDialog progressDialog;
     private SoapService soapService;
     private String result;
+
+    private ImportPlatformTask mImportPlatformTask;
+    private RefreshCheckedCarListTask mRefreshCheckedCarListTask;
+    private GetCarDetailTask mGetCarDetailTask;
+    private CheckSellerNameTask mCheckSellerNameTask;
 
     // 已检测列表的开始位
     private int startNumber = 1;
@@ -76,7 +78,7 @@ public class CarCheckedListActivity extends Activity {
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.action_platform:
-                    //import();
+                    checkSellerName();
                     mode.finish(); // Action picked, so close the CAB
                     return true;
                 case R.id.action_modify:
@@ -97,8 +99,7 @@ public class CarCheckedListActivity extends Activity {
             list.clearFocus();
         }
     };
-    private RefreshCheckedCarListTask mRefreshCheckedCarListTask;
-    private GetCarDetailTask mGetCarDetailTask;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -161,6 +162,7 @@ public class CarCheckedListActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
+    // 设置列表显示内容
     private void setList(String jsonString) {
         if(jsonString.startsWith("["))
         {
@@ -199,31 +201,6 @@ public class CarCheckedListActivity extends Activity {
 
         }
 
-//        for(int i = 0; i < 20; i++)
-//        {
-//            map = new HashMap<String, String>();
-//
-//            int randomCarNumber = 1000 + (int)(Math.random() * ((9999 - 1000) + 1));
-//
-//            map.put("car_number", "车牌号码：京A" + String.format("%s", randomCarNumber));
-//            map.put("car_type", "型号：QQ");
-//            map.put("car_color", "颜色：红");
-//            map.put("car_level", "鉴定等级：80B");
-//
-//            Random r = new Random();
-//            if(r.nextInt(10) % 2 == 0) {
-//                map.put("car_photo", "照片：√");
-//            }
-//            else {
-//                map.put("car_photo", "照片：×");
-//            }
-//
-//            map.put("car_status", "状态：已竞价");
-//            map.put("car_date", "提交日期：2013-02-23");
-//
-//            mylist.add(map);
-//        }
-
         adapter = new SimpleAdapter(
                 this,
                 mylist,
@@ -236,12 +213,13 @@ public class CarCheckedListActivity extends Activity {
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(CarCheckedListActivity.this, mylist.get(i).get("car_number"), Toast.LENGTH_SHORT).show();
-
                 lastPos = i;
 
                 view.clearFocus();
                 list.clearFocus();
+
+                progressDialog = ProgressDialog.show(CarCheckedListActivity.this, null,
+                        "正在获取车辆信息，请稍候。。", false, false);
 
                 mGetCarDetailTask = new GetCarDetailTask(view.getContext());
                 mGetCarDetailTask.execute(Integer.parseInt(mylist.get(i).get("id")));
@@ -252,6 +230,8 @@ public class CarCheckedListActivity extends Activity {
 
             public boolean onItemLongClick(AdapterView<?> arg0, View view,
                                            int pos, long id) {
+                lastPos = pos;
+
                 Toast.makeText(CarCheckedListActivity.this, mylist.get(pos).get("car_number"), Toast.LENGTH_SHORT).show();
                 mActionMode = CarCheckedListActivity.this.startActionMode(mActionModeCallback);
                 view.setSelected(true);
@@ -261,14 +241,46 @@ public class CarCheckedListActivity extends Activity {
         });
     }
 
-
-
+    // 刷新列表
     private void refresh() {
         mRefreshCheckedCarListTask = new RefreshCheckedCarListTask(this);
         mRefreshCheckedCarListTask.execute((Void) null);
     }
 
-    //GetCheckedCarDetailOptionByCarId
+    // 检查卖家姓名
+    private void checkSellerName() {
+        LayoutInflater inflater = this.getLayoutInflater();
+        final View view = inflater.inflate(R.layout.import_platform_dialog, null);
+
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle("输入信息")
+                .setView(view)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        EditText editText = (EditText)view.findViewById(R.id.sellerName);
+
+                        mCheckSellerNameTask = new CheckSellerNameTask
+                                (CarCheckedListActivity.this,
+                                        Integer.parseInt(mylist.get(lastPos).get("id")),
+                                        editText.getText().toString());
+                        mCheckSellerNameTask.execute();
+                    }
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .create();
+
+        dialog.show();
+    }
+
+    // 导入平台
+    private void importPlatform(String sellerId) {
+        mImportPlatformTask = new ImportPlatformTask(this, Integer.parseInt(mylist.get(lastPos).get("id")), sellerId);
+        mImportPlatformTask.execute();
+    }
+
+    // 获取已检车辆线程
     private class RefreshCheckedCarListTask extends AsyncTask<Void, Void, Boolean> {
         Context context;
 
@@ -344,7 +356,7 @@ public class CarCheckedListActivity extends Activity {
         }
     }
 
-    // 获取详细信息
+    // 获取详细信息线程
     private class GetCarDetailTask extends AsyncTask<Integer, Void, Boolean> {
         private Context context;
 
@@ -393,50 +405,198 @@ public class CarCheckedListActivity extends Activity {
         @Override
         protected void onPostExecute(Boolean success) {
             Intent intent = new Intent(CarCheckedListActivity.this, CarReportViewPagerActivity.class);
-            ActivityOptions options = ActivityOptions.makeScaleUpAnimation(getWindow().getDecorView(),
-                    getWindow().getDecorView().getWidth() / 2,
-                    getWindow().getDecorView().getHeight() / 2,
-                    getWindow().getDecorView().getWidth(),
-                    getWindow().getDecorView().getHeight());
+//            ActivityOptions options = ActivityOptions.makeScaleUpAnimation(getWindow().getDecorView(),
+//                    getWindow().getDecorView().getWidth() / 2,
+//                    getWindow().getDecorView().getHeight() / 2,
+//                    getWindow().getDecorView().getWidth(),
+//                    getWindow().getDecorView().getHeight());
 
             intent.putExtra("jsonData", result);
-            startActivity(intent, options.toBundle());
+
+            progressDialog.dismiss();
+
+            startActivity(intent/*, options.toBundle()*/);
         }
     }
 
-    // dummy
-    private JSONArray generateDummyJsonObject() {
-        JSONArray jsonArray = new JSONArray();
+    // 检查卖家姓名线程
+    private class CheckSellerNameTask extends AsyncTask<Void, Void, Boolean> {
+        Context context;
+        int carId;
+        String sellerNameValue;
 
-        try {
-            for(int i = 0; i < 10; i++) {
-                JSONObject jsonObject = new JSONObject();
-
-                int randomCarNumber = 1000 + (int)(Math.random() * ((9999 - 1000) + 1));
-
-                jsonObject.put("plateNumber", "车牌号码: 京A" + Integer.toString(randomCarNumber));
-                jsonObject.put("brand", "车辆型号: QQ");
-
-                int randomCarColor = (int)(Math.random() * 12);
-                String colorArray[] = getResources().getStringArray(R.array.ci_car_color_arrays);
-                jsonObject.put("exteriorColor", "颜色: " + colorArray[randomCarColor]);
-
-                randomCarNumber = (int)(Math.random() * 100);
-                jsonObject.put("score", "最终得分: " + Integer.toString(randomCarNumber / 100));
-                jsonObject.put("status", "状态: 已竞价");
-
-                int randomMonth = 1 + (int)(Math.random() * ((12 - 1) + 1));
-                int randomDay = 1 + (int)(Math.random() * (30 - 1) + 1);
-
-                jsonObject.put("created", "提交日期: 2013-" + Integer.toString(randomMonth) + "-" +
-                        Integer.toString(randomDay));
-
-                jsonArray.put(i, jsonObject);
-            }
-        } catch (JSONException e) {
-            return null;
+        private CheckSellerNameTask(Context context, int carId, String sellerNameValue) {
+            this.context = context;
+            this.carId = carId;
+            this.sellerNameValue = sellerNameValue;
         }
 
-        return jsonArray;
+        @Override
+        protected void onPreExecute()
+        {
+            progressDialog = ProgressDialog.show(context, null,
+                    "正在获取已检车辆信息，请稍候。。", false, false);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            boolean success = false;
+
+            try {
+                JSONObject jsonObject = new JSONObject();
+
+                // SeriesId + userID + key
+                jsonObject.put("CarId", this.carId);
+                jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                jsonObject.put("SellerName", this.sellerNameValue);
+
+                soapService = new SoapService();
+
+                // 设置soap的配置
+                soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
+                        "http://cheyiju/IReportService/CheckSellerName",
+                        "CheckSellerName");
+
+                success = soapService.communicateWithServer(context, jsonObject.toString());
+            } catch (JSONException e) {
+                Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
+                return false;
+            }
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mRefreshCheckedCarListTask = null;
+
+            progressDialog.dismiss();
+
+            // 成功获取
+            if (success) {
+                result = soapService.getResultMessage();
+
+                JSONObject jsonObject = null;
+
+                try {
+                    jsonObject = new JSONObject(result);
+                    String companyName = jsonObject.getString("CompanyName");
+                    String realName = jsonObject.getString("RealName");
+                    final String sellerId = jsonObject.getString("SellerId");
+
+                    String message = getResources().getString(R.string.importPlatformConfirm) +
+                            "\n" +
+                            "公司：" + companyName + "\n" +
+                            "真实姓名：" + realName;
+
+                    AlertDialog dialog = new AlertDialog.Builder(context)
+                            .setTitle(R.string.alert_title)
+                            .setMessage(message)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    importPlatform(sellerId);
+                                }
+                            })
+                            .setNegativeButton(R.string.cancel, null)
+                            .create();
+
+                    dialog.show();
+
+                } catch (JSONException e) {
+
+                }
+            } else {
+                Log.d("DFCarChecker", "连接错误: " + soapService.getErrorMessage());
+
+                if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
+                    Toast.makeText(CarCheckedListActivity.this, "连接错误，请重新登陆！", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(CarCheckedListActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mRefreshCheckedCarListTask = null;
+        }
+    }
+
+    // 确认导入平台线程
+    private class ImportPlatformTask extends AsyncTask<Void, Void, Boolean> {
+        Context context;
+        int carId;
+        String sellerId;
+
+        private ImportPlatformTask(Context context, int carId, String sellerId) {
+            this.context = context;
+            this.carId = carId;
+            this.sellerId = sellerId;
+        }
+
+        @Override
+        protected void onPreExecute()
+        {
+            progressDialog = ProgressDialog.show(context, null,
+                    "正在导入平台，请稍候。。", false, false);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            boolean success = false;
+
+            try {
+                JSONObject jsonObject = new JSONObject();
+
+                // SeriesId + userID + key
+                jsonObject.put("CarId", this.carId);
+                jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                jsonObject.put("SellerId", this.sellerId);
+
+                soapService = new SoapService();
+
+                // 设置soap的配置
+                soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
+                        "http://cheyiju/IReportService/ImportPlatform",
+                        "ImportPlatform");
+
+                success = soapService.communicateWithServer(context, jsonObject.toString());
+
+                result = soapService.getResultMessage();
+            } catch (JSONException e) {
+                Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
+                return false;
+            }
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mRefreshCheckedCarListTask = null;
+
+            progressDialog.dismiss();
+
+            // 成功获取
+            if (success) {
+                Toast.makeText(context, "导入成功！", Toast.LENGTH_LONG).show();
+            } else {
+                Log.d("DFCarChecker", "连接错误: " + soapService.getErrorMessage());
+
+                if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
+                    Toast.makeText(CarCheckedListActivity.this, "连接错误，请重新登陆！", Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(CarCheckedListActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mRefreshCheckedCarListTask = null;
+        }
     }
 }

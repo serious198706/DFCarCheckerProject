@@ -50,6 +50,7 @@ public class Common {
     public static final String TAG = "DFCarChecker";
 
     // WebService configs
+    //public static final String SERVER_ADDRESS = "http://192.168.8.33:801/";
     public static final String SERVER_ADDRESS = "http://wcf.268v.com:8008/";
     public static final String USER_MANAGE_SERVICE = "userManageService.svc";
     public static final String REPORT_SERVICE = "ReportService.svc";

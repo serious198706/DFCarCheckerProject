@@ -20,8 +20,8 @@ public class MainActivity extends Activity {
 
         //imageUploadQueue.startUpload(this);
 
-        Intent intent = new Intent(this, QueueScanService.class);
-        startService(intent);
+        //Intent intent = new Intent(this, QueueScanService.class);
+        //startService(intent);
     }
 
     public void EnterCarCheck(View view) {

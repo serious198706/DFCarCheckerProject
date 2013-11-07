@@ -117,16 +117,18 @@ public class CarReportFrameFragment extends Fragment {
             }
 
             // 结构草图 - 前视角
-            JSONObject fSketch = frame.getJSONObject("fSketch");
-            String fSketchUrl = fSketch.getString("photo");
+            //JSONObject fSketch = frame.getJSONObject("fSketch");
+            //String fSketchUrl = fSketch.getString("photo");
 
-            new DownloadImageTask("front").execute("http://cy198706.com/kanmeizhi/recommend/1.jpg");
+            //new DownloadImageTask("front").execute("http://cy198706.com/kanmeizhi/recommend/1" +
+            //        ".jpg");
 
             // 结构草图 - 后视角
             JSONObject rSketch = frame.getJSONObject("rSketch");
-            String rSketchUrl = rSketch.getString("photo");
+            //String rSketchUrl = rSketch.getString("photo");
 
-            new DownloadImageTask("rear").execute("http://cy198706.com/kanmeizhi/recommend/2.jpg");
+            //new DownloadImageTask("rear").execute("http://cy198706.com/kanmeizhi/recommend/2" +
+            //        ".jpg");
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -156,17 +156,10 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         framePaintPreviewViewRear.init(previewBitmapRear, posEntitiesRear);
     }
 
-    public static JSONObject generateFrameJsonObject() {
-        JSONObject jsonObject = new JSONObject();
-
-        try {
-            jsonObject.put("comment", getEditText(rootView, R.id.comment_edit));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return jsonObject;
+    public static String generateFrameJsonString() {
+        return getEditText(rootView, R.id.comment_edit);
     }
+
     public void StartPaint(String frontOrRear) {
         Intent intent = new Intent(rootView.getContext(), CarCheckPaintActivity.class);
         intent.putExtra("PAINT_TYPE", "FRAME_PAINT");
@@ -274,6 +267,8 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
 
                     // 拍摄完成后立刻上传
                     imageUploadQueue.addImage(photoEntity);
+                    
+                    structure_start_camera(null);
                 } else {
                     Toast.makeText(rootView.getContext(),
                             "相机打开错误！", Toast.LENGTH_SHORT)
@@ -343,5 +338,22 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
                 CarCheckPaintActivity.sketchPhotoEntities.remove(0);
             }
         }
+    }
+
+    public boolean runOverAllCheck() {
+        int count = 0;
+
+        for(int i = 0 ; i < photoShotCount.length; i++) {
+            count += photoShotCount[i];
+        }
+
+        if(count < 3) {
+            Toast.makeText(rootView.getContext(), "机舱组照片拍摄数量不足！还需要再拍摄" + Integer.toString(3 - count) + "张",
+                    Toast.LENGTH_LONG).show();
+
+            return false;
+        }
+
+        return true;
     }
 }

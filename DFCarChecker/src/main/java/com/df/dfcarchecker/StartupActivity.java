@@ -26,14 +26,6 @@ public class StartupActivity extends Activity {
         FirstRun();
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.startup, menu);
-        return true;
-    }
-
     private void FirstRun() {
         SharedPreferences settings = this.getSharedPreferences("DFCarChecker", 0);
         boolean firstrun = settings.getBoolean("firstrun", true);

@@ -260,4 +260,14 @@ public class Helper {
         else
             textView.setText(string);
     }
+
+    public static void setEditFocus(View view, int editId) {
+        EditText editText = (EditText)view.findViewById(editId);
+        editText.requestFocus();
+    }
+
+    public static void setEditError(View view, int editId) {
+        EditText editText = (EditText)view.findViewById(editId);
+        editText.setError("请填写必要字段！");
+    }
 }

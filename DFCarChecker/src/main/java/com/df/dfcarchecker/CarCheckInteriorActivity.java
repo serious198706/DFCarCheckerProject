@@ -49,6 +49,8 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     private long currentTimeMillis;
     private ImageUploadQueue imageUploadQueue;
 
+    private int[] photoShotCount = {0, 0, 0, 0, 0, 0, 0};
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -175,8 +177,18 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     public void in_start_camera() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
+        String[] itemArray = getResources().getStringArray(R.array
+                .in_camera_cato_item);
+
+        for(int i = 0; i < itemArray.length; i++) {
+            itemArray[i] += " (";
+            itemArray[i] += Integer.toString(photoShotCount[i]);
+            itemArray[i] += ") ";
+        }
+
+
         builder.setTitle(R.string.in_camera);
-        builder.setItems(R.array.in_camera_cato_item, new DialogInterface.OnClickListener() {
+        builder.setItems(itemArray, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 currentShotPart = i;
@@ -302,6 +314,8 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
 
                     // 立刻上传
                     imageUploadQueue.addImage(photoEntity);
+
+                    in_start_camera();
                 }  else {
                     Toast.makeText(CarCheckInteriorActivity.this,
                             "error occured during opening camera", Toast.LENGTH_SHORT)
