@@ -30,7 +30,7 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name=".CarCheckViewPagerActivity"
+            android:name="com.df.dfcarchecker.CarCheckViewPagerActivity"
             android:label="@string/title_activity_car_check_frame" >
         </activity>
         <activity
@@ -42,7 +42,7 @@
             android:label="@string/title_activity_car_checked_list" >
         </activity>
         <activity
-            android:name=".CarReportViewPagerActivity"
+            android:name="com.df.dfcarchecker.CarReportViewPagerActivity"
             android:label="@string/title_activity_car_report" >
         </activity>
         <activity
@@ -50,11 +50,11 @@
             android:label="@string/out" >
         </activity>
         <activity
-            android:name=".CarCheckExteriorActivity"
+            android:name="com.df.dfcarchecker.CarCheckExteriorActivity"
             android:label="@string/out" >
         </activity>
         <activity
-            android:name=".CarCheckInteriorActivity"
+            android:name="com.df.dfcarchecker.CarCheckInteriorActivity"
             android:label="@string/in" >
         </activity>
         <activity
@@ -71,9 +71,16 @@
             android:label="@string/title_activity_login"
             android:windowSoftInputMode="adjustResize|stateVisible" >
         </activity>
-        <service android:name="com.df.service.QueueScanService"
-            android:exported="false">
+
+        <service
+            android:name="com.df.service.QueueScanService"
+            android:exported="false" >
         </service>
+
+        <activity
+            android:name="com.df.dfcarchecker.CarReportExteriorActivity"
+            android:label="@string/title_activity_car_report_exterior" >
+        </activity>
     </application>
 
 </manifest>

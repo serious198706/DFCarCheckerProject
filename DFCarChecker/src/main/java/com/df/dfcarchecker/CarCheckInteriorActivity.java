@@ -35,8 +35,8 @@ import java.util.List;
 public class CarCheckInteriorActivity extends Activity implements View.OnClickListener  {
     private int currentShotPart;
 
-    public static List<PosEntity> posEntities = CarCheckIntegratedFragment.insidePaintEntities;
-    public static List<PhotoEntity> photoEntities = CarCheckIntegratedFragment.outsidePhotoEntities;
+    public static List<PosEntity> posEntities = CarCheckIntegratedFragment.interiorPaintEntities;
+    public static List<PhotoEntity> photoEntities = CarCheckIntegratedFragment.exteriorPhotoEntities;
 
     private String brokenParts;
     private String dirtyParts;
@@ -88,6 +88,8 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
             if(comment != null) {
                 commentEdit.setText(comment);
             }
+
+            photoShotCount = extras.getIntArray("PHOTO_COUNT");
         }
 
         final ActionBar actionBar = getActionBar();
@@ -346,6 +348,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         Intent intent = new Intent();
         intent.putExtra("INDEX", Integer.toString(sealSpinner.getSelectedItemPosition()));
         intent.putExtra("COMMENT", commentEdit.getText().toString());
+        intent.putExtra("PHOTO_COUNT", photoShotCount);
 
         addPhotosToQueue();
 

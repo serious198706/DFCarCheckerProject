@@ -193,6 +193,7 @@ public class CarCheckedListActivity extends Activity {
                     map.put("created", "创建时间：" + jsonObject.getString("created"));
 
                     mylist.add(map);
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

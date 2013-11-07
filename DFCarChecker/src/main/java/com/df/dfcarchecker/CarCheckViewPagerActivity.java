@@ -312,6 +312,12 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
             return checkThrough;
         }
 
+        checkThrough = carCheckIntegratedFragment.runOverAllCheck();
+        if(!checkThrough) {
+            mViewPager.setCurrentItem(2);
+            return checkThrough;
+        }
+
         return checkThrough;
     }
 

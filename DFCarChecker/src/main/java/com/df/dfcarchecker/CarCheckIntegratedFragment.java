@@ -2,17 +2,20 @@ package com.df.dfcarchecker;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.df.entry.CarSettings;
 import com.df.entry.PosEntity;
@@ -31,14 +34,64 @@ import static com.df.service.Helper.getSpinnerSelectedText;
 public class CarCheckIntegratedFragment extends Fragment implements View.OnClickListener {
     private static View rootView;
     private static ScrollView root;
-    public static List<PosEntity> outsidePaintEntities;
-    public static List<PhotoEntity> outsidePhotoEntities;
-    public static List<PosEntity> insidePaintEntities;
-    public static List<PhotoEntity> insidePhotoEntities;
+    public static List<PosEntity> exteriorPaintEntities;
+    public static List<PhotoEntity> exteriorPhotoEntities;
+    public static List<PosEntity> interiorPaintEntities;
+    public static List<PhotoEntity> interiorPhotoEntities;
     private String paintIndex;
-    private String outsideComment;
+    private String exteriorComment;
     private String sealIndex;
-    private String insideComment;
+    private String interiorComment;
+
+    // 记录外观与内饰的拍摄照片数
+    private int[] exteriorPhotoCount = {0,0,0,0,0,0,0};
+    private int[] interiorPhotoCount = {0,0,0,0,0,0,0};
+
+    private static int[] spinnerIds = {
+            R.id.it_engineStarted_spinner,
+            R.id.it_engineSteady_spinner,
+            R.id.it_engineStrangeNoices_spinner,
+            R.id.it_engineExhaustColor_spinner,
+            R.id.it_engineFluid_spinner,
+            R.id.it_gearMtClutch_spinner,
+            R.id.it_gearMtShiftEasy_spinner,
+            R.id.it_gearMtShiftSpace_spinner,
+            R.id.it_gearAtShiftShock_spinner,
+            R.id.it_gearAtShiftNoise_spinner,
+            R.id.it_gearAtShiftEasy_spinner,
+            R.id.it_engineFault_spinner,
+            R.id.it_oilPressure_spinner,
+            R.id.it_parkingBrake_spinner,
+            R.id.it_waterTemp_spinner,
+            R.id.it_tachometer_spinner,
+            R.id.it_milometer_spinner,
+            R.id.it_audio_spinner,
+            R.id.it_airBag_spinner,
+            R.id.it_abs_spinner,
+            R.id.it_powerWindows_spinner,
+            R.id.it_sunroof_spinner,
+            R.id.it_airConditioning_spinner,
+            R.id.it_powerSeats_spinner,
+            R.id.it_powerMirror_spinner,
+            R.id.it_reversingRadar_spinner,
+            R.id.it_reversingCamera_spinner,
+            R.id.it_softCloseDoors_spinner,
+            R.id.it_rearPowerSeats_spinner,
+            R.id.it_ahc_spinner,
+            R.id.it_parkAssist_spinner,
+            R.id.it_chassisLeftFront_spinner,
+            R.id.it_chassisRightFront_spinner,
+            R.id.it_chassisLeftRear_spinner,
+            R.id.it_chassisRightRear_spinner,
+            R.id.it_chassisPerfect_spinner,
+            R.id.it_chassisEngineBottom_spinner,
+            R.id.it_chassisGearboxBottom_spinner,
+            R.id.it_waterCigarLighter_spinner,
+            R.id.it_waterAshtray_spinner,
+            R.id.it_waterSeatBelts_spinner,
+            R.id.it_waterReatSeats_spinner,
+            R.id.it_waterTrunkCorner_spinner,
+            R.id.it_waterSpareTireGroove_spinner};
 
 
     @Override
@@ -47,8 +100,8 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         super.onCreate(savedInstanceState);
         rootView = inflater.inflate(R.layout.fragment_car_check_intergrated, container, false);
 
-        Button outButton = (Button) rootView.findViewById(R.id.out_button);
-        outButton.setOnClickListener(this);
+        Button exButton = (Button) rootView.findViewById(R.id.out_button);
+        exButton.setOnClickListener(this);
         Button inButton = (Button) rootView.findViewById(R.id.in_button);
         inButton.setOnClickListener(this);
 
@@ -56,15 +109,15 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         root.setVisibility(View.GONE);
 
         // 坐标们
-        outsidePaintEntities = new ArrayList<PosEntity>();
-        insidePaintEntities = new ArrayList<PosEntity>();
+        exteriorPaintEntities = new ArrayList<PosEntity>();
+        interiorPaintEntities = new ArrayList<PosEntity>();
 
         // 照片们
-        outsidePhotoEntities = new ArrayList<PhotoEntity>();
-        insidePhotoEntities = new ArrayList<PhotoEntity>();
+        exteriorPhotoEntities = new ArrayList<PhotoEntity>();
+        interiorPhotoEntities = new ArrayList<PhotoEntity>();
 
         paintIndex = sealIndex = "0";
-        outsideComment = insideComment = "";
+        exteriorComment = interiorComment = "";
 
         return rootView;
     }
@@ -73,10 +126,10 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.out_button:
-                CheckOutSide();
+                CheckExterior();
                 break;
             case R.id.in_button:
-                CheckInside();
+                CheckInterior();
                 break;
         }
     }
@@ -139,6 +192,30 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         setSpinnerSelection(R.id.it_rearPowerSeats_spinner, Integer.parseInt(carSettings.getRearPowerSeats()));
         setSpinnerSelection(R.id.it_ahc_spinner, Integer.parseInt(carSettings.getAhc()));
         setSpinnerSelection(R.id.it_parkAssist_spinner,  Integer.parseInt(carSettings.getParkAssist()));
+
+        for(int i = 0; i < spinnerIds.length; i++) {
+            setSpinnerColor(spinnerIds[i], Color.RED);
+        }
+    }
+
+    private static void setSpinnerColor(int spinnerId, int color) {
+        Spinner spinner = (Spinner) rootView.findViewById(spinnerId);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i >= 1)
+                    ((TextView) adapterView.getChildAt(0)).setTextColor(Color.RED);
+                else
+                    ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     private static void setSpinnerSelection(int spinnerId, int selection) {
@@ -167,21 +244,24 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
                 spinner.setAlpha(1.0f);
             }
         }
+
     }
 
     // 进入“外观”
-    private void CheckOutSide() {
+    private void CheckExterior() {
         Intent intent = new Intent(rootView.getContext(), CarCheckExteriorActivity.class);
         intent.putExtra("INDEX", paintIndex);
-        intent.putExtra("COMMENT", outsideComment);
+        intent.putExtra("COMMENT", exteriorComment);
+        intent.putExtra("PHOTO_COUNT", exteriorPhotoCount);
         startActivityForResult(intent, Common.IT_OUT);
     }
 
     // 进入“内饰”
-    private void CheckInside() {
+    private void CheckInterior() {
         Intent intent = new Intent(rootView.getContext(), CarCheckInteriorActivity.class);
         intent.putExtra("INDEX", sealIndex);
-        intent.putExtra("COMMENT", insideComment);
+        intent.putExtra("COMMENT", interiorComment);
+        intent.putExtra("PHOTO_COUNT", interiorPhotoCount);
         startActivityForResult(intent, Common.IT_IN);
     }
 
@@ -211,7 +291,10 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
                             this.paintIndex = bundle.getString("INDEX");
 
                             // 保存备注信息
-                            this.outsideComment = bundle.getString("COMMENT");
+                            this.exteriorComment = bundle.getString("COMMENT");
+
+                            // 保存拍摄张数
+                            this.exteriorPhotoCount = bundle.getIntArray("PHOTO_COUNT");
                         }
                     }
                     catch(NullPointerException ex) {
@@ -228,7 +311,10 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
                             this.sealIndex = bundle.getString("INDEX");
 
                             // 保存备注信息
-                            this.insideComment = bundle.getString("COMMENT");
+                            this.interiorComment = bundle.getString("COMMENT");
+
+                            // 保存拍摄张数
+                            this.interiorPhotoCount = bundle.getIntArray("PHOTO_COUNT");
                         }
                     }
                     catch(NullPointerException ex) {
@@ -373,5 +459,39 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
 
     public static String generateCommentString() {
         return getEditText(rootView, R.id.it_comment_edit);
+    }
+
+    public boolean runOverAllCheck() {
+        int sum = 0;
+
+        for(int i = 0; i < exteriorPhotoCount.length; i++) {
+            sum += exteriorPhotoCount[i];
+        }
+
+        if(sum < 7) {
+            Toast.makeText(rootView.getContext(), "外观组照片拍摄数量不足！还需要再拍摄" + Integer.toString(7 - sum) + "张",
+                    Toast.LENGTH_LONG).show();
+
+            CheckExterior();
+
+            return false;
+        }
+
+        sum = 0;
+
+        for(int i = 0; i < interiorPhotoCount.length; i++) {
+            sum += interiorPhotoCount[i];
+        }
+
+        if(sum < 7) {
+            Toast.makeText(rootView.getContext(), "内饰组照片拍摄数量不足！还需要再拍摄" + Integer.toString(7 - sum) + "张",
+                    Toast.LENGTH_LONG).show();
+
+            CheckInterior();
+
+            return false;
+        }
+
+        return true;
     }
 }

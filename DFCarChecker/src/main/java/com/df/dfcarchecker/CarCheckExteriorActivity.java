@@ -37,8 +37,8 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
     private EditText brokenEdit;
     private static Spinner smoothSpinner;
     private static EditText commentEdit;
-    public static List<PosEntity> posEntities = CarCheckIntegratedFragment.outsidePaintEntities;
-    public static List<PhotoEntity> photoEntities = CarCheckIntegratedFragment.outsidePhotoEntities;
+    public static List<PosEntity> posEntities = CarCheckIntegratedFragment.exteriorPaintEntities;
+    public static List<PhotoEntity> photoEntities = CarCheckIntegratedFragment.exteriorPhotoEntities;
     private ExteriorPaintPreviewView exteriorPaintPreviewView;
     private TextView tip;
     private String brokenParts;
@@ -89,6 +89,8 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
             if(comment != null) {
                 commentEdit.setText(comment);
             }
+
+            photoShotCount = extras.getIntArray("PHOTO_COUNT");
         }
 
         final ActionBar actionBar = getActionBar();
@@ -306,6 +308,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         Intent intent = new Intent();
         intent.putExtra("INDEX", Integer.toString(smoothSpinner.getSelectedItemPosition()));
         intent.putExtra("COMMENT", commentEdit.getText().toString());
+        intent.putExtra("PHOTO_COUNT", photoShotCount);
 
         addPhotosToQueue();
 
