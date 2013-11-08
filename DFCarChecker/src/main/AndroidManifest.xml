@@ -30,7 +30,7 @@
             android:windowSoftInputMode="stateHidden" >
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.CarCheckViewPagerActivity"
+            android:name="com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity"
             android:label="@string/title_activity_car_check_frame" >
         </activity>
         <activity
@@ -38,23 +38,23 @@
             android:label="@string/title_activity_popup" >
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.CarCheckedListActivity"
+            android:name="com.df.dfcarchecker.CarReport.CarCheckedListActivity"
             android:label="@string/title_activity_car_checked_list" >
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.CarReportViewPagerActivity"
+            android:name="com.df.dfcarchecker.CarReport.CarReportViewPagerActivity"
             android:label="@string/title_activity_car_report" >
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.CarCheckPaintActivity"
+            android:name="com.df.dfcarchecker.CarCheck.CarCheckPaintActivity"
             android:label="@string/out" >
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.CarCheckExteriorActivity"
+            android:name="com.df.dfcarchecker.CarCheck.CarCheckExteriorActivity"
             android:label="@string/out" >
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.CarCheckInteriorActivity"
+            android:name="com.df.dfcarchecker.CarCheck.CarCheckInteriorActivity"
             android:label="@string/in" >
         </activity>
         <activity
@@ -78,8 +78,16 @@
         </service>
 
         <activity
-            android:name="com.df.dfcarchecker.CarReportExteriorActivity"
-            android:label="@string/title_activity_car_report_exterior" >
+            android:name="com.df.dfcarchecker.CarReport.CarReportExteriorActivity"
+            android:label="@string/out" >
+        </activity>
+        <activity
+            android:name="com.df.dfcarchecker.CarReport.CarReportInteriorActivity"
+            android:label="@string/title_activity_car_report_interior" >
+        </activity>
+        <activity
+            android:name="com.df.dfcarchecker.CarModifyViewPagerActivity"
+            android:label="@string/title_activity_car_modify_view_pager" >
         </activity>
     </application>
 

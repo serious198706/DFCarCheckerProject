@@ -1,5 +1,13 @@
 package com.df.service;
 
+import com.df.dfcarchecker.R;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Created by 岩 on 13-9-11.
  */
@@ -54,4 +62,27 @@ public class Common {
     public static final String SERVER_ADDRESS = "http://wcf.268v.com:8008/";
     public static final String USER_MANAGE_SERVICE = "userManageService.svc";
     public static final String REPORT_SERVICE = "ReportService.svc";
+
+
+    public static final int[][] carSettingsSpinnerMap = {
+            {R.id.csi_driveType_spinner, 0, R.array.csi_driveType_item},
+            {R.id.csi_transmission_spinner, 0, R.array.csi_transmission_item},
+            {R.id.csi_airbag_spinner, R.id.it_airBag_spinner, R.array.csi_airbag_number},
+            {R.id.csi_abs_spinner, R.id.it_abs_spinner, R.array.existornot},
+            {R.id.csi_powerSteering_spinner, 0, R.array.existornot},
+            {R.id.csi_powerWindows_spinner, R.id.it_powerWindows_spinner, R.array.csi_powerWindows_items},
+            {R.id.csi_sunroof_spinner, R.id.it_sunroof_spinner, R.array.csi_sunroof_items},
+            {R.id.csi_airConditioning_spinner, R.id.it_airConditioning_spinner, R.array.csi_airConditioning_items},
+            {R.id.csi_leatherSeats_spinner, 0, R.array.csi_leatherSeats_items},
+            {R.id.csi_powerSeats_spinner, R.id.it_powerSeats_spinner, R.array.csi_powerSeats_items},
+            {R.id.csi_powerMirror_spinner, R.id.it_powerMirror_spinner, R.array.csi_powerMirror_items},
+            {R.id.csi_reversingRadar_spinner, R.id.it_reversingRadar_spinner, R.array.csi_reversingRadar_items},
+            {R.id.csi_reversingCamera_spinner, R.id.it_reversingCamera_spinner, R.array.csi_reversingCamera_items},
+            {R.id.csi_ccs_spinner, 0, R.array.csi_ccs_items},
+            {R.id.csi_softCloseDoors_spinner, R.id.it_softCloseDoors_spinner, R.array.existornot},
+            {R.id.csi_rearPowerSeats_spinner, R.id.it_rearPowerSeats_spinner, R.array.existornot},
+            {R.id.csi_ahc_spinner, R.id.it_ahc_spinner, R.array.existornot},
+            {R.id.csi_parkAssist_spinner, R.id.it_parkAssist_spinner, R.array.existornot},
+            {R.id.csi_clapboard_spinner, 0, R.array.existornot}
+    };
 }

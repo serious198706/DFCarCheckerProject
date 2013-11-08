@@ -21,7 +21,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.df.dfcarchecker.CarCheckExteriorActivity;
+import com.df.dfcarchecker.CarCheck.CarCheckExteriorActivity;
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;

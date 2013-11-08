@@ -1,16 +1,19 @@
-package com.df.dfcarchecker;
+package com.df.dfcarchecker.CarReport;
 
 import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.df.dfcarchecker.R;
 import com.df.entry.CarSettings;
 import com.df.entry.Manufacturer;
+import com.df.service.Common;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,8 +38,8 @@ public class CarReportBasicInfoFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_car_report_basic_info, container, false);
 
         if(jsonData != null) {
-            parsJsonData();
-            updateUi();
+            if(parsJsonData())
+                updateUi();
         }
 
         return rootView;
@@ -46,7 +49,7 @@ public class CarReportBasicInfoFragment extends Fragment {
         this.jsonData = jsonData;
     }
 
-    private void parsJsonData() {
+    private boolean parsJsonData() {
         try {
             JSONObject jsonObject = new JSONObject(jsonData);
 
@@ -55,8 +58,12 @@ public class CarReportBasicInfoFragment extends Fragment {
             procedures = features.getJSONObject("procedures");
         } catch (JSONException e) {
             e.printStackTrace();
+            Log.d(Common.TAG, "JSON解析失败！" + e.getMessage());
+
+            return false;
         }
 
+        return true;
     }
 
     private void updateUi() {
@@ -185,6 +192,14 @@ public class CarReportBasicInfoFragment extends Fragment {
                 setTextView(rootView, R.id.exteriorColor_text, procedures.getString("exteriorColor"));
             else
                 setTextView(rootView, R.id.exteriorColor_text, null);
+
+            setTextView(rootView, R.id.regDate_text, procedures.getString("regDate"));
+            setTextView(rootView, R.id.builtDate_text, procedures.getString("builtDate"));
+            setTextView(rootView, R.id.transferLastDate_text, procedures.getString("transferLastDate"));
+            setTextView(rootView, R.id.annualInspectionDate_text, procedures.getString("annualInspectionDate"));
+            setTextView(rootView, R.id.compulsoryInsuranceDate_text, procedures.getString("compulsoryInsuranceDate"));
+            setTextView(rootView, R.id.insuranceExpiryDate_text, procedures.getString("insuranceExpiryDate"));
+
             if(procedures.has("invoice"))
                 setTextView(rootView, R.id.invoice_text, procedures.getString("invoice"));
             else

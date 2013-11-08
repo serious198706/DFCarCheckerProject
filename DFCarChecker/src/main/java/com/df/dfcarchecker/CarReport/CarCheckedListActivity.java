@@ -1,7 +1,6 @@
-package com.df.dfcarchecker;
+package com.df.dfcarchecker.CarReport;
 
 import android.app.ActionBar;
-import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -25,6 +24,9 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.df.dfcarchecker.LoginActivity;
+import com.df.dfcarchecker.MainActivity;
+import com.df.dfcarchecker.R;
 import com.df.service.Common;
 import com.df.service.SoapService;
 
@@ -51,6 +53,10 @@ public class CarCheckedListActivity extends Activity {
     private RefreshCheckedCarListTask mRefreshCheckedCarListTask;
     private GetCarDetailTask mGetCarDetailTask;
     private CheckSellerNameTask mCheckSellerNameTask;
+
+    private EditText sellerNameEdit;
+    private String sellerId;
+    private String sellerName = "";
 
     // 已检测列表的开始位
     private int startNumber = 1;
@@ -99,6 +105,7 @@ public class CarCheckedListActivity extends Activity {
             list.clearFocus();
         }
     };
+
 
 
     @Override
@@ -233,7 +240,6 @@ public class CarCheckedListActivity extends Activity {
                                            int pos, long id) {
                 lastPos = pos;
 
-                Toast.makeText(CarCheckedListActivity.this, mylist.get(pos).get("car_number"), Toast.LENGTH_SHORT).show();
                 mActionMode = CarCheckedListActivity.this.startActionMode(mActionModeCallback);
                 view.setSelected(true);
 
@@ -253,24 +259,26 @@ public class CarCheckedListActivity extends Activity {
         LayoutInflater inflater = this.getLayoutInflater();
         final View view = inflater.inflate(R.layout.import_platform_dialog, null);
 
+        sellerNameEdit = (EditText)view.findViewById(R.id.sellerName);
+        sellerNameEdit.setText(sellerName);
 
         AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle("输入信息")
-                .setView(view)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        EditText editText = (EditText)view.findViewById(R.id.sellerName);
+            .setTitle("输入信息")
+            .setView(view)
+            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
 
-                        mCheckSellerNameTask = new CheckSellerNameTask
-                                (CarCheckedListActivity.this,
-                                        Integer.parseInt(mylist.get(lastPos).get("id")),
-                                        editText.getText().toString());
-                        mCheckSellerNameTask.execute();
-                    }
-                })
-                .setNegativeButton(R.string.cancel, null)
-                .create();
+            sellerName = sellerNameEdit.getText().toString();
+            mCheckSellerNameTask = new CheckSellerNameTask
+                    (CarCheckedListActivity.this,
+                            Integer.parseInt(mylist.get(lastPos).get("id")),
+                            sellerName);
+            mCheckSellerNameTask.execute();
+            }
+        })
+        .setNegativeButton(R.string.cancel, null)
+        .create();
 
         dialog.show();
     }
@@ -478,38 +486,11 @@ public class CarCheckedListActivity extends Activity {
             if (success) {
                 result = soapService.getResultMessage();
 
-                JSONObject jsonObject = null;
-
-                try {
-                    jsonObject = new JSONObject(result);
-                    String companyName = jsonObject.getString("CompanyName");
-                    String realName = jsonObject.getString("RealName");
-                    final String sellerId = jsonObject.getString("SellerId");
-
-                    String message = getResources().getString(R.string.importPlatformConfirm) +
-                            "\n" +
-                            "公司：" + companyName + "\n" +
-                            "真实姓名：" + realName;
-
-                    AlertDialog dialog = new AlertDialog.Builder(context)
-                            .setTitle(R.string.alert_title)
-                            .setMessage(message)
-                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    importPlatform(sellerId);
-                                }
-                            })
-                            .setNegativeButton(R.string.cancel, null)
-                            .create();
-
-                    dialog.show();
-
-                } catch (JSONException e) {
-
-                }
+                inputSellerName(result);
             } else {
                 Log.d("DFCarChecker", "连接错误: " + soapService.getErrorMessage());
+
+                showErrorDialog();
 
                 if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
                     Toast.makeText(CarCheckedListActivity.this, "连接错误，请重新登陆！", Toast.LENGTH_LONG).show();
@@ -523,6 +504,56 @@ public class CarCheckedListActivity extends Activity {
         protected void onCancelled() {
             mRefreshCheckedCarListTask = null;
         }
+    }
+
+    private void inputSellerName(String result) {
+        JSONObject jsonObject = null;
+
+        try {
+            jsonObject = new JSONObject(result);
+            String companyName = jsonObject.getString("CompanyName");
+            String realName = jsonObject.getString("RealName");
+            sellerId = jsonObject.getString("SellerId");
+
+            String message = getResources().getString(R.string.importPlatformConfirm) +
+                    "\n" +
+                    "公司：" + companyName + "\n" +
+                    "真实姓名：" + realName;
+
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setTitle(R.string.alert_title)
+                    .setMessage(message)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            importPlatform(sellerId);
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .create();
+
+            dialog.show();
+
+        } catch (JSONException e) {
+
+        }
+    }
+
+    private void showErrorDialog() {
+        String message = "未找到卖家，请检查用户名！";
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.alert_title)
+                .setMessage(message)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        checkSellerName();
+                    }
+                })
+                .create();
+
+        dialog.show();
     }
 
     // 确认导入平台线程
@@ -586,6 +617,8 @@ public class CarCheckedListActivity extends Activity {
                 Toast.makeText(context, "导入成功！", Toast.LENGTH_LONG).show();
             } else {
                 Log.d("DFCarChecker", "连接错误: " + soapService.getErrorMessage());
+
+                Toast.makeText(context, "导入失败！" + soapService.getErrorMessage(), Toast.LENGTH_LONG).show();
 
                 if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
                     Toast.makeText(CarCheckedListActivity.this, "连接错误，请重新登陆！", Toast.LENGTH_LONG).show();

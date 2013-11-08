@@ -15,7 +15,7 @@ import android.os.Message;
 import android.util.Log;
 import android.os.Process;
 
-import com.df.dfcarchecker.CarCheckBasicInfoFragment;
+import com.df.dfcarchecker.CarCheck.CarCheckBasicInfoFragment;
 import com.df.dfcarchecker.LoginActivity;
 import com.df.entry.PhotoEntity;
 
@@ -221,7 +221,7 @@ public class QueueScanService extends Service {
 
                 try {
                     // 等待时间变长，避免给服务器压力
-                    wait(waitTime[index]);
+                    Thread.sleep(waitTime[index]);
                     if(index <= 5)
                         index++;
                 } catch (InterruptedException e) {
@@ -249,13 +249,6 @@ public class QueueScanService extends Service {
 
         private CommitDataTask(Context context) {
             this.context = context;
-        }
-
-        @Override
-        protected void onPreExecute()
-        {
-            //progressDialog = ProgressDialog.show(context, null,
-            //        "正在提交，请稍候。。", false, false);
         }
 
         @Override
@@ -300,9 +293,6 @@ public class QueueScanService extends Service {
 
             if(success) {
                 handler.post(sendUpdatesToUI); // 1 second
-//                Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
-//                stopService(serviceIntent);
-//                finish();
             }
         }
 
@@ -310,7 +300,6 @@ public class QueueScanService extends Service {
         protected void onCancelled() {
             mCommitDataTask = null;
             committed = false;
-            //progressDialog.dismiss();
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.df.dfcarchecker;
+package com.df.dfcarchecker.CarCheck;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -19,6 +19,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.df.dfcarchecker.LoginActivity;
+import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
 import com.df.paintview.FramePaintPreviewView;
@@ -347,8 +349,9 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
             count += photoShotCount[i];
         }
 
-        if(count < 3) {
-            Toast.makeText(rootView.getContext(), "机舱组照片拍摄数量不足！还需要再拍摄" + Integer.toString(3 - count) + "张",
+        if(count < 2) {
+            Toast.makeText(rootView.getContext(), "机舱组照片拍摄数量不足！还需要再拍摄" + Integer.toString(2 -
+                    count) + "张",
                     Toast.LENGTH_LONG).show();
 
             return false;

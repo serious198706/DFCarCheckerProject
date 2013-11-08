@@ -9,11 +9,11 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.df.dfcarchecker.CarCheckExteriorActivity;
-import com.df.dfcarchecker.CarCheckInteriorActivity;
+import com.df.dfcarchecker.CarCheck.CarCheckExteriorActivity;
 import com.df.entry.PosEntity;
 import com.df.service.Common;
 
@@ -55,7 +55,7 @@ public class InteriorPaintPreviewView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        data = CarCheckInteriorActivity.posEntities;
+        //data = CarCheckInteriorActivity.posEntities;
         canvas.drawBitmap(bitmap, 0, 0, null);
         paint(canvas);
     }
@@ -86,7 +86,40 @@ public class InteriorPaintPreviewView extends ImageView {
     }
 
     private void paint(PosEntity entity, Canvas canvas) {
-        canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY(), getPaint(entity.getType()));
+        //canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(),
+        //        entity.getEndY(), getPaint(entity.getType()));
+
+        RectF rectF = null;
+
+        // 如果Rect的right < left，或者bottom < top，则会画不出矩形
+        // 为了修正这个，需要做点处理
+
+        // 右下
+        if(entity.getStartX() < entity.getEndX() &&
+                entity.getStartY() < entity.getEndY()) {
+            rectF = new RectF(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY());
+        }
+        // 右上
+        else if(entity.getStartX() < entity.getEndX() &&
+                entity.getStartY() > entity.getEndY()) {
+            rectF = new RectF(entity.getStartX(), entity.getEndY(), entity.getEndX(), entity.getStartY());
+        }
+        // 左下
+        else if(entity.getStartX() > entity.getEndX() &&
+                entity.getStartY() < entity.getEndY()) {
+            rectF = new RectF(entity.getEndX(), entity.getStartY(), entity.getStartX(), entity.getEndY());
+        }
+        // 左上
+        else if(entity.getStartX() > entity.getEndX() &&
+                entity.getStartY() > entity.getEndY()) {
+            rectF = new RectF(entity.getEndX(), entity.getEndY(), entity.getStartX(), entity.getStartY());
+        }
+        // 重合或者默认
+        else {
+            rectF = new RectF(entity.getStartX(), entity.getStartY(), entity.getEndX(), entity.getEndY());
+        }
+
+        canvas.drawRect(rectF, getPaint(entity.getType()));
     }
 
     public PosEntity getPosEntity(){

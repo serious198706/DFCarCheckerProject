@@ -1,4 +1,4 @@
-package com.df.dfcarchecker;
+package com.df.dfcarchecker.CarReport;
 
 import java.util.Locale;
 
@@ -12,6 +12,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.df.dfcarchecker.R;
 
 public class CarReportViewPagerActivity extends FragmentActivity {
 
@@ -39,7 +41,7 @@ public class CarReportViewPagerActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_car_report_frame);
+        setContentView(R.layout.activity_car_report_view_pager);
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the app.

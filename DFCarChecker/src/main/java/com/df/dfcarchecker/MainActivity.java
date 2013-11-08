@@ -7,8 +7,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity;
+import com.df.dfcarchecker.CarReport.CarCheckedListActivity;
 import com.df.service.ImageUploadQueue;
-import com.df.service.QueueScanService;
 
 public class MainActivity extends Activity {
     public static ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();

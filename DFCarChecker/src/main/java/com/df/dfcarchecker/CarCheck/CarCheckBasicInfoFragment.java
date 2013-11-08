@@ -1,4 +1,4 @@
-package com.df.dfcarchecker;
+package com.df.dfcarchecker.CarCheck;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -25,6 +25,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.Toast;
 
+import com.df.dfcarchecker.LoginActivity;
+import com.df.dfcarchecker.R;
 import com.df.entry.Brand;
 import com.df.entry.CarSettings;
 import com.df.entry.Country;
@@ -53,6 +55,7 @@ import static com.df.service.Helper.SetSpinnerData;
 import static com.df.service.Helper.getDateString;
 import static com.df.service.Helper.getEditText;
 import static com.df.service.Helper.getSpinnerSelectedText;
+import static com.df.service.Helper.setEditText;
 
 public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickListener {
     private static View rootView;
@@ -388,13 +391,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     // 更新UI
     private void updateUi() {
         // 设置厂牌型号的EditText
-        brandEdit.setText(mCarSettings.getBrandString());
+        setEditText(rootView, R.id.bi_brand_edit, mCarSettings.getBrandString());
 
         brandOkButton.setEnabled(true);
         brandSelectButton.setEnabled(true);
 
         // 设置排量EditText
-        displacementEdit.setText(mCarSettings.getDisplacement());
+        setEditText(rootView, R.id.csi_displacement_edit, mCarSettings.getDisplacement());
 
         // 根据是否进口更改手续选项
         if(isPorted) {
@@ -402,25 +405,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         }
 
         // 改动配置信息中的Spinner
-        setSpinnerSelection(R.id.csi_driveType_spinner, Integer.parseInt(mCarSettings.getDriveType()));
-        setSpinnerSelection(R.id.csi_transmission_spinner, Integer.parseInt(mCarSettings.getTransmission()));
-        setSpinnerSelection(R.id.csi_airbag_spinner, Integer.parseInt(mCarSettings.getAirbag()));
-        setSpinnerSelection(R.id.csi_abs_spinner, Integer.parseInt(mCarSettings.getAbs()));
-        setSpinnerSelection(R.id.csi_powerSteering_spinner, Integer.parseInt(mCarSettings.getPowerSteering()));
-        setSpinnerSelection(R.id.csi_powerWindows_spinner, Integer.parseInt(mCarSettings.getPowerWindows()));
-        setSpinnerSelection(R.id.csi_sunroof_spinner, Integer.parseInt(mCarSettings.getSunroof()));
-        setSpinnerSelection(R.id.csi_airConditioning_spinner, Integer.parseInt(mCarSettings.getAirConditioning()));
-        setSpinnerSelection(R.id.csi_leatherSeats_spinner, Integer.parseInt(mCarSettings.getLeatherSeats()));
-        setSpinnerSelection(R.id.csi_powerSeats_spinner, Integer.parseInt(mCarSettings.getPowerSeats()));
-        setSpinnerSelection(R.id.csi_powerMirror_spinner, Integer.parseInt(mCarSettings.getPowerMirror()));
-        setSpinnerSelection(R.id.csi_reversingRadar_spinner, Integer.parseInt(mCarSettings.getReversingRadar()));
-        setSpinnerSelection(R.id.csi_reversingCamera_spinner, Integer.parseInt(mCarSettings.getReversingCamera()));
-        setSpinnerSelection(R.id.csi_ccs_spinner, Integer.parseInt(mCarSettings.getCcs()));
-        setSpinnerSelection(R.id.csi_softCloseDoors_spinner, Integer.parseInt(mCarSettings.getSoftCloseDoors()));
-        setSpinnerSelection(R.id.csi_rearPowerSeats_spinner, Integer.parseInt(mCarSettings.getRearPowerSeats()));
-        setSpinnerSelection(R.id.csi_ahc_spinner, Integer.parseInt(mCarSettings.getAhc()));
-        setSpinnerSelection(R.id.csi_parkAssist_spinner, Integer.parseInt(mCarSettings.getParkAssist()));
-        setSpinnerSelection(R.id.csi_clapboard_spinner, Integer.parseInt(mCarSettings.getClapBoard()));
+        String carConfigs = mCarSettings.getCarConfigs();
+        String configArray[] = carConfigs.split(",");
+
+        for(int i = 0; i < configArray.length; i++) {
+            int selection = Integer.parseInt(configArray[i]);
+            setSpinnerSelection(Common.carSettingsSpinnerMap[i][0], selection);
+        }
 
         // 发动“车体结构检查”里显示的图片
         if(!mCarSettings.getFigure().equals(""))
@@ -438,64 +429,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Spinner spinner = (Spinner)rootView.findViewById(adapterView.getId());
-                String selectedItemText = spinner.getSelectedItem().toString();
-                
-                switch (spinnerId) {
-                    case R.id.csi_airbag_spinner:
-                        mCarSettings.setAirbag(selectedItemText);
-                        break;
-                    case R.id.csi_abs_spinner:
-                        mCarSettings.setAbs(selectedItemText);
-                        break;
-                    case R.id.csi_powerSteering_spinner:
-                        mCarSettings.setPowerSteering(selectedItemText);
-                        break;
-                    case R.id.csi_powerWindows_spinner:
-                        mCarSettings.setPowerWindows(selectedItemText);
-                        break;
-                    case R.id.csi_sunroof_spinner:
-                        mCarSettings.setSunroof(selectedItemText);
-                        break;
-                    case R.id.csi_airConditioning_spinner:
-                        mCarSettings.setAirConditioning(selectedItemText);
-                        break;
-                    case R.id.csi_leatherSeats_spinner:
-                        mCarSettings.setLeatherSeats(selectedItemText);
-                        break;
-                    case R.id.csi_powerSeats_spinner:
-                        mCarSettings.setPowerSeats(selectedItemText);
-                        break;
-                    case R.id.csi_powerMirror_spinner:
-                        mCarSettings.setPowerMirror(selectedItemText);
-                        break;
-                    case R.id.csi_reversingRadar_spinner:
-                        mCarSettings.setReversingRadar(selectedItemText);
-                        break;
-                    case R.id.csi_reversingCamera_spinner:
-                        mCarSettings.setReversingCamera(selectedItemText);
-                        break;
-                    case R.id.csi_ccs_spinner:
-                        mCarSettings.setCcs(selectedItemText);
-                        break;
-                    case R.id.csi_softCloseDoors_spinner:
-                        mCarSettings.setSoftCloseDoors(selectedItemText);
-                        break;
-                    case R.id.csi_rearPowerSeats_spinner:
-                        mCarSettings.setRearPowerSeats(selectedItemText);
-                        break;
-                    case R.id.csi_ahc_spinner:
-                        mCarSettings.setAhc(selectedItemText);
-                        break;
-                    case R.id.csi_parkAssist_spinner:
-                        mCarSettings.setParkAssist(selectedItemText);
-                        break;
-                    case R.id.csi_clapboard_spinner:
-                        mCarSettings.setClapBoard(selectedItemText);
-                        break;
-                }
-
-                CarCheckIntegratedFragment.updateAssociatedSpinners();
+                CarCheckIntegratedFragment.updateAssociatedSpinners(spinnerId, adapterView.getSelectedItem().toString());
             }
 
             @Override
@@ -747,7 +681,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         return procedures;
     }
     // </editor-fold>
-
 
     // <editor-fold defaultstate="collapsed" desc="获取车辆配置信息的Task">
 

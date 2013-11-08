@@ -212,5 +212,7 @@
     <string name="ip_sellerName">请输入卖家ID：</string>
     <string name="importPlatformConfirm">请确认以下信息：</string>
     <string name="title_activity_car_report_exterior">MainActivity</string>
+    <string name="title_activity_car_report_interior">MainActivity</string>
+    <string name="title_activity_car_modify_view_pager">MainActivity</string>
 
 </resources>

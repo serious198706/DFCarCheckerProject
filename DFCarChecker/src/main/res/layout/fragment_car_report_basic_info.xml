@@ -504,7 +504,7 @@
                     android:text="@string/ci_manufacture_time"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <TextView android:id="@+id/ci_builtDate_text"
+                <TextView android:id="@+id/builtDate_text"
                           android:layout_height="wrap_content"
                           android:layout_width="0dp"
                           android:layout_weight="2"

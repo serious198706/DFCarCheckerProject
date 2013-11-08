@@ -1,22 +1,17 @@
-package com.df.dfcarchecker;
+package com.df.dfcarchecker.CarReport;
 
-import android.app.Activity;
 import android.app.ActionBar;
-import android.app.Fragment;
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.os.Build;
-import android.widget.EditText;
 
+import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
-import com.df.paintview.ExteriorPaintPreviewView;
+import com.df.paintview.InteriorPaintPreviewView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,11 +22,10 @@ import java.util.List;
 
 import static com.df.service.Helper.setTextView;
 
-public class CarReportExteriorActivity extends Activity {
+public class CarReportInteriorActivity extends Activity {
 
-    private ExteriorPaintPreviewView exteriorPaintPreviewView;
+    private InteriorPaintPreviewView interiorPaintPreviewView;
     private List<PosEntity> posEntities;
-    private EditText commentEdit;
     private JSONObject photos;
     private JSONObject conditions;
 
@@ -48,16 +42,13 @@ public class CarReportExteriorActivity extends Activity {
         parsJsonData(jsonData);
         updateUi();
 
-        // 备注
-        commentEdit = (EditText) findViewById(R.id.out_comment_edit);
+        final ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.car_report_exterior, menu);
         return true;
     }
 
@@ -67,38 +58,13 @@ public class CarReportExteriorActivity extends Activity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
             case R.id.action_settings:
                 return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private Bitmap getBitmapFromFigure(int figure) {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-        String path = Environment.getExternalStorageDirectory().toString();
-        path += "/.cheyipai/";
-
-        // 默认为三厢四门图
-        String name = "r3d4";
-
-        switch (figure) {
-            case 2:
-                name = "r3d2";
-                break;
-            case 3:
-                name = "r2d2";
-                break;
-            case 4:
-                name = "r2d4";
-                break;
-            case 5:
-                name = "van_o";
-                break;
-        }
-
-        return BitmapFactory.decodeFile(path + name, options);
     }
 
     private void parsJsonData(String jsonData) {
@@ -116,28 +82,39 @@ public class CarReportExteriorActivity extends Activity {
 
     private void updateUi() {
         try {
-            JSONObject exterior = conditions.getJSONObject("exterior");
+            JSONObject interior = photos.getJSONObject("interior");
 
-            setTextView(getWindow().getDecorView(), R.id.comment_text, exterior.getString("comment"));
-            setTextView(getWindow().getDecorView(), R.id.smooth_text, exterior.getString("smooth"));
+            String comment = conditions.getJSONObject("interior").getString("comment");
+            setTextView(getWindow().getDecorView(), R.id.comment_text, comment);
 
-            JSONArray jsonArray = exterior.getJSONArray("fault");
+            String sealingStrip = conditions.getJSONObject("interior").getString("sealingStrip");
+            setTextView(getWindow().getDecorView(), R.id.smooth_text, sealingStrip);
 
-            
+            JSONArray fault = interior.getJSONArray("fault");
 
-            // 点击图片进入绘制界面
+            for(int i = 0; i < fault.length(); i++) {
+                JSONObject jsonObject = fault.getJSONObject(i);
 
+                PosEntity posEntity = new PosEntity(jsonObject.getInt("type"));
+                posEntity.setStart(jsonObject.getInt("startX"), jsonObject.getInt("startY"));
+                posEntity.setEnd(jsonObject.getInt("endX"), jsonObject.getInt("endY"));
+
+                posEntities.add(posEntity);
+            }
+
+            // 初始化预览界面
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
             String sdcardPath = Environment.getExternalStorageDirectory().getPath();
-            Bitmap previewViewBitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/r3d4", options);
+            Bitmap previewViewBitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4s4", options);
 
-            exteriorPaintPreviewView = (ExteriorPaintPreviewView) findViewById(R.id.out_base_image_preview);
-            exteriorPaintPreviewView.init(previewViewBitmap, posEntities);
+            interiorPaintPreviewView = (InteriorPaintPreviewView) findViewById(R.id.in_base_image_preview);
+            interiorPaintPreviewView.init(previewViewBitmap, posEntities);
         } catch (JSONException e) {
 
         }
 
     }
 }
+

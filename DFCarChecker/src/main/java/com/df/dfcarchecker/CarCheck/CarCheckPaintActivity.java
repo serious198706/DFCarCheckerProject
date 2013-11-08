@@ -1,4 +1,4 @@
-package com.df.dfcarchecker;
+package com.df.dfcarchecker.CarCheck;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
 
+import com.df.dfcarchecker.LoginActivity;
+import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
 import com.df.paintview.ExteriorPaintView;

@@ -11,7 +11,7 @@ import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.df.dfcarchecker.CarCheckFrameFragment;
+import com.df.dfcarchecker.CarCheck.CarCheckFrameFragment;
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
 

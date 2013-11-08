@@ -1,5 +1,6 @@
-package com.df.dfcarchecker;
+package com.df.dfcarchecker.CarCheck;
 
+import java.util.List;
 import java.util.Locale;
 
 import android.app.ActionBar;
@@ -22,6 +23,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.df.dfcarchecker.R;
+import com.df.entry.PhotoEntity;
 import com.df.service.Common;
 import com.df.service.CustomViewPager;
 import com.df.service.QueueScanService;
@@ -64,6 +67,16 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         carCheckBasicInfoFragment = new CarCheckBasicInfoFragment();
         carCheckFrameFragment = new CarCheckFrameFragment();
         carCheckIntegratedFragment = new CarCheckIntegratedFragment();
+
+        CarCheckFrameFragment.photoEntitiesFront = null;
+        CarCheckFrameFragment.photoEntitiesRear = null;
+        CarCheckFrameFragment.posEntitiesFront = null;
+        CarCheckFrameFragment.posEntitiesRear = null;
+
+        CarCheckIntegratedFragment.exteriorPaintEntities = null;
+        CarCheckIntegratedFragment.exteriorPhotoEntities = null;
+        CarCheckIntegratedFragment.interiorPaintEntities = null;
+        CarCheckIntegratedFragment.interiorPhotoEntities = null;
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
@@ -221,6 +234,16 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                 carCheckBasicInfoFragment = null;
                 carCheckFrameFragment = null;
                 carCheckIntegratedFragment = null;
+
+                CarCheckFrameFragment.photoEntitiesFront.clear();
+                CarCheckFrameFragment.photoEntitiesRear.clear();
+                CarCheckFrameFragment.posEntitiesFront.clear();
+                CarCheckFrameFragment.posEntitiesRear.clear();
+
+                CarCheckIntegratedFragment.exteriorPaintEntities.clear();
+                CarCheckIntegratedFragment.exteriorPhotoEntities.clear();
+                CarCheckIntegratedFragment.interiorPaintEntities.clear();
+                CarCheckIntegratedFragment.interiorPhotoEntities.clear();
 
                 finish();
             }

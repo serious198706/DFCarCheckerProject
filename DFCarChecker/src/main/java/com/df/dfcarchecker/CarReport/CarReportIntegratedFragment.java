@@ -1,21 +1,23 @@
-package com.df.dfcarchecker;
+package com.df.dfcarchecker.CarReport;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
-import com.df.entry.PosEntity;
+import com.df.dfcarchecker.CarCheck.CarCheckInteriorActivity;
+import com.df.dfcarchecker.R;
 import com.df.service.Common;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.df.service.Helper.setTextView;
 
-public class CarReportIntegratedFragment extends Fragment{
+public class CarReportIntegratedFragment extends Fragment implements View.OnClickListener{
     private static View rootView;
     private LayoutInflater inflater;
 
@@ -32,11 +34,20 @@ public class CarReportIntegratedFragment extends Fragment{
     private JSONObject features;
     private JSONObject options;
 
+    public CarReportIntegratedFragment(String jsonData) {
+        this.jsonData = jsonData;
+    }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.inflater = inflater;
         rootView = inflater.inflate(R.layout.fragment_car_report_integrated, container, false);
+
+        Button exButton = (Button) rootView.findViewById(R.id.out_button);
+        exButton.setOnClickListener(this);
+        Button inButton = (Button) rootView.findViewById(R.id.in_button);
+        inButton.setOnClickListener(this);
 
         parsJsonData();
         updateUi();
@@ -44,8 +55,30 @@ public class CarReportIntegratedFragment extends Fragment{
         return rootView;
     }
 
-    public CarReportIntegratedFragment(String jsonData) {
-        this.jsonData = jsonData;
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.out_button:
+                CheckExterior();
+                break;
+            case R.id.in_button:
+                CheckInterior();
+                break;
+        }
+    }
+
+    // 进入“外观”
+    private void CheckExterior() {
+        Intent intent = new Intent(rootView.getContext(), CarReportExteriorActivity.class);
+        intent.putExtra("JSONData", jsonData);
+        startActivityForResult(intent, Common.IT_OUT);
+    }
+
+    // 进入“内饰”
+    private void CheckInterior() {
+        Intent intent = new Intent(rootView.getContext(), CarCheckInteriorActivity.class);
+        intent.putExtra("JSONData", jsonData);
+        startActivityForResult(intent, Common.IT_IN);
     }
 
     private void parsJsonData() {

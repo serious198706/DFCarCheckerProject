@@ -1,4 +1,4 @@
-package com.df.dfcarchecker;
+package com.df.dfcarchecker.CarCheck;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +17,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.df.dfcarchecker.R;
 import com.df.entry.CarSettings;
 import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
@@ -135,12 +136,22 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     }
 
     public static void ShowContent() {
-        updateAssociatedSpinners();
+        updateAssociatedSpinners(0, "");
         root.setVisibility(View.VISIBLE);
     }
 
     public static void setGearType(String gearType) {
         // 手动档
+        if(gearType.equals("MT")) {
+            setGearRowVisibility(true);
+        }
+        // 自动档
+        else {
+            setGearRowVisibility(false);
+        }
+    }
+
+    private static void setGearRowVisibility(boolean visibility) {
         TextView manuallyTextView = (TextView)rootView.findViewById(R.id.it_gear_manually_row);
         TableRow manuallyRow1 = (TableRow)rootView.findViewById(R.id.it_gear_manually_row_1);
         TableRow manuallyRow2 = (TableRow)rootView.findViewById(R.id.it_gear_manually_row_2);
@@ -150,48 +161,60 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         TableRow autoRow2 = (TableRow)rootView.findViewById(R.id.it_gear_auto_row_2);
         TableRow autoRow3 = (TableRow)rootView.findViewById(R.id.it_gear_auto_row_3);
 
-        if(gearType.equals("MT")) {
-            manuallyTextView.setVisibility(View.VISIBLE);
-            manuallyRow1.setVisibility(View.VISIBLE);
-            manuallyRow2.setVisibility(View.VISIBLE);
-            manuallyRow3.setVisibility(View.VISIBLE);
+        manuallyTextView.setVisibility(visibility ? View.VISIBLE : View.GONE);
+        manuallyRow1.setVisibility(visibility ? View.VISIBLE : View.GONE);
+        manuallyRow2.setVisibility(visibility ? View.VISIBLE : View.GONE);
+        manuallyRow3.setVisibility(visibility ? View.VISIBLE : View.GONE);
 
-            autoTextView.setVisibility(View.GONE);
-            autoRow1.setVisibility(View.GONE);
-            autoRow2.setVisibility(View.GONE);
-            autoRow3.setVisibility(View.GONE);
-        }
-        // 自动档
-        else {
-            manuallyTextView.setVisibility(View.GONE);
-            manuallyRow1.setVisibility(View.GONE);
-            manuallyRow2.setVisibility(View.GONE);
-            manuallyRow3.setVisibility(View.GONE);
-
-            autoTextView.setVisibility(View.VISIBLE);
-            autoRow1.setVisibility(View.VISIBLE);
-            autoRow2.setVisibility(View.VISIBLE);
-            autoRow3.setVisibility(View.VISIBLE);
-        }
+        autoTextView.setVisibility(!visibility ? View.VISIBLE : View.GONE);
+        autoRow1.setVisibility(!visibility ? View.VISIBLE : View.GONE);
+        autoRow2.setVisibility(!visibility ? View.VISIBLE : View.GONE);
+        autoRow3.setVisibility(!visibility ? View.VISIBLE : View.GONE);
     }
 
+    // 更新相关的Spinner
+    public static void updateAssociatedSpinners(int spinnerId, String selectedItemText) {
+        int interSpinnerId;
 
-    public static void updateAssociatedSpinners() {
-        CarSettings carSettings = CarCheckBasicInfoFragment.mCarSettings;
+        // 在map里查找对应的spinnerID
+        for(int i = 0; i < Common.carSettingsSpinnerMap.length; i++) {
+            if(spinnerId == Common.carSettingsSpinnerMap[i][0]) {
+                interSpinnerId = Common.carSettingsSpinnerMap[i][1];
 
-        setSpinnerSelection(R.id.it_airBag_spinner, Integer.parseInt(carSettings.getAirbag()));
-        setSpinnerSelection(R.id.it_abs_spinner, Integer.parseInt(carSettings.getAbs()));
-        setSpinnerSelection(R.id.it_powerWindows_spinner, Integer.parseInt(carSettings.getPowerWindows()));
-        setSpinnerSelection(R.id.it_sunroof_spinner, Integer.parseInt(carSettings.getSunroof()));
-        setSpinnerSelection(R.id.it_airConditioning_spinner, Integer.parseInt(carSettings.getAirConditioning()));
-        setSpinnerSelection(R.id.it_powerSeats_spinner, Integer.parseInt(carSettings.getPowerSeats()));
-        setSpinnerSelection(R.id.it_powerMirror_spinner, Integer.parseInt(carSettings.getPowerMirror()));
-        setSpinnerSelection(R.id.it_reversingRadar_spinner, Integer.parseInt(carSettings.getReversingRadar()));
-        setSpinnerSelection(R.id.it_reversingCamera_spinner, Integer.parseInt(carSettings.getReversingCamera()));
-        setSpinnerSelection(R.id.it_softCloseDoors_spinner, Integer.parseInt(carSettings.getSoftCloseDoors()));
-        setSpinnerSelection(R.id.it_rearPowerSeats_spinner, Integer.parseInt(carSettings.getRearPowerSeats()));
-        setSpinnerSelection(R.id.it_ahc_spinner, Integer.parseInt(carSettings.getAhc()));
-        setSpinnerSelection(R.id.it_parkAssist_spinner,  Integer.parseInt(carSettings.getParkAssist()));
+                if(interSpinnerId == 0)
+                    continue;
+
+                // 如果基本信息里的spinner选择的是“无”，则综合检查里的也应为“无”
+                if(selectedItemText.equals("无")) {
+                    Spinner interSpinner = (Spinner) rootView.findViewById(interSpinnerId);
+
+                    interSpinner.setSelection(2);
+                    interSpinner.setClickable(false);
+                    interSpinner.setAlpha(0.3f);
+                } else {
+                    Spinner interSpinner = (Spinner) rootView.findViewById(interSpinnerId);
+
+                    interSpinner.setSelection(0);
+                    interSpinner.setClickable(true);
+                    interSpinner.setAlpha(1.0f);
+                }
+            }
+        }
+
+
+//        setSpinnerSelection(R.id.it_airBag_spinner, Integer.parseInt(carSettings.getAirbag()));
+//        setSpinnerSelection(R.id.it_abs_spinner, Integer.parseInt(carSettings.getAbs()));
+//        setSpinnerSelection(R.id.it_powerWindows_spinner, Integer.parseInt(carSettings.getPowerWindows()));
+//        setSpinnerSelection(R.id.it_sunroof_spinner, Integer.parseInt(carSettings.getSunroof()));
+//        setSpinnerSelection(R.id.it_airConditioning_spinner, Integer.parseInt(carSettings.getAirConditioning()));
+//        setSpinnerSelection(R.id.it_powerSeats_spinner, Integer.parseInt(carSettings.getPowerSeats()));
+//        setSpinnerSelection(R.id.it_powerMirror_spinner, Integer.parseInt(carSettings.getPowerMirror()));
+//        setSpinnerSelection(R.id.it_reversingRadar_spinner, Integer.parseInt(carSettings.getReversingRadar()));
+//        setSpinnerSelection(R.id.it_reversingCamera_spinner, Integer.parseInt(carSettings.getReversingCamera()));
+//        setSpinnerSelection(R.id.it_softCloseDoors_spinner, Integer.parseInt(carSettings.getSoftCloseDoors()));
+//        setSpinnerSelection(R.id.it_rearPowerSeats_spinner, Integer.parseInt(carSettings.getRearPowerSeats()));
+//        setSpinnerSelection(R.id.it_ahc_spinner, Integer.parseInt(carSettings.getAhc()));
+//        setSpinnerSelection(R.id.it_parkAssist_spinner,  Integer.parseInt(carSettings.getParkAssist()));
 
         for(int i = 0; i < spinnerIds.length; i++) {
             setSpinnerColor(spinnerIds[i], Color.RED);
@@ -209,6 +232,10 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
                 else
                     ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
 
+                // 当选择项为“无”时，还应为黑色字体
+                if(adapterView.getSelectedItem().toString().equals("无")) {
+                    ((TextView) adapterView.getChildAt(0)).setTextColor(Color.BLACK);
+                }
             }
 
             @Override
@@ -468,8 +495,9 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
             sum += exteriorPhotoCount[i];
         }
 
-        if(sum < 7) {
-            Toast.makeText(rootView.getContext(), "外观组照片拍摄数量不足！还需要再拍摄" + Integer.toString(7 - sum) + "张",
+        if(sum < 2) {
+            Toast.makeText(rootView.getContext(), "外观组照片拍摄数量不足！还需要再拍摄" + Integer.toString(2 -
+                    sum) + "张",
                     Toast.LENGTH_LONG).show();
 
             CheckExterior();
@@ -483,8 +511,9 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
             sum += interiorPhotoCount[i];
         }
 
-        if(sum < 7) {
-            Toast.makeText(rootView.getContext(), "内饰组照片拍摄数量不足！还需要再拍摄" + Integer.toString(7 - sum) + "张",
+        if(sum < 2) {
+            Toast.makeText(rootView.getContext(), "内饰组照片拍摄数量不足！还需要再拍摄" + Integer.toString(2 -
+                    sum) + "张",
                     Toast.LENGTH_LONG).show();
 
             CheckInterior();

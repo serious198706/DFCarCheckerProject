@@ -468,4 +468,26 @@ public class CarSettings {
             }
         }
     }
+
+    public String getCarConfigs() {
+        return getDriveType() + "," +
+                getTransmission() + "," +
+                getAirbag() + "," +
+                getAbs() + "," +
+                getPowerSteering() + "," +
+                getPowerWindows() + "," +
+                getSunroof() + "," +
+                getAirConditioning() + "," +
+                getLeatherSeats() + "," +
+                getPowerSeats() + "," +
+                getPowerMirror() + "," +
+                getReversingRadar() + "," +
+                getReversingCamera() + "," +
+                getCcs() + "," +
+                getSoftCloseDoors() + "," +
+                getRearPowerSeats() + "," +
+                getAhc() + "," +
+                getParkAssist() + "," +
+                getClapBoard();
+    }
 }

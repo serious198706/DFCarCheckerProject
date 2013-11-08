@@ -6,7 +6,7 @@ package com.df.entry;
 
 import android.graphics.Bitmap;
 
-import com.df.dfcarchecker.CarCheckBasicInfoFragment;
+import com.df.dfcarchecker.CarCheck.CarCheckBasicInfoFragment;
 import com.df.dfcarchecker.LoginActivity;
 
 import org.json.JSONException;

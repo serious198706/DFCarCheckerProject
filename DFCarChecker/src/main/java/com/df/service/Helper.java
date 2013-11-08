@@ -62,18 +62,6 @@ public class Helper {
         return monthList;
     }
 
-    public static List<String> GetDayList(int days)
-    {
-        List<String> dayList = new ArrayList<String>();
-
-        for(int i = 0; i< days; i++)
-        {
-            dayList.add(Integer.toString(i + 1));
-        }
-
-        return dayList;
-    }
-
     public static List<String> GetNumbersList(int from, int to) {
         if(from > to) {
             return null;
@@ -194,6 +182,11 @@ public class Helper {
         String dstString = "";
 
         for(int i = 0; i < srcString.length(); i++) {
+            int index = libString.indexOf(srcString.charAt(i));
+            dstString += mixString.charAt(index);
+        }
+
+        for(int i = 0; i < srcString.length(); i++) {
             for(int j = 0; j < libString.length(); j++) {
                 if(srcString.charAt(i) == libString.charAt(j)) {
                     dstString += mixString.charAt(j);
@@ -220,21 +213,6 @@ public class Helper {
         return dstString;
     }
 
-    private static String IV = "AAAAAAAAAAAAAAAA";
-
-    public static byte[] encrypt(String plainText, String encryptionKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
-        SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
-        cipher.init(Cipher.ENCRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));
-        return cipher.doFinal(plainText.getBytes("UTF-8"));
-    }
-
-    public static String decrypt(byte[] cipherText, String encryptionKey) throws Exception{
-        Cipher cipher = Cipher.getInstance("AES/CBC/NoPadding", "SunJCE");
-        SecretKeySpec key = new SecretKeySpec(encryptionKey.getBytes("UTF-8"), "AES");
-        cipher.init(Cipher.DECRYPT_MODE, key,new IvParameterSpec(IV.getBytes("UTF-8")));
-        return new String(cipher.doFinal(cipherText),"UTF-8");
-    }
 
     public static String getSpinnerSelectedText(View view, int spinnerId) {
         Spinner spinner = (Spinner)view.findViewById(spinnerId);
@@ -269,5 +247,11 @@ public class Helper {
     public static void setEditError(View view, int editId) {
         EditText editText = (EditText)view.findViewById(editId);
         editText.setError("请填写必要字段！");
+    }
+
+    public static void setEditText(View view, int editId, String text) {
+        EditText editText = (EditText)view.findViewById(editId);
+
+        editText.setText(text);
     }
 }

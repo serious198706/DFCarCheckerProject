@@ -18,7 +18,7 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.df.dfcarchecker.CarCheckFrameFragment;
+import com.df.dfcarchecker.CarCheck.CarCheckFrameFragment;
 import com.df.dfcarchecker.R;
 import com.df.entry.PhotoEntity;
 import com.df.entry.PosEntity;

@@ -14,7 +14,7 @@ import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.widget.ImageView;
 
-import com.df.dfcarchecker.CarCheckExteriorActivity;
+import com.df.dfcarchecker.CarCheck.CarCheckExteriorActivity;
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
 import com.df.service.Common;
@@ -61,7 +61,7 @@ public class ExteriorPaintPreviewView extends ImageView {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        data = CarCheckExteriorActivity.posEntities;
+        //data = CarCheckExteriorActivity.posEntities;
         canvas.drawBitmap(bitmap, 0, 0, null);
         paint(canvas);
     }

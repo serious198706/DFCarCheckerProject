@@ -54,6 +54,9 @@ public final class ImageUploadQueue {
     }
 
     private boolean deleteImageFromExternalStorage(String fileName) {
+        if((fileName == null) || (fileName.equals("")))
+            return true;
+
         String path = Environment.getExternalStorageDirectory().getPath();
         path += "/Pictures/DFCarChecker/";
 
