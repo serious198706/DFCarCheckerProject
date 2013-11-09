@@ -53,7 +53,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_car_check_exterior);
+        setContentView(R.layout.activity_car_check_exterior);
 
         // 点击图片进入绘制界面
         int figure = Integer.parseInt(CarCheckBasicInfoFragment.mCarSettings.getFigure());
@@ -338,10 +338,10 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
             for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
                 imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
             }
-        }
 
-        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
-            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
+            while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
+                CarCheckPaintActivity.sketchPhotoEntities.remove(0);
+            }
         }
     }
 

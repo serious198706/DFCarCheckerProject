@@ -42,6 +42,9 @@ import static com.df.service.Helper.getEditText;
 public class CarCheckFrameFragment extends Fragment implements View.OnClickListener  {
     private static View rootView;
     private static ScrollView root;
+
+    // 用于修改
+    private final String jsonData;
     private LayoutInflater inflater;
     private int currentShotPart;
 
@@ -64,6 +67,11 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
     private ImageUploadQueue imageUploadQueue;
 
     private int photoShotCount[] = {0, 0, 0, 0};
+
+    public CarCheckFrameFragment(String jsonData) {
+        this.jsonData = jsonData;
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

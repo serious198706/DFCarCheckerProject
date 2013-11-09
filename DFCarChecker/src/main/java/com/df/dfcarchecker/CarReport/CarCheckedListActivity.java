@@ -24,6 +24,8 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
+import com.df.dfcarchecker.CarCheck.CarCheckFrameFragment;
+import com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity;
 import com.df.dfcarchecker.LoginActivity;
 import com.df.dfcarchecker.MainActivity;
 import com.df.dfcarchecker.R;
@@ -53,6 +55,7 @@ public class CarCheckedListActivity extends Activity {
     private RefreshCheckedCarListTask mRefreshCheckedCarListTask;
     private GetCarDetailTask mGetCarDetailTask;
     private CheckSellerNameTask mCheckSellerNameTask;
+    private ModifyCarTask mModifyCarTask;
 
     private EditText sellerNameEdit;
     private String sellerId;
@@ -88,6 +91,7 @@ public class CarCheckedListActivity extends Activity {
                     mode.finish(); // Action picked, so close the CAB
                     return true;
                 case R.id.action_modify:
+                    editThisCar();
                     mode.finish();
                     return true;
                 case R.id.action_print:
@@ -106,6 +110,10 @@ public class CarCheckedListActivity extends Activity {
         }
     };
 
+    private void editThisCar() {
+        mModifyCarTask = new ModifyCarTask(this);
+        mModifyCarTask.execute(Integer.parseInt(mylist.get(lastPos).get("id")));
+    }
 
 
     @Override
@@ -320,7 +328,7 @@ public class CarCheckedListActivity extends Activity {
 
                 // 设置soap的配置
                 soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                        "http://cheyiju/IReportService/ListCheckedCarsInfoByUserid",
+                        "http://cheyipai/IReportService/ListCheckedCarsInfoByUserid",
                         "ListCheckedCarsInfoByUserid");
 
                 success = soapService.communicateWithServer(context, jsonObject.toString());
@@ -386,7 +394,7 @@ public class CarCheckedListActivity extends Activity {
             soapService = new SoapService();
 
             soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                    "http://cheyiju/IReportService/GetCheckedCarDetailOptionByCarId",
+                    "http://cheyipai/IReportService/GetCheckedCarDetailOptionByCarId",
                     "GetCheckedCarDetailOptionByCarId");
 
             JSONObject jsonObject = new JSONObject();
@@ -464,7 +472,7 @@ public class CarCheckedListActivity extends Activity {
 
                 // 设置soap的配置
                 soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                        "http://cheyiju/IReportService/CheckSellerName",
+                        "http://cheyipai/IReportService/CheckSellerName",
                         "CheckSellerName");
 
                 success = soapService.communicateWithServer(context, jsonObject.toString());
@@ -592,7 +600,7 @@ public class CarCheckedListActivity extends Activity {
 
                 // 设置soap的配置
                 soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                        "http://cheyiju/IReportService/ImportPlatform",
+                        "http://cheyipai/IReportService/ImportPlatform",
                         "ImportPlatform");
 
                 success = soapService.communicateWithServer(context, jsonObject.toString());
@@ -611,6 +619,8 @@ public class CarCheckedListActivity extends Activity {
             mRefreshCheckedCarListTask = null;
 
             progressDialog.dismiss();
+
+            sellerName = "";
 
             // 成功获取
             if (success) {
@@ -631,6 +641,70 @@ public class CarCheckedListActivity extends Activity {
         @Override
         protected void onCancelled() {
             mRefreshCheckedCarListTask = null;
+        }
+    }
+
+
+    // 获取详细信息线程
+    private class ModifyCarTask extends AsyncTask<Integer, Void, Boolean> {
+        private Context context;
+
+        private SoapService soapService;
+        public ModifyCarTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Integer... params) {
+            boolean success = false;
+
+            soapService = new SoapService();
+
+            soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
+                    "http://cheyipai/IReportService/GetCheckedCarDetailOptionByCarId",
+                    "GetCheckedCarDetailOptionByCarId");
+
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+                jsonObject.put("Id", params[0]);
+                jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+            } catch (JSONException e) {
+
+            }
+
+            success = soapService.communicateWithServer(context, jsonObject.toString());
+
+            // 传输失败，获取错误信息并显示
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            if(!success) {
+                Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
+            } else {
+                result = soapService.getResultMessage();
+
+                Intent intent = new Intent(CarCheckedListActivity.this,
+                        CarCheckViewPagerActivity.class);
+
+                intent.putExtra("edit", true);
+                intent.putExtra("JSONData", result);
+
+                progressDialog.dismiss();
+
+                startActivity(intent/*, options.toBundle()*/);
+            }
+
+
         }
     }
 }

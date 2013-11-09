@@ -57,7 +57,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_car_check_interior);
+        setContentView(R.layout.activity_car_check_interior);
 
         Button brokenButton = (Button) findViewById(R.id.in_choose_broken_button);
         brokenButton.setOnClickListener(this);
@@ -377,10 +377,10 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
             for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
                 imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
             }
-        }
 
-        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
-            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
+            while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
+                CarCheckPaintActivity.sketchPhotoEntities.remove(0);
+            }
         }
     }
 

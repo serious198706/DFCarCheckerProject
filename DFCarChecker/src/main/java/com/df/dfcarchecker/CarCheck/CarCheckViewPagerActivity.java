@@ -59,24 +59,27 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
     private Intent serviceIntent;
 
+    // 用于修改
+    private String jsonData = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_check_viewpager);
 
-        carCheckBasicInfoFragment = new CarCheckBasicInfoFragment();
-        carCheckFrameFragment = new CarCheckFrameFragment();
-        carCheckIntegratedFragment = new CarCheckIntegratedFragment();
+        Bundle bundle = getIntent().getExtras();
 
-        CarCheckFrameFragment.photoEntitiesFront = null;
-        CarCheckFrameFragment.photoEntitiesRear = null;
-        CarCheckFrameFragment.posEntitiesFront = null;
-        CarCheckFrameFragment.posEntitiesRear = null;
+        if(bundle != null) {
+            if(bundle.containsKey("edit")) {
+                jsonData = bundle.getString("JSONData");
+            } else {
+                jsonData = "";
+            }
+        }
 
-        CarCheckIntegratedFragment.exteriorPaintEntities = null;
-        CarCheckIntegratedFragment.exteriorPhotoEntities = null;
-        CarCheckIntegratedFragment.interiorPaintEntities = null;
-        CarCheckIntegratedFragment.interiorPhotoEntities = null;
+        carCheckBasicInfoFragment = new CarCheckBasicInfoFragment(jsonData);
+        carCheckFrameFragment = new CarCheckFrameFragment(jsonData);
+        carCheckIntegratedFragment = new CarCheckIntegratedFragment(jsonData);
 
         // Set up the action bar.
         final ActionBar actionBar = getActionBar();
@@ -125,6 +128,42 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         getMenuInflater().inflate(R.menu.menu_commit_cancle, menu);
         return true;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if(CarCheckFrameFragment.photoEntitiesFront != null) {
+            CarCheckFrameFragment.photoEntitiesFront.clear();
+        }
+        if(CarCheckFrameFragment.photoEntitiesRear != null) {
+            CarCheckFrameFragment.photoEntitiesRear.clear();
+        }
+        if(CarCheckFrameFragment.posEntitiesFront != null) {
+            CarCheckFrameFragment.posEntitiesFront.clear();
+        }
+        if(CarCheckFrameFragment.posEntitiesRear != null) {
+            CarCheckFrameFragment.posEntitiesRear.clear();
+        }
+        if(CarCheckIntegratedFragment.exteriorPaintEntities != null) {
+            CarCheckIntegratedFragment.exteriorPaintEntities.clear();
+        }
+        if(CarCheckIntegratedFragment.exteriorPhotoEntities != null) {
+            CarCheckIntegratedFragment.exteriorPhotoEntities.clear();
+        }
+        if(CarCheckIntegratedFragment.interiorPaintEntities != null) {
+            CarCheckIntegratedFragment.interiorPaintEntities.clear();
+        }
+        if(CarCheckIntegratedFragment.interiorPhotoEntities != null) {
+            CarCheckIntegratedFragment.interiorPhotoEntities.clear();
+        }
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -230,21 +269,6 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                 // 退出
                 Intent intent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
                 stopService(intent);
-
-                carCheckBasicInfoFragment = null;
-                carCheckFrameFragment = null;
-                carCheckIntegratedFragment = null;
-
-                CarCheckFrameFragment.photoEntitiesFront.clear();
-                CarCheckFrameFragment.photoEntitiesRear.clear();
-                CarCheckFrameFragment.posEntitiesFront.clear();
-                CarCheckFrameFragment.posEntitiesRear.clear();
-
-                CarCheckIntegratedFragment.exteriorPaintEntities.clear();
-                CarCheckIntegratedFragment.exteriorPhotoEntities.clear();
-                CarCheckIntegratedFragment.interiorPaintEntities.clear();
-                CarCheckIntegratedFragment.interiorPhotoEntities.clear();
-
                 finish();
             }
         });
@@ -301,6 +325,8 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
             // 提交成功
             if(result.equals("0")) {
                 Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(CarCheckViewPagerActivity.this, "提交失败！", Toast.LENGTH_LONG).show();
             }
 
             // 停止服务
@@ -309,11 +335,6 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
             // 注销广播接收器
             unregisterReceiver(broadcastReceiver);
-
-            // 各种置空
-            carCheckBasicInfoFragment = null;
-            carCheckFrameFragment = null;
-            carCheckIntegratedFragment = null;
 
             // 关闭界面
             finish();

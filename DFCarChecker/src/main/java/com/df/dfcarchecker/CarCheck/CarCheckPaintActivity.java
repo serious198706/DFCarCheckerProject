@@ -2,6 +2,8 @@ package com.df.dfcarchecker.CarCheck;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -42,6 +44,8 @@ public class CarCheckPaintActivity extends Activity {
     private InteriorPaintView interiorPaintView;
     private FramePaintView framePaintView;
     private String currentPaintView;
+
+    private ProgressDialog mProgressDialog;
 
     // 用来截图的View
     private View targetView;
@@ -234,7 +238,6 @@ public class CarCheckPaintActivity extends Activity {
             case R.id.action_done:
                 // 提交数据
                 captureResultImage();
-                finish();
                 break;
             case R.id.action_cancel:
                 // 用户确认放弃更改
@@ -266,7 +269,7 @@ public class CarCheckPaintActivity extends Activity {
 
         // 如果没有缺陷点，则不要保存草图了
         if(paintView.getPosEntity() != null) {
-            mSaveSketchImageTask = new SaveSketchImageTask();
+            mSaveSketchImageTask = new SaveSketchImageTask(this);
             mSaveSketchImageTask.execute((Void) null);
         }
     }
@@ -396,6 +399,18 @@ public class CarCheckPaintActivity extends Activity {
 
     // 保存草图的线程
     public class SaveSketchImageTask extends AsyncTask<Void, Void, Boolean> {
+        private Context context;
+
+        public SaveSketchImageTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mProgressDialog = ProgressDialog.show(context, null,
+                    "正在保存...", false, false);
+        }
+
         @Override
         protected Boolean doInBackground(Void... params) {
             boolean success = false;
@@ -487,6 +502,9 @@ public class CarCheckPaintActivity extends Activity {
         @Override
         protected void onPostExecute(final Boolean success) {
             mSaveSketchImageTask = null;
+
+            mProgressDialog.dismiss();
+            finish();
         }
 
         @Override

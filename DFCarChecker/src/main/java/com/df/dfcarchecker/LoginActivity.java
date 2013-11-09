@@ -208,7 +208,7 @@ public class LoginActivity extends Activity {
 //
 //                // 设置soap的配置
 //                soapService.setUtils("http://192.168.100.6:50/UserManageService.svc",
-//                        "http://cheyiju/IUserManageService/GetCustomerIpAddress",
+//                        "http://cheyipai/IUserManageService/GetCustomerIpAddress",
 //                        "GetCustomerIpAddress");
 //
 //                success = soapService.sendIpAddress();
@@ -227,7 +227,7 @@ public class LoginActivity extends Activity {
 
                 // 设置soap的配置
                 soapService.setUtils(Common.SERVER_ADDRESS + Common.USER_MANAGE_SERVICE,
-                        "http://cheyiju/IUserManageService/UserLogin",
+                        "http://cheyipai/IUserManageService/UserLogin",
                         "UserLogin");
 
                 success = soapService.login(context, jsonObject.toString());

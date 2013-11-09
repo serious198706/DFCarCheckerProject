@@ -83,11 +83,7 @@
         </activity>
         <activity
             android:name="com.df.dfcarchecker.CarReport.CarReportInteriorActivity"
-            android:label="@string/title_activity_car_report_interior" >
-        </activity>
-        <activity
-            android:name="com.df.dfcarchecker.CarModifyViewPagerActivity"
-            android:label="@string/title_activity_car_modify_view_pager" >
+            android:label="@string/in" >
         </activity>
     </application>
 

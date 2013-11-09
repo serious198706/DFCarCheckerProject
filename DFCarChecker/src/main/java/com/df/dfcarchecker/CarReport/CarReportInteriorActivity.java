@@ -4,19 +4,23 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
 import com.df.paintview.InteriorPaintPreviewView;
+import com.df.service.Common;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,9 +36,19 @@ public class CarReportInteriorActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_car_report_exterior);
+        setContentView(R.layout.activity_car_report_interior);
 
         posEntities = new ArrayList<PosEntity>();
+
+        // 初始化预览界面
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+
+        String sdcardPath = Environment.getExternalStorageDirectory().getPath();
+        Bitmap previewViewBitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4s4", options);
+
+        interiorPaintPreviewView = (InteriorPaintPreviewView) findViewById(R.id.in_base_image_preview);
+        interiorPaintPreviewView.init(previewViewBitmap, posEntities);
 
         Bundle extras = getIntent().getExtras();
 
@@ -88,33 +102,48 @@ public class CarReportInteriorActivity extends Activity {
             setTextView(getWindow().getDecorView(), R.id.comment_text, comment);
 
             String sealingStrip = conditions.getJSONObject("interior").getString("sealingStrip");
-            setTextView(getWindow().getDecorView(), R.id.smooth_text, sealingStrip);
+            setTextView(getWindow().getDecorView(), R.id.sealingStrip_text, sealingStrip);
 
-            JSONArray fault = interior.getJSONArray("fault");
+//            JSONArray fault = interior.getJSONArray("fault");
+//
+//            for(int i = 0; i < fault.length(); i++) {
+//                JSONObject jsonObject = fault.getJSONObject(i);
+//
+//                PosEntity posEntity = new PosEntity(jsonObject.getInt("type"));
+//                posEntity.setStart(jsonObject.getInt("startX"), jsonObject.getInt("startY"));
+//                posEntity.setEnd(jsonObject.getInt("endX"), jsonObject.getInt("endY"));
+//
+//                posEntities.add(posEntity);
+//            }
 
-            for(int i = 0; i < fault.length(); i++) {
-                JSONObject jsonObject = fault.getJSONObject(i);
+            JSONObject sketch = interior.getJSONObject("sketch");
+            String sketchUrl = sketch.getString("photo");
 
-                PosEntity posEntity = new PosEntity(jsonObject.getInt("type"));
-                posEntity.setStart(jsonObject.getInt("startX"), jsonObject.getInt("startY"));
-                posEntity.setEnd(jsonObject.getInt("endX"), jsonObject.getInt("endY"));
-
-                posEntities.add(posEntity);
-            }
-
-            // 初始化预览界面
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-            String sdcardPath = Environment.getExternalStorageDirectory().getPath();
-            Bitmap previewViewBitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4s4", options);
-
-            interiorPaintPreviewView = (InteriorPaintPreviewView) findViewById(R.id.in_base_image_preview);
-            interiorPaintPreviewView.init(previewViewBitmap, posEntities);
+            new DownloadImageTask().execute(Common.PICUTRE_ADDRESS + sketchUrl);
         } catch (JSONException e) {
 
         }
+    }
 
+    // 下载图片
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            Bitmap tempBitmap = null;
+            try {
+                InputStream in = new java.net.URL(url).openStream();
+                tempBitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return tempBitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            interiorPaintPreviewView.init(result, posEntities);
+            interiorPaintPreviewView.invalidate();
+        }
     }
 }
 

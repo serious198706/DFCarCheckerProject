@@ -220,6 +220,16 @@ public class Helper {
         return spinner.getSelectedItem().toString();
     }
 
+    public static void setSpinnerSelectionWithString(View view, int spinnerId, String text) {
+        Spinner spinner = (Spinner)view.findViewById(spinnerId);
+
+        int count = spinner.getCount();
+        for(int i = 0; i < count; i++) {
+            if(spinner.getSelectedItem().toString().equals("text"))
+                spinner.setSelection(i);
+        }
+    }
+
     public static String getEditText(View view, int editId) {
         EditText editText = (EditText)view.findViewById(editId);
 

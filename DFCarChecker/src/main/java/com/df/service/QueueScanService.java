@@ -97,11 +97,21 @@ public class QueueScanService extends Service {
         }
     };
 
+    private Runnable sendUpdatesToUIFail = new Runnable() {
+        @Override
+        public void run() {
+            CommitFailed();
+        }
+    };
+
     //
     private void Committed() {
-        Log.d(Common.TAG, "entered Committed");
-
         intent.putExtra("result", "0");
+        sendBroadcast(intent);
+    }
+
+    private void CommitFailed() {
+        intent.putExtra("result", "-1");
         sendBroadcast(intent);
     }
 
@@ -182,7 +192,7 @@ public class QueueScanService extends Service {
 
             // 设置soap的配置
             soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                    "http://cheyiju/IReportService/SaveCarPictureTagKey",
+                    "http://cheyipai/IReportService/SaveCarPictureTagKey",
                     "SaveCarPictureTagKey");
 
             PhotoEntity photoEntity = imageUploadQueue.getEntity();
@@ -260,7 +270,7 @@ public class QueueScanService extends Service {
 
             // 设置soap的配置
             soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                    "http://cheyiju/IReportService/SaveCarCheckInfo",
+                    "http://cheyipai/IReportService/SaveCarCheckInfo",
                     "SaveCarCheckInfo");
 
             JSONObject jsonObject = new JSONObject();
@@ -293,6 +303,8 @@ public class QueueScanService extends Service {
 
             if(success) {
                 handler.post(sendUpdatesToUI); // 1 second
+            } else {
+                handler.post(sendUpdatesToUIFail);
             }
         }
 

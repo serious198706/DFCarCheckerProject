@@ -56,6 +56,7 @@ import static com.df.service.Helper.getDateString;
 import static com.df.service.Helper.getEditText;
 import static com.df.service.Helper.getSpinnerSelectedText;
 import static com.df.service.Helper.setEditText;
+import static com.df.service.Helper.setSpinnerSelectionWithString;
 
 public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickListener {
     private static View rootView;
@@ -120,6 +121,15 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private ProgressDialog progressDialog;
 
     public static List<PhotoEntity> sketchPhotoEntities;
+
+    private ProgressDialog mProgressDialog;
+
+    // 用于修改
+    private String jsonData;
+
+    public CarCheckBasicInfoFragment(String jsonData) {
+        this.jsonData = jsonData;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -289,14 +299,25 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             e.printStackTrace();
         }
 
+
         // 开启一个新的线程解析xml文件
         if(vehicleModel == null) {
+            mProgressDialog = ProgressDialog.show(rootView.getContext(), null,
+                    "请稍候..", false, false);
+
             Thread thread = new Thread(new Runnable(){
                 @Override
                 public void run() {
                     try {
+
                         //Your code goes here
                         ParseXml();
+
+                        // 如果jsonData不为空，表示为修改模式
+                        if(!jsonData.equals("")) {
+                            letsEnterEditMode();
+                        }
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -443,7 +464,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private void showContent() {
         if(tableLayout.getVisibility() != View.VISIBLE) {
             tableLayout.setVisibility(View.VISIBLE);
-            CarCheckIntegratedFragment.ShowContent();
+            CarCheckIntegratedFragment.showContent();
             CarCheckFrameFragment.showContent();
         }
     }
@@ -543,6 +564,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     public void ParseXml() {
         VehicleModelParser parser = new VehicleModelParser();
         vehicleModel = parser.parseVehicleModelXml(fis);
+
+        mProgressDialog.dismiss();
     }
 
     // <editor-fold defaultstate="collapsed" desc="生成JsonString">
@@ -745,7 +768,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                     // 设置soap的配置
                     soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                            "http://cheyiju/IReportService/GetOptionsBySeriesIdAndModelId",
+                            "http://cheyipai/IReportService/GetOptionsBySeriesIdAndModelId",
                             "GetOptionsBySeriesIdAndModelId");
 
                     success = soapService.communicateWithServer(context, jsonObject.toString());
@@ -784,7 +807,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                     // 设置soap的配置
                     soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                            "http://cheyiju/IReportService/GetCarConfigInfoByVin",
+                            "http://cheyipai/IReportService/GetCarConfigInfoByVin",
                             "GetCarConfigInfoByVin");
 
                     success = soapService.communicateWithServer(context, jsonObject.toString());
@@ -983,6 +1006,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     }
     // </editor-fold>
 
+    // 提交前的检查
     public boolean runOverAllCheck() {
         int id2Check[] = {R.id.ci_licenceModel_edit,
         R.id.bi_mileAge_edit,
@@ -1383,4 +1407,128 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     }
     // </editor-fold>
 
+    private void letsEnterEditMode() {
+        try {
+            JSONObject features = new JSONObject(jsonData).getJSONObject("features");
+
+            JSONObject options = features.getJSONObject("options");
+            final JSONObject procedures = features.getJSONObject("procedures");
+
+            String brandString = options.getString("manufacturer") + " " +
+                    options.getString("series") + " " +
+                    options.getString("model");
+
+            mCarSettings.setBrandString(brandString);
+            mCarSettings.setDisplacement(options.getString("displacement"));
+
+            Country country = vehicleModel.getCountryById(Integer.toString(options.getInt
+                    ("countryId")));
+            Brand brand = country.getBrandById(Integer.toString(options.getInt("brandId")));
+            Manufacturer manufacturer = brand.getProductionById(Integer.toString(options.getInt
+                    ("manufacturerId")));
+            Series series = manufacturer.getSerialById(Integer.toString(options.getInt
+                    ("seriesId")));
+            Model model = series.getModelById(Integer.toString(options.getInt("modelId")));
+
+
+            mCarSettings.setCountry(country);
+            mCarSettings.setBrand(brand);
+            mCarSettings.setManufacturer(manufacturer);
+            mCarSettings.setSeries(series);
+            mCarSettings.setModel(model);
+
+            String config = "";
+
+            // 设置配置信息
+            for(int i = 0; i < CarSettings.getAllConfigs().length; i++) {
+                if(options.has(CarSettings.getAllConfigs()[i])) {
+                    config += CarSettings.getAllConfigs()[i];
+                    config += ",";
+                }
+            }
+
+            config = config.substring(0, config.length() - 1);
+
+            mCarSettings.setConfig(config);
+
+            // 设置车型分类，以用于图片类型判断
+            mCarSettings.setCategory(options.getString("category"));
+            mCarSettings.setFigure("1");
+
+            setCarSettingsSpinners(model.getName());
+
+            this.getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    //stuff that updates ui
+                    contentLayout.setVisibility(View.VISIBLE);
+                    tableLayout.setVisibility(View.VISIBLE);
+                    CarCheckFrameFragment.showContent();
+                    CarCheckIntegratedFragment.showContent();
+                    // 更新UI
+                    updateUi();
+
+                    try {
+                        setSpinnerSelectionWithString(rootView, R.id.ci_regArea_spinner,
+                                procedures.getString("regArea"));
+                        setEditText(rootView, R.id.ci_plateNumber_edit, procedures.getString("plateNumber"));
+                        setEditText(rootView, R.id.ci_licenceModel_edit, procedures.getString("licenceModel"));
+                        setSpinnerSelectionWithString(rootView, R.id.ci_vehicleType_spinner,
+                                procedures.getString("vehicleType"));
+                        setSpinnerSelectionWithString(rootView, R.id.ci_useCharacter_spinner,
+                                procedures.getString("useCharacter"));
+                        setSpinnerSelectionWithString(rootView, R.id.bi_mileAge_edit,
+                                procedures.getString("mileAge"));
+                        setSpinnerSelectionWithString(rootView, R.id.ci_exteriorColor_spinner,
+                                procedures.getString("exteriorColor"));
+                        setSpinnerSelectionWithString(rootView, R.id.ci_regYear_spinner,
+                                procedures.getString("regDate").substring(0, 4));
+                        setSpinnerSelectionWithString(rootView, R.id.ci_regMonth_spinner,
+                                procedures.getString("regDate".substring(6, 7)));
+                        setSpinnerSelectionWithString(rootView, R.id.ci_builtYear_spinner,
+                                procedures.getString("builtDate".substring(0, 4)));
+                        setSpinnerSelectionWithString(rootView, R.id.ci_builtMonth_spinner,
+                                procedures.getString("builtDate".substring(6, 7)));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_invoice_spinner,
+                                procedures.getString("invoice"));
+                        setEditText(rootView, R.id.ct_invoice_edit, procedures.getString("invoicePrice"));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_surtax_spinner,
+                                procedures.getString("surtax"));
+                        setSpinnerSelectionWithString(rootView, R.id.ci_transferCount_spinner,
+                                procedures.getString("transferCount"));
+                        setSpinnerSelectionWithString(rootView, R.id.ci_transferLastYear_spinner,
+                                procedures.getString("transferLastDate").substring(0, 4));
+                        setSpinnerSelectionWithString(rootView, R.id.ci_transferLastMonth_spinner,
+                                procedures.getString("transferLastDate").substring(6, 7));
+
+                        setEditText(rootView, R.id.ct_licencePhotoMatch_edit, procedures.getString("licensePhotoMatch"));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_insurance_spinner, procedures.getString("insurance"));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_insuranceRegion_spinner, procedures.getString("insuranceRegion"));
+                        setEditText(rootView, R.id.ct_insuranceAmount_edit, procedures.getString("insuranceAmount"));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_insuranceCompany_spinner, procedures.getString("insuranceCompany"));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_importProcedures_spinner, procedures.getString("importProcedures"));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_spareTire_spinner, procedures.getString("spareTire"));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_spareKey_spinner, procedures.getString("spareKey"));
+                        setEditText(rootView, R.id.ci_ownerName_edit, procedures.getString("ownerName"));
+                        setEditText(rootView, R.id.ci_ownerIdNumber_edit, procedures.getString("ownerIdNumber"));
+                        setEditText(rootView, R.id.ci_ownerPhone_edit, procedures.getString("ownerPhone"));
+                        setSpinnerSelectionWithString(rootView, R.id.ex_transferAgree_spinner, procedures.getString("transferAgree"));
+                        setEditText(rootView,R.id.ct_transferRequire_edit, procedures.getString("transferRequire"));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_insuranceExpiryYear_spinner,
+                                procedures.getString("insuranceExpiryDate").substring(0, 4));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_insuranceExpiryMonth_spinner, procedures.getString("insuranceExpiryDate").substring(6, 7));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_annualInspectionYear_spinner, procedures.getString("annualInspection").substring(0, 4));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_annualInspectionMonth_spinner, procedures.getString("annualInspection").substring(6, 7));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_compulsoryInsuranceYear_spinner, procedures.getString("compulsoryInsurance").substring(0, 4));
+                        setSpinnerSelectionWithString(rootView, R.id.ct_compulsoryInsuranceMonth_spinner, procedures.getString("compulsoryInsurance").substring(6, 7));
+                    } catch (JSONException e) {
+
+                    }
+                }
+            });
+        } catch (Exception e) {
+            Log.d(Common.TAG, e.getMessage());
+        }
+
+        mProgressDialog.dismiss();
+    }
 }

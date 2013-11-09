@@ -76,7 +76,7 @@ public class CarReportIntegratedFragment extends Fragment implements View.OnClic
 
     // 进入“内饰”
     private void CheckInterior() {
-        Intent intent = new Intent(rootView.getContext(), CarCheckInteriorActivity.class);
+        Intent intent = new Intent(rootView.getContext(), CarReportInteriorActivity.class);
         intent.putExtra("JSONData", jsonData);
         startActivityForResult(intent, Common.IT_IN);
     }

@@ -490,4 +490,26 @@ public class CarSettings {
                 getParkAssist() + "," +
                 getClapBoard();
     }
+
+    public static String[] getAllConfigs() {
+        String configs[] = {"airBags",
+                "abs",
+                "powerSteering",
+                "powerWindows",
+                "sunroof",
+                "airConditioning",
+                "leatherSeats",
+                "powerSeats",
+                "powerMirror",
+                "reversingRadar",
+                "reversingCamera",
+                "ccs",
+                "softCloseDoors",
+                "rearPowerSeats",
+                "ahc",
+                "parkAssist",
+                "clapBoard"};
+
+        return configs;
+    }
 }

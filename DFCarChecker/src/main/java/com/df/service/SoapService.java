@@ -6,6 +6,8 @@ import android.util.Log;
 
 import com.df.entry.UserInfo;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.MarshalBase64;
 import org.ksoap2.serialization.SoapObject;
@@ -17,7 +19,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class SoapService implements ISoapService {
-    private static final String NAMESPACE = "http://cheyiju";
+    private static final String NAMESPACE = "http://cheyipai";
 
     private boolean success;
     private String errorMessage;
@@ -166,7 +168,25 @@ public class SoapService implements ISoapService {
         // 将图片转换成流
         // 有可能有的缺陷没有照片
         if(bitmap != null) {
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream);
+            try {
+                // 如果是草图，则要以PNG的方式压缩并上传
+                JSONObject jsonObject = new JSONObject(jsonString);
+
+                if(jsonObject.has("Part")) {
+                    String part = jsonObject.getString("Part");
+
+                    if(part.contains("ketch")) {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 95, stream);
+                    } else {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream);
+                    }
+                } else {
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream);
+                }
+            } catch (JSONException e) {
+
+            }
+
             byteArray = stream.toByteArray();
         } else {
             byteArray = new byte[0];

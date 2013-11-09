@@ -214,5 +214,6 @@
     <string name="title_activity_car_report_exterior">MainActivity</string>
     <string name="title_activity_car_report_interior">MainActivity</string>
     <string name="title_activity_car_modify_view_pager">MainActivity</string>
+    <string name="title_activity_car_modify_basic_info_fragment">CarModifyBasicInfoFragment</string>
 
 </resources>

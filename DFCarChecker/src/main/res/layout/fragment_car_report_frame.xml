@@ -93,13 +93,11 @@
                     android:text="@string/structure_comment"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <EditText
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:inputType="textMultiLine"
-                    android:ems="10"
-                    android:id="@+id/comment_edit"/>
+                    android:id="@+id/comment_text"/>
             </TableRow>
         </TableLayout>
     </LinearLayout>

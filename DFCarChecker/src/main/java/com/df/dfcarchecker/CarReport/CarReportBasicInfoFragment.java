@@ -1,21 +1,15 @@
 package com.df.dfcarchecker.CarReport;
 
 import android.os.Bundle;
-import android.app.Activity;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.df.dfcarchecker.R;
-import com.df.entry.CarSettings;
-import com.df.entry.Manufacturer;
 import com.df.service.Common;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -185,7 +179,7 @@ public class CarReportBasicInfoFragment extends Fragment {
             else
                 setTextView(rootView, R.id.useCharacter_text, null);
             if(procedures.has("mileage"))
-                setTextView(rootView, R.id.mileAge_text, procedures.getString("mileage"));
+                setTextView(rootView, R.id.mileAge_text, procedures.getString("mileage") + "万公里");
             else
                 setTextView(rootView, R.id.mileAge_text, null);
             if(procedures.has("exteriorColor"))
@@ -196,8 +190,8 @@ public class CarReportBasicInfoFragment extends Fragment {
             setTextView(rootView, R.id.regDate_text, procedures.getString("regDate"));
             setTextView(rootView, R.id.builtDate_text, procedures.getString("builtDate"));
             setTextView(rootView, R.id.transferLastDate_text, procedures.getString("transferLastDate"));
-            setTextView(rootView, R.id.annualInspectionDate_text, procedures.getString("annualInspectionDate"));
-            setTextView(rootView, R.id.compulsoryInsuranceDate_text, procedures.getString("compulsoryInsuranceDate"));
+            setTextView(rootView, R.id.annualInspection_text, procedures.getString("annualInspection"));
+            setTextView(rootView, R.id.compulsoryInsurance_text, procedures.getString("compulsoryInsurance"));
             setTextView(rootView, R.id.insuranceExpiryDate_text, procedures.getString("insuranceExpiryDate"));
 
             if(procedures.has("invoice"))
@@ -205,7 +199,8 @@ public class CarReportBasicInfoFragment extends Fragment {
             else
                 setTextView(rootView, R.id.invoice_text, null);
             if(procedures.has("invoicePrice"))
-                setTextView(rootView, R.id.invoice_text, procedures.getString("invoicePrice"));
+                setTextView(rootView, R.id.invoice_text, procedures.getString("invoicePrice") +
+                        "元");
             else
                 setTextView(rootView, R.id.invoice_text, null);
             if(procedures.has("surtax"))
@@ -229,7 +224,8 @@ public class CarReportBasicInfoFragment extends Fragment {
             else
                 setTextView(rootView, R.id.insuranceRegion_text, null);
             if(procedures.has("insuranceAmount"))
-                setTextView(rootView, R.id.insuranceAmount_text, procedures.getString("insuranceAmount"));
+                setTextView(rootView, R.id.insuranceAmount_text,
+                        procedures.getString("insuranceAmount") + "元");
             else
                 setTextView(rootView, R.id.insuranceAmount_text, null);
             if(procedures.has("insuranceCompany"))

@@ -1,9 +1,12 @@
 package com.df.service;
 
+import android.util.SparseArray;
+
 import com.df.dfcarchecker.R;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -57,11 +60,17 @@ public class Common {
     // 日志的TAG
     public static final String TAG = "DFCarChecker";
 
-    // WebService configs
+    // WebService地址
     //public static final String SERVER_ADDRESS = "http://192.168.8.33:801/";
     public static final String SERVER_ADDRESS = "http://wcf.268v.com:8008/";
+    //public static final String SERVER_ADDRESS = "http://192.168.100.6:50/";
+
     public static final String USER_MANAGE_SERVICE = "userManageService.svc";
     public static final String REPORT_SERVICE = "ReportService.svc";
+
+    // 图片地址
+    public static final String PICUTRE_ADDRESS = "http://i.268v.com/";
+    //public static final String PICUTRE_ADDRESS = "http://192.168.100.6:8006/";
 
 
     public static final int[][] carSettingsSpinnerMap = {
@@ -85,4 +94,25 @@ public class Common {
             {R.id.csi_parkAssist_spinner, R.id.it_parkAssist_spinner, R.array.existornot},
             {R.id.csi_clapboard_spinner, 0, R.array.existornot}
     };
+
+    public static final SparseArray<String> carSettingsSpinnerStringSparseArray = new
+            SparseArray<String>() {{
+        put(R.id.csi_airbag_spinner, "airBags");
+        put(R.id.csi_abs_spinner, "abs");
+        put(R.id.csi_powerSteering_spinner, "powerSteering");
+        put(R.id.csi_powerWindows_spinner, "powerWindows");
+        put(R.id.csi_sunroof_spinner, "sunroof");
+        put(R.id.csi_airConditioning_spinner, "airConditioning");
+        put(R.id.csi_leatherSeats_spinner, "leatherSeats");
+        put(R.id.csi_powerSeats_spinner, "powerSeats");
+        put(R.id.csi_powerMirror_spinner, "powerMirror");
+        put(R.id.csi_reversingRadar_spinner, "reversingRadar");
+        put(R.id.csi_reversingCamera_spinner, "reversingCamera");
+        put(R.id.csi_ccs_spinner, "ccs");
+        put(R.id.csi_softCloseDoors_spinner, "softCloseDoors");
+        put(R.id.csi_rearPowerSeats_spinner, "rearPowerSeats");
+        put(R.id.csi_ahc_spinner, "ahc");
+        put(R.id.csi_parkAssist_spinner, "parkAssist");
+        put(R.id.csi_clapboard_spinner, "clapBoard");
+    }};
 }

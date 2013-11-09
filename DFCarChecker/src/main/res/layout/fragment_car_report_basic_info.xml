@@ -587,7 +587,7 @@
                     android:text="@string/ct_yearly_check_available_date"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <TextView android:id="@+id/annualInspectionDate_text"
+                <TextView android:id="@+id/annualInspection_text"
                           android:layout_height="wrap_content"
                           android:layout_width="0dp"
                           android:layout_weight="2"
@@ -600,7 +600,7 @@
                     android:text="@string/ct_available_date"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <TextView android:id="@+id/compulsoryInsuranceDate_text"
+                <TextView android:id="@+id/compulsoryInsurance_text"
                           android:layout_height="wrap_content"
                           android:layout_width="0dp"
                           android:layout_weight="2"

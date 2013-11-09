@@ -39,6 +39,9 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     public static List<PhotoEntity> exteriorPhotoEntities;
     public static List<PosEntity> interiorPaintEntities;
     public static List<PhotoEntity> interiorPhotoEntities;
+
+    // 用于修改
+    private final String jsonData;
     private String paintIndex;
     private String exteriorComment;
     private String sealIndex;
@@ -94,6 +97,9 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
             R.id.it_waterTrunkCorner_spinner,
             R.id.it_waterSpareTireGroove_spinner};
 
+    public CarCheckIntegratedFragment(String jsonData) {
+        this.jsonData = jsonData;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -135,8 +141,8 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         }
     }
 
-    public static void ShowContent() {
-        updateAssociatedSpinners(0, "");
+    public static void showContent() {
+        //updateAssociatedSpinners(0, "");
         root.setVisibility(View.VISIBLE);
     }
 
