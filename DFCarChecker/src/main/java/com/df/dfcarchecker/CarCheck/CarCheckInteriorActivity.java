@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,10 +32,16 @@ import com.df.service.Common;
 import com.df.service.Helper;
 import com.df.service.ImageUploadQueue;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.List;
+
+import static com.df.service.Helper.setEditText;
+import static com.df.service.Helper.setSpinnerSelectionWithString;
+import static com.df.service.Helper.setTextView;
 
 public class CarCheckInteriorActivity extends Activity implements View.OnClickListener  {
     private int currentShotPart;
@@ -53,6 +61,10 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     private ImageUploadQueue imageUploadQueue;
 
     private int[] photoShotCount = {0, 0, 0, 0, 0, 0, 0};
+    private JSONObject photos;
+    private JSONObject conditions;
+
+    private String jsonData;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -93,6 +105,10 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
             }
 
             photoShotCount = extras.getIntArray("PHOTO_COUNT");
+
+            if(extras.containsKey("JSONDATA")) {
+                jsonData = extras.getString("JSONDATA");
+            }
         }
 
         final ActionBar actionBar = getActionBar();
@@ -105,6 +121,10 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         }
 
         imageUploadQueue = ImageUploadQueue.getInstance();
+
+        if(!jsonData.equals("")) {
+            letsEnterModifyMode();
+        }
     }
 
     @Override
@@ -424,5 +444,77 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         }
 
         return interior;
+    }
+
+    private void letsEnterModifyMode() {
+        parsJsonData();
+        updateUi();
+    }
+
+    private void parsJsonData() {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+
+            photos = jsonObject.getJSONObject("photos");
+            conditions = jsonObject.getJSONObject("conditions");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void updateUi() {
+        try {
+            JSONObject interior = photos.getJSONObject("interior");
+
+            String comment = conditions.getJSONObject("interior").getString("comment");
+            setEditText(getWindow().getDecorView(), R.id.it_comment_edit, comment);
+
+            String sealingStrip = conditions.getJSONObject("interior").getString("sealingStrip");
+            setSpinnerSelectionWithString(getWindow().getDecorView(), R.id.in_sealingStrip_spinner, sealingStrip);
+
+//            JSONArray fault = interior.getJSONArray("fault");
+//
+//            for(int i = 0; i < fault.length(); i++) {
+//                JSONObject jsonObject = fault.getJSONObject(i);
+//
+//                PosEntity posEntity = new PosEntity(jsonObject.getInt("type"));
+//                posEntity.setStart(jsonObject.getInt("startX"), jsonObject.getInt("startY"));
+//                posEntity.setEnd(jsonObject.getInt("endX"), jsonObject.getInt("endY"));
+//
+//                posEntities.add(posEntity);
+//            }
+
+            JSONObject sketch = interior.getJSONObject("sketch");
+            String sketchUrl = sketch.getString("photo");
+
+            new DownloadImageTask().execute(Common.PICUTRE_ADDRESS + sketchUrl);
+        } catch (JSONException e) {
+
+        }
+    }
+
+    // 下载图片
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            Bitmap tempBitmap = null;
+            try {
+                InputStream in = new java.net.URL(url).openStream();
+                tempBitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return tempBitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            interiorPaintPreviewView.init(result, posEntities);
+            interiorPaintPreviewView.invalidate();
+            interiorPaintPreviewView.setAlpha(1.0f);
+            tip.setVisibility(View.GONE);
+        }
     }
 }

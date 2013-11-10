@@ -33,7 +33,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class CarCheckViewPagerActivity extends FragmentActivity implements ActionBar
-        .TabListener {
+        .TabListener, CarCheckBasicInfoFragment.OnHeadlineSelectedListener{
     private CarCheckBasicInfoFragment carCheckBasicInfoFragment;
     private CarCheckFrameFragment carCheckFrameFragment;
     private CarCheckIntegratedFragment carCheckIntegratedFragment;
@@ -61,6 +61,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
     // 用于修改
     private String jsonData = "";
+    private int carId = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +73,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         if(bundle != null) {
             if(bundle.containsKey("edit")) {
                 jsonData = bundle.getString("JSONData");
+                carId = bundle.getInt("carId");
             } else {
                 jsonData = "";
             }
@@ -118,6 +120,8 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         serviceIntent = new Intent(this, QueueScanService.class);
         serviceIntent.putExtra("committed", canCommit);
         serviceIntent.putExtra("JSONObject", "");
+        serviceIntent.putExtra("action", "");
+        serviceIntent.putExtra("carId", carId);
         startService(serviceIntent);
         registerReceiver(broadcastReceiver, new IntentFilter(QueueScanService.BROADCAST_ACTION));
     }
@@ -257,7 +261,12 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle(R.string.alert_title);
-        builder.setMessage(R.string.quitCarCheck);
+        if(!jsonData.equals("")) {
+            builder.setMessage(R.string.quitCarCheck);
+        } else {
+            builder.setMessage(R.string.quitCarModify);
+        }
+
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // 取消
@@ -281,7 +290,13 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
         builder.setTitle(R.string.alert_title);
-        builder.setMessage(R.string.commitCarCheck);
+
+        if(!jsonData.equals("")) {
+            builder.setMessage(R.string.commitCarCheck);
+        } else {
+            builder.setMessage(R.string.commitCarModify);
+        }
+
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // 取消
@@ -290,18 +305,35 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
                 // 提交
 
                 // 将结构检查的图片加入到照片池
                 mCommitProgressDialog = ProgressDialog.show(CarCheckViewPagerActivity.this, null,
                         "正在提交...", false, false);
 
-                carCheckFrameFragment.addPhotosToQueue();
-                canCommit = true;
+                // 修改车辆信息
+                if(!jsonData.equals("")) {
+                    carCheckFrameFragment.addPhotosToQueue();
+                    canCommit = true;
 
-                serviceIntent.putExtra("committed", canCommit);
-                serviceIntent.putExtra("JSONObject", generateCommitJsonObject().toString());
-                startService(serviceIntent);
+                    serviceIntent.putExtra("committed", canCommit);
+                    serviceIntent.putExtra("action", "modify");
+                    serviceIntent.putExtra("carId", 0);
+                    serviceIntent.putExtra("JSONObject", generateCommitJsonObject().toString());
+                    startService(serviceIntent);
+                } else {
+                    carCheckFrameFragment.addPhotosToQueue();
+                    canCommit = true;
+
+                    serviceIntent.putExtra("committed", canCommit);
+                    serviceIntent.putExtra("action", "commit");
+                    serviceIntent.putExtra("carId", carId);
+                    serviceIntent.putExtra("JSONObject", generateCommitJsonObject().toString());
+                    startService(serviceIntent);
+                }
+
+
             }
         });
 
@@ -348,6 +380,10 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         if(!checkThrough) {
             mViewPager.setCurrentItem(0);
             return checkThrough;
+        }
+
+        if(!jsonData.equals("")) {
+            return true;
         }
 
         checkThrough = carCheckFrameFragment.runOverAllCheck();
@@ -422,5 +458,10 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
             return null;
         }
+    }
+
+    public void onUpdateIntegratedUi() {
+        carCheckFrameFragment.letsEnterModifyMode();
+        carCheckIntegratedFragment.letsEnterModifyMode();
     }
 }

@@ -31,6 +31,9 @@ import java.util.List;
 
 import static com.df.service.Helper.getEditText;
 import static com.df.service.Helper.getSpinnerSelectedText;
+import static com.df.service.Helper.setEditText;
+import static com.df.service.Helper.setSpinnerSelectionWithString;
+import static com.df.service.Helper.setTextView;
 
 public class CarCheckIntegratedFragment extends Fragment implements View.OnClickListener {
     private static View rootView;
@@ -46,6 +49,19 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     private String exteriorComment;
     private String sealIndex;
     private String interiorComment;
+
+    // 用于编辑车辆
+    private JSONObject options;
+    private JSONObject features;
+    private JSONObject conditions;
+    private JSONObject exterior;
+    private JSONObject interior;
+    private JSONObject engine;
+    private JSONObject gearbox;
+    private JSONObject function;
+    private JSONObject chassis;
+    private JSONObject flooded;
+    private String comment;
 
     // 记录外观与内饰的拍摄照片数
     private int[] exteriorPhotoCount = {0,0,0,0,0,0,0};
@@ -126,8 +142,13 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         paintIndex = sealIndex = "0";
         exteriorComment = interiorComment = "";
 
+//        if(!jsonData.equals("")) {
+//            letsEnterModifyMode();
+//        }
+
         return rootView;
     }
+
 
     @Override
     public void onClick(View v) {
@@ -192,35 +213,12 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
 
                 // 如果基本信息里的spinner选择的是“无”，则综合检查里的也应为“无”
                 if(selectedItemText.equals("无")) {
-                    Spinner interSpinner = (Spinner) rootView.findViewById(interSpinnerId);
-
-                    interSpinner.setSelection(2);
-                    interSpinner.setClickable(false);
-                    interSpinner.setAlpha(0.3f);
+                    enableSpinner(interSpinnerId, false);
                 } else {
-                    Spinner interSpinner = (Spinner) rootView.findViewById(interSpinnerId);
-
-                    interSpinner.setSelection(0);
-                    interSpinner.setClickable(true);
-                    interSpinner.setAlpha(1.0f);
+                    enableSpinner(interSpinnerId, true);
                 }
             }
         }
-
-
-//        setSpinnerSelection(R.id.it_airBag_spinner, Integer.parseInt(carSettings.getAirbag()));
-//        setSpinnerSelection(R.id.it_abs_spinner, Integer.parseInt(carSettings.getAbs()));
-//        setSpinnerSelection(R.id.it_powerWindows_spinner, Integer.parseInt(carSettings.getPowerWindows()));
-//        setSpinnerSelection(R.id.it_sunroof_spinner, Integer.parseInt(carSettings.getSunroof()));
-//        setSpinnerSelection(R.id.it_airConditioning_spinner, Integer.parseInt(carSettings.getAirConditioning()));
-//        setSpinnerSelection(R.id.it_powerSeats_spinner, Integer.parseInt(carSettings.getPowerSeats()));
-//        setSpinnerSelection(R.id.it_powerMirror_spinner, Integer.parseInt(carSettings.getPowerMirror()));
-//        setSpinnerSelection(R.id.it_reversingRadar_spinner, Integer.parseInt(carSettings.getReversingRadar()));
-//        setSpinnerSelection(R.id.it_reversingCamera_spinner, Integer.parseInt(carSettings.getReversingCamera()));
-//        setSpinnerSelection(R.id.it_softCloseDoors_spinner, Integer.parseInt(carSettings.getSoftCloseDoors()));
-//        setSpinnerSelection(R.id.it_rearPowerSeats_spinner, Integer.parseInt(carSettings.getRearPowerSeats()));
-//        setSpinnerSelection(R.id.it_ahc_spinner, Integer.parseInt(carSettings.getAhc()));
-//        setSpinnerSelection(R.id.it_parkAssist_spinner,  Integer.parseInt(carSettings.getParkAssist()));
 
         for(int i = 0; i < spinnerIds.length; i++) {
             setSpinnerColor(spinnerIds[i], Color.RED);
@@ -251,33 +249,12 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         });
     }
 
-    private static void setSpinnerSelection(int spinnerId, int selection) {
+    private static void enableSpinner(int spinnerId, boolean enable) {
         Spinner spinner = (Spinner) rootView.findViewById(spinnerId);
 
-        // 如果在配置信息处是“无”，则处此也应为“无”
-        if(selection == 1) {
-            spinner.setSelection(2);
-            spinner.setClickable(false);
-            spinner.setAlpha(0.3f);
-        } else {
-            spinner.setSelection(0);
-            spinner.setClickable(true);
-            spinner.setAlpha(1.0f);
-        }
-
-        // 气囊部件特殊处理
-        if(spinnerId == R.id.it_airBag_spinner) {
-            if(selection == 5) {
-                spinner.setSelection(2);
-                spinner.setClickable(false);
-                spinner.setAlpha(0.3f);
-            } else {
-                spinner.setSelection(0);
-                spinner.setClickable(true);
-                spinner.setAlpha(1.0f);
-            }
-        }
-
+        spinner.setSelection(enable ? 0 : 2);
+        spinner.setClickable(enable);
+        spinner.setAlpha(enable ? 1.0f : 0.3f);
     }
 
     // 进入“外观”
@@ -286,6 +263,11 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         intent.putExtra("INDEX", paintIndex);
         intent.putExtra("COMMENT", exteriorComment);
         intent.putExtra("PHOTO_COUNT", exteriorPhotoCount);
+
+        if(!jsonData.equals("")) {
+            intent.putExtra("JSONDATA", jsonData);
+        }
+
         startActivityForResult(intent, Common.IT_OUT);
     }
 
@@ -295,6 +277,11 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         intent.putExtra("INDEX", sealIndex);
         intent.putExtra("COMMENT", interiorComment);
         intent.putExtra("PHOTO_COUNT", interiorPhotoCount);
+
+        if(!jsonData.equals("")) {
+            intent.putExtra("JSONDATA", jsonData);
+        }
+
         startActivityForResult(intent, Common.IT_IN);
     }
 
@@ -376,6 +363,18 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         return engine;
     }
 
+    public void fillEngineWithJsonObject() {
+        try {
+            setSpinnerSelectionWithString(rootView, R.id.it_engineStarted_spinner, engine.getString("started"));
+            setSpinnerSelectionWithString(rootView, R.id.it_engineSteady_spinner, engine.getString("steady"));
+            setSpinnerSelectionWithString(rootView,R.id.it_engineStrangeNoices_spinner, engine.getString("strangeNoices"));
+            setSpinnerSelectionWithString(rootView,R.id.it_engineExhaustColor_spinner, engine.getString("exhaustColor"));
+            setSpinnerSelectionWithString(rootView, R.id.it_engineFluid_spinner, engine.getString("fluid"));
+        } catch(JSONException e) {
+
+        }
+    }
+
     public static JSONObject generateGearboxJsonObject() {
         JSONObject gearbox = new JSONObject();
 
@@ -397,6 +396,19 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         }
 
         return gearbox;
+    }
+
+    private void fillGearboxWithJsonObject() {
+        try {
+            setSpinnerSelectionWithString(rootView,R.id.it_gearMtClutch_spinner, gearbox.getString("mtClutch"));
+            setSpinnerSelectionWithString(rootView,R.id.it_gearMtShiftEasy_spinner, gearbox.getString("mtShiftEasy"));
+            setSpinnerSelectionWithString(rootView,R.id.it_gearMtShiftSpace_spinner, gearbox.getString("mtShiftSpace"));
+            setSpinnerSelectionWithString(rootView,R.id.it_gearAtShiftShock_spinner, gearbox.getString("atShiftShock"));
+            setSpinnerSelectionWithString(rootView,R.id.it_gearAtShiftNoise_spinner, gearbox.getString("atShiftNoise"));
+            setSpinnerSelectionWithString(rootView,R.id.it_gearAtShiftEasy_spinner, gearbox.getString("atShiftEasy"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public static JSONObject generateFunctionJsonObject() {
@@ -444,6 +456,74 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         return function;
     }
 
+    private void fillFunctionWithJsonObject() {
+        try {
+            setSpinnerSelectionWithString(rootView, R.id.it_engineFault_spinner, function.getString("engineFault"));
+            setSpinnerSelectionWithString(rootView, R.id.it_oilPressure_spinner, function.getString("oilPressure"));
+            setSpinnerSelectionWithString(rootView, R.id.it_parkingBrake_spinner, function.getString("parkingBrake"));
+            setSpinnerSelectionWithString(rootView, R.id.it_waterTemp_spinner, function.getString("waterTemp"));
+            setSpinnerSelectionWithString(rootView, R.id.it_tachometer_spinner, function.getString("tachometer"));
+            setSpinnerSelectionWithString(rootView, R.id.it_milometer_spinner, function.getString("milometer"));
+            setSpinnerSelectionWithString(rootView, R.id.it_audio_spinner, function.getString("audio"));
+
+            if(function.has("abs"))
+                setSpinnerSelectionWithString(rootView, R.id.it_abs_spinner, function.getString("abs"));
+            else
+                enableSpinner(R.id.it_abs_spinner, false);
+            if(function.has("airBag"))
+                setSpinnerSelectionWithString(rootView, R.id.it_airBag_spinner, function.getString("airBag"));
+            else
+                enableSpinner(R.id.it_airBag_spinner, false);
+            if(function.has("powerWindows"))
+                setSpinnerSelectionWithString(rootView, R.id.it_powerWindows_spinner, function.getString("powerWindows"));
+            else
+                enableSpinner(R.id.it_powerWindows_spinner, false);
+            if(function.has("sunroof"))
+                setSpinnerSelectionWithString(rootView, R.id.it_sunroof_spinner, function.getString("sunroof"));
+            else
+                enableSpinner(R.id.it_sunroof_spinner, false);
+            if(function.has("airConditioning"))
+                setSpinnerSelectionWithString(rootView, R.id.it_airConditioning_spinner, function.getString("airConditioning"));
+            else
+                enableSpinner(R.id.it_airConditioning_spinner, false);
+            if(function.has("powerSeats"))
+                setSpinnerSelectionWithString(rootView, R.id.it_powerSeats_spinner, function.getString("powerSeats"));
+            else
+                enableSpinner(R.id.it_powerSeats_spinner, false);
+            if(function.has("powerMirror"))
+                setSpinnerSelectionWithString(rootView, R.id.it_powerMirror_spinner, function.getString("powerMirror"));
+            else
+                enableSpinner(R.id.it_powerMirror_spinner, false);
+            if(function.has("reversingRadar"))
+                setSpinnerSelectionWithString(rootView, R.id.it_reversingRadar_spinner, function.getString("reversingRadar"));
+            else
+                enableSpinner(R.id.it_reversingRadar_spinner, false);
+            if(function.has("reversingCamera"))
+                setSpinnerSelectionWithString(rootView, R.id.it_reversingCamera_spinner, function.getString("reversingCamera"));
+            else
+                enableSpinner(R.id.it_reversingCamera_spinner, false);
+            if(function.has("softCloseDoors"))
+                setSpinnerSelectionWithString(rootView, R.id.it_softCloseDoors_spinner, function.getString("softCloseDoors"));
+            else
+                enableSpinner(R.id.it_softCloseDoors_spinner, false);
+            if(function.has("rearPowerSeats"))
+                setSpinnerSelectionWithString(rootView, R.id.it_rearPowerSeats_spinner, function.getString("rearPowerSeats"));
+            else
+                enableSpinner(R.id.it_rearPowerSeats_spinner, false);
+            if(function.has("ahc"))
+                setSpinnerSelectionWithString(rootView, R.id.it_ahc_spinner, function.getString("ahc"));
+            else
+                enableSpinner(R.id.it_ahc_spinner, false);
+            if(function.has("parkAssist"))
+                setSpinnerSelectionWithString(rootView, R.id.it_parkAssist_spinner, function.getString("parkAssist"));
+            else
+                enableSpinner(R.id.it_parkAssist_spinner, false);
+
+        } catch(JSONException e) {
+
+        }
+    }
+
     public static JSONObject generateChassisJsonObject() {
         JSONObject chassis = new JSONObject();
 
@@ -468,6 +548,20 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         return chassis;
     }
 
+    private void fillChassisWithJsonObject() {
+        try {
+            setSpinnerSelectionWithString(rootView, R.id.it_chassisLeftFront_spinner, chassis.getString("leftFront"));
+            setSpinnerSelectionWithString(rootView, R.id.it_chassisRightFront_spinner, chassis.getString("rightFront"));
+            setSpinnerSelectionWithString(rootView, R.id.it_chassisLeftRear_spinner, chassis.getString("leftRear"));
+            setSpinnerSelectionWithString(rootView, R.id.it_chassisRightRear_spinner, chassis.getString("rightRear"));
+            setSpinnerSelectionWithString(rootView, R.id.it_chassisPerfect_spinner, chassis.getString("perfect"));
+            setSpinnerSelectionWithString(rootView, R.id.it_chassisEngineBottom_spinner, chassis.getString("engineBottom"));
+            setSpinnerSelectionWithString(rootView, R.id.it_chassisGearboxBottom_spinner, chassis.getString("gearboxBottom"));
+        } catch( JSONException e) {
+
+        }
+    }
+
     public static JSONObject generateFloodedJsonObject() {
         JSONObject flooded = new JSONObject();
 
@@ -490,8 +584,26 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         return flooded;
     }
 
+    private void fillFloodedWithJsonObject() {
+        try {
+            setSpinnerSelectionWithString(rootView, R.id.it_waterCigarLighter_spinner, flooded.getString("cigarLighter"));
+            setSpinnerSelectionWithString(rootView, R.id.it_waterAshtray_spinner, flooded.getString("ashtray"));
+            setSpinnerSelectionWithString(rootView, R.id.it_waterSeatBelts_spinner, flooded.getString("seatBelts"));
+            setSpinnerSelectionWithString(rootView, R.id.it_waterReatSeats_spinner, flooded.getString("rearSeats"));
+            setSpinnerSelectionWithString(rootView, R.id.it_waterTrunkCorner_spinner, flooded.getString("trunkCorner"));
+            setSpinnerSelectionWithString(rootView, R.id.it_waterSpareTireGroove_spinner, flooded.getString("spareTireGroove"));
+        } catch (JSONException e) {
+
+        }
+
+    }
+
     public static String generateCommentString() {
         return getEditText(rootView, R.id.it_comment_edit);
+    }
+
+    private void fillCommentWithString() {
+        setEditText(rootView, R.id.it_comment_edit, comment);
     }
 
     public boolean runOverAllCheck() {
@@ -529,4 +641,44 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
 
         return true;
     }
+
+    public void letsEnterModifyMode() {
+        parsJsonData();
+        updateUi();
+    }
+
+
+    private void parsJsonData() {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+            conditions = jsonObject.getJSONObject("conditions");
+            exterior = conditions.getJSONObject("exterior");
+            interior = conditions.getJSONObject("interior");
+            engine = conditions.getJSONObject("engine");
+            gearbox = conditions.getJSONObject("gearbox");
+            function = conditions.getJSONObject("function");
+            chassis = conditions.getJSONObject("chassis");
+            flooded = conditions.getJSONObject("flooded");
+            comment = conditions.getString("comment");
+
+            features = jsonObject.getJSONObject("features");
+            options = features.getJSONObject("options");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateUi() {
+        fillEngineWithJsonObject();
+        fillGearboxWithJsonObject();
+        fillFunctionWithJsonObject();
+        fillChassisWithJsonObject();
+        fillFloodedWithJsonObject();
+        fillCommentWithString();
+
+        for(int i = 0; i < spinnerIds.length; i++) {
+            setSpinnerColor(spinnerIds[i], Color.RED);
+        }
+    }
+
 }

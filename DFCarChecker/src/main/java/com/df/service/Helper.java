@@ -225,7 +225,7 @@ public class Helper {
 
         int count = spinner.getCount();
         for(int i = 0; i < count; i++) {
-            if(spinner.getSelectedItem().toString().equals("text"))
+            if(spinner.getItemAtPosition(i).toString().equals(text))
                 spinner.setSelection(i);
         }
     }

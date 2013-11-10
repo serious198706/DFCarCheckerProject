@@ -1,5 +1,6 @@
 package com.df.dfcarchecker.CarCheck;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,6 +14,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,6 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -127,8 +130,29 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     // 用于修改
     private String jsonData;
 
+    OnHeadlineSelectedListener mCallback;
+
     public CarCheckBasicInfoFragment(String jsonData) {
         this.jsonData = jsonData;
+    }
+
+    // Container Activity must implement this interface
+    public interface OnHeadlineSelectedListener {
+        public void onUpdateIntegratedUi();
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception
+        try {
+            mCallback = (OnHeadlineSelectedListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString()
+                    + " must implement OnHeadlineSelectedListener");
+        }
     }
 
     @Override
@@ -164,7 +188,19 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         brandEdit = (EditText) rootView.findViewById(R.id.bi_brand_edit);
         displacementEdit = (EditText) rootView.findViewById(R.id.csi_displacement_edit);
 
-        runEdit = (EditText) rootView.findViewById(R.id.bi_mileAge_edit);
+        runEdit = (EditText) rootView.findViewById(R.id.bi_mileage_edit);
+
+        ScrollView view = (ScrollView)rootView.findViewById(R.id.root);
+        view.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS);
+        view.setFocusable(true);
+        view.setFocusableInTouchMode(true);
+        view.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                v.requestFocusFromTouch();
+                return false;
+            }
+        });
 
         // 只允许小数点后两位
         runEdit.addTextChangedListener(new TextWatcher()
@@ -315,7 +351,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                         // 如果jsonData不为空，表示为修改模式
                         if(!jsonData.equals("")) {
-                            letsEnterEditMode();
+                            letsEnterModifyMode();
                         }
 
                     } catch (Exception e) {
@@ -458,6 +494,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
             }
         });
+
     }
 
     // 显示车辆的配置信息
@@ -639,15 +676,15 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         try {
             procedures.put("regArea", getSpinnerSelectedText(rootView, R.id.ci_regArea_spinner));
             procedures.put("plateNumber", getEditText(rootView, R.id.ci_plateNumber_edit));
-            procedures.put("licenseModel", getEditText(rootView, R.id.ci_licenceModel_edit));
+            procedures.put("licenseModel", getEditText(rootView, R.id.ci_licenseModel_edit));
             procedures.put("vehicleType", getSpinnerSelectedText(rootView, R.id.ci_vehicleType_spinner));
             procedures.put("useCharacter", getSpinnerSelectedText(rootView, R.id.ci_useCharacter_spinner));
 
             // 数字，单独判断
-            if(getEditText(rootView, R.id.bi_mileAge_edit).equals(""))
+            if(getEditText(rootView, R.id.bi_mileage_edit).equals(""))
                 procedures.put("mileage", 0);
             else
-                procedures.put("mileage", getEditText(rootView, R.id.bi_mileAge_edit));
+                procedures.put("mileage", getEditText(rootView, R.id.bi_mileage_edit));
 
             procedures.put("exteriorColor", getSpinnerSelectedText(rootView, R.id.ci_exteriorColor_spinner));
             procedures.put("regDate", getDateString(getSpinnerSelectedText(rootView,
@@ -1008,8 +1045,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     // 提交前的检查
     public boolean runOverAllCheck() {
-        int id2Check[] = {R.id.ci_licenceModel_edit,
-        R.id.bi_mileAge_edit,
+        int id2Check[] = {R.id.ci_licenseModel_edit,
+        R.id.bi_mileage_edit,
         R.id.ct_invoice_edit,
         R.id.ct_licencePhotoMatch_edit,
         R.id.ct_insuranceAmount_edit,
@@ -1314,20 +1351,20 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
             }
         });
-
-        firstLogMonthSpinner = (Spinner) rootView.findViewById(R.id.ci_regMonth_spinner);
-        firstLogMonthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                List<String> temp = Helper.GetMonthList();
-                SetSpinnerData(R.id.ci_builtMonth_spinner, temp.subList(0, i + 1), rootView);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+//
+//        firstLogMonthSpinner = (Spinner) rootView.findViewById(R.id.ci_regMonth_spinner);
+//        firstLogMonthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                List<String> temp = Helper.GetMonthList();
+//                SetSpinnerData(R.id.ci_builtMonth_spinner, temp.subList(0, i + 1), rootView);
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
     }
 
     // 出厂日期
@@ -1407,7 +1444,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     }
     // </editor-fold>
 
-    private void letsEnterEditMode() {
+    private void letsEnterModifyMode() {
         try {
             JSONObject features = new JSONObject(jsonData).getJSONObject("features");
 
@@ -1466,28 +1503,33 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     CarCheckIntegratedFragment.showContent();
                     // 更新UI
                     updateUi();
+                }
+            });
 
+
+            this.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
                     try {
                         setSpinnerSelectionWithString(rootView, R.id.ci_regArea_spinner,
                                 procedures.getString("regArea"));
                         setEditText(rootView, R.id.ci_plateNumber_edit, procedures.getString("plateNumber"));
-                        setEditText(rootView, R.id.ci_licenceModel_edit, procedures.getString("licenceModel"));
+                        setEditText(rootView, R.id.ci_licenseModel_edit, procedures.getString("licenseModel"));
                         setSpinnerSelectionWithString(rootView, R.id.ci_vehicleType_spinner,
                                 procedures.getString("vehicleType"));
                         setSpinnerSelectionWithString(rootView, R.id.ci_useCharacter_spinner,
                                 procedures.getString("useCharacter"));
-                        setSpinnerSelectionWithString(rootView, R.id.bi_mileAge_edit,
-                                procedures.getString("mileAge"));
+                        setEditText(rootView, R.id.bi_mileage_edit, procedures.getString("mileage"));
                         setSpinnerSelectionWithString(rootView, R.id.ci_exteriorColor_spinner,
                                 procedures.getString("exteriorColor"));
                         setSpinnerSelectionWithString(rootView, R.id.ci_regYear_spinner,
                                 procedures.getString("regDate").substring(0, 4));
                         setSpinnerSelectionWithString(rootView, R.id.ci_regMonth_spinner,
-                                procedures.getString("regDate".substring(6, 7)));
+                                procedures.getString("regDate").substring(6, 7));
                         setSpinnerSelectionWithString(rootView, R.id.ci_builtYear_spinner,
-                                procedures.getString("builtDate".substring(0, 4)));
+                                procedures.getString("builtDate").substring(0, 4));
                         setSpinnerSelectionWithString(rootView, R.id.ci_builtMonth_spinner,
-                                procedures.getString("builtDate".substring(6, 7)));
+                                procedures.getString("builtDate").substring(6, 7));
                         setSpinnerSelectionWithString(rootView, R.id.ct_invoice_spinner,
                                 procedures.getString("invoice"));
                         setEditText(rootView, R.id.ct_invoice_edit, procedures.getString("invoicePrice"));
@@ -1520,15 +1562,18 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                         setSpinnerSelectionWithString(rootView, R.id.ct_annualInspectionMonth_spinner, procedures.getString("annualInspection").substring(6, 7));
                         setSpinnerSelectionWithString(rootView, R.id.ct_compulsoryInsuranceYear_spinner, procedures.getString("compulsoryInsurance").substring(0, 4));
                         setSpinnerSelectionWithString(rootView, R.id.ct_compulsoryInsuranceMonth_spinner, procedures.getString("compulsoryInsurance").substring(6, 7));
+
+                        mCallback.onUpdateIntegratedUi();
+
+                        mProgressDialog.dismiss();
                     } catch (JSONException e) {
 
                     }
                 }
             });
+
         } catch (Exception e) {
             Log.d(Common.TAG, e.getMessage());
         }
-
-        mProgressDialog.dismiss();
     }
 }

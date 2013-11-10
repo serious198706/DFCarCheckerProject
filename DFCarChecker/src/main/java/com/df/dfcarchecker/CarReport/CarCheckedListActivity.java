@@ -656,7 +656,8 @@ public class CarCheckedListActivity extends Activity {
 
         @Override
         protected void onPreExecute() {
-
+            progressDialog = ProgressDialog.show(context, null,
+                    "请稍候...", false, false);
         }
 
         @Override
@@ -698,6 +699,7 @@ public class CarCheckedListActivity extends Activity {
 
                 intent.putExtra("edit", true);
                 intent.putExtra("JSONData", result);
+                intent.putExtra("carId", Integer.parseInt(mylist.get(lastPos).get("id")));
 
                 progressDialog.dismiss();
 

@@ -7,10 +7,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,10 +33,12 @@ import com.df.service.ImageUploadQueue;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.df.service.Helper.getEditText;
+import static com.df.service.Helper.setEditText;
 
 /**
  * Created by 岩 on 13-10-8.
@@ -67,6 +71,7 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
     private ImageUploadQueue imageUploadQueue;
 
     private int photoShotCount[] = {0, 0, 0, 0};
+    private JSONObject frames;
 
     public CarCheckFrameFragment(String jsonData) {
         this.jsonData = jsonData;
@@ -113,6 +118,10 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         root.setVisibility(View.GONE);
 
         imageUploadQueue = ImageUploadQueue.getInstance();
+
+//        if(!jsonData.equals("")) {
+//            letsEnterModifyMode();
+//        }
 
         return rootView;
     }
@@ -366,5 +375,98 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         }
 
         return true;
+    }
+
+    public void letsEnterModifyMode() {
+        JSONObject jsonObject = null;
+
+        try {
+            jsonObject = new JSONObject(jsonData);
+
+            // 结构检查结果
+            frames = jsonObject.getJSONObject("frames");
+
+            // 结构检查照片与缺陷
+            JSONObject photos = jsonObject.getJSONObject("photos");
+            JSONObject frame = photos.getJSONObject("frame");
+
+//            // 结构缺陷位置 - 前视角
+//            JSONArray frontPosArray = frame.getJSONArray("front");
+//
+//            for(int i = 0; i < frontPosArray.length(); i++) {
+//                JSONObject temp = frontPosArray.getJSONObject(i);
+//
+//                PosEntity posEntity = new PosEntity(Common.COLOR_DIFF);
+//                posEntity.setStart(temp.getInt("x"), temp.getInt("y"));
+//                posEntity.setEnd(0, 0);
+//                // TODO: 处理一下没有图片的情况
+//                posEntity.setImageFileName(temp.getString("photo"));
+//                posEntitiesFront.add(posEntity);
+//            }
+//
+//            // 结构缺陷位置 - 后视角
+//            JSONArray rearPosArray = frame.getJSONArray("rear");
+//
+//            for(int i = 0; i < rearPosArray.length(); i++) {
+//                JSONObject temp = rearPosArray.getJSONObject(i);
+//
+//                PosEntity posEntity = new PosEntity(Common.COLOR_DIFF);
+//                posEntity.setStart(temp.getInt("x"), temp.getInt("y"));
+//                posEntity.setEnd(0, 0);
+//                posEntity.setImageFileName(temp.getString("photo"));
+//                posEntitiesRear.add(posEntity);
+//            }
+
+            setEditText(rootView, R.id.comment_edit, frames.getString("comment"));
+
+            // 结构草图 - 前视角
+            JSONObject fSketch = frame.getJSONObject("fSketch");
+            String fSketchUrl = fSketch.getString("photo");
+
+            new DownloadImageTask("front").execute(Common.PICUTRE_ADDRESS + fSketchUrl);
+
+            // 结构草图 - 后视角
+            JSONObject rSketch = frame.getJSONObject("rSketch");
+            String rSketchUrl = rSketch.getString("photo");
+
+            new DownloadImageTask("rear").execute(Common.PICUTRE_ADDRESS + rSketchUrl);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 下载图片
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        private String sight;
+
+        public DownloadImageTask(String sight) {
+            this.sight = sight;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            Bitmap tempBitmap = null;
+            try {
+                InputStream in = new java.net.URL(url).openStream();
+                tempBitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return tempBitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            if(sight.equals("front")) {
+                framePaintPreviewViewFront.init(result, posEntitiesFront);
+                framePaintPreviewViewFront.setAlpha(1f);
+                tipFront.setVisibility(View.GONE);
+
+            } else {
+                framePaintPreviewViewRear.init(result, posEntitiesRear);
+                framePaintPreviewViewRear.setAlpha(1f);
+                tipRear.setVisibility(View.GONE);
+            }
+        }
     }
 }

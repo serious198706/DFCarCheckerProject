@@ -41,7 +41,7 @@ public class QueueScanService extends Service {
 
     private Context context;
 
-    private int[] waitTime = {500, 1000, 2000, 5000, 10000, 300000};
+    private int[] waitTime = {500, 1000, 2000, 5000, 10000, 30000};
     private int index = 0;
 
     private boolean canStartUpload = true;
@@ -49,6 +49,10 @@ public class QueueScanService extends Service {
     private String jsonString;
 
     private CommitDataTask mCommitDataTask;
+
+    private String action;
+    private int carId;
+    private ModifyDataTask mModifyDataTask;
 
     @Override
     public void onCreate() {
@@ -73,6 +77,8 @@ public class QueueScanService extends Service {
 
         committed = intent.getExtras().getBoolean("committed");
         jsonString = intent.getExtras().getString("JSONObject");
+        action = intent.getExtras().getString("action");
+        carId = intent.getExtras().getInt("carId");
 
         handler.removeCallbacks(sendUpdatesToUI);
 
@@ -159,10 +165,18 @@ public class QueueScanService extends Service {
                         }
 
                         // 已提交，并且照片池为空
-                        if(committed && (imageUploadQueue.getQueueSize() == 0) &&
-                                (mCommitDataTask == null)) {
-                            mCommitDataTask = new CommitDataTask(context);
-                            mCommitDataTask.execute(jsonString);
+                        if(committed) {
+                            if(action.equals("commit") && (imageUploadQueue.getQueueSize() == 0) &&
+                                    (mCommitDataTask == null)) {
+                                mCommitDataTask = new CommitDataTask(context);
+                                mCommitDataTask.execute(jsonString);
+                            }
+                            // 修改车辆
+                            else if(action.equals("modify") && (imageUploadQueue.getQueueSize() == 0) &&
+                                    (mModifyDataTask == null)) {
+                                mModifyDataTask = new ModifyDataTask(context);
+                                mModifyDataTask.execute(jsonString);
+                            }
                         }
 
                         wait(3000);
@@ -279,6 +293,71 @@ public class QueueScanService extends Service {
                 jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
                 jsonObject.put("UserId", LoginActivity.userInfo.getId());
                 jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                jsonObject.put("JsonString", new JSONObject(params[0]));
+            } catch (JSONException e) {
+
+            }
+
+            success = soapService.communicateWithServer(context, jsonObject.toString());
+
+            // 登录失败，获取错误信息并显示
+            if(!success) {
+                Log.d("DFCarChecker", "提交失败! " + soapService.getErrorMessage());
+            } else {
+                Log.d(Common.TAG, "提交成功！" + soapService.getErrorMessage());
+            }
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mCommitDataTask = null;
+            committed = false;
+
+            if(success) {
+                handler.post(sendUpdatesToUI); // 1 second
+            } else {
+                handler.post(sendUpdatesToUIFail);
+            }
+        }
+
+        @Override
+        protected void onCancelled() {
+            mCommitDataTask = null;
+            committed = false;
+        }
+    }
+
+    // 提交修改数据
+    public class ModifyDataTask extends AsyncTask<String, Void, Boolean> {
+        Context context;
+        SoapService soapService;
+        //private ProgressDialog progressDialog;
+
+        private ModifyDataTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected Boolean doInBackground(String... params) {
+            boolean success = false;
+
+            // 组织最终json
+            soapService = new SoapService();
+
+            // 设置soap的配置
+            soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
+                    "http://cheyipai/IReportService/UpdateCheckInfo",
+                    "UpdateCheckInfo");
+
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+                jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
+                jsonObject.put("UserId", LoginActivity.userInfo.getId());
+                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                jsonObject.put("CarId", carId);
                 jsonObject.put("JsonString", new JSONObject(params[0]));
             } catch (JSONException e) {
 

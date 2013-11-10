@@ -463,7 +463,7 @@
                     android:text="@string/ci_licence_type"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
-                <EditText android:id="@+id/ci_licenceModel_edit"
+                <EditText android:id="@+id/ci_licenseModel_edit"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="2"
@@ -504,7 +504,7 @@
                     android:layout_weight="1"
                     android:textSize="18sp"/>
                 <EditText
-                    android:id="@+id/bi_mileAge_edit"
+                    android:id="@+id/bi_mileage_edit"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
