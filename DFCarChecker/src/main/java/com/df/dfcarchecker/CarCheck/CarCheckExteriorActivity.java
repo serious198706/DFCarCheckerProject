@@ -22,7 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.df.dfcarchecker.LoginActivity;
+import com.df.dfcarchecker.MainActivity;
 import com.df.dfcarchecker.PopupActivity;
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
@@ -285,8 +285,8 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
                         jsonObject.put("Group", "exterior");
                         jsonObject.put("Part", "standard");
                         jsonObject.put("PhotoData", photoJsonObject);
-                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                        jsonObject.put("UserId", MainActivity.userInfo.getId());
+                        jsonObject.put("Key", MainActivity.userInfo.getKey());
                         jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
                     } catch (JSONException e) {
 
@@ -398,8 +398,8 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         try {
             exterior.put("smooth", smoothSpinner.getSelectedItem().toString());
             exterior.put("comment", commentEdit.getText().toString());
-        } catch (JSONException e) {
-
+        } catch (Exception e) {
+            return null;
         }
 
         return exterior;
@@ -407,6 +407,8 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
 
 
     private void letsEnterModifyMode() {
+        exteriorPaintPreviewView.setOnClickListener(null);
+        tip.setOnClickListener(null);
         parsJsonData();
         updateUi();
     }
@@ -472,6 +474,12 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         }
 
         protected void onPostExecute(Bitmap result) {
+            if(result == null) {
+                Toast.makeText(CarCheckExteriorActivity.this, "下载图片失败",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             exteriorPaintPreviewView.init(result, posEntities);
             exteriorPaintPreviewView.invalidate();
             exteriorPaintPreviewView.setAlpha(1.0f);

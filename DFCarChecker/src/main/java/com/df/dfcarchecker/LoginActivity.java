@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -19,13 +20,27 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.df.entry.VehicleModel;
 import com.df.service.Common;
+import com.df.service.Compress;
+import com.df.service.Decompress;
+import com.df.service.EncryptDecryptFile;
 import com.df.service.SoapService;
 import com.df.entry.UserInfo;
+import com.df.service.VehicleModelParser;
+
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -100,6 +115,69 @@ public class LoginActivity extends Activity {
      * 如果有错误（用户名、密码未填写）则不进行登陆
      */
     public void attemptLogin() {
+        FileInputStream fis = null;
+
+        try {
+//            String path = Environment.getExternalStorageDirectory().getPath() + "/.cheyipai/";
+//            String file = path + "vm";
+//            String enFile = path + "df001";
+//            String zippedFile = path + "zip";
+//
+//            Compress.zip(file, zippedFile, "");
+//
+//            EncryptDecryptFile encryptDecryptFile = new EncryptDecryptFile();
+//
+//            try {
+//                encryptDecryptFile.encrypt(new FileInputStream(zippedFile),
+//                        new FileOutputStream(enFile));
+//
+//                encryptDecryptFile.decrypt(new FileInputStream(enFile),
+//                        new FileOutputStream(zippedFile));
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//
+//            try {
+//                Compress.unzip(zippedFile, path, "");
+//            } catch (ZipException e) {
+//                e.printStackTrace();
+//            }
+
+            String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "" +
+                    ".cheyipai"+
+                    File.separator;
+            String file = path + "vm";
+            String temp = path + "temp";
+            String tempEn = path + "tempEn";
+
+            Compress.zip(file, temp, "111");
+
+            EncryptDecryptFile encryptDecryptFile = new EncryptDecryptFile();
+
+            encryptDecryptFile.encrypt(new FileInputStream(temp), new FileOutputStream(tempEn));
+            encryptDecryptFile.decrypt(new FileInputStream(tempEn), new FileOutputStream(temp));
+
+            try {
+                Compress.unzip(temp, path, "111");
+            } catch (ZipException e) {
+                e.printStackTrace();
+            }
+
+            File f = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
+                    ".cheyipai/vm");
+            fis = new FileInputStream(f);
+
+            if(fis == null) {
+                Toast.makeText(this, "SD卡挂载有问题", Toast.LENGTH_LONG).show();
+            }
+        } catch (FileNotFoundException e) {
+            Toast.makeText(this, "文件不存在", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+        VehicleModelParser parser = new VehicleModelParser();
+        VehicleModel vehicleModel = parser.parseVehicleModelXml(fis);
+
         if (mAuthTask != null) {
             return;
         }
@@ -263,6 +341,8 @@ public class LoginActivity extends Activity {
 
             if (success) {
                 Intent intent = new Intent(context, MainActivity.class);
+                intent.putExtra("UserId", userInfo.getId());
+                intent.putExtra("Key", userInfo.getKey());
                 startActivity(intent);
                 finish();
             } else {

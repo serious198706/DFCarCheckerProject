@@ -28,6 +28,7 @@ import com.df.dfcarchecker.CarCheck.CarCheckFrameFragment;
 import com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity;
 import com.df.dfcarchecker.LoginActivity;
 import com.df.dfcarchecker.MainActivity;
+import com.df.dfcarchecker.MainActivity;
 import com.df.dfcarchecker.R;
 import com.df.service.Common;
 import com.df.service.SoapService;
@@ -146,23 +147,7 @@ public class CarCheckedListActivity extends Activity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                // This is called when the Home (Up) button is pressed in the action bar.
-                // Create a simple intent that starts the hierarchical parent activity and
-                // use NavUtils in the Support Package to ensure proper handling of Up.
-                Intent upIntent = new Intent(this, MainActivity.class);
-                if (NavUtils.shouldUpRecreateTask(this, upIntent)) {
-                    // This activity is not part of the application's task, so create a new task
-                    // with a synthesized back stack.
-                    TaskStackBuilder.from(this)
-                            // If there are ancestor activities, they should be added here.
-                            .addNextIntent(upIntent)
-                            .startActivities();
-                    finish();
-                } else {
-                    // This activity is part of the application's task, so simply
-                    // navigate up to the hierarchical parent activity.
-                    NavUtils.navigateUpTo(this, upIntent);
-                }
+                finish();
                 return true;
             case R.id.action_refresh:
                 // 刷新车辆
@@ -195,13 +180,21 @@ public class CarCheckedListActivity extends Activity {
                     map.put("exteriorColor", "颜色：" + jsonObject.getString("exteriorColor"));
                     map.put("score", "分数：" + jsonObject.getString("score"));
 
-                    String status = jsonObject.getString("status");
-                    if(status.equals("1")) {
-                        status = "已上传";
-                    } else if(status.equals("2")) {
-                        status = "已参拍";
-                    } else {
-                        status = "打回";
+                    String status = "";
+
+                    switch (Integer.parseInt(jsonObject.getString("status"))) {
+                        case 1:
+                            status = "已退回";
+                            break;
+                        case 2:
+                            status = "待提交";
+                            break;
+                        case 3:
+                            status = "已参拍";
+                            break;
+                        case 0:
+                            status = "未完成";
+                            break;
                     }
 
                     map.put("status", "状态：" + status);
@@ -321,8 +314,8 @@ public class CarCheckedListActivity extends Activity {
 
                 // SeriesId + userID + key
                 jsonObject.put("StartNumber", startNumber);
-                jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                jsonObject.put("UserId", MainActivity.userInfo.getId());
+                jsonObject.put("Key", MainActivity.userInfo.getKey());
 
                 soapService = new SoapService();
 
@@ -401,8 +394,10 @@ public class CarCheckedListActivity extends Activity {
 
             try {
                 jsonObject.put("Id", params[0]);
-                jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                if(MainActivity.userInfo != null) {
+                    jsonObject.put("UserId", MainActivity.userInfo.getId());
+                    jsonObject.put("Key", MainActivity.userInfo.getKey());
+                }
             } catch (JSONException e) {
 
             }
@@ -464,8 +459,8 @@ public class CarCheckedListActivity extends Activity {
 
                 // SeriesId + userID + key
                 jsonObject.put("CarId", this.carId);
-                jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                jsonObject.put("UserId", MainActivity.userInfo.getId());
+                jsonObject.put("Key", MainActivity.userInfo.getKey());
                 jsonObject.put("SellerName", this.sellerNameValue);
 
                 soapService = new SoapService();
@@ -592,8 +587,8 @@ public class CarCheckedListActivity extends Activity {
 
                 // SeriesId + userID + key
                 jsonObject.put("CarId", this.carId);
-                jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                jsonObject.put("UserId", MainActivity.userInfo.getId());
+                jsonObject.put("Key", MainActivity.userInfo.getKey());
                 jsonObject.put("SellerId", this.sellerId);
 
                 soapService = new SoapService();
@@ -632,7 +627,7 @@ public class CarCheckedListActivity extends Activity {
 
                 if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
                     Toast.makeText(CarCheckedListActivity.this, "连接错误，请重新登陆！", Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(CarCheckedListActivity.this, LoginActivity.class);
+                    Intent intent = new Intent(CarCheckedListActivity.this, MainActivity.class);
                     startActivity(intent);
                 }
             }
@@ -674,8 +669,8 @@ public class CarCheckedListActivity extends Activity {
 
             try {
                 jsonObject.put("Id", params[0]);
-                jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                jsonObject.put("UserId", MainActivity.userInfo.getId());
+                jsonObject.put("Key", MainActivity.userInfo.getKey());
             } catch (JSONException e) {
 
             }

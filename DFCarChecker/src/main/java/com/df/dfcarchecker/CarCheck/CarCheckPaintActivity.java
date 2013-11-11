@@ -19,7 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RadioGroup;
 
-import com.df.dfcarchecker.LoginActivity;
+import com.df.dfcarchecker.MainActivity;
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
@@ -378,8 +378,8 @@ public class CarCheckPaintActivity extends Activity {
 
             jsonObject.put("PhotoData", photoJsonObject);
             jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
-            jsonObject.put("UserId", LoginActivity.userInfo.getId());
-            jsonObject.put("Key", LoginActivity.userInfo.getKey());
+            jsonObject.put("UserId", MainActivity.userInfo.getId());
+            jsonObject.put("Key", MainActivity.userInfo.getKey());
         } catch (Exception e) {
             Log.d("DFCarChecker", "Json组织错误：" + e.getMessage());
         }
@@ -480,8 +480,8 @@ public class CarCheckPaintActivity extends Activity {
 
                 jsonObject.put("PhotoData", photoData);
                 jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
-                jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                jsonObject.put("UserId", MainActivity.userInfo.getId());
+                jsonObject.put("Key", MainActivity.userInfo.getKey());
             } catch (JSONException e) {
 
             }

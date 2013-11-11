@@ -608,13 +608,13 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
 
     public boolean runOverAllCheck() {
         int sum = 0;
-
         for(int i = 0; i < exteriorPhotoCount.length; i++) {
             sum += exteriorPhotoCount[i];
         }
 
-        if(sum < 2) {
-            Toast.makeText(rootView.getContext(), "外观组照片拍摄数量不足！还需要再拍摄" + Integer.toString(2 -
+        int leastCount = Common.photoLeastCount[1];
+        if(sum < leastCount) {
+            Toast.makeText(rootView.getContext(), "外观组照片拍摄数量不足！还需要再拍摄" + Integer.toString(leastCount -
                     sum) + "张",
                     Toast.LENGTH_LONG).show();
 
@@ -624,13 +624,13 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         }
 
         sum = 0;
-
         for(int i = 0; i < interiorPhotoCount.length; i++) {
             sum += interiorPhotoCount[i];
         }
 
-        if(sum < 2) {
-            Toast.makeText(rootView.getContext(), "内饰组照片拍摄数量不足！还需要再拍摄" + Integer.toString(2 -
+        leastCount = Common.photoLeastCount[2];
+        if(sum < leastCount) {
+            Toast.makeText(rootView.getContext(), "内饰组照片拍摄数量不足！还需要再拍摄" + Integer.toString(leastCount -
                     sum) + "张",
                     Toast.LENGTH_LONG).show();
 

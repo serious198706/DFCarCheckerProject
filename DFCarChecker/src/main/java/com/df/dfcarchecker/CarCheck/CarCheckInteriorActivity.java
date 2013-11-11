@@ -22,7 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.df.dfcarchecker.LoginActivity;
+import com.df.dfcarchecker.MainActivity;
 import com.df.dfcarchecker.PopupActivity;
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
@@ -64,7 +64,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     private JSONObject photos;
     private JSONObject conditions;
 
-    private String jsonData;
+    private String jsonData = "";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -326,8 +326,8 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
                         jsonObject.put("Group", "interior");
                         jsonObject.put("Part", "standard");
                         jsonObject.put("PhotoData", photoJsonObject);
-                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                        jsonObject.put("UserId", MainActivity.userInfo.getId());
+                        jsonObject.put("Key", MainActivity.userInfo.getKey());
                         jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
                     } catch (JSONException e) {
 
@@ -439,14 +439,16 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         try {
             interior.put("sealingStrip", sealSpinner.getSelectedItem().toString());
             interior.put("comment", commentEdit.getText().toString());
-        } catch (JSONException e) {
-
+        } catch (Exception e) {
+            return null;
         }
 
         return interior;
     }
 
     private void letsEnterModifyMode() {
+        interiorPaintPreviewView.setOnClickListener(null);
+        tip.setOnClickListener(null);
         parsJsonData();
         updateUi();
     }
@@ -469,7 +471,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
             JSONObject interior = photos.getJSONObject("interior");
 
             String comment = conditions.getJSONObject("interior").getString("comment");
-            setEditText(getWindow().getDecorView(), R.id.it_comment_edit, comment);
+            setEditText(getWindow().getDecorView(), R.id.in_comment_edit, comment);
 
             String sealingStrip = conditions.getJSONObject("interior").getString("sealingStrip");
             setSpinnerSelectionWithString(getWindow().getDecorView(), R.id.in_sealingStrip_spinner, sealingStrip);
@@ -511,6 +513,12 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         }
 
         protected void onPostExecute(Bitmap result) {
+            if(result == null) {
+                Toast.makeText(CarCheckInteriorActivity.this, "下载图片失败",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             interiorPaintPreviewView.init(result, posEntities);
             interiorPaintPreviewView.invalidate();
             interiorPaintPreviewView.setAlpha(1.0f);

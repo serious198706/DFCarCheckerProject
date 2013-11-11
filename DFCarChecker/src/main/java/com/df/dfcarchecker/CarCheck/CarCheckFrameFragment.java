@@ -21,7 +21,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.df.dfcarchecker.LoginActivity;
+import com.df.dfcarchecker.MainActivity;
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
@@ -271,8 +271,8 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
 
                         jsonObject.put("Group", "engineRoom");
                         jsonObject.put("PhotoData", photoJsonObject);
-                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                        jsonObject.put("UserId", MainActivity.userInfo.getId());
+                        jsonObject.put("Key", MainActivity.userInfo.getKey());
                         jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
                     } catch (JSONException e) {
 
@@ -366,8 +366,9 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
             count += photoShotCount[i];
         }
 
-        if(count < 2) {
-            Toast.makeText(rootView.getContext(), "机舱组照片拍摄数量不足！还需要再拍摄" + Integer.toString(2 -
+        int leastCount = Common.photoLeastCount[0];
+        if(count < leastCount) {
+            Toast.makeText(rootView.getContext(), "机舱组照片拍摄数量不足！还需要再拍摄" + Integer.toString(leastCount -
                     count) + "张",
                     Toast.LENGTH_LONG).show();
 
@@ -378,6 +379,10 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
     }
 
     public void letsEnterModifyMode() {
+        framePaintPreviewViewFront.setOnClickListener(null);
+        tipFront.setOnClickListener(null);
+        framePaintPreviewViewRear.setOnClickListener(null);
+
         JSONObject jsonObject = null;
 
         try {
@@ -457,6 +462,12 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         }
 
         protected void onPostExecute(Bitmap result) {
+            if(result == null) {
+                Toast.makeText(rootView.getContext(), "下载图片失败",
+                        Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if(sight.equals("front")) {
                 framePaintPreviewViewFront.init(result, posEntitiesFront);
                 framePaintPreviewViewFront.setAlpha(1f);

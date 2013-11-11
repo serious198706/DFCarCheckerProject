@@ -163,6 +163,8 @@ public class CarReportFrameFragment extends Fragment {
         }
 
         protected void onPostExecute(Bitmap result) {
+            if(result == null)
+                return;
             if(sight.equals("front")) {
                 framePaintPreviewViewFront.init(result, posEntitiesFront);
                 framePaintPreviewViewFront.invalidate();

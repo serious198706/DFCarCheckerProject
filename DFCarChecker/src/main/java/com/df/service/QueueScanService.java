@@ -16,7 +16,7 @@ import android.util.Log;
 import android.os.Process;
 
 import com.df.dfcarchecker.CarCheck.CarCheckBasicInfoFragment;
-import com.df.dfcarchecker.LoginActivity;
+import com.df.dfcarchecker.MainActivity;
 import com.df.entry.PhotoEntity;
 
 import org.json.JSONException;
@@ -291,8 +291,8 @@ public class QueueScanService extends Service {
 
             try {
                 jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
-                jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                jsonObject.put("UserId", MainActivity.userInfo.getId());
+                jsonObject.put("Key", MainActivity.userInfo.getKey());
                 jsonObject.put("JsonString", new JSONObject(params[0]));
             } catch (JSONException e) {
 
@@ -348,15 +348,15 @@ public class QueueScanService extends Service {
 
             // 设置soap的配置
             soapService.setUtils(Common.SERVER_ADDRESS + Common.REPORT_SERVICE,
-                    "http://cheyipai/IReportService/UpdateCheckInfo",
-                    "UpdateCheckInfo");
+                    "http://cheyipai/IReportService/UpdateCarCheckInfo",
+                    "UpdateCarCheckInfo");
 
             JSONObject jsonObject = new JSONObject();
 
             try {
                 jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
-                jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                jsonObject.put("UserId", MainActivity.userInfo.getId());
+                jsonObject.put("Key", MainActivity.userInfo.getKey());
                 jsonObject.put("CarId", carId);
                 jsonObject.put("JsonString", new JSONObject(params[0]));
             } catch (JSONException e) {
@@ -377,7 +377,7 @@ public class QueueScanService extends Service {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mCommitDataTask = null;
+            mModifyDataTask = null;
             committed = false;
 
             if(success) {
@@ -389,7 +389,7 @@ public class QueueScanService extends Service {
 
         @Override
         protected void onCancelled() {
-            mCommitDataTask = null;
+            mModifyDataTask = null;
             committed = false;
         }
     }

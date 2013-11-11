@@ -57,6 +57,9 @@ public class Common {
     public static final int DIRTY = 6;      // 脏污
     public static final int BROKEN = 7;     // 破损
 
+    // 每个组最少拍摄张数
+    public static final int[] photoLeastCount = {1, 1, 1};
+
     // 日志的TAG
     public static final String TAG = "DFCarChecker";
 

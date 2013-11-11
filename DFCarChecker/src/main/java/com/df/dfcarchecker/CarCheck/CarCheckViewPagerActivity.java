@@ -262,9 +262,9 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
         builder.setTitle(R.string.alert_title);
         if(!jsonData.equals("")) {
-            builder.setMessage(R.string.quitCarCheck);
-        } else {
             builder.setMessage(R.string.quitCarModify);
+        } else {
+            builder.setMessage(R.string.quitCarCheck);
         }
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -292,9 +292,9 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         builder.setTitle(R.string.alert_title);
 
         if(!jsonData.equals("")) {
-            builder.setMessage(R.string.commitCarCheck);
-        } else {
             builder.setMessage(R.string.commitCarModify);
+        } else {
+            builder.setMessage(R.string.commitCarCheck);
         }
 
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -317,10 +317,23 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                     carCheckFrameFragment.addPhotosToQueue();
                     canCommit = true;
 
+                    JSONObject finalJsonObject = new JSONObject();
+
+                    // 单独提取出photo串，photo暂时不修改
+                    try {
+                        JSONObject jsonObject = new JSONObject(jsonData);
+                        JSONObject photos = jsonObject.getJSONObject("photos");
+
+                        finalJsonObject = generateCommitJsonObject().put("photos", photos);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    // 修改车辆信息要放入carId
                     serviceIntent.putExtra("committed", canCommit);
                     serviceIntent.putExtra("action", "modify");
-                    serviceIntent.putExtra("carId", 0);
-                    serviceIntent.putExtra("JSONObject", generateCommitJsonObject().toString());
+                    serviceIntent.putExtra("carId", carId);
+                    serviceIntent.putExtra("JSONObject", finalJsonObject.toString());
                     startService(serviceIntent);
                 } else {
                     carCheckFrameFragment.addPhotosToQueue();
@@ -328,7 +341,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
                     serviceIntent.putExtra("committed", canCommit);
                     serviceIntent.putExtra("action", "commit");
-                    serviceIntent.putExtra("carId", carId);
+                    serviceIntent.putExtra("carId", 0);
                     serviceIntent.putExtra("JSONObject", generateCommitJsonObject().toString());
                     startService(serviceIntent);
                 }
@@ -350,7 +363,8 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            mCommitProgressDialog.dismiss();
+            if(mCommitProgressDialog != null)
+                mCommitProgressDialog.dismiss();
 
             String result = intent.getExtras().getString("result");
 
@@ -419,10 +433,22 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
             JSONObject conditions = new JSONObject();
 
             // 综合检查 - 外观检查
-            conditions.put("exterior", CarCheckExteriorActivity.generateExteriorJsonObject());
+            if(CarCheckExteriorActivity.generateExteriorJsonObject() == null) {
+                JSONObject exterior = new JSONObject(jsonData).getJSONObject("conditions")
+                        .getJSONObject("exterior");
+                conditions.put("exterior", exterior);
+            } else {
+                conditions.put("exterior", CarCheckExteriorActivity.generateExteriorJsonObject());
+            }
 
             // 综合检查 - 内饰检查
-            conditions.put("interior", CarCheckInteriorActivity.generateInteriorJsonObject());
+            if(CarCheckInteriorActivity.generateInteriorJsonObject() == null) {
+                JSONObject interior = new JSONObject(jsonData).getJSONObject("conditions")
+                        .getJSONObject("interior");
+                conditions.put("interior", interior);
+            } else {
+                conditions.put("interior", CarCheckInteriorActivity.generateInteriorJsonObject());
+            }
 
             // 综合检查 - 发动机检查
             conditions.put("engine", CarCheckIntegratedFragment.generateEngineJsonObject());
@@ -461,6 +487,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
     }
 
     public void onUpdateIntegratedUi() {
+        carCheckBasicInfoFragment.littleFixAboutRegArea();
         carCheckFrameFragment.letsEnterModifyMode();
         carCheckIntegratedFragment.letsEnterModifyMode();
     }

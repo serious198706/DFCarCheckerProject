@@ -73,6 +73,7 @@
     <orderEntry type="library" name="android-support-v4" level="project" />
     <orderEntry type="library" name="ksoap2-android-assembly-3.0.0-jar-with-dependencies (2)" level="project" />
     <orderEntry type="library" name="support-v4-18.0.0" level="project" />
+    <orderEntry type="library" name="zip4j_1.3.1" level="project" />
   </component>
 </module>
 

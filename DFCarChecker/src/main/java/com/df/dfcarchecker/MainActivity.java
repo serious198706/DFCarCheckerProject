@@ -9,20 +9,27 @@ import android.view.View;
 
 import com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity;
 import com.df.dfcarchecker.CarReport.CarCheckedListActivity;
+import com.df.entry.UserInfo;
 import com.df.service.ImageUploadQueue;
 
 public class MainActivity extends Activity {
     public static ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
+
+    public static UserInfo userInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //imageUploadQueue.startUpload(this);
+        userInfo = new UserInfo();
 
-        //Intent intent = new Intent(this, QueueScanService.class);
-        //startService(intent);
+        Bundle bundle = getIntent().getExtras();
+
+        if(bundle != null) {
+            userInfo.setId(bundle.getString("UserId"));
+            userInfo.setKey(bundle.getString("Key"));
+        }
     }
 
     public void EnterCarCheck(View view) {

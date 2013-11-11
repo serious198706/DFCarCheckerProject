@@ -109,6 +109,10 @@ public class Helper {
         view.findViewById(id).setVisibility(show ? View.VISIBLE : View.GONE);
     }
 
+    public static void enableView(boolean enable, View view, int id) {
+        view.findViewById(id).setEnabled(enable);
+    }
+
 
     /** Create a file Uri for saving an image*/
     public static Uri getOutputMediaFileUri(long fileName){
@@ -168,49 +172,6 @@ public class Helper {
         }
 
         return (vin.substring(8, 9).equals(Integer.toString(value % 11).replace("10", "X")));
-    }
-
-    public static String convertStreamToString(java.io.InputStream is) {
-        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
-        return s.hasNext() ? s.next() : "";
-    }
-
-    private static String libString = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnop qrstuvwxyz1234567890<>\"/";
-    private static String mixString = "rios3nvmxj0z1kqhp9lweub\"y6t cgfdaAZ/DC2GB8JMSXF>5VHN7KLQEW<R4TIYUOP";
-
-    public static String encodeFile(String srcString) {
-        String dstString = "";
-
-        for(int i = 0; i < srcString.length(); i++) {
-            int index = libString.indexOf(srcString.charAt(i));
-            dstString += mixString.charAt(index);
-        }
-
-        for(int i = 0; i < srcString.length(); i++) {
-            for(int j = 0; j < libString.length(); j++) {
-                if(srcString.charAt(i) == libString.charAt(j)) {
-                    dstString += mixString.charAt(j);
-                } else {
-                    dstString += srcString.charAt(i);
-                }
-            }
-        }
-
-        return dstString;
-    }
-
-    public static String decodeFile(String srcString) {
-        String dstString = "";
-
-        for(int i = 0; i < srcString.length(); i++) {
-            for(int j = 0; j < mixString.length(); j++) {
-                if(srcString.charAt(i) == libString.charAt(j)) {
-                    dstString += libString.charAt(j);
-                }
-            }
-        }
-
-        return dstString;
     }
 
 

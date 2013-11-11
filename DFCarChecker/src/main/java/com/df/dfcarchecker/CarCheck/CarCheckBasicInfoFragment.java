@@ -29,6 +29,8 @@ import android.widget.TableRow;
 import android.widget.Toast;
 
 import com.df.dfcarchecker.LoginActivity;
+import com.df.dfcarchecker.MainActivity;
+import com.df.dfcarchecker.MainActivity;
 import com.df.dfcarchecker.R;
 import com.df.entry.Brand;
 import com.df.entry.CarSettings;
@@ -39,6 +41,8 @@ import com.df.entry.PhotoEntity;
 import com.df.entry.Series;
 import com.df.entry.VehicleModel;
 import com.df.service.Common;
+import com.df.service.Decompress;
+import com.df.service.EncryptDecryptFile;
 import com.df.service.Helper;
 import com.df.service.SoapService;
 import com.df.service.VehicleModelParser;
@@ -50,11 +54,13 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
 import static com.df.service.Helper.SetSpinnerData;
+import static com.df.service.Helper.enableView;
 import static com.df.service.Helper.getDateString;
 import static com.df.service.Helper.getEditText;
 import static com.df.service.Helper.getSpinnerSelectedText;
@@ -101,9 +107,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private EditText runEdit;
 
     private Spinner firstLogYearSpinner;
-    private Spinner firstLogMonthSpinner;
     private Spinner manufactureYearSpinner;
-    private Spinner manufactureMonthSpinner;
 
     private Spinner ticketSpinner;
     private Spinner lastTransferCountSpinner;
@@ -128,9 +132,11 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private ProgressDialog mProgressDialog;
 
     // 用于修改
-    private String jsonData;
+    private String jsonData = "";
+    private boolean modifyMode = false;
 
     OnHeadlineSelectedListener mCallback;
+    private JSONObject procedures;
 
     public CarCheckBasicInfoFragment(String jsonData) {
         this.jsonData = jsonData;
@@ -288,7 +294,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         // 出厂日期
         manufactureYearSpinner = (Spinner) rootView.findViewById(R.id.ci_builtYear_spinner);
-        manufactureMonthSpinner = (Spinner) rootView.findViewById(R.id.ci_builtMonth_spinner);
 
         // 进口车手续
         portedProcedureRow = (TableRow) rootView.findViewById(R.id.ct_ported_procedure);
@@ -323,19 +328,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         SetSpinnerData(R.id.bi_vin_spinner, dummy, rootView);
 
-        try {
-            File f = new File(Environment.getExternalStorageDirectory().getPath() + "/.cheyipai/VehicleModel.xml");
-            fis = new FileInputStream(f);
-
-            if(fis == null) {
-                Toast.makeText(rootView.getContext(), "SD卡挂载有问题", Toast.LENGTH_LONG).show();
-            }
-        } catch (FileNotFoundException e) {
-            Toast.makeText(rootView.getContext(), "文件不存在", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
-
-
         // 开启一个新的线程解析xml文件
         if(vehicleModel == null) {
             mProgressDialog = ProgressDialog.show(rootView.getContext(), null,
@@ -345,12 +337,12 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                 @Override
                 public void run() {
                     try {
-
                         //Your code goes here
                         ParseXml();
 
                         // 如果jsonData不为空，表示为修改模式
                         if(!jsonData.equals("")) {
+                            modifyMode = true;
                             letsEnterModifyMode();
                         }
 
@@ -599,6 +591,36 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     // 解析车型XML
     public void ParseXml() {
+        try {
+            String path = Environment.getExternalStorageDirectory().getPath() + "/.cheyipai/";
+            String enFile = path + "df001";
+            String zippedFile = path + "zip";
+            String unzippedFile = path + "vm.xml";
+
+            EncryptDecryptFile encryptDecryptFile = new EncryptDecryptFile();
+
+            try {
+                encryptDecryptFile.decrypt(new FileInputStream(enFile),
+                        new FileOutputStream(zippedFile));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            Decompress decompress = new Decompress(zippedFile, unzippedFile);
+            decompress.unzip();
+
+            File f = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
+                    ".cheyipai/vm.xml");
+            fis = new FileInputStream(f);
+
+            if(fis == null) {
+                Toast.makeText(rootView.getContext(), "SD卡挂载有问题", Toast.LENGTH_LONG).show();
+            }
+        } catch (FileNotFoundException e) {
+            Toast.makeText(rootView.getContext(), "文件不存在", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
         VehicleModelParser parser = new VehicleModelParser();
         vehicleModel = parser.parseVehicleModelXml(fis);
 
@@ -625,7 +647,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             options.put("displacement", displacementEdit.getText().toString());
 
             String[] categoryArray = rootView.getResources().getStringArray(R.array.csi_category_item);
-            options.put("category", categoryArray[Integer.parseInt(mCarSettings.getCategory())]);
+            options.put("category", mCarSettings.getCategory());
             options.put("driveType", getSpinnerSelectedText(rootView, R.id.csi_driveType_spinner));
             options.put("transmission", getSpinnerSelectedText(rootView, R.id.csi_transmission_spinner));
             options.put("airBags", getSpinnerSelectedText(rootView, R.id.csi_airbag_spinner));
@@ -798,8 +820,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     // SeriesId + userID + key
                     jsonObject.put("SeriesId", seriesId);
                     jsonObject.put("ModelId", modelId);
-                    jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                    jsonObject.put("Key", LoginActivity.userInfo.getKey());
+                    jsonObject.put("UserId", MainActivity.userInfo.getId());
+                    jsonObject.put("Key", MainActivity.userInfo.getKey());
 
                     soapService = new SoapService();
 
@@ -813,12 +835,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     // 传输失败，获取错误信息并显示
                     if(!success) {
                         Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
-
-                        if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
-                            Toast.makeText(rootView.getContext(), "连接错误，请重新登陆！", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(rootView.getContext(), LoginActivity.class);
-                            startActivity(intent);
-                        }
                     } else {
                         result = soapService.getResultMessage();
                     }
@@ -834,11 +850,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                     // vin + userID + key
                     jsonObject.put("Vin", vin_edit.getText().toString());
-
-                    if(LoginActivity.userInfo != null) {
-                        jsonObject.put("UserId", LoginActivity.userInfo.getId());
-                        jsonObject.put("Key", LoginActivity.userInfo.getKey());
-                    }
+                    jsonObject.put("UserId", MainActivity.userInfo.getId());
+                    jsonObject.put("Key", MainActivity.userInfo.getKey());
 
                     soapService = new SoapService();
 
@@ -957,7 +970,16 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                                     mCarSettings.setConfig(config);
 
                                     // 设置车型分类，以用于图片类型判断
-                                    mCarSettings.setCategory(category);
+                                    String categoryArray[] = getResources().getStringArray(R
+                                            .array.csi_category_item);
+
+                                    if(Integer.parseInt(category) > 0)
+                                        mCarSettings.setCategory(categoryArray[Integer.parseInt
+                                                (category) - 1]);
+                                    else
+                                        mCarSettings.setCategory(categoryArray[Integer.parseInt
+                                                (category)]);
+
                                     mCarSettings.setFigure(figure);
 
                                     setCarSettingsSpinners(model.getName());
@@ -1293,10 +1315,15 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         final List<String> provinceAbbreviation = Helper.StringArray2List(provinceAbbreviationArray);
 
         Spinner regLocationSpinner = (Spinner) rootView.findViewById(R.id.ci_regArea_spinner);
+
         regLocationSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                carNumberEdit.setText(provinceAbbreviation.get(i));
+                if(!modifyMode) {
+                    carNumberEdit.setText(provinceAbbreviation.get(i));
+                }
+
+                modifyMode = false;
             }
 
             @Override
@@ -1304,6 +1331,18 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
             }
         });
+    }
+
+
+    // 如果为修改模式，要手动填写一下注册地，因为spinner变化会导致注册地变化
+    public void littleFixAboutRegArea() {
+        try {
+            setEditText(rootView, R.id.ci_plateNumber_edit, procedures.getString("plateNumber"));
+            enableView(false, rootView, R.id.ci_ownerIdNumber_edit);
+            enableView(false, rootView, R.id.ci_regArea_spinner);
+        } catch (Exception e) {
+
+        }
     }
 
     // 车身颜色
@@ -1449,7 +1488,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             JSONObject features = new JSONObject(jsonData).getJSONObject("features");
 
             JSONObject options = features.getJSONObject("options");
-            final JSONObject procedures = features.getJSONObject("procedures");
+            procedures = features.getJSONObject("procedures");
 
             String brandString = options.getString("manufacturer") + " " +
                     options.getString("series") + " " +
@@ -1457,6 +1496,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
             mCarSettings.setBrandString(brandString);
             mCarSettings.setDisplacement(options.getString("displacement"));
+            mCarSettings.setCategory(options.getString("category"));
+
+            String categoryArray[] = getResources().getStringArray(R.array.csi_category_item);
 
             Country country = vehicleModel.getCountryById(Integer.toString(options.getInt
                     ("countryId")));
@@ -1466,7 +1508,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             Series series = manufacturer.getSerialById(Integer.toString(options.getInt
                     ("seriesId")));
             Model model = series.getModelById(Integer.toString(options.getInt("modelId")));
-
 
             mCarSettings.setCountry(country);
             mCarSettings.setBrand(brand);
@@ -1506,14 +1547,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                 }
             });
 
-
             this.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         setSpinnerSelectionWithString(rootView, R.id.ci_regArea_spinner,
                                 procedures.getString("regArea"));
-                        setEditText(rootView, R.id.ci_plateNumber_edit, procedures.getString("plateNumber"));
+
                         setEditText(rootView, R.id.ci_licenseModel_edit, procedures.getString("licenseModel"));
                         setSpinnerSelectionWithString(rootView, R.id.ci_vehicleType_spinner,
                                 procedures.getString("vehicleType"));
