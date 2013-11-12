@@ -36,6 +36,8 @@ public class QueueScanService extends Service {
     private UploadPictureTask mUploadPictureTask;
     private ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
 
+    SoapService soapService;
+
     private Looper mServiceLooper;
     private ServiceHandler mServiceHandler;
 
@@ -45,6 +47,7 @@ public class QueueScanService extends Service {
     private int index = 0;
 
     private boolean canStartUpload = true;
+    private boolean canStartModify = true;
     public static boolean committed;
     private String jsonString;
 
@@ -112,12 +115,15 @@ public class QueueScanService extends Service {
 
     //
     private void Committed() {
+        Log.d(Common.TAG, "enter committed");
         intent.putExtra("result", "0");
         sendBroadcast(intent);
     }
 
     private void CommitFailed() {
+        Log.d(Common.TAG, "enter commitfailed");
         intent.putExtra("result", "-1");
+        intent.putExtra("errorMsg", soapService.getErrorMessage());
         sendBroadcast(intent);
     }
 
@@ -135,33 +141,10 @@ public class QueueScanService extends Service {
                         // 当照片池中还有照片，并且上传线程没有运行时，开启新的上传线程
                         if((imageUploadQueue.getQueueSize() != 0) && (mUploadPictureTask == null)
                          && canStartUpload)  {
+                            canStartUpload = false;
                             mUploadPictureTask = new UploadPictureTask();
                             mUploadPictureTask.execute();
                             Log.d(Common.TAG, "正在上传...");
-                            canStartUpload = false;
-//                            // prepare intent which is triggered if the
-//                            // notification is selected
-//
-//                            Intent intent = new Intent(this, CarCheckViewPagerActivity.class);
-//                            PendingIntent pIntent = PendingIntent.getActivity(context, 0, intent, 0);
-//
-//                            // build notification
-//                            // the addAction re-use the same intent to keep the example short
-//                            Notification n  = new Notification.Builder(context)
-//                                    .setContentTitle("New mail from " + "test@gmail.com")
-//                                    .setContentText("Subject")
-//                                    .setSmallIcon(R.drawable.logo)
-//                                    .setContentIntent(pIntent)
-//                                    .setAutoCancel(true)
-//                                    .addAction(R.drawable.logo, "Call", pIntent)
-//                                    .addAction(R.drawable.logo, "More", pIntent)
-//                                    .addAction(R.drawable.logo, "And more", pIntent).build();
-//
-//
-//                            NotificationManager notificationManager =
-//                                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//
-//                            notificationManager.notify(0, n);
                         }
 
                         // 已提交，并且照片池为空
@@ -173,7 +156,7 @@ public class QueueScanService extends Service {
                             }
                             // 修改车辆
                             else if(action.equals("modify") && (imageUploadQueue.getQueueSize() == 0) &&
-                                    (mModifyDataTask == null)) {
+                                    (mModifyDataTask == null) && (canStartModify)) {
                                 mModifyDataTask = new ModifyDataTask(context);
                                 mModifyDataTask.execute(jsonString);
                             }
@@ -190,7 +173,6 @@ public class QueueScanService extends Service {
     // 上传图片
     private class UploadPictureTask extends AsyncTask<Void, Void, Boolean> {
         Context context;
-        SoapService soapService;
 
         @Override
         protected void onPreExecute()
@@ -233,12 +215,11 @@ public class QueueScanService extends Service {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mUploadPictureTask = null;
-
             if(success) {
                 Log.d(Common.TAG, "上传成功！");
                 imageUploadQueue.removeImage();
                 index = 0;
+                mUploadPictureTask = null;
             } else {
                 Log.d(Common.TAG, "上传照片失败：" + soapService.getErrorMessage());
                 Log.d(Common.TAG, "将在" + Integer.toString(waitTime[index]) + "毫秒后重试");
@@ -259,7 +240,6 @@ public class QueueScanService extends Service {
         @Override
         protected void onCancelled() {
             mUploadPictureTask = null;
-
             canStartUpload = true;
         }
     }
@@ -268,7 +248,6 @@ public class QueueScanService extends Service {
     // 提交检测数据
     public class CommitDataTask extends AsyncTask<String, Void, Boolean> {
         Context context;
-        SoapService soapService;
         //private ProgressDialog progressDialog;
 
         private CommitDataTask(Context context) {
@@ -300,30 +279,27 @@ public class QueueScanService extends Service {
 
             success = soapService.communicateWithServer(context, jsonObject.toString());
 
-            // 登录失败，获取错误信息并显示
-            if(!success) {
-                Log.d("DFCarChecker", "提交失败! " + soapService.getErrorMessage());
-            } else {
-                Log.d(Common.TAG, "提交成功！" + soapService.getErrorMessage());
-            }
-
             return success;
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mCommitDataTask = null;
-            committed = false;
-
             if(success) {
+                Log.d(Common.TAG, "提交成功！" + soapService.getErrorMessage());
                 handler.post(sendUpdatesToUI); // 1 second
             } else {
+                Log.d(Common.TAG, "提交失败!" + soapService.getErrorMessage());
                 handler.post(sendUpdatesToUIFail);
             }
+
+            committed = false;
+            mCommitDataTask = null;
+            canStartUpload = false;
         }
 
         @Override
         protected void onCancelled() {
+            canStartUpload = false;
             mCommitDataTask = null;
             committed = false;
         }
@@ -332,7 +308,6 @@ public class QueueScanService extends Service {
     // 提交修改数据
     public class ModifyDataTask extends AsyncTask<String, Void, Boolean> {
         Context context;
-        SoapService soapService;
         //private ProgressDialog progressDialog;
 
         private ModifyDataTask(Context context) {
@@ -377,14 +352,14 @@ public class QueueScanService extends Service {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mModifyDataTask = null;
-            committed = false;
-
             if(success) {
                 handler.post(sendUpdatesToUI); // 1 second
             } else {
                 handler.post(sendUpdatesToUIFail);
             }
+
+            mModifyDataTask = null;
+            committed = false;
         }
 
         @Override

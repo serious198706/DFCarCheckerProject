@@ -189,7 +189,11 @@ public class SoapService implements ISoapService {
 
             byteArray = stream.toByteArray();
         } else {
-            byteArray = new byte[0];
+            // 如果没有图片，那还传个毛线
+            errorMessage = "图片为空！";
+            return false;
+
+            //byteArray = new byte[0];
         }
 
         // 在图片流后面加上分隔符 #:
@@ -234,7 +238,6 @@ public class SoapService implements ISoapService {
 
         // 成功失败标志位
         String result = soapObject.getProperty(0).toString();
-        Log.d(Common.TAG, result);
 
         // JSON格式数据
         resultMessage = soapObject.getPropertySafely("SaveCarPictureTagKeyResult", "").toString();

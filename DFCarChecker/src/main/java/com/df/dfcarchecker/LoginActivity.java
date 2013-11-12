@@ -115,9 +115,9 @@ public class LoginActivity extends Activity {
      * 如果有错误（用户名、密码未填写）则不进行登陆
      */
     public void attemptLogin() {
-        FileInputStream fis = null;
-
-        try {
+//        FileInputStream fis = null;
+//
+//        try {
 //            String path = Environment.getExternalStorageDirectory().getPath() + "/.cheyipai/";
 //            String file = path + "vm";
 //            String enFile = path + "df001";
@@ -142,41 +142,44 @@ public class LoginActivity extends Activity {
 //            } catch (ZipException e) {
 //                e.printStackTrace();
 //            }
-
-            String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "" +
-                    ".cheyipai"+
-                    File.separator;
-            String file = path + "vm";
-            String temp = path + "temp";
-            String tempEn = path + "tempEn";
-
-            Compress.zip(file, temp, "111");
-
-            EncryptDecryptFile encryptDecryptFile = new EncryptDecryptFile();
-
-            encryptDecryptFile.encrypt(new FileInputStream(temp), new FileOutputStream(tempEn));
-            encryptDecryptFile.decrypt(new FileInputStream(tempEn), new FileOutputStream(temp));
-
-            try {
-                Compress.unzip(temp, path, "111");
-            } catch (ZipException e) {
-                e.printStackTrace();
-            }
-
-            File f = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
-                    ".cheyipai/vm");
-            fis = new FileInputStream(f);
-
-            if(fis == null) {
-                Toast.makeText(this, "SD卡挂载有问题", Toast.LENGTH_LONG).show();
-            }
-        } catch (FileNotFoundException e) {
-            Toast.makeText(this, "文件不存在", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
-
-        VehicleModelParser parser = new VehicleModelParser();
-        VehicleModel vehicleModel = parser.parseVehicleModelXml(fis);
+//
+//            String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "" +
+//                    ".cheyipai"+
+//                    File.separator;
+//            String file = path + "vm";
+//            String fileEn = path + "vmEn";
+//            String temp = path + "temp";
+//            String tempEn = path + "tempEn";
+//
+////            Compress.zip(fileEn, temp, "F3a#^%Bsk(Nln");
+//
+//            EncryptDecryptFile encryptDecryptFile = new EncryptDecryptFile();
+//
+//            //encryptDecryptFile.encrypt(new FileInputStream(file), new FileOutputStream(fileEn));
+//            //encryptDecryptFile.decrypt(new FileInputStream(fileEn), new FileOutputStream(file));
+//
+//            try {
+//                Compress.unzip(temp, path, "F3a#^%Bsk(Nln");
+//            } catch (ZipException e) {
+//                e.printStackTrace();
+//            }
+//
+//            encryptDecryptFile.decrypt(new FileInputStream(fileEn), new FileOutputStream(file));
+//
+//            File f = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
+//                    ".cheyipai/vm");
+//            fis = new FileInputStream(f);
+//
+//            if(fis == null) {
+//                Toast.makeText(this, "SD卡挂载有问题", Toast.LENGTH_LONG).show();
+//            }
+//
+//            VehicleModelParser parser = new VehicleModelParser();
+//            VehicleModel vehicleModel = parser.parseVehicleModelXml(fis);
+//        } catch (FileNotFoundException e) {
+//            Toast.makeText(this, "文件不存在", Toast.LENGTH_LONG).show();
+//            e.printStackTrace();
+//        }
 
         if (mAuthTask != null) {
             return;

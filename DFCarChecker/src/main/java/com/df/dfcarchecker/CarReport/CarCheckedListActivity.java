@@ -95,9 +95,6 @@ public class CarCheckedListActivity extends Activity {
                     editThisCar();
                     mode.finish();
                     return true;
-                case R.id.action_print:
-                    mode.finish();
-                    return true;
                 default:
                     return false;
             }
@@ -417,12 +414,6 @@ public class CarCheckedListActivity extends Activity {
         @Override
         protected void onPostExecute(Boolean success) {
             Intent intent = new Intent(CarCheckedListActivity.this, CarReportViewPagerActivity.class);
-//            ActivityOptions options = ActivityOptions.makeScaleUpAnimation(getWindow().getDecorView(),
-//                    getWindow().getDecorView().getWidth() / 2,
-//                    getWindow().getDecorView().getHeight() / 2,
-//                    getWindow().getDecorView().getWidth(),
-//                    getWindow().getDecorView().getHeight());
-
             intent.putExtra("jsonData", result);
 
             progressDialog.dismiss();

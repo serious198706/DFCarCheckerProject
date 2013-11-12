@@ -14,7 +14,6 @@ repositories {
 
 dependencies {
 	compile 'com.android.support:support-v4:18.0.0'
-	compile 'com.android.support:appcompat-v7:18.0.0'
     compile files('lib/ksoap2-android-assembly-3.0.0-jar-with-dependencies.jar')
     compile files('lib/zip4j_1.3.1.jar')
 }

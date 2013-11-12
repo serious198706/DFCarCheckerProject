@@ -134,6 +134,12 @@ public class StartupActivity extends Activity {
             this.context = context;
         }
 
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
         protected Boolean doInBackground(Void... params) {
             boolean success = true;
 
@@ -146,7 +152,8 @@ public class StartupActivity extends Activity {
             return success;
         }
 
-        protected void onPostExecute(boolean success) {
+        @Override
+        protected void onPostExecute(final Boolean success) {
             if(success) {
                 try {
                     // {
@@ -156,13 +163,14 @@ public class StartupActivity extends Activity {
                     // }
 
                     //JSONObject jsonObject = new JSONObject(soapService.getResultMessage());
-                    //String version = jsonObject.getString("versionName");
+                    //String version = jsonObject.getString("VersionNumber");
+
+                    String version = "0.2";
 
                     PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
 
                     // 版本不同，升级
-                    //if(!version.equals(pInfo.versionName)) {
-                    if(true) {
+                    if(!version.equals(pInfo.versionName)) {
                         AlertDialog dialog = new AlertDialog.Builder(context)
                                 .setTitle(R.string.newUpdate)
                                 .setMessage("检测到新版本，点击确定进行更新")
@@ -171,7 +179,7 @@ public class StartupActivity extends Activity {
                                     public void onClick(DialogInterface dialogInterface, int i) {
                                         startActivity(new Intent(Intent.ACTION_VIEW,
                                                   Uri.parse("http://cy198706" +
-                                                          ".com/kanmeizhi/recommend/1.jpg")));
+                                                          ".com/DFCarChecker/DFCarChecker.apk")));
 //                                                Uri.parse("http://i.268v.com/pub/app/DFCarChecker" +
 //                                                        ".apk")));
                                     }

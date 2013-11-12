@@ -1,6 +1,7 @@
 package com.df.paintview;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
 import android.widget.ImageView;
@@ -40,4 +41,6 @@ public abstract class PaintView extends ImageView {
     public abstract long getCurrentTimeMillis();
     public abstract String getGroup();
     public abstract int getType();
+    public abstract List<PosEntity> getPosEntities();
+    public abstract Bitmap getSketchBitmap();
 }

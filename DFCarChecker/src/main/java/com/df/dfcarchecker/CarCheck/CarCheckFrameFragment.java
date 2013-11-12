@@ -33,7 +33,12 @@ import com.df.service.ImageUploadQueue;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,6 +77,7 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
 
     private int photoShotCount[] = {0, 0, 0, 0};
     private JSONObject frames;
+    private boolean alreadyGeneratedSketch = false;
 
     public CarCheckFrameFragment(String jsonData) {
         this.jsonData = jsonData;
@@ -295,6 +301,7 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
                 }
                 break;
             case Common.STURCTURE_PAINT:
+                alreadyGeneratedSketch = true;
                 // 前视角
                 // 如果有点，则将图片设为不透明，去掉提示文字
                 if(!posEntitiesFront.isEmpty()) {
@@ -347,8 +354,25 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
             photoEntitiesRear.remove(0);
         }
 
-        // 将草图上传到照片池
-        if(CarCheckPaintActivity.sketchPhotoEntities != null) {
+
+
+        // 草图队列为空
+        // 当内饰或者外观有了草图的时候，此判定失效
+        if(CarCheckPaintActivity.sketchPhotoEntities == null || CarCheckPaintActivity
+                .sketchPhotoEntities.isEmpty()) {
+            // 如果已经通过绘制结构缺陷产生了草图，则不需要再次产生
+            if(alreadyGeneratedSketch) {
+                return;
+            }
+
+            PhotoEntity photoEntityFront = getPhotoEntity("d4_f", "fSketch");
+            PhotoEntity photoEntityRear = getPhotoEntity("d4_r", "rSketch");
+
+            imageUploadQueue.addImage(photoEntityFront);
+            imageUploadQueue.addImage(photoEntityRear);
+        }
+        // 草图队列不为空
+        else {
             for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
                 imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
             }
@@ -359,6 +383,59 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         }
     }
 
+    private PhotoEntity getPhotoEntity(String part, String sketchName) {
+        File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
+                ".cheyipai/" + part);
+        File dst = new File(Environment.getExternalStorageDirectory().getPath() +
+                "/Pictures/DFCarChecker/" + sketchName);
+
+        try {
+            copy(file, dst);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+
+        // 组织jsonString
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("Group", "frame");
+            jsonObject.put("Part", sketchName);
+
+            JSONObject photoData = new JSONObject();
+            photoData.put("height", bitmap.getHeight());
+            photoData.put("width", bitmap.getWidth());
+
+            jsonObject.put("PhotoData", photoData);
+            jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
+            jsonObject.put("UserId", MainActivity.userInfo.getId());
+            jsonObject.put("Key", MainActivity.userInfo.getKey());
+        } catch (JSONException e) {
+
+        }
+
+        PhotoEntity photoEntity = new PhotoEntity();
+        photoEntity.setFileName(sketchName);
+        photoEntity.setJsonString(jsonObject.toString());
+
+        return photoEntity;
+    }
+
+    public void copy(File src, File dst) throws IOException {
+        InputStream in = new FileInputStream(src);
+        OutputStream out = new FileOutputStream(dst);
+
+        // Transfer bytes from in to out
+        byte[] buf = new byte[1024];
+        int len;
+        while ((len = in.read(buf)) > 0) {
+            out.write(buf, 0, len);
+        }
+        in.close();
+        out.close();
+    }
     public boolean runOverAllCheck() {
         int count = 0;
 

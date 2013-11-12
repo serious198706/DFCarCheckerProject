@@ -44,12 +44,17 @@ public final class ImageUploadQueue {
     }
 
     // 当上传成功后，删除队列中第一个元素
-    public void removeImage() {
+    public boolean removeImage() {
         if(queue.size() > 0) {
             // 先将文件从内存卡中删除
             if(deleteImageFromExternalStorage(queue.get(0).getFileName())) {
                 queue.remove(0);
+                return true;
+            } else {
+                return false;
             }
+        } else {
+            return true;
         }
     }
 

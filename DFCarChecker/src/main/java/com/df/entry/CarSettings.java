@@ -203,10 +203,17 @@ public class CarSettings {
         this.airbag = airbag;
     }
     public String getAirbag() {
-        if(!airbag.equals(notExist))
+        if(airbag.equals("1"))
             return "0";
-        else
-            return "5";
+        else if(airbag.equals("2"))
+            return "1";
+        else if(airbag.equals("4"))
+            return "2";
+        else if(airbag.equals("8"))
+            return "3";
+        else if(airbag.equals("12"))
+            return "4";
+        else return "5";
     }
 
     // ABS
@@ -238,6 +245,12 @@ public class CarSettings {
     public String getPowerWindows() {
         if(powerWindows.equals(exist))
             return "0";
+        else if(powerWindows.equals("四门"))
+            return "2";
+        else if(powerWindows.equals("前门"))
+            return "3";
+        else if(powerWindows.equals("加装"))
+            return "4";
         else
             return "1";
     }
@@ -249,6 +262,16 @@ public class CarSettings {
     public String getSunroof() {
         if(sunroof.equals(exist))
             return "0";
+        else if(sunroof.equals("手动"))
+            return "2";
+        else if(sunroof.equals("电动"))
+            return "3";
+        else if(sunroof.equals("双天窗"))
+            return "4";
+        else if(sunroof.equals("全景"))
+            return "5";
+        else if(sunroof.equals("加装"))
+            return "6";
         else
             return "1";
     }
@@ -260,6 +283,12 @@ public class CarSettings {
     public String getAirConditioning() {
         if(airConditioning.equals(exist))
             return "0";
+        else if(airConditioning.equals("手动"))
+            return "2";
+        else if(airConditioning.equals("自动"))
+            return "3";
+        else if(airConditioning.equals("前后"))
+            return "4";
         else
             return "1";
     }
@@ -271,6 +300,14 @@ public class CarSettings {
     public String getLeatherSeats() {
         if(leatherSeats.equals(exist))
             return "0";
+        else if(leatherSeats.equals("电加热"))
+            return "2";
+        else if(leatherSeats.equals("按摩"))
+            return "3";
+        else if(leatherSeats.equals("通风"))
+            return "4";
+        else if(leatherSeats.equals("加装"))
+            return "5";
         else
             return "1";
     }
@@ -282,6 +319,8 @@ public class CarSettings {
     public String getPowerSeats() {
         if(powerSeats.equals(exist))
             return "0";
+        else if(powerSeats.equals("带记忆"))
+            return "2";
         else
             return "1";
     }
@@ -293,6 +332,8 @@ public class CarSettings {
     public String getPowerMirror() {
         if(powerMirror.equals(exist))
             return "0";
+        else if(powerMirror.equals("自动折叠"))
+            return "2";
         else
             return "1";
     }
@@ -304,6 +345,8 @@ public class CarSettings {
     public String getReversingRadar() {
         if(reversingRadar.equals(exist))
             return "0";
+        else if(reversingRadar.equals("加装"))
+            return "2";
         else
             return "1";
     }
@@ -315,6 +358,8 @@ public class CarSettings {
     public String getReversingCamera() {
         if(reversingCamera.equals(exist))
             return "0";
+        else if(reversingCamera.equals("加装"))
+            return "2";
         else
             return "1";
     }
@@ -326,6 +371,8 @@ public class CarSettings {
     public String getCcs() {
         if(ccs.equals(exist))
             return "0";
+        else if(ccs.equals("加装"))
+            return "2";
         else
             return "1";
     }
@@ -390,28 +437,74 @@ public class CarSettings {
         try {
             JSONObject jsonObject = new JSONObject(jsonString);
 
-            brandString = "一汽奥迪 100 1.6 MT";
-            displacement = jsonObject.getString("displacement");
-            category = jsonObject.getString("category");
-            driveType = jsonObject.getString("driveType");
-            transmission = jsonObject.getString("transmission");
-            airbag = jsonObject.getString("airBags");
-            abs = jsonObject.getString("abs");
-            powerSteering = jsonObject.getString("powerSteering");
-            powerWindows = jsonObject.getString("powerWindows");
-            sunroof = jsonObject.getString("sunroof");
-            airConditioning = jsonObject.getString("airConditioning");
-            leatherSeats = jsonObject.getString("leatherSeats");
-            powerSeats = jsonObject.getString("powerSeats");
-            powerMirror = jsonObject.getString("powerMirror");
-            reversingRadar = jsonObject.getString("reversingRadar");
-            reversingCamera = jsonObject.getString("reversingCamera");
-            ccs = jsonObject.getString("ccs");
-            softCloseDoors = jsonObject.getString("softCloseDoors");
-            rearPowerSeats = jsonObject.getString("rearPowerSeats");
-            ahc = jsonObject.getString("ahc");
-            parkAssist = jsonObject.getString("parkAssist");
-            clapBoard = jsonObject.getString("clapBoard");
+            if(jsonObject.has("airBags"))
+                airbag = jsonObject.getString("airBags");
+            else
+                airbag = notExist;
+            if(jsonObject.has("abs"))
+                abs = jsonObject.getString("abs");
+            else
+                abs = notExist;
+            if(jsonObject.has("powerSteering"))
+                powerSteering = jsonObject.getString("powerSteering");
+            else
+                powerSteering = notExist;
+            if(jsonObject.has("powerWindows"))
+                powerWindows = jsonObject.getString("powerWindows");
+            else
+                powerWindows = notExist;
+            if(jsonObject.has("sunroof"))
+                sunroof = jsonObject.getString("sunroof");
+            else
+                sunroof = notExist;
+            if(jsonObject.has("airConditioning"))
+                airConditioning = jsonObject.getString("airConditioning");
+            else
+                airConditioning = notExist;
+            if(jsonObject.has("leatherSeats"))
+                leatherSeats = jsonObject.getString("leatherSeats");
+            else
+                leatherSeats = notExist;
+            if(jsonObject.has("powerSeats"))
+                powerSeats = jsonObject.getString("powerSeats");
+            else
+                powerSeats = notExist;
+            if(jsonObject.has("powerMirror"))
+                powerMirror = jsonObject.getString("powerMirror");
+            else
+                powerMirror = notExist;
+            if(jsonObject.has("reversingRadar"))
+                reversingRadar = jsonObject.getString("reversingRadar");
+            else
+                reversingRadar = notExist;
+            if(jsonObject.has("reversingCamera"))
+                reversingCamera = jsonObject.getString("reversingCamera");
+            else
+                reversingCamera = notExist;
+            if(jsonObject.has("ccs"))
+                ccs = jsonObject.getString("ccs");
+            else
+                ccs = notExist;
+            if(jsonObject.has("softCloseDoors"))
+                softCloseDoors = jsonObject.getString("softCloseDoors");
+            else
+                softCloseDoors = notExist;
+            if(jsonObject.has("rearPowerSeats"))
+                rearPowerSeats = jsonObject.getString("rearPowerSeats");
+            else
+                rearPowerSeats = notExist;
+            if(jsonObject.has("ahc"))
+                ahc = jsonObject.getString("ahc");
+            else
+                ahc = notExist;
+            if(jsonObject.has("parkAssist"))
+                parkAssist = jsonObject.getString("parkAssist");
+            else
+                parkAssist = notExist;
+            if(jsonObject.has("clapBoard"))
+                clapBoard = jsonObject.getString("clapBoard");
+            else
+                clapBoard = notExist;
 
         } catch (Exception e) {
             Log.d("DFCarChecker", "Json Error: " + e.getMessage());
@@ -492,7 +585,8 @@ public class CarSettings {
     }
 
     public static String[] getAllConfigs() {
-        String configs[] = {"airBags",
+        String configs[] = {
+                "airBags",
                 "abs",
                 "powerSteering",
                 "powerWindows",

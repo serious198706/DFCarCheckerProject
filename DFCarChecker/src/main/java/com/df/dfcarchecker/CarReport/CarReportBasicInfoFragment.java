@@ -72,7 +72,8 @@ public class CarReportBasicInfoFragment extends Fragment {
             setTextView(rootView, R.id.transmission_text, options.getString("transmission"));
 
             if(options.has("airBags"))
-                setTextView(rootView, R.id.airBags_text, options.getString("airBags"));
+                if(options.get("airBags") != null)
+                    setTextView(rootView, R.id.airBags_text, options.getString("airBags"));
             else
                 setTextView(rootView, R.id.airBags_text, null);
             if(options.has("displacement"))
@@ -256,14 +257,14 @@ public class CarReportBasicInfoFragment extends Fragment {
                 setTextView(rootView, R.id.ownerPhone_text, procedures.getString("ownerPhone"));
             else
                 setTextView(rootView, R.id.ownerPhone_text, null);
-            if(procedures.has("transferAgree"))
-                setTextView(rootView, R.id.transferAgree_text, procedures.getString("transferAgree"));
-            else
-                setTextView(rootView, R.id.transferAgree_text, null);
-            if(procedures.has("transferRequire"))
-                setTextView(rootView, R.id.transferRequire_text, procedures.getString("transferRequire"));
-            else
-                setTextView(rootView, R.id.transferRequire_text, null);
+//            if(procedures.has("transferAgree"))
+//                setTextView(rootView, R.id.transferAgree_text, procedures.getString("transferAgree"));
+//            else
+//                setTextView(rootView, R.id.transferAgree_text, null);
+//            if(procedures.has("transferRequire"))
+//                setTextView(rootView, R.id.transferRequire_text, procedures.getString("transferRequire"));
+//            else
+//                setTextView(rootView, R.id.transferRequire_text, null);
 
         } catch (JSONException e) {
             e.printStackTrace();

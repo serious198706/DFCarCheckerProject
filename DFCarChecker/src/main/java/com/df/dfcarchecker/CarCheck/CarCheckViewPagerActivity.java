@@ -166,6 +166,8 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         if(CarCheckIntegratedFragment.interiorPhotoEntities != null) {
             CarCheckIntegratedFragment.interiorPhotoEntities.clear();
         }
+
+        unregisterReceiver(broadcastReceiver);
     }
 
 
@@ -314,7 +316,6 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
                 // 修改车辆信息
                 if(!jsonData.equals("")) {
-                    carCheckFrameFragment.addPhotosToQueue();
                     canCommit = true;
 
                     JSONObject finalJsonObject = new JSONObject();
@@ -324,7 +325,37 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                         JSONObject jsonObject = new JSONObject(jsonData);
                         JSONObject photos = jsonObject.getJSONObject("photos");
 
+                        String tradeCode;
+                        String totalScore;
+                        String checkUserId;
+                        String createdDate;
+                        String sellerId;
+
                         finalJsonObject = generateCommitJsonObject().put("photos", photos);
+
+                        if(jsonObject.has("tradeCode")) {
+                            tradeCode = jsonObject.getString("tradeCode");
+                            finalJsonObject.put("tradeCode", tradeCode);
+                        }
+                        if(jsonObject.has("totalScore")) {
+                            totalScore = jsonObject.getString("totalScore");
+                            finalJsonObject.put("totalScore", totalScore);
+                        }
+
+                        if(jsonObject.has("checkUserId")) {
+                            checkUserId = jsonObject.getString("checkUserId");
+                            finalJsonObject.put("checkUserId", checkUserId);
+                        }
+
+                        if(jsonObject.has("createdDate")) {
+                            createdDate = jsonObject.getString("createdDate");
+                            finalJsonObject.put("createdDate", createdDate);
+                        }
+
+                        if(jsonObject.has("sellerId")) {
+                            sellerId = jsonObject.getString("sellerId");
+                            finalJsonObject.put("sellerId", sellerId);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -363,27 +394,25 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(mCommitProgressDialog != null)
+            if(mCommitProgressDialog != null) {
                 mCommitProgressDialog.dismiss();
+                String result = intent.getExtras().getString("result");
 
-            String result = intent.getExtras().getString("result");
+                // 提交成功
+                if(result.equals("0")) {
+                    Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
+                    // 停止服务
+                    Intent serviceIntent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
+                    stopService(serviceIntent);
 
-            // 提交成功
-            if(result.equals("0")) {
-                Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(CarCheckViewPagerActivity.this, "提交失败！", Toast.LENGTH_LONG).show();
+                    // 关闭界面
+                    finish();
+                } else {
+                    String error = intent.getExtras().getString("errorMsg");
+                    Toast.makeText(CarCheckViewPagerActivity.this, "提交失败！" + error,
+                            Toast.LENGTH_LONG).show();
+                }
             }
-
-            // 停止服务
-            Intent serviceIntent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
-            stopService(serviceIntent);
-
-            // 注销广播接收器
-            unregisterReceiver(broadcastReceiver);
-
-            // 关闭界面
-            finish();
         }
     };
 
@@ -438,7 +467,17 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                         .getJSONObject("exterior");
                 conditions.put("exterior", exterior);
             } else {
-                conditions.put("exterior", CarCheckExteriorActivity.generateExteriorJsonObject());
+                if(!jsonData.equals("")) {
+                    JSONObject exterior = new JSONObject(jsonData).getJSONObject("conditions")
+                            .getJSONObject("exterior");
+
+                    JSONObject temp = CarCheckExteriorActivity.generateExteriorJsonObject();
+                    temp.put("score", exterior.getString("score"));
+                    conditions.put("exterior", temp);
+                } else {
+                    conditions.put("exterior", CarCheckExteriorActivity
+                            .generateExteriorJsonObject());
+                }
             }
 
             // 综合检查 - 内饰检查
@@ -447,7 +486,17 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                         .getJSONObject("interior");
                 conditions.put("interior", interior);
             } else {
-                conditions.put("interior", CarCheckInteriorActivity.generateInteriorJsonObject());
+                if(!jsonData.equals("")) {
+                    JSONObject interior = new JSONObject(jsonData).getJSONObject("conditions")
+                            .getJSONObject("interior");
+
+                    JSONObject temp = CarCheckInteriorActivity.generateInteriorJsonObject();
+                    temp.put("score", interior.getString("score"));
+                    conditions.put("interior", temp);
+                } else {
+                    conditions.put("interior", CarCheckInteriorActivity
+                            .generateInteriorJsonObject());
+                }
             }
 
             // 综合检查 - 发动机检查
@@ -460,7 +509,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
             conditions.put("function", CarCheckIntegratedFragment.generateFunctionJsonObject());
 
             // 综合检查 - 底盘检查
-            conditions.put("chassis", CarCheckIntegratedFragment.generateChassisJsonObject());
+            //conditions.put("chassis", CarCheckIntegratedFragment.generateChassisJsonObject());
 
             // 综合检查 - 泡水检查
             conditions.put("flooded", CarCheckIntegratedFragment.generateFloodedJsonObject());

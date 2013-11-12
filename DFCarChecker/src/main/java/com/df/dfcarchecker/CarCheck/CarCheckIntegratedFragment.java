@@ -657,7 +657,7 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
             engine = conditions.getJSONObject("engine");
             gearbox = conditions.getJSONObject("gearbox");
             function = conditions.getJSONObject("function");
-            chassis = conditions.getJSONObject("chassis");
+            //chassis = conditions.getJSONObject("chassis");
             flooded = conditions.getJSONObject("flooded");
             comment = conditions.getString("comment");
 
@@ -672,7 +672,7 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         fillEngineWithJsonObject();
         fillGearboxWithJsonObject();
         fillFunctionWithJsonObject();
-        fillChassisWithJsonObject();
+        //fillChassisWithJsonObject();
         fillFloodedWithJsonObject();
         fillCommentWithString();
 

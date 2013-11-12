@@ -262,8 +262,17 @@ public class ExteriorPaintView extends PaintView {
         return data.get(data.size()-1);
     }
 
+    public List<PosEntity> getPosEntities() {
+        return data;
+    }
+
     public List<PhotoEntity> getPhotoEntities() { return photoEntities; }
     public List<PhotoEntity> getPhotoEntities(String sight) { return null; }
+
+    public Bitmap getSketchBitmap() {
+        return this.bitmap;
+    }
+
 
     public String getGroup() {
         return "exterior";

@@ -36,7 +36,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import static com.df.service.Helper.setEditText;
@@ -65,7 +70,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     private JSONObject conditions;
 
     private String jsonData = "";
-
+    int figure;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +84,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         cameraButton.setOnClickListener(this);
 
         // 点击图片进入绘制界面
-        int figure = Integer.parseInt(CarCheckBasicInfoFragment.mCarSettings.getFigure());
+        figure = Integer.parseInt(CarCheckBasicInfoFragment.mCarSettings.getFigure());
         Bitmap previewViewBitmap = getBitmapFromFigure(figure);
 
         interiorPaintPreviewView = (InteriorPaintPreviewView) findViewById(R.id.in_base_image_preview);
@@ -393,7 +398,49 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
             photoEntities.remove(0);
         }
 
-        if(CarCheckPaintActivity.sketchPhotoEntities != null) {
+        // 如果草图队列为空
+        if(CarCheckPaintActivity.sketchPhotoEntities == null || CarCheckPaintActivity
+                .sketchPhotoEntities.isEmpty()) {
+            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
+                    ".cheyipai/" + getNameFromFigure(figure));
+            File dst = new File(Environment.getExternalStorageDirectory().getPath() +
+                    "/Pictures/DFCarChecker/" + "sketch_i");
+
+            try {
+                copy(file, dst);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+
+            // 组织jsonString
+            JSONObject jsonObject = new JSONObject();
+
+            try {
+                jsonObject.put("Group", "interior");
+                jsonObject.put("Part", "sketch");
+
+                JSONObject photoData = new JSONObject();
+                photoData.put("height", bitmap.getHeight());
+                photoData.put("width", bitmap.getWidth());
+
+                jsonObject.put("PhotoData", photoData);
+                jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
+                jsonObject.put("UserId", MainActivity.userInfo.getId());
+                jsonObject.put("Key", MainActivity.userInfo.getKey());
+            } catch (JSONException e) {
+
+            }
+
+            PhotoEntity photoEntity = new PhotoEntity();
+            photoEntity.setFileName("sketch_i");
+            photoEntity.setJsonString(jsonObject.toString());
+
+            imageUploadQueue.addImage(photoEntity);
+        }
+        // 如果草图队列不为空
+        else {
             for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
                 imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
             }
@@ -409,9 +456,31 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
 
+        return BitmapFactory.decodeFile(getBitmapNameFromFigure(figure), options);
+    }
+
+    private String getBitmapNameFromFigure(int figure) {
         String path = Environment.getExternalStorageDirectory().toString();
         path += "/.cheyipai/";
 
+        return path + getNameFromFigure(figure);
+    }
+
+    public void copy(File src, File dst) throws IOException {
+        InputStream in = new FileInputStream(src);
+        OutputStream out = new FileOutputStream(dst);
+
+        // Transfer bytes from in to out
+        byte[] buf = new byte[1024];
+        int len;
+        while ((len = in.read(buf)) > 0) {
+            out.write(buf, 0, len);
+        }
+        in.close();
+        out.close();
+    }
+
+    private String getNameFromFigure(int figure) {
         // 默认为三厢四门图
         String name = "d4s4";
 
@@ -430,7 +499,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
                 break;
         }
 
-        return BitmapFactory.decodeFile(path + name, options);
+        return name;
     }
 
     public static JSONObject generateInteriorJsonObject() {

@@ -7,7 +7,8 @@
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
             android:focusable="true"
-            android:focusableInTouchMode="true">
+            android:focusableInTouchMode="true"
+            android:background="#FFF">
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
@@ -103,6 +104,7 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:drawableRight="@drawable/camera"
+                        android:textColor="#FFF"
                         android:background="@drawable/button_custom"/>
             </TableRow>
             <TextView

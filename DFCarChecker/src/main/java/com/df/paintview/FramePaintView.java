@@ -167,6 +167,10 @@ public class FramePaintView extends PaintView {
         return data.get(data.size()-1);
     }
 
+    public List<PosEntity> getPosEntities() {
+        return data;
+    }
+
     public List<PhotoEntity> getPhotoEntities() {
         return null;
     }
@@ -177,6 +181,11 @@ public class FramePaintView extends PaintView {
         else
             return photoEntitiesRear;
     }
+
+    public Bitmap getSketchBitmap() {
+        return this.bitmap;
+    }
+
 
     public String getGroup() {
         return "frame";

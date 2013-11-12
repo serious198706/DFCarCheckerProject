@@ -267,11 +267,8 @@ public class CarCheckPaintActivity extends Activity {
     private void captureResultImage(){
         paintView = (PaintView)map.get(currentPaintView);
 
-        // 如果没有缺陷点，则不要保存草图了
-        if(paintView.getPosEntity() != null) {
-            mSaveSketchImageTask = new SaveSketchImageTask(this);
-            mSaveSketchImageTask.execute((Void) null);
-        }
+        mSaveSketchImageTask = new SaveSketchImageTask(this);
+        mSaveSketchImageTask.execute((Void) null);
     }
 
     // 提醒用户
@@ -345,7 +342,7 @@ public class CarCheckPaintActivity extends Activity {
             startX = x0;
             startY = y0;
             endX = endY = 0;
-            radius = dr;
+            radius = dr / 2;
         }
 
         // 如果是结构，则要特殊处理 ----- 艹，结构老是要特殊处理
@@ -414,11 +411,18 @@ public class CarCheckPaintActivity extends Activity {
         @Override
         protected Boolean doInBackground(Void... params) {
             boolean success = false;
+            Bitmap b;
+            Canvas c;
 
-            Bitmap b = Bitmap.createBitmap(targetView.getWidth(),targetView.getHeight(),
-                    Bitmap.Config.ARGB_8888);
-            Canvas c = new Canvas(b);
-            targetView.draw(c);
+            // 如果缺陷信息为空，则生成默认的草图
+            if(paintView.getPosEntities() == null || paintView.getPosEntities().isEmpty()) {
+                b = paintView.getSketchBitmap();
+            } else {
+                b = Bitmap.createBitmap(targetView.getWidth(),targetView.getHeight(),
+                        Bitmap.Config.ARGB_8888);
+                c = new Canvas(b);
+                targetView.draw(c);
+            }
 
             String path = Environment.getExternalStorageDirectory().getPath();
             path += "/Pictures/DFCarChecker/";
@@ -475,8 +479,8 @@ public class CarCheckPaintActivity extends Activity {
                 }
 
                 JSONObject photoData = new JSONObject();
-                photoData.put("height", targetView.getHeight());
-                photoData.put("width", targetView.getWidth());
+                photoData.put("height", b.getHeight());
+                photoData.put("width", b.getWidth());
 
                 jsonObject.put("PhotoData", photoData);
                 jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);

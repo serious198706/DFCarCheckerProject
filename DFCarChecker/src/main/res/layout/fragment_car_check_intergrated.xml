@@ -44,6 +44,7 @@
                 android:layout_marginTop="5dp"
                 android:textSize="18sp"
                 android:text="@string/out"
+                android:textColor="#FFF"
                 android:background="@drawable/button_custom"/>
         </TableRow>
 
@@ -82,6 +83,7 @@
                 android:layout_marginTop="5dp"
                 android:textSize="18sp"
                 android:text="@string/in"
+                android:textColor="#FFF"
                 android:background="@drawable/button_custom"/>
         </TableRow>
 
@@ -625,7 +627,8 @@
         <LinearLayout android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="18dp">
+            android:layout_marginTop="18dp"
+            android:visibility="gone">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -646,7 +649,8 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:background="#000"/>
+            android:background="#000"
+            android:visibility="gone"/>
         <!--TableRow>
             <Button android:id="@+id/it_chassis_button"
                 android:layout_width="0dp"
@@ -655,7 +659,7 @@
                 android:textSize="18sp"
                 android:text="@string/it_chassis"/>
         </TableRow-->
-        <TableRow>
+        <TableRow  android:visibility="gone">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -669,7 +673,7 @@
                 android:entries="@array/yes_no">
             </Spinner>
         </TableRow>
-        <TableRow>
+        <TableRow  android:visibility="gone">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -683,7 +687,7 @@
                 android:entries="@array/yes_no">
             </Spinner>
         </TableRow>
-        <TableRow>
+        <TableRow  android:visibility="gone">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -697,7 +701,7 @@
                 android:entries="@array/yes_no">
             </Spinner>
         </TableRow>
-        <TableRow>
+        <TableRow  android:visibility="gone">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -711,7 +715,7 @@
                 android:entries="@array/yes_no">
             </Spinner>
         </TableRow>
-        <TableRow>
+        <TableRow android:visibility="gone">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -725,7 +729,7 @@
                 android:entries="@array/yes_no">
             </Spinner>
         </TableRow>
-        <TableRow>
+        <TableRow android:visibility="gone">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -739,7 +743,7 @@
                 android:entries="@array/yes_no">
             </Spinner>
         </TableRow>
-        <TableRow>
+        <TableRow android:visibility="gone">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

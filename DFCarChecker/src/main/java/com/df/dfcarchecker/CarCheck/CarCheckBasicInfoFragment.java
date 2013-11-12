@@ -214,11 +214,18 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             public void afterTextChanged(Editable edt)
             {
                 String temp = edt.toString();
-                int posDot = temp.indexOf(".");
-                if (posDot <= 0) return;
-                if (temp.length() - posDot - 1 > 2)
-                {
-                    edt.delete(posDot + 3, posDot + 4);
+
+                if(!temp.contains(".")) {
+                    if(temp.length() > 2) {
+                        return;
+                    }
+                } else {
+                    int posDot = temp.indexOf(".");
+                    if (posDot <= 0) return;
+                    if (temp.length() - posDot - 1 > 2)
+                    {
+                        edt.delete(posDot + 3, posDot + 4);
+                    }
                 }
             }
 
@@ -592,25 +599,25 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     // 解析车型XML
     public void ParseXml() {
         try {
-            String path = Environment.getExternalStorageDirectory().getPath() + "/.cheyipai/";
-            String enFile = path + "df001";
-            String zippedFile = path + "zip";
-            String unzippedFile = path + "vm.xml";
-
-            EncryptDecryptFile encryptDecryptFile = new EncryptDecryptFile();
-
-            try {
-                encryptDecryptFile.decrypt(new FileInputStream(enFile),
-                        new FileOutputStream(zippedFile));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-
-            Decompress decompress = new Decompress(zippedFile, unzippedFile);
-            decompress.unzip();
+//            String path = Environment.getExternalStorageDirectory().getPath() + "/.cheyipai/";
+//            String enFile = path + "df001";
+//            String zippedFile = path + "zip";
+//            String unzippedFile = path + "vm.xml";
+//
+//            EncryptDecryptFile encryptDecryptFile = new EncryptDecryptFile();
+//
+//            try {
+//                encryptDecryptFile.decrypt(new FileInputStream(enFile),
+//                        new FileOutputStream(zippedFile));
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//
+//            Decompress decompress = new Decompress(zippedFile, unzippedFile);
+//            decompress.unzip();
 
             File f = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
-                    ".cheyipai/vm.xml");
+                    ".cheyipai/VehicleModel.xml");
             fis = new FileInputStream(f);
 
             if(fis == null) {
@@ -740,9 +747,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
             // 数字，单独判断
             if(getEditText(rootView, R.id.ct_insuranceAmount_edit).equals(""))
-                procedures.put("insuranceAmount", getEditText(rootView, R.id.ct_insuranceAmount_edit));
-            else
                 procedures.put("insuranceAmount", 0);
+            else
+                procedures.put("insuranceAmount", getEditText(rootView, R.id.ct_insuranceAmount_edit));
 
             procedures.put("insuranceExpiryDate", getDateString(getSpinnerSelectedText(rootView,
                     R.id.ct_insuranceExpiryYear_spinner), getSpinnerSelectedText(rootView,
@@ -754,8 +761,10 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             procedures.put("ownerName", getEditText(rootView, R.id.ci_ownerName_edit));
             procedures.put("ownerIdNumber", getEditText(rootView, R.id.ci_ownerIdNumber_edit));
             procedures.put("ownerPhone", getEditText(rootView, R.id.ci_ownerPhone_edit));
-            procedures.put("transferAgree", getSpinnerSelectedText(rootView, R.id.ex_transferAgree_spinner));
-            procedures.put("transferRequire", getEditText(rootView, R.id.ct_transferRequire_edit));
+            //procedures.put("transferAgree", getSpinnerSelectedText(rootView,
+            //        R.id.ex_transferAgree_spinner));
+            //procedures.put("transferRequire", getEditText(rootView,
+            //        R.id.ct_transferRequire_edit));
         } catch (JSONException e) {
 
         }
@@ -1338,8 +1347,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     public void littleFixAboutRegArea() {
         try {
             setEditText(rootView, R.id.ci_plateNumber_edit, procedures.getString("plateNumber"));
-            enableView(false, rootView, R.id.ci_ownerIdNumber_edit);
-            enableView(false, rootView, R.id.ci_regArea_spinner);
         } catch (Exception e) {
 
         }
@@ -1515,19 +1522,24 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             mCarSettings.setSeries(series);
             mCarSettings.setModel(model);
 
-            String config = "";
+//            String config = "";
 
-            // 设置配置信息
-            for(int i = 0; i < CarSettings.getAllConfigs().length; i++) {
-                if(options.has(CarSettings.getAllConfigs()[i])) {
-                    config += CarSettings.getAllConfigs()[i];
-                    config += ",";
-                }
-            }
+//            // 设置配置信息
+//            for(int i = 0; i < CarSettings.getAllConfigs().length; i++) {
+//                if(options.has(CarSettings.getAllConfigs()[i])) {
+//
+//
+//
+//                    config += CarSettings.getAllConfigs()[i];
+//                    config += ",";
+//                }
+//            }
 
-            config = config.substring(0, config.length() - 1);
+            mCarSettings.setCarSettings(options.toString());
 
-            mCarSettings.setConfig(config);
+            //config = config.substring(0, config.length() - 1);
+
+            //mCarSettings.setConfig(config);
 
             // 设置车型分类，以用于图片类型判断
             mCarSettings.setCategory(options.getString("category"));
@@ -1593,8 +1605,10 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                         setEditText(rootView, R.id.ci_ownerName_edit, procedures.getString("ownerName"));
                         setEditText(rootView, R.id.ci_ownerIdNumber_edit, procedures.getString("ownerIdNumber"));
                         setEditText(rootView, R.id.ci_ownerPhone_edit, procedures.getString("ownerPhone"));
-                        setSpinnerSelectionWithString(rootView, R.id.ex_transferAgree_spinner, procedures.getString("transferAgree"));
-                        setEditText(rootView,R.id.ct_transferRequire_edit, procedures.getString("transferRequire"));
+                        //setSpinnerSelectionWithString(rootView, R.id.ex_transferAgree_spinner,
+                        //        procedures.getString("transferAgree"));
+                        //setEditText(rootView,R.id.ct_transferRequire_edit,
+                        //        procedures.getString("transferRequire"));
                         setSpinnerSelectionWithString(rootView, R.id.ct_insuranceExpiryYear_spinner,
                                 procedures.getString("insuranceExpiryDate").substring(0, 4));
                         setSpinnerSelectionWithString(rootView, R.id.ct_insuranceExpiryMonth_spinner, procedures.getString("insuranceExpiryDate").substring(6, 7));

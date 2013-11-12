@@ -50,6 +50,7 @@
                 android:layout_height="35dp"
                 android:layout_weight="1"
                 android:text="@string/ok"
+                android:textColor="#FFF"
                 android:background="@drawable/button_custom"
                 android:padding="-5dp" />
         </LinearLayout>
@@ -75,6 +76,7 @@
                 android:layout_weight="1"
                 android:layout_marginRight="1dp"
                 android:text="@string/ok"
+                android:textColor="#FFF"
                 android:background="@drawable/button_custom"
                 android:padding="-5dp" />
             <Button android:id="@+id/bi_brand_select_button"
@@ -83,7 +85,7 @@
                 android:layout_weight="1"
                 android:layout_marginLeft="1dp"
                 android:text="@string/choose"
-                android:background="@drawable/button_custom"
+                android:background="@drawable/button_custom1"
                 android:padding="-5dp" />
         </LinearLayout>
 
@@ -682,6 +684,7 @@
                     android:layout_width="0dp"
                     android:layout_height="35dp"
                     android:text="@string/choose"
+                    android:textColor="#FFF"
                     android:background="@drawable/button_custom"
                     android:layout_weight="1"/>
             </TableRow>
@@ -841,7 +844,7 @@
                     android:inputType="phone"
                     android:layout_weight="2"/>
             </TableRow>
-            <TableRow>
+            <TableRow  android:visibility="gone">
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
@@ -856,7 +859,7 @@
             </TableRow>
             <!-- 手续录入部分结束 -->
 
-            <TextView
+            <TextView  android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -865,11 +868,11 @@
                 style="@style/CodeFont"
                 android:text="@string/comment" />
 
-            <View
+            <View  android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="#000"/>
-            <TableRow>
+            <TableRow android:visibility="gone">
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
@@ -884,7 +887,8 @@
                     android:ems="10"/>
             </TableRow>
 
-            <ImageView android:id="@+id/imageFileName"
+            <ImageView android:visibility="gone"
+                android:id="@+id/imageFileName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:contentDescription="@string/itemImage"/>

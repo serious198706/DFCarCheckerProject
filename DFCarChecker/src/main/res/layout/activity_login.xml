@@ -28,7 +28,8 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/login_bg">
 
         <LinearLayout style="@style/LoginFormContainer"
             android:orientation="vertical">
@@ -36,7 +37,7 @@
             <ImageView
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:src="@drawable/logo"/>
+                android:src="@drawable/login_logo"/>
 
             <EditText
                 android:id="@+id/userName"
@@ -44,7 +45,7 @@
                 android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="test01"/>
+                android:text="panbo"/>
 
             <EditText
                 android:id="@+id/password"

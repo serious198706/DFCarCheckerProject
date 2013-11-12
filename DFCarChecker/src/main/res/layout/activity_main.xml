@@ -3,31 +3,28 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
-    <LinearLayout
-            android:layout_width="match_parent"
+
+        <Button android:id="@+id/button_check"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:orientation="horizontal">
-            <Button android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/waiting"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:text="检测车辆"
-                    android:onClick="EnterCarCheck"/>
-            <Button android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/checked"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:text="已检车辆"
-                    android:onClick="EnterCarCheckedList"/>
-            <Button android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableTop="@drawable/quit"
-                    android:background="?android:attr/selectableItemBackground"
-                    android:text="退出系统"
-                    android:onClick="Quit"/>
-    </LinearLayout>
+            android:background="@drawable/button_check"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="120dp"
+            android:onClick="EnterCarCheck"/>
+        <Button android:id="@+id/button_checked"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/button_check"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_checked"
+            android:onClick="EnterCarCheckedList"/>
+        <Button android:id="@+id/button_exit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/button_checked"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_exit"
+            android:onClick="Quit"/>
 </RelativeLayout>

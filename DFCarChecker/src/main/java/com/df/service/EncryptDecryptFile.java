@@ -21,6 +21,7 @@ import javax.crypto.CipherOutputStream;
 import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.IvParameterSpec;
 
 public class EncryptDecryptFile {
@@ -36,16 +37,19 @@ public class EncryptDecryptFile {
 
     public EncryptDecryptFile() {
         try {
-            SecretKey key = KeyGenerator.getInstance("DES").generateKey();
+            KeyGenerator kg = KeyGenerator.getInstance("DES");
+
+            kg.init(56);
+
+            SecretKey key = kg.generateKey();
+
+            //SecretKey key = KeyGenerator.getInstance("DES").generateKey();
 
             AlgorithmParameterSpec paramSpec = new IvParameterSpec(iv);
 
             ecipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
-
             dcipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
-
             ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
-
             dcipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
         }
         catch (InvalidAlgorithmParameterException e) {

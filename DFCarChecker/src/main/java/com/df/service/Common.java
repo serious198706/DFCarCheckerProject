@@ -65,15 +65,15 @@ public class Common {
 
     // WebService地址
     //public static final String SERVER_ADDRESS = "http://192.168.8.33:801/";
-    public static final String SERVER_ADDRESS = "http://wcf.268v.com:8008/";
-    //public static final String SERVER_ADDRESS = "http://192.168.100.6:50/";
+    //public static final String SERVER_ADDRESS = "http://wcf.268v.com:8008/";
+    public static final String SERVER_ADDRESS = "http://192.168.100.6:50/";
 
     public static final String USER_MANAGE_SERVICE = "userManageService.svc";
     public static final String REPORT_SERVICE = "ReportService.svc";
 
     // 图片地址
-    public static final String PICUTRE_ADDRESS = "http://i.268v.com/";
-    //public static final String PICUTRE_ADDRESS = "http://192.168.100.6:8006/";
+    //public static final String PICUTRE_ADDRESS = "http://i.268v.com/";
+    public static final String PICUTRE_ADDRESS = "http://192.168.100.6:8006/";
 
 
     public static final int[][] carSettingsSpinnerMap = {

@@ -121,6 +121,7 @@
                         android:paddingLeft="10dp"
                         android:paddingRight="10dp"
                         android:drawableRight="@drawable/camera"
+                        android:textColor="#FFF"
                         android:background="@drawable/button_custom"/>/>
             </TableRow>
             <TextView
