@@ -59,6 +59,9 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
     private Intent serviceIntent;
 
+    private boolean integratedUpdated = false;
+    private boolean frameUpdated = false;
+
     // 用于修改
     private String jsonData = "";
     private int carId = 0;
@@ -197,6 +200,16 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         // When the given tab is selected, switch to the corresponding page in
         // the ViewPager.
         mViewPager.setCurrentItem(tab.getPosition());
+
+        if(tab.getPosition() == 2 && !jsonData.equals("") && !integratedUpdated) {
+            carCheckIntegratedFragment.letsEnterModifyMode();
+            integratedUpdated = true;
+        }
+
+        if(tab.getPosition() == 1 && !jsonData.equals("") && !frameUpdated) {
+            carCheckFrameFragment.letsEnterModifyMode();
+            frameUpdated = true;
+        }
     }
 
     @Override
@@ -537,7 +550,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
     public void onUpdateIntegratedUi() {
         carCheckBasicInfoFragment.littleFixAboutRegArea();
-        carCheckFrameFragment.letsEnterModifyMode();
-        carCheckIntegratedFragment.letsEnterModifyMode();
+       // carCheckFrameFragment.letsEnterModifyMode();
+       // carCheckIntegratedFragment.letsEnterModifyMode();
     }
 }

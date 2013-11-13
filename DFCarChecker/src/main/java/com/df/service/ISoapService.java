@@ -10,8 +10,9 @@ import org.ksoap2.serialization.SoapObject;
 
 public interface ISoapService {
     boolean login(Context context, String jsonString);
-    boolean communicateWithServer(Context context, String jsonString);
-    boolean uploadPicture(Context context, Bitmap bitmap, String jsonString);
+    boolean communicateWithServer(String jsonString);
+    boolean uploadPicture(Bitmap bitmap, String jsonString);
+    boolean uploadPicture(String jsonString);
     public boolean sendIpAddress();
     public boolean checkUpdate(Context context);
 }

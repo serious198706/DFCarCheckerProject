@@ -27,4 +27,14 @@
             android:layout_marginTop="20dp"
             android:background="@drawable/button_exit"
             android:onClick="Quit"/>
+
+        <TextView android:id="@+id/appVersion_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:text="v1.0.0"
+            android:textSize="18sp"/>
+
 </RelativeLayout>

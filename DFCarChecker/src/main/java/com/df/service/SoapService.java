@@ -104,7 +104,7 @@ public class SoapService implements ISoapService {
     }
 
     // 其他通讯，如提交信息等
-    public boolean communicateWithServer(Context context, String jsonString) {
+    public boolean communicateWithServer(String jsonString) {
         errorMessage = "";
         resultMessage = "";
 
@@ -157,13 +157,13 @@ public class SoapService implements ISoapService {
     }
 
     // 上传照片
-    public boolean uploadPicture(Context context, Bitmap bitmap, String jsonString) {
+    public boolean uploadPicture(Bitmap bitmap, String jsonString) {
         errorMessage = "";
         resultMessage = "";
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         byte[] byteArray = null;
-        byte[] newByteArray = null;
+        byte[] newByteArray;
 
         // 将图片转换成流
         // 有可能有的缺陷没有照片
@@ -188,12 +188,85 @@ public class SoapService implements ISoapService {
             }
 
             byteArray = stream.toByteArray();
-        } else {
+        }
+        else {
             // 如果没有图片，那还传个毛线
             errorMessage = "图片为空！";
             return false;
 
-            //byteArray = new byte[0];
+//            byteArray = new byte[0];
+        }
+
+        // 在图片流后面加上分隔符 #:
+        jsonString = "#:" + jsonString;
+
+        // 将图片流复制到新的byte数组中
+        int length = byteArray.length;
+
+        newByteArray = new byte[length + jsonString.length()];
+        System.arraycopy(byteArray, 0, newByteArray, 0, length);
+
+        for(int i = 0; i < jsonString.length(); i++) {
+            newByteArray[length + i] = jsonString.getBytes()[i];
+        }
+
+        // 各种配置
+        SoapObject request = new SoapObject(NAMESPACE, this.methodName);
+        request.addProperty("stream", newByteArray);
+
+        SoapSerializationEnvelope envelope=new SoapSerializationEnvelope(SoapEnvelope.VER11);
+        new MarshalBase64().register(envelope);
+        envelope.dotNet = true;
+        envelope.setOutputSoapObject(request);
+
+        HttpTransportSE trans = new HttpTransportSE(this.url);
+
+        try {
+            trans.call(this.soapAction, envelope);
+        } catch (Exception e) {
+            if(e.getMessage() != null)
+                Log.d(Common.TAG, "无法连接到服务器：" + e.getMessage());
+            else
+                Log.d(Common.TAG, "无法连接到服务器！");
+
+            errorMessage = "无法连接到服务器！";
+
+            return false;
+        }
+
+        // 收到的结果
+        SoapObject soapObject = (SoapObject) envelope.bodyIn;
+
+        // 成功失败标志位
+        String result = soapObject.getProperty(0).toString();
+
+        // JSON格式数据
+        resultMessage = soapObject.getPropertySafely("SaveCarPictureTagKeyResult", "").toString();
+
+        // 成功
+        if(result.equals("0")) {
+            // JSON格式数据
+            errorMessage = "";
+            return true;
+        }
+        // 失败
+        else {
+            Log.d(Common.TAG, resultMessage);
+            errorMessage = resultMessage;
+            return false;
+        }
+    }
+
+    // 上传空照片
+    public boolean uploadPicture(String jsonString) {
+        errorMessage = "";
+        resultMessage = "";
+
+        byte[] byteArray = new byte[6];
+        byte[] newByteArray;
+
+        for(int i = 0; i < byteArray.length; i++) {
+            byteArray[i] = 'F';
         }
 
         // 在图片流后面加上分隔符 #:
@@ -339,18 +412,15 @@ public class SoapService implements ISoapService {
 
         // 成功失败标志位
         String result = soapObject.getProperty(0).toString();
-        Log.d(Common.TAG, result);
 
         // 成功
-        if(result.equals("0")) {
-            // JSON格式数据
-            resultMessage = soapObject.getProperty(1).toString();
-
+        if(!result.equals("")) {
+            resultMessage = result;
             return true;
         }
         // 失败
         else {
-            Log.d(Common.TAG, resultMessage);
+            Log.d(Common.TAG, "获取版本失败！");
             return false;
         }
     }

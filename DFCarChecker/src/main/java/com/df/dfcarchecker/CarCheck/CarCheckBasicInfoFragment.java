@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -58,6 +60,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 import static com.df.service.Helper.SetSpinnerData;
 import static com.df.service.Helper.enableView;
@@ -66,6 +69,7 @@ import static com.df.service.Helper.getEditText;
 import static com.df.service.Helper.getSpinnerSelectedText;
 import static com.df.service.Helper.setEditText;
 import static com.df.service.Helper.setSpinnerSelectionWithString;
+import static com.df.service.Helper.showView;
 
 public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickListener {
     private static View rootView;
@@ -115,6 +119,9 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     private EditText carNumberEdit;
 
+    private Spinner transmissionSpinner;
+    private EditText transmissionEdit;
+
     private boolean isPorted;
     private TableRow portedProcedureRow;
 
@@ -131,12 +138,15 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     private ProgressDialog mProgressDialog;
 
+    private EditText licencePhotoMatchEdit;
+
     // 用于修改
     private String jsonData = "";
     private boolean modifyMode = false;
 
     OnHeadlineSelectedListener mCallback;
     private JSONObject procedures;
+    private JSONObject options;
 
     public CarCheckBasicInfoFragment(String jsonData) {
         this.jsonData = jsonData;
@@ -165,6 +175,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                             Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Random r=new Random();
+        int uniqueNumber =(r.nextInt(999) + 100);
+
+        // 根据产生uniqueId（对应一次检测）
+        uniqueId = Integer.toString(uniqueNumber);
+
         this.inflater = inflater;
         rootView = inflater.inflate(R.layout.fragment_car_check_basic_info, container, false);
 
@@ -190,9 +207,38 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         Button matchButton = (Button) rootView.findViewById(R.id.ct_licencePhotoMatch_button);
         matchButton.setOnClickListener(this);
 
+        InputFilter alphaNumericFilter = new InputFilter() {
+            @Override
+            public CharSequence filter(CharSequence arg0, int arg1, int arg2, Spanned arg3, int arg4, int arg5)
+            {
+                for (int k = arg1; k < arg2; k++) {
+                    if (!Character.isLetterOrDigit(arg0.charAt(k))) {
+                        return "";
+                    }
+                }
+                return null;
+            }
+        };
         vin_edit = (EditText) rootView.findViewById(R.id.bi_vin_edit);
+        vin_edit.setFilters(new InputFilter[]{ alphaNumericFilter, new InputFilter.AllCaps()});
+
         brandEdit = (EditText) rootView.findViewById(R.id.bi_brand_edit);
         displacementEdit = (EditText) rootView.findViewById(R.id.csi_displacement_edit);
+
+        transmissionEdit = (EditText) rootView.findViewById(R.id.csi_transmission_edit);
+//
+//        transmissionSpinner = (Spinner)rootView.findViewById(R.id.csi_transmission_spinner);
+//        transmissionSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+//            @Override
+//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+//                transmissionEdit.setText(adapterView.getSelectedItem().toString());
+//            }
+//
+//            @Override
+//            public void onNothingSelected(AdapterView<?> adapterView) {
+//
+//            }
+//        });
 
         runEdit = (EditText) rootView.findViewById(R.id.bi_mileage_edit);
 
@@ -209,29 +255,48 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         });
 
         // 只允许小数点后两位
-        runEdit.addTextChangedListener(new TextWatcher()
-        {
-            public void afterTextChanged(Editable edt)
-            {
+        runEdit.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable edt) {
                 String temp = edt.toString();
 
-                if(!temp.contains(".")) {
-                    if(temp.length() > 2) {
-                        return;
-                    }
-                } else {
+                if(temp.contains(".")) {
                     int posDot = temp.indexOf(".");
                     if (posDot <= 0) return;
-                    if (temp.length() - posDot - 1 > 2)
-                    {
+                    if (temp.length() - posDot - 1 > 2) {
                         edt.delete(posDot + 3, posDot + 4);
+                    }
+                } else {
+                    if(temp.length() > 2) {
+                        edt.clear();
+                        edt.append(temp.substring(0, 2));
                     }
                 }
             }
 
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
 
-            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
+            public void onTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
+            }
+        });
+
+        licencePhotoMatchEdit = (EditText) rootView.findViewById(R.id
+                .ct_licencePhotoMatch_edit);
+        licencePhotoMatchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i2, int i3) {
+                licencePhotoMatchEdit.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                licencePhotoMatchEdit.setError(null);
+            }
         });
 
         // 购车发票
@@ -264,7 +329,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // 过户次数大于0
-                if(i > 0) {
+                if (i > 0) {
                     Helper.showView(true, rootView, R.id.ci_last_transfer_row);
                 } else {
                     Helper.showView(false, rootView, R.id.ci_last_transfer_row);
@@ -283,7 +348,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 // 保险随车出售
-                if(i == 0) {
+                if (i == 0) {
                     Helper.showView(true, rootView, R.id.ct_insurance_table);
                 } else {
                     Helper.showView(false, rootView, R.id.ct_insurance_table);
@@ -385,10 +450,25 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     // 检查VIN并获取车辆配置
     private void checkVinAndGetCarSettings() {
-        //String vinString = vin_edit.getText().toString();
-        Spinner dummySpinner = (Spinner) rootView.findViewById(R.id.bi_vin_spinner);
-        final String vinString = dummySpinner.getSelectedItem().toString();
-        vin_edit.setText(vinString);
+        // 如果是修改模式，则不允许修改vin
+        if(!jsonData.equals("")) {
+            AlertDialog dialog = new AlertDialog.Builder(rootView.getContext())
+                    .setTitle(R.string.alert_title)
+                    .setMessage("不允许修改VIN码！")
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                        }
+                   }).create();
+
+            dialog.show();
+            return;
+        }
+
+        final String vinString = vin_edit.getText().toString();
+        //Spinner dummySpinner = (Spinner) rootView.findViewById(R.id.bi_vin_spinner);
+        //final String vinString = dummySpinner.getSelectedItem().toString();
 
         // 是否为空
         if(vinString.equals("")) {
@@ -433,9 +513,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         // 传参数为空，表示提交的为VIN
         getCarSettingsFromServer("");
-
-        // 根据vin产生uniqueId（对应一次检测）
-        uniqueId = vinString.substring(vinString.length() - 3, vinString.length());
     }
 
     // 从服务器获取车辆配置
@@ -469,12 +546,16 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             setSpinnerSelection(Common.carSettingsSpinnerMap[i][0], selection);
         }
 
+        transmissionEdit.setText(mCarSettings.getTransmissionText());
+
         // 发动“车体结构检查”里显示的图片
         if(!mCarSettings.getFigure().equals(""))
             CarCheckFrameFragment.setFigureImage(Integer.parseInt(mCarSettings.getFigure()));
 
         // 改动“综合检查”里的档位类型选项
         CarCheckIntegratedFragment.setGearType(mCarSettings.getTransmissionText());
+
+        mCallback.onUpdateIntegratedUi();
     }
 
     // 设置配置信息中的Spinner，并与综合检查中的Spinner产生联动
@@ -493,7 +574,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
             }
         });
-
     }
 
     // 显示车辆的配置信息
@@ -572,6 +652,11 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                 mCarSettings.setBrandString(brandString);
                 mCarSettings.setDisplacement(volumeString);
+                mCarSettings.setCountry(country);
+                mCarSettings.setBrand(brand);
+                mCarSettings.setManufacturer(manufacturer);
+                mCarSettings.setSeries(series);
+                mCarSettings.setModel(model);
 
                 setCarSettingsSpinners(model.getName());
 
@@ -839,7 +924,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                             "http://cheyipai/IReportService/GetOptionsBySeriesIdAndModelId",
                             "GetOptionsBySeriesIdAndModelId");
 
-                    success = soapService.communicateWithServer(context, jsonObject.toString());
+                    success = soapService.communicateWithServer(jsonObject.toString());
 
                     // 传输失败，获取错误信息并显示
                     if(!success) {
@@ -869,7 +954,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                             "http://cheyipai/IReportService/GetCarConfigInfoByVin",
                             "GetCarConfigInfoByVin");
 
-                    success = soapService.communicateWithServer(context, jsonObject.toString());
+                    success = soapService.communicateWithServer(jsonObject.toString());
 
                     // 传输失败，获取错误信息并显示
                     if(!success) {
@@ -1344,9 +1429,11 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
 
     // 如果为修改模式，要手动填写一下注册地，因为spinner变化会导致注册地变化
+    // 同时修改一下vin
     public void littleFixAboutRegArea() {
         try {
             setEditText(rootView, R.id.ci_plateNumber_edit, procedures.getString("plateNumber"));
+            //setEditText(rootView, R.id.bi_vin_edit, options.getString("vin"));
         } catch (Exception e) {
 
         }
@@ -1494,7 +1581,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
         try {
             JSONObject features = new JSONObject(jsonData).getJSONObject("features");
 
-            JSONObject options = features.getJSONObject("options");
+            options = features.getJSONObject("options");
             procedures = features.getJSONObject("procedures");
 
             String brandString = options.getString("manufacturer") + " " +
@@ -1555,6 +1642,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     CarCheckFrameFragment.showContent();
                     CarCheckIntegratedFragment.showContent();
                     // 更新UI
+
                     updateUi();
                 }
             });
@@ -1563,6 +1651,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                 @Override
                 public void run() {
                     try {
+                        // vin内容覆盖
+                        setEditText(rootView, R.id.bi_vin_edit, options.getString("vin"));
+                        enableView(false, rootView, R.id.bi_vin_edit);
+                        enableView(false, rootView, R.id.bi_vin_button);
+                        enableView(false, rootView, R.id.bi_brand_ok_button);
+
+                        // 手续组内容覆盖
                         setSpinnerSelectionWithString(rootView, R.id.ci_regArea_spinner,
                                 procedures.getString("regArea"));
 
@@ -1593,7 +1688,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                                 procedures.getString("transferLastDate").substring(0, 4));
                         setSpinnerSelectionWithString(rootView, R.id.ci_transferLastMonth_spinner,
                                 procedures.getString("transferLastDate").substring(6, 7));
-
                         setEditText(rootView, R.id.ct_licencePhotoMatch_edit, procedures.getString("licensePhotoMatch"));
                         setSpinnerSelectionWithString(rootView, R.id.ct_insurance_spinner, procedures.getString("insurance"));
                         setSpinnerSelectionWithString(rootView, R.id.ct_insuranceRegion_spinner, procedures.getString("insuranceRegion"));
@@ -1616,8 +1710,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                         setSpinnerSelectionWithString(rootView, R.id.ct_annualInspectionMonth_spinner, procedures.getString("annualInspection").substring(6, 7));
                         setSpinnerSelectionWithString(rootView, R.id.ct_compulsoryInsuranceYear_spinner, procedures.getString("compulsoryInsurance").substring(0, 4));
                         setSpinnerSelectionWithString(rootView, R.id.ct_compulsoryInsuranceMonth_spinner, procedures.getString("compulsoryInsurance").substring(6, 7));
-
-                        mCallback.onUpdateIntegratedUi();
 
                         mProgressDialog.dismiss();
                     } catch (JSONException e) {

@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ScrollView;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -104,6 +105,7 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         photoEntitiesRear = new ArrayList<PhotoEntity>();
 
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
+
         previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4_f", options);
         framePaintPreviewViewFront = (FramePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_front);
         framePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
@@ -234,9 +236,10 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         //builder.setView(inflater.inflate(R.layout.bi_camera_cato_dialog, null));
 
         //builder.setMessage(R.string.ci_attention_content).setTitle(R.string.ci_attention);
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // 取消
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
             }
         });
 
@@ -456,6 +459,9 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
     }
 
     public void letsEnterModifyMode() {
+        TableLayout cameraArea = (TableLayout)rootView.findViewById(R.id.cameraArea);
+        cameraArea.setVisibility(View.GONE);
+
         framePaintPreviewViewFront.setOnClickListener(null);
         tipFront.setOnClickListener(null);
         framePaintPreviewViewRear.setOnClickListener(null);
@@ -548,11 +554,13 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
             if(sight.equals("front")) {
                 framePaintPreviewViewFront.init(result, posEntitiesFront);
                 framePaintPreviewViewFront.setAlpha(1f);
+                framePaintPreviewViewFront.invalidate();
                 tipFront.setVisibility(View.GONE);
 
             } else {
                 framePaintPreviewViewRear.init(result, posEntitiesRear);
                 framePaintPreviewViewRear.setAlpha(1f);
+                framePaintPreviewViewRear.invalidate();
                 tipRear.setVisibility(View.GONE);
             }
         }

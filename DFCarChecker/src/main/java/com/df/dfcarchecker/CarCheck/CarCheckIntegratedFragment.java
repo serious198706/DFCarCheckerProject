@@ -308,10 +308,16 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
                         Bundle bundle = data.getExtras();
                         if(bundle != null) {
                             // 保存车辆漆面光洁度的选择项
-                            this.paintIndex = bundle.getString("INDEX");
+                            if(bundle.containsKey("INDEX"))
+                                this.paintIndex = bundle.getString("INDEX");
+                            else
+                                this.paintIndex = "0";
 
                             // 保存备注信息
-                            this.exteriorComment = bundle.getString("COMMENT");
+                            if(bundle.containsKey("COMMENT"))
+                                this.exteriorComment = bundle.getString("COMMENT");
+                            else
+                                this.exteriorComment = "";
 
                             // 保存拍摄张数
                             this.exteriorPhotoCount = bundle.getIntArray("PHOTO_COUNT");
@@ -328,10 +334,16 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
                         Bundle bundle = data.getExtras();
                         if(bundle != null) {
                             // 保存车辆漆面光洁度的选择项
-                            this.sealIndex = bundle.getString("INDEX");
+                            if(bundle.containsKey("INDEX"))
+                                this.sealIndex = bundle.getString("INDEX");
+                            else
+                                this.sealIndex = "0";
 
                             // 保存备注信息
-                            this.interiorComment = bundle.getString("COMMENT");
+                            if(bundle.containsKey("COMMENT"))
+                                this.interiorComment = bundle.getString("COMMENT");
+                            else
+                                this.interiorComment = "";
 
                             // 保存拍摄张数
                             this.interiorPhotoCount = bundle.getIntArray("PHOTO_COUNT");

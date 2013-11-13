@@ -8,6 +8,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -284,6 +286,11 @@ public class LoginActivity extends Activity {
         protected Boolean doInBackground(Void... params) {
             boolean success = false;
 
+            WifiManager wifiMan = (WifiManager) context.getSystemService(
+                    Context.WIFI_SERVICE);
+            WifiInfo wifiInf = wifiMan.getConnectionInfo();
+            String macAddr = wifiInf.getMacAddress();
+
 //            try {
 //                soapService = new SoapService();
 //
@@ -303,6 +310,7 @@ public class LoginActivity extends Activity {
 
                 jsonObject.put("UserName", mUserName);
                 jsonObject.put("Password", mPassword);
+                jsonObject.put("Key", macAddr);
 
                 soapService = new SoapService();
 

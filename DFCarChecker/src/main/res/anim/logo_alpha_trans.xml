@@ -8,7 +8,7 @@
     <set>
         <translate
             android:fromYDelta="0"
-            android:toYDelta="50"
+            android:toYDelta="55"
             android:duration="1000"/>
     </set>
     <!-- 透明度控制动画效果 alpha

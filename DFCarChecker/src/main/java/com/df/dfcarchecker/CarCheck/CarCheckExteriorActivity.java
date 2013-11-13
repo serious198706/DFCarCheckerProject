@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -154,10 +155,20 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
                 saveResult();
                 break;
             case R.id.action_discard:
-                finish();
+                discardResult();
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void discardResult() {
+        // 创建结果意图和包括地址
+        Intent intent = new Intent();
+        intent.putExtra("PHOTO_COUNT", photoShotCount);
+
+        // 关闭activity
+        setResult(Activity.RESULT_OK, intent);
+        finish();
     }
 
     @Override
@@ -215,9 +226,10 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
             }
         });
 
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // 取消
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
             }
         });
 
@@ -478,6 +490,9 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
 
 
     private void letsEnterModifyMode() {
+        TableLayout cameraArea = (TableLayout) findViewById(R.id.cameraArea);
+        cameraArea.setVisibility(View.GONE);
+
         exteriorPaintPreviewView.setOnClickListener(null);
         tip.setOnClickListener(null);
         parsJsonData();

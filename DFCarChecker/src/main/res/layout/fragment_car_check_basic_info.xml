@@ -30,20 +30,20 @@
             android:orientation="horizontal">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:text="@string/vin"
                 android:textSize="22sp"
                 style="@style/CodeFont"/>
             <Spinner android:id="@+id/bi_vin_spinner"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
-                android:layout_weight="3"/>
+                android:layout_weight="3"
+                android:visibility="gone"/>
             <EditText android:id="@+id/bi_vin_edit"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
-                android:text="LJDBAA33630037414"
-                android:visibility="gone"/>
+                android:inputType="textCapCharacters"/>
             <!-- LE4FG65Z487015744 -->
             <Button android:id="@+id/bi_vin_button"
                 android:layout_width="0dp"
@@ -61,7 +61,7 @@
             android:visibility="gone">
             <TextView android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="1"
                 android:text="@string/brand"
                 android:textSize="22sp"
                 style="@style/CodeFont"/>
@@ -159,13 +159,21 @@
                     android:text="@string/csi_transmission"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
+                <EditText
+                    android:id="@+id/csi_transmission_edit"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_marginRight="8dp"
+                    android:editable="false"/>
                 <Spinner
                     android:id="@+id/csi_transmission_spinner"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_marginRight="8dp"
-                    android:entries="@array/csi_transmission_item"/>
+                    android:entries="@array/csi_transmission_item"
+                    android:visibility="gone"/>
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"

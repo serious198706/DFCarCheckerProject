@@ -285,6 +285,9 @@ public class ExteriorPaintView extends PaintView {
             undoData.clear();
             invalidate();
         }
+        if(!photoEntities.isEmpty()) {
+            photoEntities.clear();
+        }
     }
 
     @Override

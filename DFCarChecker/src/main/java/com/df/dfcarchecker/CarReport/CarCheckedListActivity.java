@@ -248,6 +248,8 @@ public class CarCheckedListActivity extends Activity {
 
     // 刷新列表
     private void refresh() {
+        mylist.clear();
+
         mRefreshCheckedCarListTask = new RefreshCheckedCarListTask(this);
         mRefreshCheckedCarListTask.execute((Void) null);
     }
@@ -321,14 +323,14 @@ public class CarCheckedListActivity extends Activity {
                         "http://cheyipai/IReportService/ListCheckedCarsInfoByUserid",
                         "ListCheckedCarsInfoByUserid");
 
-                success = soapService.communicateWithServer(context, jsonObject.toString());
+                success = soapService.communicateWithServer(jsonObject.toString());
 
                 // 传输失败，获取错误信息并显示
                 if(!success) {
                     Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
                 } else {
                     result = soapService.getResultMessage();
-                    startNumber += 10;
+                    //startNumber += 10;
                 }
             } catch (JSONException e) {
                 Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
@@ -399,14 +401,14 @@ public class CarCheckedListActivity extends Activity {
 
             }
 
-            success = soapService.communicateWithServer(context, jsonObject.toString());
+            success = soapService.communicateWithServer(jsonObject.toString());
 
             // 传输失败，获取错误信息并显示
             if(!success) {
                 Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
             } else {
                 result = soapService.getResultMessage();
-                startNumber += 10;
+                //startNumber += 10;
             }
             return success;
         }
@@ -461,7 +463,7 @@ public class CarCheckedListActivity extends Activity {
                         "http://cheyipai/IReportService/CheckSellerName",
                         "CheckSellerName");
 
-                success = soapService.communicateWithServer(context, jsonObject.toString());
+                success = soapService.communicateWithServer(jsonObject.toString());
             } catch (JSONException e) {
                 Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
                 return false;
@@ -589,7 +591,7 @@ public class CarCheckedListActivity extends Activity {
                         "http://cheyipai/IReportService/ImportPlatform",
                         "ImportPlatform");
 
-                success = soapService.communicateWithServer(context, jsonObject.toString());
+                success = soapService.communicateWithServer(jsonObject.toString());
 
                 result = soapService.getResultMessage();
             } catch (JSONException e) {
@@ -666,7 +668,7 @@ public class CarCheckedListActivity extends Activity {
 
             }
 
-            success = soapService.communicateWithServer(context, jsonObject.toString());
+            success = soapService.communicateWithServer(jsonObject.toString());
 
             // 传输失败，获取错误信息并显示
 

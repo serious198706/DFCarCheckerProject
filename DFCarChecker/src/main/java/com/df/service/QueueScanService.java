@@ -48,6 +48,8 @@ public class QueueScanService extends Service {
 
     private boolean canStartUpload = true;
     private boolean canStartModify = true;
+    private boolean canStartCommit = true;
+
     public static boolean committed;
     private String jsonString;
 
@@ -83,7 +85,7 @@ public class QueueScanService extends Service {
         action = intent.getExtras().getString("action");
         carId = intent.getExtras().getInt("carId");
 
-        handler.removeCallbacks(sendUpdatesToUI);
+        handler.removeCallbacks(commitToUI);
 
         return super.onStartCommand(intent,flags,startId);
     }
@@ -95,21 +97,32 @@ public class QueueScanService extends Service {
 
     @Override
     public void onDestroy() {
-        handler.removeCallbacks(sendUpdatesToUI);
+        handler.removeCallbacks(commitToUI);
         super.onDestroy();
     }
 
     // 通知主界面进行更新的线程
-    private Runnable sendUpdatesToUI = new Runnable() {
+    private Runnable commitToUI = new Runnable() {
         public void run() {
             Committed();
         }
     };
-
-    private Runnable sendUpdatesToUIFail = new Runnable() {
+    private Runnable commitToUIFail = new Runnable() {
         @Override
         public void run() {
             CommitFailed();
+        }
+    };
+    private Runnable modifyToUI = new Runnable() {
+        @Override
+        public void run() {
+            modified();
+        }
+    };
+    private Runnable modifyToUIFail = new Runnable() {
+        @Override
+        public void run() {
+            modifyFailed();
         }
     };
 
@@ -126,6 +139,20 @@ public class QueueScanService extends Service {
         intent.putExtra("errorMsg", soapService.getErrorMessage());
         sendBroadcast(intent);
     }
+
+    private void modified() {
+        Log.d(Common.TAG, "enter modified");
+        intent.putExtra("result", "0");
+        sendBroadcast(intent);
+    }
+
+    private void modifyFailed() {
+        Log.d(Common.TAG, "enter modifyfailed");
+        intent.putExtra("result", "-1");
+        intent.putExtra("errorMsg", soapService.getErrorMessage());
+        sendBroadcast(intent);
+    }
+
 
     // 从线程接收消息的Handler
     private final class ServiceHandler extends Handler {
@@ -150,13 +177,15 @@ public class QueueScanService extends Service {
                         // 已提交，并且照片池为空
                         if(committed) {
                             if(action.equals("commit") && (imageUploadQueue.getQueueSize() == 0) &&
-                                    (mCommitDataTask == null)) {
+                                    (mCommitDataTask == null) && canStartCommit) {
+                                canStartCommit = false;
                                 mCommitDataTask = new CommitDataTask(context);
                                 mCommitDataTask.execute(jsonString);
                             }
                             // 修改车辆
                             else if(action.equals("modify") && (imageUploadQueue.getQueueSize() == 0) &&
-                                    (mModifyDataTask == null) && (canStartModify)) {
+                                    (mModifyDataTask == null) && canStartModify) {
+                                canStartModify = false;
                                 mModifyDataTask = new ModifyDataTask(context);
                                 mModifyDataTask.execute(jsonString);
                             }
@@ -199,13 +228,20 @@ public class QueueScanService extends Service {
                 Bitmap bitmap = null;
                 String path = Environment.getExternalStorageDirectory().getPath();
                 path += "/Pictures/DFCarChecker/";
-                File file = new File(path + photoEntity.getFileName());
+                String fileName = photoEntity.getFileName();
 
-                // 并保存成bitmap用于上传
-                if(file != null)
-                    bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+                // 如果照片名为空串，表示要上传空照片
+                if(fileName.equals("")) {
+                    success = soapService.uploadPicture(photoEntity.getJsonString());
+                } else {
+                    File file = new File(path + fileName);
 
-                success = soapService.uploadPicture(this.context, bitmap, photoEntity.getJsonString());
+                    // 并保存成bitmap用于上传
+                    if(file != null)
+                        bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+
+                    success = soapService.uploadPicture(bitmap, photoEntity.getJsonString());
+                }
             } else {
                 success = true;
             }
@@ -219,7 +255,6 @@ public class QueueScanService extends Service {
                 Log.d(Common.TAG, "上传成功！");
                 imageUploadQueue.removeImage();
                 index = 0;
-                mUploadPictureTask = null;
             } else {
                 Log.d(Common.TAG, "上传照片失败：" + soapService.getErrorMessage());
                 Log.d(Common.TAG, "将在" + Integer.toString(waitTime[index]) + "毫秒后重试");
@@ -227,13 +262,14 @@ public class QueueScanService extends Service {
                 try {
                     // 等待时间变长，避免给服务器压力
                     Thread.sleep(waitTime[index]);
-                    if(index <= 5)
+                    if(index < 5)
                         index++;
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
             }
 
+            mUploadPictureTask = null;
             canStartUpload = true;
         }
 
@@ -277,7 +313,7 @@ public class QueueScanService extends Service {
 
             }
 
-            success = soapService.communicateWithServer(context, jsonObject.toString());
+            success = soapService.communicateWithServer(jsonObject.toString());
 
             return success;
         }
@@ -286,22 +322,26 @@ public class QueueScanService extends Service {
         protected void onPostExecute(final Boolean success) {
             if(success) {
                 Log.d(Common.TAG, "提交成功！" + soapService.getErrorMessage());
-                handler.post(sendUpdatesToUI); // 1 second
+                handler.post(commitToUI); // 1 second
             } else {
                 Log.d(Common.TAG, "提交失败!" + soapService.getErrorMessage());
-                handler.post(sendUpdatesToUIFail);
+                handler.post(commitToUIFail);
             }
 
+            action = "";
             committed = false;
             mCommitDataTask = null;
             canStartUpload = false;
+            canStartCommit = true;
         }
 
         @Override
         protected void onCancelled() {
+            action = "";
             canStartUpload = false;
             mCommitDataTask = null;
             committed = false;
+            canStartCommit = true;
         }
     }
 
@@ -338,13 +378,13 @@ public class QueueScanService extends Service {
 
             }
 
-            success = soapService.communicateWithServer(context, jsonObject.toString());
+            success = soapService.communicateWithServer(jsonObject.toString());
 
             // 登录失败，获取错误信息并显示
             if(!success) {
-                Log.d("DFCarChecker", "提交失败! " + soapService.getErrorMessage());
+                Log.d("DFCarChecker", "修改失败! " + soapService.getErrorMessage());
             } else {
-                Log.d(Common.TAG, "提交成功！" + soapService.getErrorMessage());
+                Log.d(Common.TAG, "修改成功！" + soapService.getErrorMessage());
             }
 
             return success;
@@ -352,18 +392,22 @@ public class QueueScanService extends Service {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            if(success) {
-                handler.post(sendUpdatesToUI); // 1 second
-            } else {
-                handler.post(sendUpdatesToUIFail);
-            }
-
+            action = "";
+            canStartModify = true;
             mModifyDataTask = null;
             committed = false;
+
+            if(success) {
+                handler.post(modifyToUI); // 1 second
+            } else {
+                handler.post(modifyToUIFail);
+            }
         }
 
         @Override
         protected void onCancelled() {
+            action = "";
+            canStartModify = true;
             mModifyDataTask = null;
             committed = false;
         }

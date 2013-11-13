@@ -19,6 +19,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -150,7 +151,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
                 saveResult();
                 break;
             case R.id.action_discard:
-                finish();
+                discardResult();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -240,9 +241,10 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         //builder.setView(inflater.inflate(R.layout.bi_camera_cato_dialog, null));
 
         //builder.setMessage(R.string.ci_attention_content).setTitle(R.string.ci_attention);
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                // 取消
+        builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
             }
         });
 
@@ -385,6 +387,16 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         finish();
     }
 
+    private void discardResult() {
+        // 创建结果意图和包括地址
+        Intent intent = new Intent();
+        intent.putExtra("PHOTO_COUNT", photoShotCount);
+
+        // 关闭activity
+        setResult(Activity.RESULT_OK, intent);
+        finish();
+    }
+
     // 只有在保存时才提交照片
     private void addPhotosToQueue() {
         ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
@@ -516,6 +528,9 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     }
 
     private void letsEnterModifyMode() {
+        TableLayout cameraArea = (TableLayout) findViewById(R.id.cameraArea);
+        cameraArea.setVisibility(View.GONE);
+
         interiorPaintPreviewView.setOnClickListener(null);
         tip.setOnClickListener(null);
         parsJsonData();

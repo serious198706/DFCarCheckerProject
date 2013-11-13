@@ -35,6 +35,12 @@ public class PosEntity implements Serializable {
         this.bitmap = bitmap;
     }
 
+    public void fileName(String imageFileName) {
+        this.imageFileName = imageFileName;
+    }
+
+    public String fileName() {return this.imageFileName;}
+
 
     public void setStart(int x,int y){
         this.start_x = x;
