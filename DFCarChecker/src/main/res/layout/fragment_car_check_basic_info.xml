@@ -464,7 +464,8 @@
                 <EditText android:id="@+id/ci_plateNumber_edit"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:layout_weight="2"/>
+                    android:layout_weight="2"
+                    android:maxLength="10"/>
             </TableRow>
             <TableRow>
                 <TextView
@@ -478,7 +479,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="2"
                     android:descendantFocusability="beforeDescendants"
-                    android:focusableInTouchMode="true"/>
+                    android:focusableInTouchMode="true"
+                    android:maxLength="30"/>
             </TableRow>
             <TableRow>
                 <TextView
@@ -589,7 +591,8 @@
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:layout_weight="1"
-                    android:inputType="phone"/>
+                    android:inputType="number"
+                    android:maxLength="7"/>
                 <TextView
                     android:id="@+id/yuan"
                     android:layout_height="wrap_content"
@@ -737,7 +740,8 @@
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:layout_weight="1"
-                        android:phoneNumber="true"/>
+                        android:maxLength="7"
+                        android:inputType="number"/>
                     <TextView android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:text="@string/ci_money"
@@ -850,7 +854,8 @@
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
                     android:inputType="phone"
-                    android:layout_weight="2"/>
+                    android:layout_weight="2"
+                    android:maxLength="13"/>
             </TableRow>
             <TableRow  android:visibility="gone">
                 <TextView

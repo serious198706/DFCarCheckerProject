@@ -68,6 +68,8 @@ public final class ImageUploadQueue {
         File file = new File(path + fileName);
         boolean deleted = file.delete();
 
+
+
         return deleted;
     }
 }

@@ -2,7 +2,7 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+    android:layout_height="wrap_content"
     android:focusable="true"
     android:focusableInTouchMode="true">
     <LinearLayout android:layout_width="match_parent"
@@ -136,6 +136,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/comment_item"
+                    android:drawablePadding="10dp"
                     style="@style/CodeFont"
                     android:text="@string/comment" />
 
@@ -143,20 +145,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="#000"/>
+
             <TableRow>
                 <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:text="@string/out_comment"
-                    android:drawableLeft="@drawable/comment_item"
-                    android:drawablePadding="10dp"
                         android:layout_weight="1"
                         android:textSize="18sp"/>
                 <EditText
                         android:id="@+id/out_comment_edit"
-                        android:layout_width="match_parent"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:inputType="textMultiLine"
                         android:ems="10"/>
             </TableRow>

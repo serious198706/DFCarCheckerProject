@@ -232,6 +232,8 @@ public class InteriorPaintView extends PaintView {
     public List<PhotoEntity> getPhotoEntities() { return photoEntities; }
     public List<PhotoEntity> getPhotoEntities(String sight) { return null; }
 
+    public List<PosEntity> getNewPosEntities() {return thisTimeNewData;}
+
     public Bitmap getSketchBitmap() {
         return this.bitmap;
     }

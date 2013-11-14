@@ -1,116 +1,127 @@
 package com.df.service;
 
-/**
- * Created by 岩 on 13-11-11.
- */
-
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.security.spec.AlgorithmParameterSpec;
+import java.security.GeneralSecurityException;
+import java.util.Arrays;
 
 import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
-import javax.crypto.CipherOutputStream;
-import javax.crypto.KeyGenerator;
-import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.IvParameterSpec;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.PBEParameterSpec;
 
 public class EncryptDecryptFile {
-
-    private static Cipher ecipher;
-    private static Cipher dcipher;
-
-    // 8-byte initialization vector
-    private static byte[] iv = {
-            (byte)0xB2, (byte)0x12, (byte)0xD5, (byte)0xB2,
-            (byte)0x44, (byte)0x21, (byte)0xC3, (byte)0xC3
+    //Arbitrarily selected 8-byte salt sequence:
+    private static final byte[] salt = {
+            (byte) 0x43, (byte) 0x76, (byte) 0x95, (byte) 0xc7,
+            (byte) 0x5b, (byte) 0xd7, (byte) 0x45, (byte) 0x17
     };
 
-    public EncryptDecryptFile() {
-        try {
-            KeyGenerator kg = KeyGenerator.getInstance("DES");
+    private static Cipher makeCipher(String pass, Boolean decryptMode) throws GeneralSecurityException{
 
-            kg.init(56);
+        //Use a KeyFactory to derive the corresponding key from the passphrase:
+        PBEKeySpec keySpec = new PBEKeySpec(pass.toCharArray());
+        SecretKeyFactory keyFactory = SecretKeyFactory.getInstance("PBEWithMD5AndDES");
+        SecretKey key = keyFactory.generateSecret(keySpec);
 
-            SecretKey key = kg.generateKey();
+        //Create parameters from the salt and an arbitrary number of iterations:
+        PBEParameterSpec pbeParamSpec = new PBEParameterSpec(salt, 42);
 
-            //SecretKey key = KeyGenerator.getInstance("DES").generateKey();
+        /*Dump the key to a file for testing: */
+        //keyToFile(key);
 
-            AlgorithmParameterSpec paramSpec = new IvParameterSpec(iv);
+        //Set up the cipher:
+        Cipher cipher = Cipher.getInstance("PBEWithMD5AndDES");
 
-            ecipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
-            dcipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
-            ecipher.init(Cipher.ENCRYPT_MODE, key, paramSpec);
-            dcipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
+        //Set the cipher mode to decryption or encryption:
+        if(decryptMode){
+            cipher.init(Cipher.ENCRYPT_MODE, key, pbeParamSpec);
+        } else {
+            cipher.init(Cipher.DECRYPT_MODE, key, pbeParamSpec);
         }
-        catch (InvalidAlgorithmParameterException e) {
-            System.out.println("Invalid Alogorithm Parameter:" + e.getMessage());
-            return;
-        }
-        catch (NoSuchAlgorithmException e) {
-            System.out.println("No Such Algorithm:" + e.getMessage());
-            return;
-        }
-        catch (NoSuchPaddingException e) {
-            System.out.println("No Such Padding:" + e.getMessage());
-            return;
-        }
-        catch (InvalidKeyException e) {
-            System.out.println("Invalid Key:" + e.getMessage());
-            return;
-        }
+
+        return cipher;
     }
 
-    public void encrypt(InputStream is, OutputStream os) {
-        try {
-            byte[] buf = new byte[1024];
 
-            // 进行编码
-            os = new CipherOutputStream(os, ecipher);
+    /**Encrypts one file to a second file using a key derived from a passphrase:**/
+    public static void encryptFile(String fileName, String pass)
+            throws IOException, GeneralSecurityException{
+        byte[] decData;
+        byte[] encData;
+        File inFile = new File(fileName);
+        //Generate the cipher using pass:
+        Cipher cipher = makeCipher(pass, true);
 
-            // 读取到内存中
-            int numRead = 0;
-            while ((numRead = is.read(buf)) >= 0) {
-                os.write(buf, 0, numRead);
-            }
+        //Read in the file:
+        FileInputStream inStream = new FileInputStream(inFile);
 
-            os.close();
+        int blockSize = 8;
+        //Figure out how many bytes are padded
+        int paddedCount = blockSize - ((int)inFile.length()  % blockSize );
+
+        //Figure out full size including padding
+        int padded = (int)inFile.length() + paddedCount;
+
+        decData = new byte[padded];
+
+
+        inStream.read(decData);
+
+        inStream.close();
+
+        //Write out padding bytes as per PKCS5 algorithm
+        for( int i = (int)inFile.length(); i < padded; ++i ) {
+            decData[i] = (byte)paddedCount;
         }
 
-        catch (IOException e) {
-            System.out.println("I/O Error:" + e.getMessage());
-        }
+        //Encrypt the file data:
+        encData = cipher.doFinal(decData);
+
+
+        //Write the encrypted data to a new file:
+        FileOutputStream outStream = new FileOutputStream(new File(fileName + ".encrypted"));
+        outStream.write(encData);
+        outStream.close();
     }
 
-    public void decrypt(InputStream is, OutputStream os) {
-        try {
-            byte[] buf = new byte[1024];
 
-            // 进行解码
-            CipherInputStream cis = new CipherInputStream(is, dcipher);
+    /**Decrypts one file to a second file using a key derived from a passphrase:**/
+    public static void decryptFile(String fileName, String pass)
+            throws GeneralSecurityException, IOException{
+        byte[] encData;
+        byte[] decData;
+        File inFile = new File(fileName);
 
-            // 读取到内存中
-            int numRead = 0;
-            while ((numRead = cis.read(buf)) >= 0) {
-                os.write(buf, 0, numRead);
-            }
+        //Generate the cipher using pass:
+        Cipher cipher = makeCipher(pass, false);
 
-            cis.close();
-            is.close();
-            os.close();
+        //Read in the file:
+        FileInputStream inStream = new FileInputStream(inFile );
+        encData = new byte[(int)inFile.length()];
+        inStream.read(encData);
+        inStream.close();
+        //Decrypt the file data:
+        decData = cipher.doFinal(encData);
+
+        //Figure out how much padding to remove
+
+        int padCount = (int)decData[decData.length - 1];
+
+        //Naive check, will fail if plaintext file actually contained
+        //this at the end
+        //For robust check, check that padCount bytes at the end have same value
+        if( padCount >= 1 && padCount <= 8 ) {
+            decData = Arrays.copyOfRange( decData , 0, decData.length - padCount);
         }
 
-        catch (IOException e) {
-            System.out.println("I/O Error:" + e.getMessage());
-        }
+        //Write the decrypted data to a new file:
+
+        FileOutputStream target = new FileOutputStream(new File(fileName));
+        target.write(decData);
+        target.close();
     }
 }

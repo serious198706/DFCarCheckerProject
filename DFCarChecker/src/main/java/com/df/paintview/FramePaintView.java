@@ -182,6 +182,8 @@ public class FramePaintView extends PaintView {
             return photoEntitiesRear;
     }
 
+    public List<PosEntity> getNewPosEntities() {return thisTimeNewData;}
+
     public Bitmap getSketchBitmap() {
         return this.bitmap;
     }

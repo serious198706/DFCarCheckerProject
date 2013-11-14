@@ -161,6 +161,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:drawableLeft="@drawable/comment_item"
+                    android:drawablePadding="10dp"
                     style="@style/CodeFont"
                     android:text="@string/comment" />
 
@@ -173,16 +175,12 @@
                         android:layout_height="wrap_content"
                         android:layout_width="0dp"
                         android:text="@string/in_comment"
-                    android:drawableLeft="@drawable/comment_item"
-                    android:drawablePadding="10dp"
                         android:layout_weight="1"
                         android:textSize="18sp"/>
-                <EditText
-                        android:layout_width="match_parent"
+                <EditText android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:inputType="textMultiLine"
-                        android:ems="10"
                         android:id="@+id/in_comment_edit"/>
             </TableRow>
         </TableLayout>

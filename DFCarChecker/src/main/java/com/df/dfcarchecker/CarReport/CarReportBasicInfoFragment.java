@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.df.service.Helper.setTextView;
+import static com.df.service.Helper.showView;
 
 public class CarReportBasicInfoFragment extends Fragment {
     private static View rootView;
@@ -200,10 +201,10 @@ public class CarReportBasicInfoFragment extends Fragment {
             else
                 setTextView(rootView, R.id.invoice_text, null);
             if(procedures.has("invoicePrice"))
-                setTextView(rootView, R.id.invoice_text, procedures.getString("invoicePrice") +
+                setTextView(rootView, R.id.invoicePrice_text, procedures.getString("invoicePrice") +
                         "元");
             else
-                setTextView(rootView, R.id.invoice_text, null);
+                setTextView(rootView, R.id.invoicePrice_text, null);
             if(procedures.has("surtax"))
                 setTextView(rootView, R.id.surtax_text, procedures.getString("surtax"));
             else
@@ -216,10 +217,15 @@ public class CarReportBasicInfoFragment extends Fragment {
                 setTextView(rootView, R.id.licencePhotoMatch_text, procedures.getString("licensePhotoMatch"));
             else
                 setTextView(rootView, R.id.licencePhotoMatch_text, null);
-            if(procedures.has("insurance"))
+            if(procedures.has("insurance")) {
                 setTextView(rootView, R.id.insurance_text, procedures.getString("insurance"));
-            else
+
+                if(procedures.getString("insurance").equals("无")) {
+                    showView(false, rootView, R.id.ct_insurance_table);
+                }
+            } else
                 setTextView(rootView, R.id.insurance_text, null);
+
             if(procedures.has("insuranceRegion"))
                 setTextView(rootView, R.id.insuranceRegion_text, procedures.getString("insuranceRegion"));
             else

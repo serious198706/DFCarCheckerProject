@@ -12,4 +12,11 @@
               android:longClickable="true"
               android:listSelector="@drawable/car_checked_list_selector"/>
 
+    <Button android:id="@+id/getMore"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/getMore"
+        android:layout_below="@id/car_checked_list"
+        android:onClick="getMore"
+        style="?android:borderlessButtonStyle"/>
 </RelativeLayout>

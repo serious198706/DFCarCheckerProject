@@ -18,7 +18,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.df.dfcarchecker.R;
-import com.df.entry.CarSettings;
 import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
 import com.df.service.Common;
@@ -33,15 +32,15 @@ import static com.df.service.Helper.getEditText;
 import static com.df.service.Helper.getSpinnerSelectedText;
 import static com.df.service.Helper.setEditText;
 import static com.df.service.Helper.setSpinnerSelectionWithString;
-import static com.df.service.Helper.setTextView;
 
 public class CarCheckIntegratedFragment extends Fragment implements View.OnClickListener {
     private static View rootView;
     private static ScrollView root;
-    public static List<PosEntity> exteriorPaintEntities;
+    public static List<PosEntity> exteriorPosEntities;
     public static List<PhotoEntity> exteriorPhotoEntities;
-    public static List<PosEntity> interiorPaintEntities;
+    public static List<PosEntity> interiorPosEntities;
     public static List<PhotoEntity> interiorPhotoEntities;
+
 
     // 用于修改
     private final String jsonData;
@@ -49,6 +48,8 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     private String exteriorComment;
     private String sealIndex;
     private String interiorComment;
+    private boolean exteriorSaved;
+    private boolean interiorSaved;
 
     // 用于编辑车辆
     private JSONObject options;
@@ -113,6 +114,8 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
             R.id.it_waterTrunkCorner_spinner,
             R.id.it_waterSpareTireGroove_spinner};
 
+
+
     public CarCheckIntegratedFragment(String jsonData) {
         this.jsonData = jsonData;
     }
@@ -132,8 +135,8 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         root.setVisibility(View.GONE);
 
         // 坐标们
-        exteriorPaintEntities = new ArrayList<PosEntity>();
-        interiorPaintEntities = new ArrayList<PosEntity>();
+        exteriorPosEntities = new ArrayList<PosEntity>();
+        interiorPosEntities = new ArrayList<PosEntity>();
 
         // 照片们
         exteriorPhotoEntities = new ArrayList<PhotoEntity>();
@@ -263,6 +266,7 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         intent.putExtra("INDEX", paintIndex);
         intent.putExtra("COMMENT", exteriorComment);
         intent.putExtra("PHOTO_COUNT", exteriorPhotoCount);
+        intent.putExtra("SAVED", exteriorSaved);
 
         if(!jsonData.equals("")) {
             intent.putExtra("JSONDATA", jsonData);
@@ -277,6 +281,7 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         intent.putExtra("INDEX", sealIndex);
         intent.putExtra("COMMENT", interiorComment);
         intent.putExtra("PHOTO_COUNT", interiorPhotoCount);
+        intent.putExtra("SAVED", interiorSaved);
 
         if(!jsonData.equals("")) {
             intent.putExtra("JSONDATA", jsonData);
@@ -321,6 +326,12 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
 
                             // 保存拍摄张数
                             this.exteriorPhotoCount = bundle.getIntArray("PHOTO_COUNT");
+
+                            // 是否已保存
+                            if(bundle.containsKey("SAVED"))
+                                this.exteriorSaved = bundle.getBoolean("SAVED");
+                            else
+                                this.exteriorSaved = false;
                         }
                     }
                     catch(NullPointerException ex) {
@@ -347,6 +358,12 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
 
                             // 保存拍摄张数
                             this.interiorPhotoCount = bundle.getIntArray("PHOTO_COUNT");
+
+                            // 是否已保存
+                            if(bundle.containsKey("SAVED"))
+                                this.interiorSaved = bundle.getBoolean("SAVED");
+                            else
+                                this.interiorSaved = false;
                         }
                     }
                     catch(NullPointerException ex) {

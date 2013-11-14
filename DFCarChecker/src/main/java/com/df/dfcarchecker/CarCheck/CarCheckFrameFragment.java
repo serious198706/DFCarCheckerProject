@@ -78,7 +78,6 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
 
     private int photoShotCount[] = {0, 0, 0, 0};
     private JSONObject frames;
-    private boolean alreadyGeneratedSketch = false;
 
     public CarCheckFrameFragment(String jsonData) {
         this.jsonData = jsonData;
@@ -304,7 +303,6 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
                 }
                 break;
             case Common.STURCTURE_PAINT:
-                alreadyGeneratedSketch = true;
                 // 前视角
                 // 如果有点，则将图片设为不透明，去掉提示文字
                 if(!posEntitiesFront.isEmpty()) {
@@ -339,6 +337,36 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
     public void addPhotosToQueue() {
         ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
 
+        // 上传草图（先上传，避免传完缺陷点后缺陷点list为空，生成不了草图）
+        if(CarCheckPaintActivity.sketchPhotoEntities == null) {
+            CarCheckPaintActivity.sketchPhotoEntities = new ArrayList<PhotoEntity>();
+
+            PhotoEntity photoEntityFront = getPhotoEntity("d4_f", "fSketch");
+            PhotoEntity photoEntityRear = getPhotoEntity("d4_r", "rSketch");
+
+            imageUploadQueue.addImage(photoEntityFront);
+            imageUploadQueue.addImage(photoEntityRear);
+        } else {
+            if(posEntitiesFront.isEmpty()) {
+                PhotoEntity photoEntityFront = getPhotoEntity("d4_f", "fSketch");
+                imageUploadQueue.addImage(photoEntityFront);
+            }
+            if(posEntitiesRear.isEmpty()) {
+                PhotoEntity photoEntityRear = getPhotoEntity("d4_r", "rSketch");
+                imageUploadQueue.addImage(photoEntityRear);
+            }
+        }
+
+        for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
+            imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
+        }
+
+        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
+            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
+        }
+
+
+        // 上传缺陷点图
         for(int i = 0; i < photoEntitiesFront.size(); i++) {
             imageUploadQueue.addImage(photoEntitiesFront.get(i));
         }
@@ -355,34 +383,6 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         // 加入照片池后，将本身的photoEntities删除，以免重复上传
         while(!photoEntitiesRear.isEmpty()) {
             photoEntitiesRear.remove(0);
-        }
-
-
-
-        // 草图队列为空
-        // 当内饰或者外观有了草图的时候，此判定失效
-        if(CarCheckPaintActivity.sketchPhotoEntities == null || CarCheckPaintActivity
-                .sketchPhotoEntities.isEmpty()) {
-            // 如果已经通过绘制结构缺陷产生了草图，则不需要再次产生
-            if(alreadyGeneratedSketch) {
-                return;
-            }
-
-            PhotoEntity photoEntityFront = getPhotoEntity("d4_f", "fSketch");
-            PhotoEntity photoEntityRear = getPhotoEntity("d4_r", "rSketch");
-
-            imageUploadQueue.addImage(photoEntityFront);
-            imageUploadQueue.addImage(photoEntityRear);
-        }
-        // 草图队列不为空
-        else {
-            for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
-                imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
-            }
-
-            while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
-                CarCheckPaintActivity.sketchPhotoEntities.remove(0);
-            }
         }
     }
 

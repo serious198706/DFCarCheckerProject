@@ -71,6 +71,9 @@ public class CarCheckPaintActivity extends Activity {
     // 当用户退出时，进行的选择
     boolean choise = false;
 
+    // 标志是否修改过
+    boolean modified = false;
+
     public enum PaintType {
         FRAME_PAINT, EX_PAINT, IN_PAINT, NOVALUE;
 
@@ -246,18 +249,17 @@ public class CarCheckPaintActivity extends Activity {
             case R.id.action_clear:
                 // 用户确认清除数据
                 alertUser(R.string.out_clear_confirm);
-
-                if(choise) {
-                    paintView.clear();
-                }
+                modified = true;
                 break;
             case R.id.action_undo:
                 // 回退
                 paintView.undo();
+                modified = true;
                 break;
             case R.id.action_redo:
                 // 重做
                 paintView.redo();
+                modified = true;
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -272,7 +274,7 @@ public class CarCheckPaintActivity extends Activity {
     }
 
     // 提醒用户
-    private void alertUser(int msgId) {
+    private void alertUser(final int msgId) {
         paintView = (PaintView)map.get(currentPaintView);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -283,9 +285,13 @@ public class CarCheckPaintActivity extends Activity {
         builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                // 退出
-                paintView.cancel();
-                finish();
+                if(msgId == R.string.out_cancel_confirm) {
+                    // 退出
+                    paintView.cancel();
+                    finish();
+                } else if(msgId == R.string.out_clear_confirm) {
+                    paintView.clear();
+                }
             }
         });
 
@@ -342,6 +348,11 @@ public class CarCheckPaintActivity extends Activity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
+            // 如果没有修改过，则直接退出，不生成新的草图
+            if(!modified && paintView.getNewPosEntities().isEmpty()) {
+                return true;
+            }
+
             boolean success = false;
             Bitmap b;
             Canvas c;
@@ -422,16 +433,20 @@ public class CarCheckPaintActivity extends Activity {
 
             }
 
-            PhotoEntity photoEntity = new PhotoEntity();
-            photoEntity.setFileName(filename);
-            photoEntity.setJsonString(jsonObject.toString());
+            PhotoEntity sketchPhotoEntity = new PhotoEntity();
+            sketchPhotoEntity.setFileName(filename);
+            sketchPhotoEntity.setJsonString(jsonObject.toString());
 
-            // TODO: 先保存，等最后提交时再上传
-            // 此图只传一次，所以如果已存在，则不必再保存，只更新图片即可
-            if(!sketchPhotoEntities.contains(photoEntity)) {
-                sketchPhotoEntities.add(photoEntity);
-            }
+//            // TODO: 先保存，等最后提交时再上传
+//            // 此图只传一次，所以如果已存在，则不必再保存，只更新图片即可
+//            if(!sketchPhotoEntities.contains(sketchPhotoEntity)) {
+//                sketchPhotoEntities.add(sketchPhotoEntity);
+//            }
 
+            if(sketchPhotoEntities.contains(sketchPhotoEntity))
+                sketchPhotoEntities.remove(sketchPhotoEntity);
+
+            sketchPhotoEntities.add(sketchPhotoEntity);
             generatePhotoEntities();
 
             return success;
@@ -468,7 +483,7 @@ public class CarCheckPaintActivity extends Activity {
 
         photoEntities.clear();
 
-        List<PosEntity> posEntities = paintView.getPosEntities();
+        List<PosEntity> posEntities = paintView.getNewPosEntities();
 
         for(int i = 0; i < posEntities.size(); i++) {
             // 获取坐标

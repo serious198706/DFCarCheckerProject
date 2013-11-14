@@ -5,10 +5,10 @@
     <string name="prompt_email">用户名</string>
     <string name="prompt_password">密码</string>
 
-    <string name="action_sign_in_register">登陆</string>
+    <string name="action_sign_in_register">登录</string>
     <string name="action_sign_in_short">Sign in</string>
 
-    <string name="login_progress_signing_in">登陆中&#8230;</string>
+    <string name="login_progress_signing_in">登录中&#8230;</string>
 
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>

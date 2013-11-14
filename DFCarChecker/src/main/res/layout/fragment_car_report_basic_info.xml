@@ -512,9 +512,14 @@
                     android:layout_weight="1"
                     android:textSize="18sp"/>
                 <TextView android:id="@+id/invoice_text"
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <TextView android:id="@+id/invoicePrice_text"
                           android:layout_height="wrap_content"
                           android:layout_width="0dp"
-                          android:layout_weight="2"
+                          android:layout_weight="1"
                           android:textSize="18sp"/>
             </TableRow>
             <TableRow>

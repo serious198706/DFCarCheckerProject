@@ -28,12 +28,20 @@ import java.io.File;
  * Created by 岩 on 13-11-1.
  */
 public class QueueScanService extends Service {
+    // 广播内容
     public static final String BROADCAST_ACTION = "com.df.dfcarchecker.displayevent";
+
+    // handler
     private final Handler handler = new Handler();
 
+    // 用来与CarCheckerViewPagerActivity进行通讯
     Intent intent;
 
+    // 上传图片的线程
     private UploadPictureTask mUploadPictureTask;
+
+    // 提交检测信息的线程
+    private CommitDataTask mCommitDataTask;
     private ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
 
     SoapService soapService;
@@ -53,7 +61,7 @@ public class QueueScanService extends Service {
     public static boolean committed;
     private String jsonString;
 
-    private CommitDataTask mCommitDataTask;
+
 
     private String action;
     private int carId;
@@ -128,26 +136,23 @@ public class QueueScanService extends Service {
 
     //
     private void Committed() {
-        Log.d(Common.TAG, "enter committed");
         intent.putExtra("result", "0");
+        intent.putExtra("score", soapService.getResultMessage());
         sendBroadcast(intent);
     }
 
     private void CommitFailed() {
-        Log.d(Common.TAG, "enter commitfailed");
         intent.putExtra("result", "-1");
         intent.putExtra("errorMsg", soapService.getErrorMessage());
         sendBroadcast(intent);
     }
 
     private void modified() {
-        Log.d(Common.TAG, "enter modified");
         intent.putExtra("result", "0");
         sendBroadcast(intent);
     }
 
     private void modifyFailed() {
-        Log.d(Common.TAG, "enter modifyfailed");
         intent.putExtra("result", "-1");
         intent.putExtra("errorMsg", soapService.getErrorMessage());
         sendBroadcast(intent);
@@ -161,7 +166,6 @@ public class QueueScanService extends Service {
         }
         @Override
         public void handleMessage(Message msg) {
-            Log.d(Common.TAG, "message start....................");
             while (true) {
                 synchronized (this) {
                     try {
@@ -256,7 +260,7 @@ public class QueueScanService extends Service {
                 imageUploadQueue.removeImage();
                 index = 0;
             } else {
-                Log.d(Common.TAG, "上传照片失败：" + soapService.getErrorMessage());
+                Log.d(Common.TAG, "上传失败：" + soapService.getErrorMessage());
                 Log.d(Common.TAG, "将在" + Integer.toString(waitTime[index]) + "毫秒后重试");
 
                 try {

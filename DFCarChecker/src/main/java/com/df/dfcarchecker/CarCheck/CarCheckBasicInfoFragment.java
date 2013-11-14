@@ -32,7 +32,6 @@ import android.widget.Toast;
 
 import com.df.dfcarchecker.LoginActivity;
 import com.df.dfcarchecker.MainActivity;
-import com.df.dfcarchecker.MainActivity;
 import com.df.dfcarchecker.R;
 import com.df.entry.Brand;
 import com.df.entry.CarSettings;
@@ -43,11 +42,11 @@ import com.df.entry.PhotoEntity;
 import com.df.entry.Series;
 import com.df.entry.VehicleModel;
 import com.df.service.Common;
-import com.df.service.Decompress;
 import com.df.service.EncryptDecryptFile;
 import com.df.service.Helper;
 import com.df.service.SoapService;
 import com.df.service.VehicleModelParser;
+import com.df.service.XmlHandler;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -56,7 +55,8 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -68,6 +68,7 @@ import static com.df.service.Helper.getDateString;
 import static com.df.service.Helper.getEditText;
 import static com.df.service.Helper.getSpinnerSelectedText;
 import static com.df.service.Helper.setEditText;
+import static com.df.service.Helper.setEditWeight;
 import static com.df.service.Helper.setSpinnerSelectionWithString;
 import static com.df.service.Helper.showView;
 
@@ -491,9 +492,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
                             // 传参数为空，表示提交的为VIN
                             getCarSettingsFromServer("");
-
-                            // 根据vin产生uniqueId（对应一次检测）
-                            uniqueId = vinString.substring(vinString.length() - 3, vinString.length());
                         }
                     })
                     .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -684,37 +682,36 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     // 解析车型XML
     public void ParseXml() {
         try {
-//            String path = Environment.getExternalStorageDirectory().getPath() + "/.cheyipai/";
-//            String enFile = path + "df001";
-//            String zippedFile = path + "zip";
-//            String unzippedFile = path + "vm.xml";
-//
-//            EncryptDecryptFile encryptDecryptFile = new EncryptDecryptFile();
-//
-//            try {
-//                encryptDecryptFile.decrypt(new FileInputStream(enFile),
-//                        new FileOutputStream(zippedFile));
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//
-//            Decompress decompress = new Decompress(zippedFile, unzippedFile);
-//            decompress.unzip();
+            String path = Environment.getExternalStorageDirectory().getPath() + "/.cheyipai/";
+            String zippedFile = path + "df001";
 
-            File f = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
-                    ".cheyipai/VehicleModel.xml");
+            try {
+                XmlHandler.unzip(zippedFile, path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            File f = new File(path + "vm");
+
+            //EncryptDecryptFile.decryptFile(f.getPath(), "jwm65700DFCar");
+
             fis = new FileInputStream(f);
 
             if(fis == null) {
                 Toast.makeText(rootView.getContext(), "SD卡挂载有问题", Toast.LENGTH_LONG).show();
+            } else {
+                VehicleModelParser parser = new VehicleModelParser();
+                vehicleModel = parser.parseVehicleModelXml(fis);
+                f.delete();
             }
         } catch (FileNotFoundException e) {
             Toast.makeText(rootView.getContext(), "文件不存在", Toast.LENGTH_LONG).show();
             e.printStackTrace();
+        //} catch (GeneralSecurityException e) {
+            //e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-
-        VehicleModelParser parser = new VehicleModelParser();
-        vehicleModel = parser.parseVehicleModelXml(fis);
 
         mProgressDialog.dismiss();
     }
@@ -1112,8 +1109,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             }
             // 如果失败
             else {
-                Log.d("DFCarChecker", "连接错误！");
-
                 if(soapService.getErrorMessage().equals("用户名或Key解析错误，请输入正确的用户Id和Key")) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(rootView.getContext());
                     builder.setTitle(R.string.bi_select_model)
@@ -1592,8 +1587,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             mCarSettings.setDisplacement(options.getString("displacement"));
             mCarSettings.setCategory(options.getString("category"));
 
-            String categoryArray[] = getResources().getStringArray(R.array.csi_category_item);
-
             Country country = vehicleModel.getCountryById(Integer.toString(options.getInt
                     ("countryId")));
             Brand brand = country.getBrandById(Integer.toString(options.getInt("brandId")));
@@ -1608,25 +1601,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             mCarSettings.setManufacturer(manufacturer);
             mCarSettings.setSeries(series);
             mCarSettings.setModel(model);
-
-//            String config = "";
-
-//            // 设置配置信息
-//            for(int i = 0; i < CarSettings.getAllConfigs().length; i++) {
-//                if(options.has(CarSettings.getAllConfigs()[i])) {
-//
-//
-//
-//                    config += CarSettings.getAllConfigs()[i];
-//                    config += ",";
-//                }
-//            }
-
             mCarSettings.setCarSettings(options.toString());
-
-            //config = config.substring(0, config.length() - 1);
-
-            //mCarSettings.setConfig(config);
 
             // 设置车型分类，以用于图片类型判断
             mCarSettings.setCategory(options.getString("category"));
@@ -1654,8 +1629,11 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                         // vin内容覆盖
                         setEditText(rootView, R.id.bi_vin_edit, options.getString("vin"));
                         enableView(false, rootView, R.id.bi_vin_edit);
-                        enableView(false, rootView, R.id.bi_vin_button);
-                        enableView(false, rootView, R.id.bi_brand_ok_button);
+                        showView(false, rootView, R.id.bi_vin_button);
+                        showView(false, rootView, R.id.bi_brand_ok_button);
+
+                        setEditWeight(rootView, R.id.bi_vin_edit, 4f);
+                        setEditWeight(rootView, R.id.bi_brand_edit, 3f);
 
                         // 手续组内容覆盖
                         setSpinnerSelectionWithString(rootView, R.id.ci_regArea_spinner,

@@ -1,6 +1,5 @@
 package com.df.dfcarchecker.CarCheck;
 
-import java.util.List;
 import java.util.Locale;
 
 import android.app.ActionBar;
@@ -23,8 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.df.dfcarchecker.CarReport.CarCheckedListActivity;
 import com.df.dfcarchecker.R;
-import com.df.entry.PhotoEntity;
 import com.df.service.Common;
 import com.df.service.CustomViewPager;
 import com.df.service.QueueScanService;
@@ -145,30 +144,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
     public void onDestroy() {
         super.onDestroy();
 
-        if(CarCheckFrameFragment.photoEntitiesFront != null) {
-            CarCheckFrameFragment.photoEntitiesFront.clear();
-        }
-        if(CarCheckFrameFragment.photoEntitiesRear != null) {
-            CarCheckFrameFragment.photoEntitiesRear.clear();
-        }
-        if(CarCheckFrameFragment.posEntitiesFront != null) {
-            CarCheckFrameFragment.posEntitiesFront.clear();
-        }
-        if(CarCheckFrameFragment.posEntitiesRear != null) {
-            CarCheckFrameFragment.posEntitiesRear.clear();
-        }
-        if(CarCheckIntegratedFragment.exteriorPaintEntities != null) {
-            CarCheckIntegratedFragment.exteriorPaintEntities.clear();
-        }
-        if(CarCheckIntegratedFragment.exteriorPhotoEntities != null) {
-            CarCheckIntegratedFragment.exteriorPhotoEntities.clear();
-        }
-        if(CarCheckIntegratedFragment.interiorPaintEntities != null) {
-            CarCheckIntegratedFragment.interiorPaintEntities.clear();
-        }
-        if(CarCheckIntegratedFragment.interiorPhotoEntities != null) {
-            CarCheckIntegratedFragment.interiorPhotoEntities.clear();
-        }
+        destroyEntities();
 
         unregisterReceiver(broadcastReceiver);
     }
@@ -291,6 +267,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // 退出
+                destroyEntities();
                 Intent intent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
                 stopService(intent);
                 finish();
@@ -300,6 +277,40 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+
+    private void destroyEntities() {
+        if(CarCheckFrameFragment.photoEntitiesFront != null) {
+            CarCheckFrameFragment.photoEntitiesFront.clear();
+        }
+        if(CarCheckFrameFragment.photoEntitiesRear != null) {
+            CarCheckFrameFragment.photoEntitiesRear.clear();
+        }
+        if(CarCheckFrameFragment.posEntitiesFront != null) {
+            CarCheckFrameFragment.posEntitiesFront.clear();
+        }
+        if(CarCheckFrameFragment.posEntitiesRear != null) {
+            CarCheckFrameFragment.posEntitiesRear.clear();
+        }
+        if(CarCheckIntegratedFragment.exteriorPosEntities != null) {
+            CarCheckIntegratedFragment.exteriorPosEntities.clear();
+        }
+        if(CarCheckIntegratedFragment.exteriorPhotoEntities != null) {
+            CarCheckIntegratedFragment.exteriorPhotoEntities.clear();
+        }
+        if(CarCheckIntegratedFragment.interiorPosEntities != null) {
+            CarCheckIntegratedFragment.interiorPosEntities.clear();
+        }
+        if(CarCheckIntegratedFragment.interiorPhotoEntities != null) {
+            CarCheckIntegratedFragment.interiorPhotoEntities.clear();
+        }
+        if(CarCheckExteriorActivity.posEntities != null) {
+            CarCheckExteriorActivity.posEntities.clear();
+        }
+        if(CarCheckInteriorActivity.posEntities != null) {
+            CarCheckInteriorActivity.posEntities.clear();
+        }
+    }
+
 
     public void commit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -415,11 +426,53 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                 if(result.equals("0")) {
                     Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
                     // 停止服务
-                    Intent serviceIntent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
-                    stopService(serviceIntent);
+                    if(!jsonData.equals("")) {
+                        Intent serviceIntent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
+                        stopService(serviceIntent);
+                        finish();
+                    } else {
+                        String score = intent.getExtras().getString("score");
 
-                    // 关闭界面
-                    finish();
+                        String exterior = "外观检查得分：";
+                        String interior = "内饰检查得分：";
+                        String engine = "发动机检查得分：";
+                        String gearbox = "变速箱检查得分：";
+                        String function = "功能检查得分：";
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(score);
+                            exterior += jsonObject.getString("exterior");
+                            interior += jsonObject.getString("interior");
+                            engine += jsonObject.getString("engine");
+                            gearbox += jsonObject.getString("gearbox");
+                            function += jsonObject.getString("function");
+                        } catch (JSONException e) {
+
+                        }
+
+                        String msg = exterior + "\n" + interior + "\n" + engine + "\n" + gearbox +
+                                "\n" +function;
+
+                                // 关闭界面
+                        AlertDialog dialog = new AlertDialog.Builder(CarCheckViewPagerActivity.this)
+                                .setTitle("车辆得分")
+                                //.setView(getLayoutInflater().inflate(R.layout.score_dialog, null))
+                                .setMessage(msg)
+                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        Intent intent1 = new Intent(CarCheckViewPagerActivity.this,
+                                                CarCheckedListActivity.class);
+                                        startActivity(intent1);
+
+                                        finish();
+                                    }
+                                })
+                                .create();
+
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
+                    }
                 } else {
                     String error = intent.getExtras().getString("errorMsg");
                     Toast.makeText(CarCheckViewPagerActivity.this, "提交失败！" + error,

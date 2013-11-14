@@ -16,6 +16,8 @@
     <string name="action_save">保存</string>
     <string name="newUpdate">检测到新版本</string>
 
+    <string name="getMore">获取更多</string>
+
     <string-array name="existornot">
         <item>有</item>
         <item>无</item>

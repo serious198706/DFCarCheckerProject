@@ -267,6 +267,7 @@
         <item>磨损</item>
     </string-array>
 
+    <string name="score_25">共计：25分</string>
     <string name="score_20">共计：20分</string>
     <string name="score_15">共计：15分</string>
     <string name="score_10">共计：10分</string>

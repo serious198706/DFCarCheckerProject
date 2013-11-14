@@ -42,18 +42,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.df.service.Helper.setEditText;
 import static com.df.service.Helper.setSpinnerSelectionWithString;
-import static com.df.service.Helper.setTextView;
 
 public class CarCheckExteriorActivity extends Activity implements View.OnClickListener {
     private int currentShotPart;
     private EditText brokenEdit;
     private static Spinner smoothSpinner;
     private static EditText commentEdit;
-    public static List<PosEntity> posEntities = CarCheckIntegratedFragment.exteriorPaintEntities;
+    public static List<PosEntity> posEntities = CarCheckIntegratedFragment.exteriorPosEntities;
     public static List<PhotoEntity> photoEntities = CarCheckIntegratedFragment.exteriorPhotoEntities;
     private ExteriorPaintPreviewView exteriorPaintPreviewView;
     private TextView tip;
@@ -66,6 +66,8 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
     private String jsonData = "";
     private JSONObject photos;
     private JSONObject conditions;
+
+    private boolean saved;
 
     Bitmap previewViewBitmap;
     int figure;
@@ -118,6 +120,15 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
             if(extras.containsKey("JSONDATA")) {
                 jsonData = extras.getString("JSONDATA");
             }
+
+            if(extras.containsKey("SAVED")) {
+                saved = extras.getBoolean("SAVED");
+
+                if(saved)
+                {
+                    exteriorPaintPreviewView.setOnClickListener(null);
+                }
+            }
         }
 
         final ActionBar actionBar = getActionBar();
@@ -154,9 +165,6 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
                 // 保存数据
                 saveResult();
                 break;
-            case R.id.action_discard:
-                discardResult();
-                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -184,6 +192,11 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
                 StartPaint();
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        saveResult();
     }
 
 
@@ -346,22 +359,66 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
     }
 
     private void saveResult() {
-        // 创建结果意图和包括地址
-        Intent intent = new Intent();
-        intent.putExtra("INDEX", Integer.toString(smoothSpinner.getSelectedItemPosition()));
-        intent.putExtra("COMMENT", commentEdit.getText().toString());
-        intent.putExtra("PHOTO_COUNT", photoShotCount);
+        // 如果还未保存，则提示用户
+        if(!saved) {
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setTitle(R.string.alert_title)
+                    .setMessage("保存后将无法进行缺陷点修改，确定保存？")
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            // 创建结果意图和包括地址
+                            Intent intent = new Intent();
+                            intent.putExtra("INDEX", Integer.toString(smoothSpinner.getSelectedItemPosition()));
+                            intent.putExtra("COMMENT", commentEdit.getText().toString());
+                            intent.putExtra("PHOTO_COUNT", photoShotCount);
+                            saved = true;
+                            intent.putExtra("SAVED", saved);
+                            addPhotosToQueue();
 
-        addPhotosToQueue();
+                            // 关闭activity
+                            setResult(Activity.RESULT_OK, intent);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
 
-        // 关闭activity
-        setResult(Activity.RESULT_OK, intent);
-        finish();
+                        }
+                    }).create();
+
+            dialog.show();
+        }
     }
 
     // 只有在保存时才提交照片
     private void addPhotosToQueue() {
         ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
+
+        // 如果草图队列为空
+        if(CarCheckPaintActivity.sketchPhotoEntities == null) {
+            CarCheckPaintActivity.sketchPhotoEntities = new ArrayList<PhotoEntity>();
+
+            PhotoEntity photoEntity = getSketchPhotoEntity();
+            CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
+        } else {
+            // 如果有缺陷点，表示外观草图已经生成，则不需要再添加了
+            if(posEntities.isEmpty()) {
+                PhotoEntity photoEntity = getSketchPhotoEntity();
+                CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
+            }
+        }
+
+        // 将草图队列里所有的草图全部放入照片池
+        for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
+            imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
+        }
+
+        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
+            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
+        }
+
 
         for(int i = 0; i < photoEntities.size(); i++) {
             imageUploadQueue.addImage(photoEntities.get(i));
@@ -371,58 +428,46 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         while(!photoEntities.isEmpty()) {
             photoEntities.remove(0);
         }
+    }
 
-        // 如果草图队列为空
-        if(CarCheckPaintActivity.sketchPhotoEntities == null || CarCheckPaintActivity
-                .sketchPhotoEntities.isEmpty()) {
-            File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
-                    ".cheyipai/" + getNameFromFigure(figure));
-            File dst = new File(Environment.getExternalStorageDirectory().getPath() +
-                    "/Pictures/DFCarChecker/" + "sketch_o");
+    private PhotoEntity getSketchPhotoEntity() {
+        File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
+                ".cheyipai/" + getNameFromFigure(figure));
+        File dst = new File(Environment.getExternalStorageDirectory().getPath() +
+                "/Pictures/DFCarChecker/" + "sketch_o");
 
-            try {
-                copy(file, dst);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
-
-            // 组织jsonString
-            JSONObject jsonObject = new JSONObject();
-
-            try {
-                jsonObject.put("Group", "exterior");
-                jsonObject.put("Part", "sketch");
-
-                JSONObject photoData = new JSONObject();
-                photoData.put("height", bitmap.getHeight());
-                photoData.put("width", bitmap.getWidth());
-
-                jsonObject.put("PhotoData", photoData);
-                jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
-                jsonObject.put("UserId", MainActivity.userInfo.getId());
-                jsonObject.put("Key", MainActivity.userInfo.getKey());
-            } catch (JSONException e) {
-
-            }
-
-            PhotoEntity photoEntity = new PhotoEntity();
-            photoEntity.setFileName("sketch_o");
-            photoEntity.setJsonString(jsonObject.toString());
-
-            imageUploadQueue.addImage(photoEntity);
+        try {
+            copy(file, dst);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        //如果草图队列不为空
-        else {
-            for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
-                imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
-            }
 
-            while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
-                CarCheckPaintActivity.sketchPhotoEntities.remove(0);
-            }
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+
+        // 组织jsonString
+        JSONObject jsonObject = new JSONObject();
+
+        try {
+            jsonObject.put("Group", "exterior");
+            jsonObject.put("Part", "sketch");
+
+            JSONObject photoData = new JSONObject();
+            photoData.put("height", bitmap.getHeight());
+            photoData.put("width", bitmap.getWidth());
+
+            jsonObject.put("PhotoData", photoData);
+            jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
+            jsonObject.put("UserId", MainActivity.userInfo.getId());
+            jsonObject.put("Key", MainActivity.userInfo.getKey());
+        } catch (JSONException e) {
+
         }
+
+        PhotoEntity photoEntity = new PhotoEntity();
+        photoEntity.setFileName("sketch_o");
+        photoEntity.setJsonString(jsonObject.toString());
+
+        return photoEntity;
     }
 
     private Bitmap getBitmapFromFigure(int figure) {

@@ -176,8 +176,8 @@
     <string name="ci_licence_type">行驶证品牌型号：</string>
     <string name="ci_car_type">行驶证车辆类型：</string>
     <string-array name="ci_vehicleType_items">
-        <item>微型客车</item>
         <item>小型客车、轿车</item>
+        <item>微型客车</item>
         <item>中型客车</item>
         <item>大型客车</item>
     </string-array>
@@ -244,9 +244,6 @@
         <item>青海</item>
         <item>宁夏</item>
         <item>新疆</item>
-        <item>香港</item>
-        <item>澳门</item>
-        <item>台湾</item>
     </string-array>
     <string-array name="ci_province_abbreviation">
         <item>京</item>
@@ -280,9 +277,6 @@
         <item>青</item>
         <item>宁</item>
         <item>新</item>
-        <item> </item>
-        <item> </item>
-        <item> </item>
     </string-array>
 
     <string name="ci_transfer_count">过户次数：</string>

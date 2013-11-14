@@ -13,6 +13,5 @@ public interface ISoapService {
     boolean communicateWithServer(String jsonString);
     boolean uploadPicture(Bitmap bitmap, String jsonString);
     boolean uploadPicture(String jsonString);
-    public boolean sendIpAddress();
     public boolean checkUpdate(Context context);
 }

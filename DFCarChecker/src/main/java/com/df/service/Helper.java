@@ -1,13 +1,17 @@
 package com.df.service;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -224,5 +228,13 @@ public class Helper {
         EditText editText = (EditText)view.findViewById(editId);
 
         editText.setText(text);
+    }
+
+    public static void setEditWeight(View view, int editId, float weight) {
+        EditText editText = (EditText)view.findViewById(editId);
+
+        editText.setLayoutParams(new LinearLayout.LayoutParams(0,
+                LinearLayout.LayoutParams.WRAP_CONTENT, weight));
+
     }
 }

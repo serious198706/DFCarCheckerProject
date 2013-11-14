@@ -43,4 +43,5 @@ public abstract class PaintView extends ImageView {
     public abstract int getType();
     public abstract List<PosEntity> getPosEntities();
     public abstract Bitmap getSketchBitmap();
+    public abstract List<PosEntity> getNewPosEntities();
 }

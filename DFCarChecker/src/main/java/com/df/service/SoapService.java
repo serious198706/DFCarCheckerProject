@@ -33,17 +33,23 @@ public class SoapService implements ISoapService {
 
     public SoapService() {}
 
+    // 设置url, soapAction, methodName
     public void setUtils(String url, String soapAction, String methodName) {
         this.url = url;
         this.soapAction = soapAction;
         this.methodName = methodName;
     }
 
+    // 获取错误信息
     public String getErrorMessage() { return errorMessage; }
+
+    // 获取结果信息
     public String getResultMessage() { return resultMessage; }
+
+    // 获取用户信息
     public UserInfo getUserInfo() { return userInfo; }
 
-    // 登陆
+    // 登录
     public boolean login(Context context, String jsonString) {
         errorMessage = "";
         resultMessage = "";
@@ -103,7 +109,7 @@ public class SoapService implements ISoapService {
         }
     }
 
-    // 其他通讯，如提交信息等
+    // 通讯，如提交信息等
     public boolean communicateWithServer(String jsonString) {
         errorMessage = "";
         resultMessage = "";
@@ -193,8 +199,6 @@ public class SoapService implements ISoapService {
             // 如果没有图片，那还传个毛线
             errorMessage = "图片为空！";
             return false;
-
-//            byteArray = new byte[0];
         }
 
         // 在图片流后面加上分隔符 #:
@@ -329,56 +333,7 @@ public class SoapService implements ISoapService {
         }
     }
 
-    public boolean sendIpAddress() {
-        errorMessage = "";
-        resultMessage = "";
-
-        // 各种配置
-        SoapObject request = new SoapObject(NAMESPACE, this.methodName);
-
-        SoapSerializationEnvelope envelope=new SoapSerializationEnvelope(SoapEnvelope.VER11);
-        new MarshalBase64().register(envelope);
-        envelope.dotNet = true;
-        envelope.setOutputSoapObject(request);
-
-        HttpTransportSE trans = new HttpTransportSE(this.url);
-
-        try {
-            trans.call(this.soapAction, envelope);
-        } catch (Exception e) {
-            if(e.getMessage() != null)
-                Log.d(Common.TAG, "无法连接到服务器：" + e.getMessage());
-            else
-                Log.d(Common.TAG, "无法连接到服务器！" );
-
-            errorMessage = "无法连接到服务器！";
-            resultMessage = "";
-
-            return false;
-        }
-
-        // 收到的结果
-        SoapObject soapObject = (SoapObject) envelope.bodyIn;
-
-        // 成功失败标志位
-        String result = soapObject.getProperty(0).toString();
-        Log.d(Common.TAG, result);
-
-
-        // 成功
-        if(result.equals("0")) {
-            // JSON格式数据
-            resultMessage = soapObject.getProperty(1).toString();
-
-            return true;
-        }
-        // 失败
-        else {
-            Log.d(Common.TAG, resultMessage);
-            return false;
-        }
-    }
-
+    // 检查更新
     public boolean checkUpdate(Context context) {
         errorMessage = "";
         resultMessage = "";

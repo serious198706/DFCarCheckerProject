@@ -179,7 +179,7 @@ public class StartupActivity extends Activity {
                     PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
 
                     // 版本不同，升级
-                    if(!version.equals(pInfo.versionName)) {
+                    if(compareVersion(pInfo.versionName, version)) {
                         AlertDialog dialog = new AlertDialog.Builder(context)
                                 .setTitle(R.string.newUpdate)
                                 .setMessage("检测到新版本，点击确定进行更新")
@@ -200,11 +200,13 @@ public class StartupActivity extends Activity {
                                                 mDownloadTask.cancel(true);
                                             }
                                         });
+                                        mProgressDialog.setCanceledOnTouchOutside(false);
 
                                     }
                                 })
                                 .create();
 
+                        dialog.setCanceledOnTouchOutside(false);
                         dialog.show();
                     } else {
                         Intent home = new Intent(StartupActivity.this, LoginActivity.class);
@@ -222,6 +224,20 @@ public class StartupActivity extends Activity {
             }
         }
     }
+
+    private boolean compareVersion(String localVersion, String serverVersion) {
+        if(localVersion.charAt(0) < serverVersion.charAt(0))
+            return true;
+
+        if(localVersion.charAt(2) < serverVersion.charAt(2))
+            return true;
+
+        if(localVersion.charAt(4) < serverVersion.charAt(4))
+            return true;
+
+        return false;
+    }
+
 
     private class DownloadTask extends AsyncTask<String, Integer, Boolean> {
 

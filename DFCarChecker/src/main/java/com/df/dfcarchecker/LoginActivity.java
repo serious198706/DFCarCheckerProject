@@ -13,7 +13,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -22,27 +22,15 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.df.entry.VehicleModel;
 import com.df.service.Common;
-import com.df.service.Compress;
-import com.df.service.Decompress;
-import com.df.service.EncryptDecryptFile;
 import com.df.service.SoapService;
 import com.df.entry.UserInfo;
-import com.df.service.VehicleModelParser;
-
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import java.lang.reflect.Method;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -117,16 +105,25 @@ public class LoginActivity extends Activity {
      * 如果有错误（用户名、密码未填写）则不进行登陆
      */
     public void attemptLogin() {
-//        FileInputStream fis = null;
+//        String path = Environment.getExternalStorageDirectory().getPath() + "/.cheyipai/";
+//        String file = path + "vm";
+//        String zippedFile = path + "df001";
+//
+//        String files[] = {file};
 //
 //        try {
-//            String path = Environment.getExternalStorageDirectory().getPath() + "/.cheyipai/";
-//            String file = path + "vm";
-//            String enFile = path + "df001";
-//            String zippedFile = path + "zip";
-//
-//            Compress.zip(file, zippedFile, "");
-//
+//            XmlHandler.zip(files, zippedFile);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//        try {
+//            XmlHandler.unzip(zippedFile, path);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+
 //            EncryptDecryptFile encryptDecryptFile = new EncryptDecryptFile();
 //
 //            try {
@@ -138,50 +135,6 @@ public class LoginActivity extends Activity {
 //            } catch (FileNotFoundException e) {
 //                e.printStackTrace();
 //            }
-//
-//            try {
-//                Compress.unzip(zippedFile, path, "");
-//            } catch (ZipException e) {
-//                e.printStackTrace();
-//            }
-//
-//            String path = Environment.getExternalStorageDirectory().getPath() + File.separator + "" +
-//                    ".cheyipai"+
-//                    File.separator;
-//            String file = path + "vm";
-//            String fileEn = path + "vmEn";
-//            String temp = path + "temp";
-//            String tempEn = path + "tempEn";
-//
-////            Compress.zip(fileEn, temp, "F3a#^%Bsk(Nln");
-//
-//            EncryptDecryptFile encryptDecryptFile = new EncryptDecryptFile();
-//
-//            //encryptDecryptFile.encrypt(new FileInputStream(file), new FileOutputStream(fileEn));
-//            //encryptDecryptFile.decrypt(new FileInputStream(fileEn), new FileOutputStream(file));
-//
-//            try {
-//                Compress.unzip(temp, path, "F3a#^%Bsk(Nln");
-//            } catch (ZipException e) {
-//                e.printStackTrace();
-//            }
-//
-//            encryptDecryptFile.decrypt(new FileInputStream(fileEn), new FileOutputStream(file));
-//
-//            File f = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
-//                    ".cheyipai/vm");
-//            fis = new FileInputStream(f);
-//
-//            if(fis == null) {
-//                Toast.makeText(this, "SD卡挂载有问题", Toast.LENGTH_LONG).show();
-//            }
-//
-//            VehicleModelParser parser = new VehicleModelParser();
-//            VehicleModel vehicleModel = parser.parseVehicleModelXml(fis);
-//        } catch (FileNotFoundException e) {
-//            Toast.makeText(this, "文件不存在", Toast.LENGTH_LONG).show();
-//            e.printStackTrace();
-//        }
 
         if (mAuthTask != null) {
             return;
@@ -291,18 +244,15 @@ public class LoginActivity extends Activity {
             WifiInfo wifiInf = wifiMan.getConnectionInfo();
             String macAddr = wifiInf.getMacAddress();
 
-//            try {
-//                soapService = new SoapService();
-//
-//                // 设置soap的配置
-//                soapService.setUtils("http://192.168.100.6:50/UserManageService.svc",
-//                        "http://cheyipai/IUserManageService/GetCustomerIpAddress",
-//                        "GetCustomerIpAddress");
-//
-//                success = soapService.sendIpAddress();
-//            } catch (Exception e) {
-//                Log.d("DFCarChecker", "Json解析错误: " + e.getMessage());
-//            }
+            String serialNumber = null;
+
+            try {
+                Class<?> c = Class.forName("android.os.SystemProperties");
+                Method get = c.getMethod("get", String.class);
+                serialNumber = (String) get.invoke(c, "ro.serialno");
+            } catch (Exception ignored) {
+            }
+
 
             try {
                 // 登录
@@ -311,6 +261,7 @@ public class LoginActivity extends Activity {
                 jsonObject.put("UserName", mUserName);
                 jsonObject.put("Password", mPassword);
                 jsonObject.put("Key", macAddr);
+                jsonObject.put("SerialNumber", serialNumber);
 
                 soapService = new SoapService();
 

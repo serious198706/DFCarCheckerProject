@@ -128,7 +128,7 @@ public class CarCheckedListActivity extends Activity {
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-        refresh();
+        refresh(true);
     }
 
 
@@ -153,7 +153,7 @@ public class CarCheckedListActivity extends Activity {
                 list.clearFocus();
                 list.invalidate();
 
-                refresh();
+                refresh(true);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -247,11 +247,20 @@ public class CarCheckedListActivity extends Activity {
     }
 
     // 刷新列表
-    private void refresh() {
-        mylist.clear();
+    private void refresh(boolean refresh) {
+        // 如果是点击了刷新
+        if(refresh) {
+            startNumber = 1;
+            mylist.clear();
+        }
 
         mRefreshCheckedCarListTask = new RefreshCheckedCarListTask(this);
         mRefreshCheckedCarListTask.execute((Void) null);
+    }
+
+    //
+    public void getMore(View v) {
+        refresh(false);
     }
 
     // 检查卖家姓名
@@ -289,6 +298,58 @@ public class CarCheckedListActivity extends Activity {
         mImportPlatformTask.execute();
     }
 
+    // 输入卖家用户名
+    private void inputSellerName(String result) {
+        JSONObject jsonObject = null;
+
+        try {
+            jsonObject = new JSONObject(result);
+            String companyName = jsonObject.getString("CompanyName");
+            String realName = jsonObject.getString("RealName");
+            sellerId = jsonObject.getString("SellerId");
+
+            String message = getResources().getString(R.string.importPlatformConfirm) +
+                    "\n" +
+                    "公司：" + companyName + "\n" +
+                    "真实姓名：" + realName;
+
+            AlertDialog dialog = new AlertDialog.Builder(this)
+                    .setTitle(R.string.alert_title)
+                    .setMessage(message)
+                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            importPlatform(sellerId);
+                        }
+                    })
+                    .setNegativeButton(R.string.cancel, null)
+                    .create();
+
+            dialog.show();
+
+        } catch (JSONException e) {
+
+        }
+    }
+
+    // 显示出错信息
+    private void showErrorDialog() {
+        String message = "未找到卖家，请检查用户名！";
+
+        AlertDialog dialog = new AlertDialog.Builder(this)
+                .setTitle(R.string.alert_title)
+                .setMessage(message)
+                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        checkSellerName();
+                    }
+                })
+                .create();
+
+        dialog.show();
+    }
+
     // 获取已检车辆线程
     private class RefreshCheckedCarListTask extends AsyncTask<Void, Void, Boolean> {
         Context context;
@@ -307,6 +368,8 @@ public class CarCheckedListActivity extends Activity {
         @Override
         protected Boolean doInBackground(Void... params) {
             boolean success = false;
+
+            startNumber = mylist.size() + 1;
 
             try {
                 JSONObject jsonObject = new JSONObject();
@@ -330,7 +393,6 @@ public class CarCheckedListActivity extends Activity {
                     Log.d("DFCarChecker", "获取车辆配置信息失败：" + soapService.getErrorMessage());
                 } else {
                     result = soapService.getResultMessage();
-                    //startNumber += 10;
                 }
             } catch (JSONException e) {
                 Log.d("DFCarChecker", "Json解析错误：" + e.getMessage());
@@ -500,56 +562,6 @@ public class CarCheckedListActivity extends Activity {
         protected void onCancelled() {
             mRefreshCheckedCarListTask = null;
         }
-    }
-
-    private void inputSellerName(String result) {
-        JSONObject jsonObject = null;
-
-        try {
-            jsonObject = new JSONObject(result);
-            String companyName = jsonObject.getString("CompanyName");
-            String realName = jsonObject.getString("RealName");
-            sellerId = jsonObject.getString("SellerId");
-
-            String message = getResources().getString(R.string.importPlatformConfirm) +
-                    "\n" +
-                    "公司：" + companyName + "\n" +
-                    "真实姓名：" + realName;
-
-            AlertDialog dialog = new AlertDialog.Builder(this)
-                    .setTitle(R.string.alert_title)
-                    .setMessage(message)
-                    .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            importPlatform(sellerId);
-                        }
-                    })
-                    .setNegativeButton(R.string.cancel, null)
-                    .create();
-
-            dialog.show();
-
-        } catch (JSONException e) {
-
-        }
-    }
-
-    private void showErrorDialog() {
-        String message = "未找到卖家，请检查用户名！";
-
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.alert_title)
-                .setMessage(message)
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        checkSellerName();
-                    }
-                })
-                .create();
-
-        dialog.show();
     }
 
     // 确认导入平台线程

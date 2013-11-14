@@ -273,6 +273,8 @@ public class ExteriorPaintView extends PaintView {
         return this.bitmap;
     }
 
+    public List<PosEntity> getNewPosEntities() {return thisTimeNewData;}
+
 
     public String getGroup() {
         return "exterior";
