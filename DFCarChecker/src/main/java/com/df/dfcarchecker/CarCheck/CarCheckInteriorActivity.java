@@ -415,6 +415,18 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
                     }).create();
 
             dialog.show();
+        } else {
+            // 创建结果意图和包括地址
+            Intent intent = new Intent();
+            intent.putExtra("INDEX", Integer.toString(sealSpinner.getSelectedItemPosition()));
+            intent.putExtra("COMMENT", commentEdit.getText().toString());
+            intent.putExtra("PHOTO_COUNT", photoShotCount);
+            intent.putExtra("SAVED", saved);
+            //addPhotosToQueue();
+
+            // 关闭activity
+            setResult(Activity.RESULT_OK, intent);
+            finish();
         }
     }
 

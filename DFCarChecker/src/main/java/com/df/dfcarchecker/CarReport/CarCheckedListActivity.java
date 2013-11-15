@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.support.v4.app.NavUtils;
 import android.support.v4.app.TaskStackBuilder;
+import android.text.Layout;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
@@ -19,7 +20,9 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -119,8 +122,20 @@ public class CarCheckedListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_checked_list);
 
+        View footerView =  ((LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+                .inflate(R.layout.footer, null, false);
+
         list = (ListView) findViewById(R.id.car_checked_list);
         list.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        list.addFooterView(footerView);
+
+        Button loadMoreButton = (Button) findViewById(R.id.loadMore);
+        loadMoreButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                refresh(false);
+            }
+        });
 
         mylist = new ArrayList<HashMap<String, String>>();
         map = new HashMap<String, String>();
@@ -259,7 +274,7 @@ public class CarCheckedListActivity extends Activity {
     }
 
     //
-    public void getMore(View v) {
+    public void loadMore(View v) {
         refresh(false);
     }
 

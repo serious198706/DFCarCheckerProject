@@ -10,6 +10,8 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.widget.ProgressBar;
 
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
@@ -36,6 +38,8 @@ public class CarReportExteriorActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
         setContentView(R.layout.activity_car_report_exterior);
 
         posEntities = new ArrayList<PosEntity>();
@@ -49,6 +53,7 @@ public class CarReportExteriorActivity extends Activity {
 
         exteriorPaintPreviewView = (ExteriorPaintPreviewView) findViewById(R.id.out_base_image_preview);
         exteriorPaintPreviewView.init(previewViewBitmap, posEntities);
+        exteriorPaintPreviewView.setAlpha(0.6f);
 
         Bundle extras = getIntent().getExtras();
 
@@ -58,6 +63,7 @@ public class CarReportExteriorActivity extends Activity {
 
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
+
     }
 
 
@@ -128,6 +134,10 @@ public class CarReportExteriorActivity extends Activity {
 
     // 下载图片
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        protected void onPreExecute() {
+            setProgressBarIndeterminateVisibility(Boolean.TRUE);
+        }
+
         protected Bitmap doInBackground(String... urls) {
             String url = urls[0];
             Bitmap tempBitmap = null;
@@ -142,8 +152,11 @@ public class CarReportExteriorActivity extends Activity {
         }
 
         protected void onPostExecute(Bitmap result) {
+            setProgressBarIndeterminateVisibility(Boolean.FALSE);
+
             exteriorPaintPreviewView.init(result, posEntities);
             exteriorPaintPreviewView.invalidate();
+            exteriorPaintPreviewView.setAlpha(1.0f);
         }
     }
 }

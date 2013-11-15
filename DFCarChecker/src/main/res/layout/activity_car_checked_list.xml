@@ -1,8 +1,9 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:animateLayoutChanges="true"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
     tools:context=".CarCheckedListActivity">
 
     <ListView android:id="@+id/car_checked_list"
@@ -12,11 +13,4 @@
               android:longClickable="true"
               android:listSelector="@drawable/car_checked_list_selector"/>
 
-    <Button android:id="@+id/getMore"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/getMore"
-        android:layout_below="@id/car_checked_list"
-        android:onClick="getMore"
-        style="?android:borderlessButtonStyle"/>
-</RelativeLayout>
+</LinearLayout>

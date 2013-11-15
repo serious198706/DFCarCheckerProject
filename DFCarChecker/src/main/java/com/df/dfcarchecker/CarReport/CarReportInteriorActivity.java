@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
@@ -36,6 +37,7 @@ public class CarReportInteriorActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         setContentView(R.layout.activity_car_report_interior);
 
         posEntities = new ArrayList<PosEntity>();
@@ -127,6 +129,10 @@ public class CarReportInteriorActivity extends Activity {
 
     // 下载图片
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        protected void onPreExecute() {
+            setProgressBarIndeterminateVisibility(Boolean.TRUE);
+        }
+
         protected Bitmap doInBackground(String... urls) {
             String url = urls[0];
             Bitmap tempBitmap = null;
@@ -141,6 +147,8 @@ public class CarReportInteriorActivity extends Activity {
         }
 
         protected void onPostExecute(Bitmap result) {
+            setProgressBarIndeterminateVisibility(Boolean.FALSE);
+
             interiorPaintPreviewView.init(result, posEntities);
             interiorPaintPreviewView.invalidate();
         }

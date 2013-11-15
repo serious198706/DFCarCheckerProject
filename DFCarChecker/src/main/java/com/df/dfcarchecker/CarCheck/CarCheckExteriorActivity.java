@@ -389,6 +389,19 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
                     }).create();
 
             dialog.show();
+        } else {
+            // 创建结果意图和包括地址
+            Intent intent = new Intent();
+            intent.putExtra("INDEX", Integer.toString(smoothSpinner.getSelectedItemPosition()));
+            intent.putExtra("COMMENT", commentEdit.getText().toString());
+            intent.putExtra("PHOTO_COUNT", photoShotCount);
+            saved = true;
+            intent.putExtra("SAVED", saved);
+            //addPhotosToQueue();
+
+            // 关闭activity
+            setResult(Activity.RESULT_OK, intent);
+            finish();
         }
     }
 

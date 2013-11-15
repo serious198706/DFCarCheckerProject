@@ -76,7 +76,7 @@ public class FramePaintView extends PaintView {
         undoData = new ArrayList<PosEntity>();
         thisTimeNewData = new ArrayList<PosEntity>();
 
-        colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
+        colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.damage);
         this.setOnTouchListener(onTouchListener);
     }
 

@@ -52,7 +52,7 @@ public class FramePaintPreviewView extends ImageView {
 
         //data = new ArrayList<PosEntity>();
 
-        colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.out_color_diff);
+        colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.damage);
     }
 
     @Override

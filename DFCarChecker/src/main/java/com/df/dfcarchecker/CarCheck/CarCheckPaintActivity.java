@@ -34,6 +34,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -312,6 +313,7 @@ public class CarCheckPaintActivity extends Activity {
             case Activity.RESULT_OK:
                 // 获取当前文件名
                 currentTimeMillis = paintView.getCurrentTimeMillis();
+                setPhotoSize(currentTimeMillis, 800);
                 break;
             case Activity.RESULT_CANCELED:
                 // 获取当前文件名
@@ -326,10 +328,52 @@ public class CarCheckPaintActivity extends Activity {
         PosEntity posEntity = paintView.getPosEntity();
 
         // 如果文件名为0，则表示此点无照片
-        String fileName = (currentTimeMillis == 0 ? "" : Long.toString(currentTimeMillis) + "" +
-                ".jpg");
+        String fileName = (currentTimeMillis == 0 ? "" : Long.toString(currentTimeMillis) + ".jpg");
 
         posEntity.setImageFileName(fileName);
+    }
+
+    private void setPhotoSize(long currentTimeMillis, int max) {
+        String path = Environment.getExternalStorageDirectory().getPath() +
+                "/Pictures/DFCarChecker/";
+        String fileName = Long.toString(currentTimeMillis) + ".jpg";
+
+        File file = new File(path + fileName);
+        Bitmap bitmap = BitmapFactory.decodeFile(path + fileName);
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        Bitmap newBitmap = null;
+
+        float ratio;
+        float newWidth;
+        float newHeight;
+
+        // 如果宽度小于800, 无视
+        if(width > max) {
+            ratio = (float)width / (float)max;
+            newWidth = max;
+            newHeight = height / ratio;
+        } else if(height > max) {
+            ratio = (float)height / (float)max;
+            newWidth = width / ratio;
+            newHeight = max;
+        } else {
+            newWidth = width;
+            newHeight = height;
+        }
+
+        newBitmap = Bitmap.createScaledBitmap(bitmap, (int)newWidth, (int)newHeight, true);
+
+        try {
+            FileOutputStream ostream = new FileOutputStream(file);
+            newBitmap.compress(Bitmap.CompressFormat.JPEG, 90, ostream);
+
+            ostream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     // 保存草图的线程
@@ -443,8 +487,15 @@ public class CarCheckPaintActivity extends Activity {
 //                sketchPhotoEntities.add(sketchPhotoEntity);
 //            }
 
-            if(sketchPhotoEntities.contains(sketchPhotoEntity))
-                sketchPhotoEntities.remove(sketchPhotoEntity);
+            // TODO: 不对！
+            if(sketchPhotoEntities != null) {
+                for(int i = 0; i < sketchPhotoEntities.size(); i++) {
+                    if(sketchPhotoEntities.get(i).getFileName().equals(sketchPhotoEntity
+                            .getFileName())) {
+                        sketchPhotoEntities.remove(i);
+                    }
+                }
+            }
 
             sketchPhotoEntities.add(sketchPhotoEntity);
             generatePhotoEntities();
@@ -483,7 +534,7 @@ public class CarCheckPaintActivity extends Activity {
 
         photoEntities.clear();
 
-        List<PosEntity> posEntities = paintView.getNewPosEntities();
+        List<PosEntity> posEntities = paintView.getPosEntities();
 
         for(int i = 0; i < posEntities.size(); i++) {
             // 获取坐标

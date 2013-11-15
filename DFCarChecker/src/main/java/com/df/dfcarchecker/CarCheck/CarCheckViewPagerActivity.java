@@ -52,7 +52,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
      */
     CustomViewPager mViewPager;
 
-    private ProgressDialog mCommitProgressDialog;
+    public static ProgressDialog mCommitProgressDialog;
 
     private static boolean canCommit = false;
 
@@ -335,8 +335,12 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                 // 提交
 
                 // 将结构检查的图片加入到照片池
-                mCommitProgressDialog = ProgressDialog.show(CarCheckViewPagerActivity.this, null,
-                        "正在提交...", false, false);
+                mCommitProgressDialog = new ProgressDialog(CarCheckViewPagerActivity.this);
+                mCommitProgressDialog.setMessage("正在提交");
+                mCommitProgressDialog.setIndeterminate(true);
+                mCommitProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mCommitProgressDialog.setCanceledOnTouchOutside(false);
+                mCommitProgressDialog.show();
 
                 // 修改车辆信息
                 if(!jsonData.equals("")) {
@@ -400,8 +404,6 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                     serviceIntent.putExtra("JSONObject", generateCommitJsonObject().toString());
                     startService(serviceIntent);
                 }
-
-
             }
         });
 
@@ -438,6 +440,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                         String engine = "发动机检查得分：";
                         String gearbox = "变速箱检查得分：";
                         String function = "功能检查得分：";
+                        String total = "总分：";
 
                         try {
                             JSONObject jsonObject = new JSONObject(score);
@@ -446,14 +449,22 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                             engine += jsonObject.getString("engine");
                             gearbox += jsonObject.getString("gearbox");
                             function += jsonObject.getString("function");
+
+                            Float totalScore = Float.parseFloat(jsonObject.getString("exterior"))
+                                    + Float.parseFloat(jsonObject.getString("interior"))
+                                    + Float.parseFloat(jsonObject.getString("engine"))
+                                    + Float.parseFloat(jsonObject.getString("gearbox"))
+                                    + Float.parseFloat(jsonObject.getString("function"));
+
+                            total += Float.toString(totalScore);
                         } catch (JSONException e) {
 
                         }
 
                         String msg = exterior + "\n" + interior + "\n" + engine + "\n" + gearbox +
-                                "\n" +function;
+                                "\n" + function + "\n\n" + total;
 
-                                // 关闭界面
+                        // 显示得分，关闭界面
                         AlertDialog dialog = new AlertDialog.Builder(CarCheckViewPagerActivity.this)
                                 .setTitle("车辆得分")
                                 //.setView(getLayoutInflater().inflate(R.layout.score_dialog, null))

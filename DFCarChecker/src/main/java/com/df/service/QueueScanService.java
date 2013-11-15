@@ -16,6 +16,7 @@ import android.util.Log;
 import android.os.Process;
 
 import com.df.dfcarchecker.CarCheck.CarCheckBasicInfoFragment;
+import com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity;
 import com.df.dfcarchecker.MainActivity;
 import com.df.entry.PhotoEntity;
 
@@ -67,6 +68,9 @@ public class QueueScanService extends Service {
     private int carId;
     private ModifyDataTask mModifyDataTask;
 
+    private int total;
+    int complete;
+
     @Override
     public void onCreate() {
         HandlerThread thread = new HandlerThread("ServiceStartArguments",
@@ -94,6 +98,11 @@ public class QueueScanService extends Service {
         carId = intent.getExtras().getInt("carId");
 
         handler.removeCallbacks(commitToUI);
+
+        if(committed) {
+            total = imageUploadQueue.getQueueSize();
+            complete = 0;
+        }
 
         return super.onStartCommand(intent,flags,startId);
     }
@@ -204,13 +213,14 @@ public class QueueScanService extends Service {
     }
 
     // 上传图片
-    private class UploadPictureTask extends AsyncTask<Void, Void, Boolean> {
+    private class UploadPictureTask extends AsyncTask<Void, Integer, Boolean> {
         Context context;
+
+
 
         @Override
         protected void onPreExecute()
         {
-
         }
 
         @Override
@@ -234,6 +244,8 @@ public class QueueScanService extends Service {
                 path += "/Pictures/DFCarChecker/";
                 String fileName = photoEntity.getFileName();
 
+                Log.d(Common.TAG, photoEntity.getJsonString());
+
                 // 如果照片名为空串，表示要上传空照片
                 if(fileName.equals("")) {
                     success = soapService.uploadPicture(photoEntity.getJsonString());
@@ -254,8 +266,24 @@ public class QueueScanService extends Service {
         }
 
         @Override
+        protected void onProgressUpdate(Integer... progress) {
+            super.onProgressUpdate(progress);
+            // if we get here, length is known, now set indeterminate to false
+            CarCheckViewPagerActivity.mCommitProgressDialog.setIndeterminate(false);
+            CarCheckViewPagerActivity.mCommitProgressDialog.setMax(total);
+            CarCheckViewPagerActivity.mCommitProgressDialog.setProgress(progress[0]);
+        }
+
+        @Override
         protected void onPostExecute(final Boolean success) {
             if(success) {
+                if(committed) {
+                    if(complete < total)
+                        complete++;
+
+                    publishProgress((complete));
+                }
+
                 Log.d(Common.TAG, "上传成功！");
                 imageUploadQueue.removeImage();
                 index = 0;
@@ -325,6 +353,8 @@ public class QueueScanService extends Service {
         @Override
         protected void onPostExecute(final Boolean success) {
             if(success) {
+                total = 0;
+                complete = 0;
                 Log.d(Common.TAG, "提交成功！" + soapService.getErrorMessage());
                 handler.post(commitToUI); // 1 second
             } else {

@@ -1,19 +1,19 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".LoginActivity">
+       xmlns:tools="http://schemas.android.com/tools"
+       tools:context=".LoginActivity">
 
     <!-- Login progress -->
     <LinearLayout android:id="@+id/login_status"
-        android:visibility="gone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
+                  android:visibility="gone"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_gravity="center"
+                  android:gravity="center_horizontal"
+                  android:orientation="vertical">
         <ProgressBar style="?android:attr/progressBarStyleLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"/>
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_marginBottom="8dp"/>
         <TextView
             android:id="@+id/login_status_message"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -32,7 +32,7 @@
         android:background="@drawable/login_bg">
 
         <LinearLayout style="@style/LoginFormContainer"
-            android:orientation="vertical">
+                      android:orientation="vertical">
 
             <ImageView
                 android:layout_height="wrap_content"
@@ -63,14 +63,14 @@
                 android:textSize="24sp"/>
 
             <Button android:id="@+id/sign_in_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/action_sign_in_register"
-                android:paddingLeft="32dp"
-                android:paddingRight="32dp"
-                android:layout_gravity="right"
-                android:background="@drawable/button_custom1"/>
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/action_sign_in_register"
+                    android:paddingLeft="32dp"
+                    android:paddingRight="32dp"
+                    android:layout_gravity="right"
+                    android:background="@drawable/button_custom1"/>
 
         </LinearLayout>
 
