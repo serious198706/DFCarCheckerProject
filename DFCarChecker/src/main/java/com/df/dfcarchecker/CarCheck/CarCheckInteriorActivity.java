@@ -70,7 +70,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     private JSONObject conditions;
 
     private String jsonData = "";
-    int figure;
+    static int figure;
     private boolean saved;
 
     @Override
@@ -245,7 +245,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
                 Uri fileUri = Helper.getOutputMediaFileUri(currentTimeMillis); // create a file to save the image
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
-                startActivityForResult(intent, Common.PHOTO_FOR_INSIDE_GROUP);
+                startActivityForResult(intent, Common.PHOTO_FOR_INTERIOR_STANDARD);
             }
         });
         // Inflate and set the layout for the dialog
@@ -307,7 +307,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
                     }
                 }
                 break;
-            case Common.PHOTO_FOR_INSIDE_GROUP:
+            case Common.PHOTO_FOR_INTERIOR_STANDARD:
                 if(resultCode == Activity.RESULT_OK) {
                     // 组织JsonString
                     JSONObject jsonObject = new JSONObject();
@@ -444,29 +444,33 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     private void addPhotosToQueue() {
         ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
 
-        // 如果草图队列为空
-        if(CarCheckPaintActivity.sketchPhotoEntities == null) {
-            CarCheckPaintActivity.sketchPhotoEntities = new ArrayList<PhotoEntity>();
+//        // 如果草图队列为空
+//        if(CarCheckPaintActivity.sketchPhotoEntities == null) {
+//            CarCheckPaintActivity.sketchPhotoEntities = new ArrayList<PhotoEntity>();
+//
+//            PhotoEntity photoEntity = getSketchPhotoEntity();
+//            CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
+//        } else {
+//            // 如果有缺陷点，表示内饰草图已经生成，则不需要再添加了
+//            if(posEntities.isEmpty()) {
+//                PhotoEntity photoEntity = getSketchPhotoEntity();
+//                CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
+//            }
+//        }
+//
+//        // 将草图队列里所有的草图全部放入照片池
+//        for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
+//            imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
+//        }
+//
+//        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
+//            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
+//        }
+//
 
-            PhotoEntity photoEntity = getSketchPhotoEntity();
-            CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
-        } else {
-            // 如果有缺陷点，表示内饰草图已经生成，则不需要再添加了
-            if(posEntities.isEmpty()) {
-                PhotoEntity photoEntity = getSketchPhotoEntity();
-                CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
-            }
-        }
 
-        // 将草图队列里所有的草图全部放入照片池
-        for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
-            imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
-        }
 
-        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
-            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
-        }
-
+        // 将缺陷点照片加入照片池
         for(int i = 0; i < photoEntities.size(); i++) {
             imageUploadQueue.addImage(photoEntities.get(i));
         }
@@ -477,7 +481,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         }
     }
 
-    private PhotoEntity getSketchPhotoEntity() {
+    public static void generateSketchPhotoEntity() {
         File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
                 ".cheyipai/" + getNameFromFigure(figure));
         File dst = new File(Environment.getExternalStorageDirectory().getPath() +
@@ -514,7 +518,9 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         photoEntity.setFileName("sketch_i");
         photoEntity.setJsonString(jsonObject.toString());
 
-        return photoEntity;
+        // 将草图放入viewpager的草图队列
+        CarCheckViewPagerActivity.sketchPhotoEntities.put("interior", photoEntity);
+        Log.d(Common.TAG, "内饰草图生成！");
     }
 
     //  1 - d4s4,       2 - d2s4,       3 - d2s4,       4 - d4s4,       5 - van_i
@@ -532,7 +538,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         return path + getNameFromFigure(figure);
     }
 
-    public void copy(File src, File dst) throws IOException {
+    public static void copy(File src, File dst) throws IOException {
         InputStream in = new FileInputStream(src);
         OutputStream out = new FileOutputStream(dst);
 
@@ -546,7 +552,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         out.close();
     }
 
-    private String getNameFromFigure(int figure) {
+    private static String getNameFromFigure(int figure) {
         // 默认为三厢四门图
         String name = "d4s4";
 

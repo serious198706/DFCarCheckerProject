@@ -70,7 +70,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
     private boolean saved;
 
     Bitmap previewViewBitmap;
-    int figure;
+    static int figure;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -235,7 +235,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
                 Uri fileUri = Helper.getOutputMediaFileUri(currentTimeMillis); // create a file to save the image
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
 
-                startActivityForResult(intent, Common.PHOTO_FOR_OUTSIDE_GROUP);
+                startActivityForResult(intent, Common.PHOTO_FOR_EXTERIOR_STANDARD);
             }
         });
 
@@ -280,7 +280,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
                     }
                 }
                 break;
-            case Common.PHOTO_FOR_OUTSIDE_GROUP:
+            case Common.PHOTO_FOR_EXTERIOR_STANDARD:
                 if(resultCode == Activity.RESULT_OK) {
                     // 组织JsonString
                     JSONObject jsonObject = new JSONObject();
@@ -408,29 +408,29 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
     // 只有在保存时才提交照片
     private void addPhotosToQueue() {
         ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
-
-        // 如果草图队列为空
-        if(CarCheckPaintActivity.sketchPhotoEntities == null) {
-            CarCheckPaintActivity.sketchPhotoEntities = new ArrayList<PhotoEntity>();
-
-            PhotoEntity photoEntity = getSketchPhotoEntity();
-            CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
-        } else {
-            // 如果有缺陷点，表示外观草图已经生成，则不需要再添加了
-            if(posEntities.isEmpty()) {
-                PhotoEntity photoEntity = getSketchPhotoEntity();
-                CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
-            }
-        }
-
-        // 将草图队列里所有的草图全部放入照片池
-        for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
-            imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
-        }
-
-        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
-            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
-        }
+//
+//        // 如果草图队列为空
+//        if(CarCheckPaintActivity.sketchPhotoEntities == null) {
+//            CarCheckPaintActivity.sketchPhotoEntities = new ArrayList<PhotoEntity>();
+//
+//            PhotoEntity photoEntity = getSketchPhotoEntity();
+//            CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
+//        } else {
+//            // 如果有缺陷点，表示外观草图已经生成，则不需要再添加了
+//            if(posEntities.isEmpty()) {
+//                PhotoEntity photoEntity = getSketchPhotoEntity();
+//                CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
+//            }
+//        }
+//
+//        // 将草图队列里所有的草图全部放入照片池
+//        for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
+//            imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
+//        }
+//
+//        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
+//            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
+//        }
 
 
         for(int i = 0; i < photoEntities.size(); i++) {
@@ -443,7 +443,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         }
     }
 
-    private PhotoEntity getSketchPhotoEntity() {
+    public static void getSketchPhotoEntity() {
         File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
                 ".cheyipai/" + getNameFromFigure(figure));
         File dst = new File(Environment.getExternalStorageDirectory().getPath() +
@@ -480,7 +480,8 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         photoEntity.setFileName("sketch_o");
         photoEntity.setJsonString(jsonObject.toString());
 
-        return photoEntity;
+        CarCheckViewPagerActivity.sketchPhotoEntities.put("exterior", photoEntity);
+        Log.d(Common.TAG, "外观草图生成！");
     }
 
     private Bitmap getBitmapFromFigure(int figure) {
@@ -497,7 +498,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         return path + getNameFromFigure(figure);
     }
 
-    public void copy(File src, File dst) throws IOException {
+    public static void copy(File src, File dst) throws IOException {
         InputStream in = new FileInputStream(src);
         OutputStream out = new FileOutputStream(dst);
 
@@ -511,7 +512,7 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         out.close();
     }
 
-    private String getNameFromFigure(int figure) {
+    private static String getNameFromFigure(int figure) {
         // 默认为三厢四门图
         String name = "r3d4";
 

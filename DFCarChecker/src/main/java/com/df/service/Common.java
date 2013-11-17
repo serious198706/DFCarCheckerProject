@@ -44,8 +44,8 @@ public class Common {
     // 拍摄组别代码
     public static final int PHOTO_FOR_OTHER_GROUP = 0;
     public static final int PHOTO_FOR_ENGINE_GROUP = 1;
-    public static final int PHOTO_FOR_OUTSIDE_GROUP = 2;
-    public static final int PHOTO_FOR_INSIDE_GROUP = 3;
+    public static final int PHOTO_FOR_EXTERIOR_STANDARD = 2;
+    public static final int PHOTO_FOR_INTERIOR_STANDARD = 3;
     public static final int PHOTO_FOR_STRUCTURE_GROUP = 4;
 
     // 绘图类型代码

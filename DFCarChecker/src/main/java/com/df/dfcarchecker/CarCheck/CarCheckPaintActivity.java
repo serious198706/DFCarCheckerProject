@@ -392,24 +392,22 @@ public class CarCheckPaintActivity extends Activity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            // 如果没有修改过，则直接退出，不生成新的草图
-            if(!modified && paintView.getNewPosEntities().isEmpty()) {
-                return true;
-            }
+            // 思路：无论是否有点，都应该保存草图，但不需要上传到照片池
+            // 就算是内饰和外观，也应该在最后时刻再上传草图
+            // 草图现在比较小，可以最后一次性上传，没关系
+            // 草图生成后，加入草图队列，可以放在ViewPagerActivity中
+            // 每一次操作，都应该生成一次草图，无论这次是否有修改，这样可以确保进入PaintActivity就
+            // 能生成草图
+            // 如果没有进入相应的Activity，则在最后时刻做一次检查，哪一张没有，就生成哪一张
 
             boolean success = false;
             Bitmap b;
             Canvas c;
 
-            // 如果缺陷信息为空，则生成默认的草图
-            if(paintView.getPosEntities() == null || paintView.getPosEntities().isEmpty()) {
-                b = paintView.getSketchBitmap();
-            } else {
-                b = Bitmap.createBitmap(targetView.getWidth(),targetView.getHeight(),
-                        Bitmap.Config.ARGB_8888);
-                c = new Canvas(b);
-                targetView.draw(c);
-            }
+            b = Bitmap.createBitmap(targetView.getWidth(),targetView.getHeight(),
+                    Bitmap.Config.ARGB_8888);
+            c = new Canvas(b);
+            targetView.draw(c);
 
             String path = Environment.getExternalStorageDirectory().getPath();
             path += "/Pictures/DFCarChecker/";
@@ -419,21 +417,30 @@ public class CarCheckPaintActivity extends Activity {
 
             String filename = "";
             String group = "";
+            String part = "";
+            String sketchKey = "";
 
             switch (PaintType.paintType(currentPaintView)) {
                 case EX_PAINT:
                     filename = "sketch_o";
-                    group = "exterior";
+                    sketchKey = group = "exterior";
+                    part = "sketch";
                     break;
                 case IN_PAINT:
                     filename = "sketch_i";
-                    group = "interior";
+                    sketchKey = group = "interior";
+                    part = "sketch";
                     break;
                 case FRAME_PAINT:
-                    if(sight.equals("FRONT"))
+                    if(sight.equals("FRONT")) {
                         filename = "sketch_sf";
-                    else
+                        sketchKey = part = "fSketch";
+                    }
+                    else {
                         filename = "sketch_sr";
+                        sketchKey = part = "rSketch";
+                    }
+
                     group = "frame";
                     break;
             }
@@ -442,7 +449,6 @@ public class CarCheckPaintActivity extends Activity {
                 FileOutputStream out = new FileOutputStream(path + filename);
                 b.compress(Bitmap.CompressFormat.PNG, 90, out);
                 out.close();
-                success = true;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -452,18 +458,7 @@ public class CarCheckPaintActivity extends Activity {
 
             try {
                 jsonObject.put("Group", group);
-
-                // 如果是结构检查
-                if(currentPaintView.equals("FRAME_PAINT")) {
-                    if(sight.equals("FRONT"))
-                        jsonObject.put("Part", "fSketch");
-                    else
-                        jsonObject.put("Part", "rSketch");
-                }
-                // 其他类型的检查
-                else {
-                    jsonObject.put("Part", "sketch");
-                }
+                jsonObject.put("Part", part);
 
                 JSONObject photoData = new JSONObject();
                 photoData.put("height", b.getHeight());
@@ -481,23 +476,15 @@ public class CarCheckPaintActivity extends Activity {
             sketchPhotoEntity.setFileName(filename);
             sketchPhotoEntity.setJsonString(jsonObject.toString());
 
-//            // TODO: 先保存，等最后提交时再上传
-//            // 此图只传一次，所以如果已存在，则不必再保存，只更新图片即可
-//            if(!sketchPhotoEntities.contains(sketchPhotoEntity)) {
-//                sketchPhotoEntities.add(sketchPhotoEntity);
-//            }
+            success = true;
 
-            // TODO: 不对！
-            if(sketchPhotoEntities != null) {
-                for(int i = 0; i < sketchPhotoEntities.size(); i++) {
-                    if(sketchPhotoEntities.get(i).getFileName().equals(sketchPhotoEntity
-                            .getFileName())) {
-                        sketchPhotoEntities.remove(i);
-                    }
-                }
+            if(CarCheckViewPagerActivity.sketchPhotoEntities.containsKey(filename)) {
+                CarCheckViewPagerActivity.sketchPhotoEntities.remove(filename);
             }
 
-            sketchPhotoEntities.add(sketchPhotoEntity);
+            CarCheckViewPagerActivity.sketchPhotoEntities.put(sketchKey, sketchPhotoEntity);
+
+            // 生成缺陷点照片
             generatePhotoEntities();
 
             return success;

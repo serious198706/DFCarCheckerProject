@@ -365,14 +365,14 @@ public class QueueScanService extends Service {
             action = "";
             committed = false;
             mCommitDataTask = null;
-            canStartUpload = false;
+            canStartUpload = true;
             canStartCommit = true;
         }
 
         @Override
         protected void onCancelled() {
             action = "";
-            canStartUpload = false;
+            canStartUpload = true;
             mCommitDataTask = null;
             committed = false;
             canStartCommit = true;
@@ -443,6 +443,8 @@ public class QueueScanService extends Service {
             action = "";
             canStartModify = true;
             mModifyDataTask = null;
+            canStartCommit = true;
+            canStartUpload = true;
             committed = false;
         }
     }

@@ -1,6 +1,10 @@
 package com.df.dfcarchecker.CarCheck;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import android.app.ActionBar;
 import android.app.AlertDialog;
@@ -24,8 +28,10 @@ import android.widget.Toast;
 
 import com.df.dfcarchecker.CarReport.CarCheckedListActivity;
 import com.df.dfcarchecker.R;
+import com.df.entry.PhotoEntity;
 import com.df.service.Common;
 import com.df.service.CustomViewPager;
+import com.df.service.ImageUploadQueue;
 import com.df.service.QueueScanService;
 
 import org.json.JSONException;
@@ -36,6 +42,8 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
     private CarCheckBasicInfoFragment carCheckBasicInfoFragment;
     private CarCheckFrameFragment carCheckFrameFragment;
     private CarCheckIntegratedFragment carCheckIntegratedFragment;
+
+    public static Map<String, PhotoEntity> sketchPhotoEntities;
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -53,6 +61,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
     CustomViewPager mViewPager;
 
     public static ProgressDialog mCommitProgressDialog;
+    private ProgressDialog mSketchProgressDialog;
 
     private static boolean canCommit = false;
 
@@ -118,6 +127,8 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+
+        sketchPhotoEntities = new HashMap<String, PhotoEntity>();
 
         serviceIntent = new Intent(this, QueueScanService.class);
         serviceIntent.putExtra("committed", canCommit);
@@ -332,15 +343,12 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
-                // 提交
-
-                // 将结构检查的图片加入到照片池
+                // 进度条
                 mCommitProgressDialog = new ProgressDialog(CarCheckViewPagerActivity.this);
                 mCommitProgressDialog.setMessage("正在提交");
                 mCommitProgressDialog.setIndeterminate(true);
                 mCommitProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 mCommitProgressDialog.setCanceledOnTouchOutside(false);
-                mCommitProgressDialog.show();
 
                 // 修改车辆信息
                 if(!jsonData.equals("")) {
@@ -393,15 +401,51 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                     serviceIntent.putExtra("action", "modify");
                     serviceIntent.putExtra("carId", carId);
                     serviceIntent.putExtra("JSONObject", finalJsonObject.toString());
+                    mCommitProgressDialog.show();
                     startService(serviceIntent);
                 } else {
-                    carCheckFrameFragment.addPhotosToQueue();
+                    mSketchProgressDialog = ProgressDialog.show(CarCheckViewPagerActivity.this,
+                            null, "正在保存...", false, false);
+
+                    ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
+
+                    if(!sketchPhotoEntities.containsKey("fSketch")) {
+                        Log.d(Common.TAG, "正在生成fSketch...");
+                        carCheckFrameFragment.generateSketchPhoto("front");
+                    }
+
+                    imageUploadQueue.addImage(sketchPhotoEntities.get("fSketch"));
+
+                    if(!sketchPhotoEntities.containsKey("rSketch")) {
+                        Log.d(Common.TAG, "正在生成rSketch...");
+                        carCheckFrameFragment.generateSketchPhoto("rear");
+                    }
+
+                    imageUploadQueue.addImage(sketchPhotoEntities.get("rSketch"));
+
+                    if(!sketchPhotoEntities.containsKey("exterior")) {
+                        Log.d(Common.TAG, "正在生成外观sketch...");
+                        CarCheckExteriorActivity.getSketchPhotoEntity();
+                    }
+
+                    imageUploadQueue.addImage(sketchPhotoEntities.get("exterior"));
+
+                    if(!sketchPhotoEntities.containsKey("interior")) {
+                        Log.d(Common.TAG, "正在生成内饰sketch...");
+                        CarCheckInteriorActivity.generateSketchPhotoEntity();
+                    }
+
+                    imageUploadQueue.addImage(sketchPhotoEntities.get("interior"));
+
                     canCommit = true;
 
                     serviceIntent.putExtra("committed", canCommit);
                     serviceIntent.putExtra("action", "commit");
                     serviceIntent.putExtra("carId", 0);
                     serviceIntent.putExtra("JSONObject", generateCommitJsonObject().toString());
+
+                    mSketchProgressDialog.dismiss();
+                    mCommitProgressDialog.show();
                     startService(serviceIntent);
                 }
             }
@@ -426,13 +470,15 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
                 // 提交成功
                 if(result.equals("0")) {
-                    Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
+
                     // 停止服务
                     if(!jsonData.equals("")) {
+                        Toast.makeText(CarCheckViewPagerActivity.this, "修改成功！", Toast.LENGTH_LONG).show();
                         Intent serviceIntent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
                         stopService(serviceIntent);
                         finish();
                     } else {
+                        Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
                         String score = intent.getExtras().getString("score");
 
                         String exterior = "外观检查得分：";

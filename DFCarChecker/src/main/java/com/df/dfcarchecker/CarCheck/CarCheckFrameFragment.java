@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -71,6 +72,9 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
 
     public static Bitmap previewBitmapFront;
     public static Bitmap previewBitmapRear;
+
+    private PhotoEntity fSketch;
+    private PhotoEntity rSketch;
 
     private long currentTimeMillis;
 
@@ -337,35 +341,6 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
     public void addPhotosToQueue() {
         ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
 
-        // 上传草图（先上传，避免传完缺陷点后缺陷点list为空，生成不了草图）
-        if(CarCheckPaintActivity.sketchPhotoEntities == null) {
-            CarCheckPaintActivity.sketchPhotoEntities = new ArrayList<PhotoEntity>();
-
-            PhotoEntity photoEntityFront = getPhotoEntity("d4_f", "fSketch");
-            PhotoEntity photoEntityRear = getPhotoEntity("d4_r", "rSketch");
-
-            imageUploadQueue.addImage(photoEntityFront);
-            imageUploadQueue.addImage(photoEntityRear);
-        } else {
-            if(posEntitiesFront.isEmpty()) {
-                PhotoEntity photoEntityFront = getPhotoEntity("d4_f", "fSketch");
-                imageUploadQueue.addImage(photoEntityFront);
-            }
-            if(posEntitiesRear.isEmpty()) {
-                PhotoEntity photoEntityRear = getPhotoEntity("d4_r", "rSketch");
-                imageUploadQueue.addImage(photoEntityRear);
-            }
-        }
-
-        for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
-            imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
-        }
-
-        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
-            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
-        }
-
-
         // 上传缺陷点图
         for(int i = 0; i < photoEntitiesFront.size(); i++) {
             imageUploadQueue.addImage(photoEntitiesFront.get(i));
@@ -386,11 +361,11 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    private PhotoEntity getPhotoEntity(String part, String sketchName) {
+    private PhotoEntity getPhotoEntity(String part, String sketchFileName, String sketchName) {
         File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
                 ".cheyipai/" + part);
         File dst = new File(Environment.getExternalStorageDirectory().getPath() +
-                "/Pictures/DFCarChecker/" + sketchName);
+                "/Pictures/DFCarChecker/" + sketchFileName);
 
         try {
             copy(file, dst);
@@ -420,7 +395,7 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         }
 
         PhotoEntity photoEntity = new PhotoEntity();
-        photoEntity.setFileName(sketchName);
+        photoEntity.setFileName(sketchFileName);
         photoEntity.setJsonString(jsonObject.toString());
 
         return photoEntity;
@@ -439,6 +414,7 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         in.close();
         out.close();
     }
+
     public boolean runOverAllCheck() {
         int count = 0;
 
@@ -477,33 +453,6 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
             // 结构检查照片与缺陷
             JSONObject photos = jsonObject.getJSONObject("photos");
             JSONObject frame = photos.getJSONObject("frame");
-
-//            // 结构缺陷位置 - 前视角
-//            JSONArray frontPosArray = frame.getJSONArray("front");
-//
-//            for(int i = 0; i < frontPosArray.length(); i++) {
-//                JSONObject temp = frontPosArray.getJSONObject(i);
-//
-//                PosEntity posEntity = new PosEntity(Common.COLOR_DIFF);
-//                posEntity.setStart(temp.getInt("x"), temp.getInt("y"));
-//                posEntity.setEnd(0, 0);
-//                // TODO: 处理一下没有图片的情况
-//                posEntity.setImageFileName(temp.getString("photo"));
-//                posEntitiesFront.add(posEntity);
-//            }
-//
-//            // 结构缺陷位置 - 后视角
-//            JSONArray rearPosArray = frame.getJSONArray("rear");
-//
-//            for(int i = 0; i < rearPosArray.length(); i++) {
-//                JSONObject temp = rearPosArray.getJSONObject(i);
-//
-//                PosEntity posEntity = new PosEntity(Common.COLOR_DIFF);
-//                posEntity.setStart(temp.getInt("x"), temp.getInt("y"));
-//                posEntity.setEnd(0, 0);
-//                posEntity.setImageFileName(temp.getString("photo"));
-//                posEntitiesRear.add(posEntity);
-//            }
 
             setEditText(rootView, R.id.comment_edit, frames.getString("comment"));
 
@@ -563,6 +512,20 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
                 framePaintPreviewViewRear.invalidate();
                 tipRear.setVisibility(View.GONE);
             }
+        }
+    }
+
+    public void generateSketchPhoto(String sight) {
+        if(sight.equals("front")) {
+            fSketch = getPhotoEntity("d4_f", "sketch_sf", "fSketch");
+            CarCheckViewPagerActivity.sketchPhotoEntities.put("fSketch", fSketch);
+            Log.d(Common.TAG, "fSketch生成！");
+        }
+
+        if(sight.equals("rear")) {
+            rSketch = getPhotoEntity("d4_r", "sketch_sr", "rSketch");
+            CarCheckViewPagerActivity.sketchPhotoEntities.put("rSketch", rSketch);
+            Log.d(Common.TAG, "rSketch生成！");
         }
     }
 }
