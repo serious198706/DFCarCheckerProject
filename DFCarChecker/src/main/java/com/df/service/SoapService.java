@@ -19,9 +19,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class SoapService implements ISoapService {
-    private static final String NAMESPACE = "http://cheyipai";
-
-    private boolean success;
     private String errorMessage;
     private String resultMessage;
 
@@ -55,7 +52,7 @@ public class SoapService implements ISoapService {
         resultMessage = "";
 
         // 建立soap请求
-        SoapObject request = new SoapObject(NAMESPACE, this.methodName);
+        SoapObject request = new SoapObject(Common.NAMESPACE, this.methodName);
 
         // 添加soap参数
         request.addProperty("inputStringJson", jsonString);
@@ -114,7 +111,7 @@ public class SoapService implements ISoapService {
         errorMessage = "";
         resultMessage = "";
 
-        SoapObject request = new SoapObject(NAMESPACE, this.methodName);
+        SoapObject request = new SoapObject(Common.NAMESPACE, this.methodName);
         request.addProperty("inputStringJson", jsonString);
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11); // ??
@@ -215,7 +212,7 @@ public class SoapService implements ISoapService {
         }
 
         // 各种配置
-        SoapObject request = new SoapObject(NAMESPACE, this.methodName);
+        SoapObject request = new SoapObject(Common.NAMESPACE, this.methodName);
         request.addProperty("stream", newByteArray);
 
         SoapSerializationEnvelope envelope=new SoapSerializationEnvelope(SoapEnvelope.VER11);
@@ -287,7 +284,7 @@ public class SoapService implements ISoapService {
         }
 
         // 各种配置
-        SoapObject request = new SoapObject(NAMESPACE, this.methodName);
+        SoapObject request = new SoapObject(Common.NAMESPACE, this.methodName);
         request.addProperty("stream", newByteArray);
 
         SoapSerializationEnvelope envelope=new SoapSerializationEnvelope(SoapEnvelope.VER11);
@@ -339,7 +336,7 @@ public class SoapService implements ISoapService {
         resultMessage = "";
 
         // 各种配置
-        SoapObject request = new SoapObject(NAMESPACE, this.methodName);
+        SoapObject request = new SoapObject(Common.NAMESPACE, this.methodName);
 
         SoapSerializationEnvelope envelope=new SoapSerializationEnvelope(SoapEnvelope.VER11);
         new MarshalBase64().register(envelope);

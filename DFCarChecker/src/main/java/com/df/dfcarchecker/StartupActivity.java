@@ -282,8 +282,13 @@ public class StartupActivity extends Activity {
 
                     // download the file
                     input = connection.getInputStream();
-                    output = new FileOutputStream(Environment.getExternalStorageDirectory()
-                            .getPath() + "/Download/DFCarChecker.apk");
+
+                    File downloadPath = new File(Environment.getExternalStorageDirectory().getPath() +
+                            "/Download");
+
+                    downloadPath.mkdirs();
+
+                    output = new FileOutputStream(downloadPath.getPath() + "/DFCarChecker.apk");
 
                     byte data[] = new byte[4096];
                     long total = 0;
@@ -337,6 +342,7 @@ public class StartupActivity extends Activity {
                 intent.setDataAndType(Uri.fromFile(new File(Environment
                         .getExternalStorageDirectory() + "/Download/" + "DFCarChecker.apk")),
                         "application/vnd.android.package-archive");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else {
                 Toast.makeText(context, "下载失败！", Toast.LENGTH_SHORT).show();

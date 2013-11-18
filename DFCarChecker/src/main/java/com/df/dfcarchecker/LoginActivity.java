@@ -13,6 +13,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,10 +27,12 @@ import android.widget.TextView;
 import com.df.service.Common;
 import com.df.service.SoapService;
 import com.df.entry.UserInfo;
+import com.df.service.XmlHandler;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 /**
@@ -105,37 +108,6 @@ public class LoginActivity extends Activity {
      * 如果有错误（用户名、密码未填写）则不进行登陆
      */
     public void attemptLogin() {
-//        String path = Environment.getExternalStorageDirectory().getPath() + "/.cheyipai/";
-//        String file = path + "vm";
-//        String zippedFile = path + "df001";
-//
-//        String files[] = {file};
-//
-//        try {
-//            XmlHandler.zip(files, zippedFile);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-//        try {
-//            XmlHandler.unzip(zippedFile, path);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-
-
-//            EncryptDecryptFile encryptDecryptFile = new EncryptDecryptFile();
-//
-//            try {
-//                encryptDecryptFile.encrypt(new FileInputStream(zippedFile),
-//                        new FileOutputStream(enFile));
-//
-//                encryptDecryptFile.decrypt(new FileInputStream(enFile),
-//                        new FileOutputStream(zippedFile));
-//            } catch (FileNotFoundException e) {
-//                e.printStackTrace();
-//            }
-
         if (mAuthTask != null) {
             return;
         }

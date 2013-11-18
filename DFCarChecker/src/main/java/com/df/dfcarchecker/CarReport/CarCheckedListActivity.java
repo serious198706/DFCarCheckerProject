@@ -65,6 +65,8 @@ public class CarCheckedListActivity extends Activity {
     private String sellerId;
     private String sellerName = "";
 
+    private View footerView;
+
     // 已检测列表的开始位
     private int startNumber = 1;
 
@@ -122,7 +124,7 @@ public class CarCheckedListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_checked_list);
 
-        View footerView =  ((LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
+        footerView =  ((LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE))
                 .inflate(R.layout.footer, null, false);
 
         list = (ListView) findViewById(R.id.car_checked_list);
@@ -259,6 +261,20 @@ public class CarCheckedListActivity extends Activity {
                 return true;
             }
         });
+
+        list.post(new Runnable() {
+            @Override
+            public void run() {
+                // Select the last row so it will scroll into view...
+                list.setSelection(list.getCount() - 1);
+            }
+        });
+
+        if(list.getCount() <= 10) {
+            footerView.setVisibility(View.GONE);
+        } else {
+            footerView.setVisibility(View.VISIBLE);
+        }
     }
 
     // 刷新列表

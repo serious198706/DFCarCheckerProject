@@ -1,10 +1,7 @@
 package com.df.service;
 
-import android.content.Context;
 import android.os.Environment;
-
 import com.df.entry.PhotoEntity;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +13,6 @@ public final class ImageUploadQueue {
     public static List<PhotoEntity> queue;
 
     private static final ImageUploadQueue instance = new ImageUploadQueue();
-    private Context context;
 
     private ImageUploadQueue() {
         queue = new ArrayList<PhotoEntity>();
@@ -24,10 +20,6 @@ public final class ImageUploadQueue {
 
     public static ImageUploadQueue getInstance() {
         return instance;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
     }
 
     public int getQueueSize() {
@@ -67,8 +59,6 @@ public final class ImageUploadQueue {
 
         File file = new File(path + fileName);
         boolean deleted = file.delete();
-
-
 
         return deleted;
     }

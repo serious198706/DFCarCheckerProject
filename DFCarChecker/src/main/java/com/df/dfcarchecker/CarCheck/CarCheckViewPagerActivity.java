@@ -470,17 +470,21 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
                 // 提交成功
                 if(result.equals("0")) {
-
                     // 停止服务
+                    Intent serviceIntent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
+                    stopService(serviceIntent);
+
+                    // 如果为修改
                     if(!jsonData.equals("")) {
                         Toast.makeText(CarCheckViewPagerActivity.this, "修改成功！", Toast.LENGTH_LONG).show();
-                        Intent serviceIntent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
-                        stopService(serviceIntent);
                         finish();
-                    } else {
+                    }
+                    // 如果为提交车辆
+                    else {
                         Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
                         String score = intent.getExtras().getString("score");
 
+                        // 计算分数
                         String exterior = "外观检查得分：";
                         String interior = "内饰检查得分：";
                         String engine = "发动机检查得分：";
@@ -518,6 +522,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
+                                        // 进入已检车辆列表界面
                                         Intent intent1 = new Intent(CarCheckViewPagerActivity.this,
                                                 CarCheckedListActivity.class);
                                         startActivity(intent1);
@@ -540,7 +545,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
     };
 
     private boolean runOverAllCheck() {
-        boolean checkThrough = false;
+        boolean checkThrough;
 
         checkThrough = carCheckBasicInfoFragment.runOverAllCheck();
         if(!checkThrough) {
@@ -660,7 +665,5 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
     public void onUpdateIntegratedUi() {
         carCheckBasicInfoFragment.littleFixAboutRegArea();
-       // carCheckFrameFragment.letsEnterModifyMode();
-       // carCheckIntegratedFragment.letsEnterModifyMode();
     }
 }

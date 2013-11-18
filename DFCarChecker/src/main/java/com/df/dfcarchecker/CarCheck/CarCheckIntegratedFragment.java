@@ -32,6 +32,7 @@ import static com.df.service.Helper.getEditText;
 import static com.df.service.Helper.getSpinnerSelectedText;
 import static com.df.service.Helper.setEditText;
 import static com.df.service.Helper.setSpinnerSelectionWithString;
+import static com.df.service.Helper.showView;
 
 public class CarCheckIntegratedFragment extends Fragment implements View.OnClickListener {
     private static View rootView;
@@ -40,7 +41,6 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     public static List<PhotoEntity> exteriorPhotoEntities;
     public static List<PosEntity> interiorPosEntities;
     public static List<PhotoEntity> interiorPhotoEntities;
-
 
     // 用于修改
     private final String jsonData;
@@ -52,15 +52,10 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     private boolean interiorSaved;
 
     // 用于编辑车辆
-    private JSONObject options;
-    private JSONObject features;
     private JSONObject conditions;
-    private JSONObject exterior;
-    private JSONObject interior;
     private JSONObject engine;
     private JSONObject gearbox;
     private JSONObject function;
-    private JSONObject chassis;
     private JSONObject flooded;
     private String comment;
 
@@ -145,10 +140,6 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         paintIndex = sealIndex = "0";
         exteriorComment = interiorComment = "";
 
-//        if(!jsonData.equals("")) {
-//            letsEnterModifyMode();
-//        }
-
         return rootView;
     }
 
@@ -166,7 +157,6 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     }
 
     public static void showContent() {
-        //updateAssociatedSpinners(0, "");
         root.setVisibility(View.VISIBLE);
     }
 
@@ -182,24 +172,14 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     }
 
     private static void setGearRowVisibility(boolean visibility) {
-        TextView manuallyTextView = (TextView)rootView.findViewById(R.id.it_gear_manually_row);
-        TableRow manuallyRow1 = (TableRow)rootView.findViewById(R.id.it_gear_manually_row_1);
-        TableRow manuallyRow2 = (TableRow)rootView.findViewById(R.id.it_gear_manually_row_2);
-        TableRow manuallyRow3 = (TableRow)rootView.findViewById(R.id.it_gear_manually_row_3);
-        TextView autoTextView = (TextView)rootView.findViewById(R.id.it_gear_auto_row);
-        TableRow autoRow1 = (TableRow)rootView.findViewById(R.id.it_gear_auto_row_1);
-        TableRow autoRow2 = (TableRow)rootView.findViewById(R.id.it_gear_auto_row_2);
-        TableRow autoRow3 = (TableRow)rootView.findViewById(R.id.it_gear_auto_row_3);
-
-        manuallyTextView.setVisibility(visibility ? View.VISIBLE : View.GONE);
-        manuallyRow1.setVisibility(visibility ? View.VISIBLE : View.GONE);
-        manuallyRow2.setVisibility(visibility ? View.VISIBLE : View.GONE);
-        manuallyRow3.setVisibility(visibility ? View.VISIBLE : View.GONE);
-
-        autoTextView.setVisibility(!visibility ? View.VISIBLE : View.GONE);
-        autoRow1.setVisibility(!visibility ? View.VISIBLE : View.GONE);
-        autoRow2.setVisibility(!visibility ? View.VISIBLE : View.GONE);
-        autoRow3.setVisibility(!visibility ? View.VISIBLE : View.GONE);
+        showView(visibility, rootView, R.id.it_gear_manually_row);
+        showView(visibility, rootView, R.id.it_gear_manually_row_1);
+        showView(visibility, rootView, R.id.it_gear_manually_row_2);
+        showView(visibility, rootView, R.id.it_gear_manually_row_3);
+        showView(!visibility, rootView, R.id.it_gear_auto_row);
+        showView(!visibility, rootView, R.id.it_gear_auto_row_1);
+        showView(!visibility, rootView, R.id.it_gear_auto_row_2);
+        showView(!visibility, rootView, R.id.it_gear_auto_row_3);
     }
 
     // 更新相关的Spinner
@@ -292,21 +272,6 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case Common.IT_WATER:
-                if (resultCode == Activity.RESULT_OK) {
-                    try{
-                        Bundle bundle = data.getExtras();
-                        if(bundle != null) {
-                            // 保存泡水车检查的结果
-                            //this.waterResult = bundle.getString(Common
-                            //        .IT_WATER_RESULT);
-                        }
-                    }
-                    catch(NullPointerException ex) {
-                        Log.d(Common.TAG, "Empty bundle.");
-                    }
-                }
-                break;
             case Common.IT_OUT:
                 if(resultCode == Activity.RESULT_OK) {
                     try{
@@ -553,44 +518,6 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         }
     }
 
-    public static JSONObject generateChassisJsonObject() {
-        JSONObject chassis = new JSONObject();
-
-        try {
-            chassis.put("leftFront", getSpinnerSelectedText(rootView,
-                    R.id.it_chassisLeftFront_spinner));
-            chassis.put("rightFront", getSpinnerSelectedText(rootView,
-                    R.id.it_chassisRightFront_spinner));
-            chassis.put("leftRear", getSpinnerSelectedText(rootView,
-                    R.id.it_chassisLeftRear_spinner));
-            chassis.put("rightRear", getSpinnerSelectedText(rootView,
-                    R.id.it_chassisRightRear_spinner));
-            chassis.put("perfect", getSpinnerSelectedText(rootView, R.id.it_chassisPerfect_spinner));
-            chassis.put("engineBottom", getSpinnerSelectedText(rootView,
-                    R.id.it_chassisEngineBottom_spinner));
-            chassis.put("gearboxBottom", getSpinnerSelectedText(rootView,
-                    R.id.it_chassisGearboxBottom_spinner));
-        } catch (JSONException e) {
-
-        }
-
-        return chassis;
-    }
-
-    private void fillChassisWithJsonObject() {
-        try {
-            setSpinnerSelectionWithString(rootView, R.id.it_chassisLeftFront_spinner, chassis.getString("leftFront"));
-            setSpinnerSelectionWithString(rootView, R.id.it_chassisRightFront_spinner, chassis.getString("rightFront"));
-            setSpinnerSelectionWithString(rootView, R.id.it_chassisLeftRear_spinner, chassis.getString("leftRear"));
-            setSpinnerSelectionWithString(rootView, R.id.it_chassisRightRear_spinner, chassis.getString("rightRear"));
-            setSpinnerSelectionWithString(rootView, R.id.it_chassisPerfect_spinner, chassis.getString("perfect"));
-            setSpinnerSelectionWithString(rootView, R.id.it_chassisEngineBottom_spinner, chassis.getString("engineBottom"));
-            setSpinnerSelectionWithString(rootView, R.id.it_chassisGearboxBottom_spinner, chassis.getString("gearboxBottom"));
-        } catch( JSONException e) {
-
-        }
-    }
-
     public static JSONObject generateFloodedJsonObject() {
         JSONObject flooded = new JSONObject();
 
@@ -624,7 +551,6 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         } catch (JSONException e) {
 
         }
-
     }
 
     public static String generateCommentString() {
@@ -641,6 +567,7 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
             sum += exteriorPhotoCount[i];
         }
 
+        // 检查外观组标准照张数
         int leastCount = Common.photoLeastCount[1];
         if(sum < leastCount) {
             Toast.makeText(rootView.getContext(), "外观组照片拍摄数量不足！还需要再拍摄" + Integer.toString(leastCount -
@@ -652,6 +579,7 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
             return false;
         }
 
+        // 检查内饰组标准照张数
         sum = 0;
         for(int i = 0; i < interiorPhotoCount.length; i++) {
             sum += interiorPhotoCount[i];
@@ -681,17 +609,11 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         try {
             JSONObject jsonObject = new JSONObject(jsonData);
             conditions = jsonObject.getJSONObject("conditions");
-            exterior = conditions.getJSONObject("exterior");
-            interior = conditions.getJSONObject("interior");
             engine = conditions.getJSONObject("engine");
             gearbox = conditions.getJSONObject("gearbox");
             function = conditions.getJSONObject("function");
-            //chassis = conditions.getJSONObject("chassis");
             flooded = conditions.getJSONObject("flooded");
             comment = conditions.getString("comment");
-
-            features = jsonObject.getJSONObject("features");
-            options = features.getJSONObject("options");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -701,7 +623,6 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         fillEngineWithJsonObject();
         fillGearboxWithJsonObject();
         fillFunctionWithJsonObject();
-        //fillChassisWithJsonObject();
         fillFloodedWithJsonObject();
         fillCommentWithString();
 

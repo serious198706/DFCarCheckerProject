@@ -120,7 +120,7 @@ public class EncryptDecryptFile {
 
         //Write the decrypted data to a new file:
 
-        FileOutputStream target = new FileOutputStream(new File(fileName));
+        FileOutputStream target = new FileOutputStream(new File(fileName + ".d"));
         target.write(decData);
         target.close();
     }

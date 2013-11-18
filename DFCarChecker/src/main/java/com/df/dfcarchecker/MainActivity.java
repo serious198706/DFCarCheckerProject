@@ -27,8 +27,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends Activity {
-    public static ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
-
     public static UserInfo userInfo;
 
     private ProgressDialog mProgressDialog;
