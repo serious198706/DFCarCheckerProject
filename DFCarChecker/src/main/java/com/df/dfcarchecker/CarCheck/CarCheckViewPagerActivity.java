@@ -407,6 +407,9 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                     mSketchProgressDialog = ProgressDialog.show(CarCheckViewPagerActivity.this,
                             null, "正在保存...", false, false);
 
+                    // 将结构检查缺陷照片加入照片池
+                    carCheckFrameFragment.addPhotosToQueue();
+
                     ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
 
                     if(!sketchPhotoEntities.containsKey("fSketch")) {

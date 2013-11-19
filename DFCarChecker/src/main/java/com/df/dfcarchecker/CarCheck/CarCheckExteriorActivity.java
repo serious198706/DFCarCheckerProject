@@ -24,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.df.dfcarchecker.MainActivity;
-import com.df.dfcarchecker.PopupActivity;
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
@@ -50,14 +49,12 @@ import static com.df.service.Helper.setSpinnerSelectionWithString;
 
 public class CarCheckExteriorActivity extends Activity implements View.OnClickListener {
     private int currentShotPart;
-    private EditText brokenEdit;
     private static Spinner smoothSpinner;
     private static EditText commentEdit;
     public static List<PosEntity> posEntities = CarCheckIntegratedFragment.exteriorPosEntities;
     public static List<PhotoEntity> photoEntities = CarCheckIntegratedFragment.exteriorPhotoEntities;
     private ExteriorPaintPreviewView exteriorPaintPreviewView;
     private TextView tip;
-    private String brokenParts;
 
     private ImageUploadQueue imageUploadQueue;
     private long currentTimeMillis;
@@ -84,11 +81,6 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         exteriorPaintPreviewView = (ExteriorPaintPreviewView) findViewById(R.id.out_base_image_preview);
         exteriorPaintPreviewView.init(previewViewBitmap, posEntities);
         exteriorPaintPreviewView.setOnClickListener(this);
-
-        // 选择表面有破损的零部件
-        Button brokenButton = (Button) findViewById(R.id.out_choose_broken_button);
-        brokenButton.setOnClickListener(this);
-        brokenEdit = (EditText) findViewById(R.id.out_broken_edit);
 
         // 拍摄外观组照片
         Button cameraButton = (Button) findViewById(R.id.out_start_camera_button);
@@ -182,9 +174,6 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.out_choose_broken_button:
-                ChooseBroken();
-                break;
             case R.id.out_start_camera_button:
                 out_start_camera();
                 break;
@@ -197,14 +186,6 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
     @Override
     public void onBackPressed() {
         saveResult();
-    }
-
-
-    public void ChooseBroken() {
-        Intent intent = new Intent(this, PopupActivity.class);
-        intent.putExtra("POPUP_TYPE", "OUT_BROKEN");
-        intent.putExtra("BROKEN_PARTS", brokenParts);
-        startActivityForResult(intent, Common.CHOOSE_OUT_BROKEN);
     }
 
     public void out_start_camera() {
@@ -259,27 +240,6 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case Common.CHOOSE_OUT_BROKEN:
-                // 查找成功
-                if (resultCode == Activity.RESULT_OK) {
-                    try{
-                        Bundle bundle = data.getExtras();
-                        if(bundle != null) {
-                            String brokenPart = bundle.getString(Common.OUT_BROKEN_RESULT);
-                            if(brokenPart != null) {
-                                brokenEdit.setText(brokenPart);
-                            }
-
-                            // 记录从选择破损部件页面返回的序号
-                            String brokenParts = bundle.getString("BROKEN_PARTS");
-                            this.brokenParts = brokenParts;
-                        }
-                    }
-                    catch(NullPointerException ex) {
-
-                    }
-                }
-                break;
             case Common.PHOTO_FOR_EXTERIOR_STANDARD:
                 if(resultCode == Activity.RESULT_OK) {
                     // 组织JsonString
@@ -408,30 +368,6 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
     // 只有在保存时才提交照片
     private void addPhotosToQueue() {
         ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
-//
-//        // 如果草图队列为空
-//        if(CarCheckPaintActivity.sketchPhotoEntities == null) {
-//            CarCheckPaintActivity.sketchPhotoEntities = new ArrayList<PhotoEntity>();
-//
-//            PhotoEntity photoEntity = getSketchPhotoEntity();
-//            CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
-//        } else {
-//            // 如果有缺陷点，表示外观草图已经生成，则不需要再添加了
-//            if(posEntities.isEmpty()) {
-//                PhotoEntity photoEntity = getSketchPhotoEntity();
-//                CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
-//            }
-//        }
-//
-//        // 将草图队列里所有的草图全部放入照片池
-//        for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
-//            imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
-//        }
-//
-//        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
-//            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
-//        }
-
 
         for(int i = 0; i < photoEntities.size(); i++) {
             imageUploadQueue.addImage(photoEntities.get(i));

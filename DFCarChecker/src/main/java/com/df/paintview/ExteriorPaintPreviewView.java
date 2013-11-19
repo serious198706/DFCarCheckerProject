@@ -144,33 +144,5 @@ public class ExteriorPaintPreviewView extends ImageView {
                 return;
         }
     }
-
-    public PosEntity getPosEntity(){
-        if(data.isEmpty()){
-            return null;
-        }
-        return data.get(data.size()-1);
-    }
-
-    private void HandelPosEntitiesDueToDifferentResolution() {
-        data.clear();
-
-        for(PosEntity posEntity : CarCheckExteriorActivity.posEntities) {
-            // 因为不能对原entities做修改，所以此处要做些特殊处理，采用值传递方式
-            PosEntity temp = new PosEntity(posEntity.getType());
-            temp.setStart(posEntity.getStartX(), posEntity.getStartY());
-            temp.setEnd(posEntity.getEndX(), posEntity.getEndY());
-
-            // 这些max要乘以2的原因是，在后面的getStartX()等方法调用时，max是按照大图的max来计算的
-            temp.setMaxX((int)(max_x * 1.5));
-            temp.setMaxY((int)(max_y * 1.5));
-            data.add(temp);
-        }
-
-        for(PosEntity posEntity : data) {
-            posEntity.setStart((int)(posEntity.getStartX() / 1.5), (int)(posEntity.getStartY() / 1.5));
-            posEntity.setEnd((int)(posEntity.getEndX() / 1.5), (int)(posEntity.getEndY() / 1.5));
-        }
-    }
 }
 

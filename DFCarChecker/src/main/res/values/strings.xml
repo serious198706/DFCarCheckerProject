@@ -16,6 +16,7 @@
     <string name="action_save">保存</string>
     <string name="newUpdate">检测到新版本</string>
 
+    <string name="title_activity_car_report">车辆鉴定报告</string>
     <string name="loadMore">获取更多</string>
 
     <string-array name="existornot">
@@ -54,107 +55,6 @@
     <string name="title_section2">车体结构检查</string>
     <string name="title_section3">综合检查</string>
 
-    <!-- 事故排查 -->
-    <string name="ac_car_top">覆盖件视图</string>
-    <string name="ac_items_check">查勘项</string>
-    <string name="ac_normal">正常部位</string>
-    <string name="ac_repaint">重新做漆部位</string>
-    <string name="ac_repaint_and_repair">重新做漆并且有腻子的部位</string>
-    <string name="ac_prob1">右前门铰链处是否平整、无修复焊接痕迹</string>
-    <string name="ac_prob2">前杠与前翼子板之间的缝隙是否整齐均匀</string>
-    <string name="ac_prob3">右前翼子板和翼子板内衬连接处的胶体是否规整</string>
-    <string name="ac_prob4">右前翼子板内侧是否平整、无回火焊点或折痕</string>
-    <string name="ac_prob5">右前翼子板内衬板是否平整、无钣金修复痕迹</string>
-    <string name="ac_prob6">右前减震器座是否平整、无钣金修复痕迹</string>
-    <string name="ac_prob7">引擎盖内侧封边及内衬是否整齐无钣金修复痕迹</string>
-    <string name="ac_prob8">水箱上支架和两侧翼子板连接处的胶体是否规整</string>
-    <string name="ac_prob9">水箱上支架是否平整、无钣金修复痕迹</string>
-    <string name="ac_prob10">水箱下支架是否平整、无钣金修复痕迹</string>
-    <string name="ac_prob11">左前减震器座是否平整、无钣金修复痕迹</string>
-    <string name="ac_prob12">左前纵梁梁体是否平整、无钣金修复痕迹</string>
-    <string name="ac_prob13">右前纵梁梁体是否平整、无钣金修复痕迹</string>
-    <string name="ac_prob14">前防火墙是否平整、无铁钩修复痕迹</string>
-    <string name="ac_prob15">左前门铰链处是否平整、无修复焊接痕迹</string>
-    <string name="ac_prob16">取下左侧A柱门框的密封胶条，察看其边缘是否整齐，无钣金修复痕迹（重点察看可能的切割更换部件）</string>
-    <string name="ac_prob17">取下左侧B柱门框的密封胶条，察看其边缘是否整齐，无钣金修复痕迹（重点察看可能的切割更换部件）</string>
-    <string name="ac_prob18">左后门铰链处是否平整、无修复焊接痕迹</string>
-    <string name="ac_prob19">取下左侧C柱门框的密封胶条，察看其边缘是否整齐，无钣金修复痕迹（重点察看可能的切割更换部件）</string>
-    <string name="ac_prob20">后杠与后翼子板之间的缝隙是否整齐均匀</string>
-    <string name="ac_prob21">左后翼子板内侧是否平整、无回火焊点或折痕</string>
-    <string name="ac_prob22">左后减震器座是否平整、无钣金修复痕迹</string>
-    <string name="ac_prob23">取下行李箱的密封胶条，察看其边缘是否整齐，无钣金修复痕迹（重点察看可能的切割更换部件）</string>
-    <string name="ac_prob24">行李箱盖内侧封边及内衬是否整齐无钣金修复痕迹</string>
-    <string name="ac_prob25">行李箱底板是否整齐无钣金修复痕迹</string>
-    <string name="ac_prob26">行李箱底板四边密封胶胶体是否规整无修复痕迹</string>
-    <string name="ac_prob27">行李箱隔板是否平整、无钣金修复痕迹</string>
-    <string name="ac_prob28">右后减震器座是否平整、无钣金修复痕迹</string>
-    <string name="ac_prob29">右后翼子板内侧是否平整、无回火焊点或折痕</string>
-    <string name="ac_prob30">取下左侧C柱门框的密封胶条，察看其边缘是否整齐，无钣金修复痕迹（重点察看可能的切割更换部件）</string>
-    <string name="ac_prob31">右后门铰链处是否平整、无修复焊接痕迹</string>
-    <string name="ac_prob32">取下左侧B柱门框的密封胶条，察看其边缘是否整齐，无钣金修复痕迹（重点察看可能的切割更换部件）</string>
-    <string name="ac_prob33">取下左侧A柱门框的密封胶条，察看其边缘是否整齐，无钣金修复痕迹（重点察看可能的切割更换部件）</string>
-    <string name="ac_collect">采集数据</string>
-    <string name="ac_glass">前后风挡玻璃年份晚于车辆出厂年份的有：</string>
-
-    <string-array name="ac_glass_item">
-        <item>前挡风玻璃</item>
-        <item>后挡风玻璃</item>
-    </string-array>
-
-    <string name="ac_glass_front">前挡风玻璃</string>
-    <string name="ac_glass_rear">后挡风玻璃</string>
-    <string name="ac_screw_parts">车身覆盖件固定螺栓存有松动痕迹的部位：</string>
-    <string name="ac_l">右前翼子板</string>
-    <string name="ac_m">引擎盖</string>
-    <string name="ac_d">左前翼子板</string>
-    <string name="ac_e">左前门</string>
-    <string name="ac_f">左后门</string>
-    <string name="ac_h">行李箱盖</string>
-    <string name="ac_j">右后门</string>
-    <string name="ac_k">右前门</string>
-
-    <string-array name="ac_part_name">
-        <item>"右前翼子板"</item>
-        <item>"引擎盖"</item>
-        <item>"左前翼子板"</item>
-        <item>"左A柱"</item>
-        <item>"左前门"</item>
-        <item>"左B柱"</item>
-        <item>"左后门"</item>
-        <item>"左C柱"</item>
-        <item>"左后翼子板"</item>
-        <item>"行李箱盖"</item>
-        <item>"右后翼子板"</item>
-        <item>"右C柱"</item>
-        <item>"右后门"</item>
-        <item>"右B柱"</item>
-        <item>"右前门"</item>
-        <item>"右A柱"</item>
-        <item>"车顶"</item>
-        <item>"右前减震器"</item>
-        <item>"左前减震器"</item>
-        <item>"右前翼子板内衬"</item>
-        <item>"左前翼子板内衬"</item>
-        <item>"右后门锁下方"</item>
-        <item>"左后门锁下方"</item>
-        <item>"右前纵梁"</item>
-        <item>"左前纵梁"</item>
-        <item>"水箱上支架"</item>
-        <item>"钱防火墙"</item>
-        <item>"引擎盖内侧"</item>
-        <item>"行李箱盖内侧"</item>
-    </string-array>
-    <string-array name="ac_screw_item">
-        <item>右前翼子板</item>
-        <item>引擎盖</item>
-        <item>左前翼子板</item>
-        <item>左前门</item>
-        <item>左后门</item>
-        <item>行李箱盖</item>
-        <item>右后门</item>
-        <item>右前门</item>
-    </string-array>
-
     <string name="ac_camera">拍摄机舱组照片</string>
 
     <string-array name="ac_camera_cato_item">
@@ -171,46 +71,8 @@
     <string name="action_modify">修改信息</string>
     <string name="action_refresh">刷新</string>
 
-    <!-- 鉴定报告 -->
-    <string name="title_activity_car_report">鉴定报告</string>
-    <string name="cr_basic_info">基本信息</string>
-    <string name="cr_first_log_time">初次登记：</string>
-    <string name="cr_manufacture_type">厂牌型号：</string>
-    <string name="cr_color">车身颜色：</string>
-    <string name="cr_volume">排量：</string>
-    <string name="cr_manufacture_time">出厂日期：</string>
-    <string name="cr_run">表显里程：</string>
-    <string name="cr_kilo">万公里</string>
-    <string name="cr_drive_type">驱动方式：</string>
-    <string name="cr_gear_type">变速箱形式：</string>
-    <string name="cr_set_info">配置信息</string>
-    <string name="cr_audio">音响</string>
-    <string name="cr_skylight">天窗</string>
-    <string name="cr_ele_windows">电窗</string>
-    <string name="cr_ele_seats">电动座椅</string>
-    <string name="cr_ele_rel_mirror">电动反光镜</string>
-    <string name="cr_accident">事故排查</string>
-    <string name="cr_car_top">车辆剖面图：</string>
-    <string name="cr_ac_level">事故等级：B</string>
-    <string name="cr_ac_level_comment">全车结构件及加强件无任何损伤，允许覆盖件有修复</string>
-    <string name="cr_tip">图示</string>
-    <string name="cr_paint_result">覆盖件漆面检查结果（异常部位）：</string>
-    <string name="cr_paint_data">"·右前翼子板\n·引擎盖\n·左前翼子板\n·左A柱"</string>
-    <string name="cr_path_result">痕迹查勘结果：</string>
-    <string name="cr_base_point_data">基准点数据：</string>
-    <string name="cr_part">部位</string>
-    <string name="cr_part_data">数值</string>
-    <string name="cr_result">技术状况及鉴定结果</string>
-    <string name="cr_outside_check">车身检查：</string>
-    <string name="cr_outside_check_result">车身检查结果：</string>
-    <string name="cr_inside_check_result">车内检查结果：</string>
-    <string name="cr_engine_check_result">发动机检查结果：</string>
-    <string name="cr_function_check_result">功能检查结果：</string>
-    <string name="cr_total_level">车况级别：80</string>
-    <string name="cr_total_level_comment">车辆现状综合状况较好</string>
-    <string name="cr_level">车辆级别：</string>
+
     <string name="title_activity_car_check_out_side_paint">MainActivity</string>
-    <string name="hello_world">Hello world!</string>
     <string name="title_activity_car_check_structure_paint">MainActivity</string>
     <string name="title_activity_car_check_vin_input">MainActivity</string>
     <string name="title_activity_startup">MainActivity</string>

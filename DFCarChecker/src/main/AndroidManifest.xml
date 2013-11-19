@@ -40,11 +40,6 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name="com.df.dfcarchecker.PopupActivity"
-            android:label="@string/title_activity_popup"
-            android:screenOrientation="portrait" >
-        </activity>
-        <activity
             android:name="com.df.dfcarchecker.CarReport.CarCheckedListActivity"
             android:label="@string/title_activity_car_checked_list"
             android:screenOrientation="portrait" >

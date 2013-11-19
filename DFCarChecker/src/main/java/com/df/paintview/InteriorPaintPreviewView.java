@@ -86,9 +86,6 @@ public class InteriorPaintPreviewView extends ImageView {
     }
 
     private void paint(PosEntity entity, Canvas canvas) {
-        //canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(),
-        //        entity.getEndY(), getPaint(entity.getType()));
-
         RectF rectF = null;
 
         // 如果Rect的right < left，或者bottom < top，则会画不出矩形
@@ -120,34 +117,6 @@ public class InteriorPaintPreviewView extends ImageView {
         }
 
         canvas.drawRect(rectF, getPaint(entity.getType()));
-    }
-
-    public PosEntity getPosEntity(){
-        if(data.isEmpty()){
-            return null;
-        }
-        return data.get(data.size()-1);
-    }
-
-    private void HandelPosEntitiesDueToDifferentResolution() {
-        data.clear();
-
-        for(PosEntity posEntity : CarCheckExteriorActivity.posEntities) {
-            // 因为不能对原entities做修改，所以此处要做些特殊处理，采用值传递方式
-            PosEntity temp = new PosEntity(posEntity.getType());
-            temp.setStart(posEntity.getStartX(), posEntity.getStartY());
-            temp.setEnd(posEntity.getEndX(), posEntity.getEndY());
-
-            // 这些max要乘以2的原因是，在后面的getStartX()等方法调用时，max是按照大图的max来计算的
-            temp.setMaxX(max_x * 2);
-            temp.setMaxY(max_y * 2);
-            data.add(temp);
-        }
-
-        for(PosEntity posEntity : data) {
-            posEntity.setStart(posEntity.getStartX() / 2, posEntity.getStartY() / 2);
-            posEntity.setEnd(posEntity.getEndX() / 2, posEntity.getEndY() / 2);
-        }
     }
 }
 

@@ -48,8 +48,6 @@ public class InteriorPaintView extends PaintView {
     private long currentTimeMillis;
     public long getCurrentTimeMillis() {return currentTimeMillis;}
 
-    private ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
-
     public InteriorPaintView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         //init();
@@ -159,8 +157,6 @@ public class InteriorPaintView extends PaintView {
     }
 
     private void paint(PosEntity entity, Canvas canvas) {
-//        canvas.drawLine(entity.getStartX(), entity.getStartY(), entity.getEndX(),
-//                entity.getEndY(), getPaint(entity.getType()));
         RectF rectF = null;
 
         // Android:4.0+ 如果Rect的right < left，或者bottom < top，则会画不出矩形

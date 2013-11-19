@@ -49,8 +49,6 @@ public class FramePaintView extends PaintView {
 
     public long getCurrentTimeMillis() {return currentTimeMillis;}
 
-    private ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
-
     public FramePaintView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         //init();

@@ -30,9 +30,6 @@ public class EncryptDecryptFile {
         //Create parameters from the salt and an arbitrary number of iterations:
         PBEParameterSpec pbeParamSpec = new PBEParameterSpec(salt, 42);
 
-        /*Dump the key to a file for testing: */
-        //keyToFile(key);
-
         //Set up the cipher:
         Cipher cipher = Cipher.getInstance("PBEWithMD5AndDES");
 
@@ -67,7 +64,6 @@ public class EncryptDecryptFile {
         int padded = (int)inFile.length() + paddedCount;
 
         decData = new byte[padded];
-
 
         inStream.read(decData);
 

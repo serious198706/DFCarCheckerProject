@@ -5,8 +5,8 @@
       <filter>
         <option name="logLevel" value="verbose" />
         <option name="logMessagePattern" value="" />
-        <option name="logTagPattern" value="Activity_no_2_2Service" />
-        <option name="name" value="bluetooth" />
+        <option name="logTagPattern" value="DFCarChecker" />
+        <option name="name" value="DFCarchecker" />
         <option name="packageNamePattern" value="" />
         <option name="pid" value="" />
       </filter>
@@ -26,7 +26,7 @@
       </config>
     </shared>
     <layouts>
-      <layout url="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_check_collect_data.xml">
+      <layout url="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_check_exterior.xml">
         <config>
           <device>Nexus 7 II</device>
           <theme>@style/AppTheme</theme>
@@ -50,7 +50,7 @@
           <theme>@style/AppTheme</theme>
         </config>
       </layout>
-      <layout url="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_outside.xml">
+      <layout url="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_report_integrated.xml">
         <config>
           <device>Nexus 7 II</device>
           <theme>@style/AppTheme</theme>
@@ -58,12 +58,55 @@
       </layout>
     </layouts>
   </component>
-  <component name="AndroidLogFilters">
-    <option name="TOOL_WINDOW_CUSTOM_FILTER" value="BluetoothChat" />
-  </component>
   <component name="ChangeListManager">
-    <list default="true" id="721d7231-0a31-4f76-bb3a-78a7d95e63b1" name="Default" comment="20131021_night">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="" />
+    <list default="true" id="721d7231-0a31-4f76-bb3a-78a7d95e63b1" name="Default" comment="20131101">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/ksoap2_android_assembly_3_0_0_jar_with_dependencies.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/picture_popup.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/zip4j_1_3_1.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/zip4j_1_3_1__2_.xml" />
+      <change type="DELETED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\java\com\df\dfcarchecker\PopupActivity.java" afterPath="" />
+      <change type="DELETED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\layout\score_dialog.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\menu\car_modify_basic_info.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\menu\car_modify_view_pager.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\menu\car_report.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\menu\car_report_basic_info.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\menu\car_report_car_accident.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\menu\car_report_exterior.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\menu\car_report_interior.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\menu\car_report_result.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\menu\car_waiting_list.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\menu\login.xml" afterPath="" />
+      <change type="DELETED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\menu\startup.xml" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/AndroidManifest.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/AndroidManifest.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckExteriorActivity.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckExteriorActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckIntegratedFragment.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckIntegratedFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckInteriorActivity.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckInteriorActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckViewPagerActivity.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckViewPagerActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportExteriorActivity.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportExteriorActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportFrameFragment.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportFrameFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportInteriorActivity.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportInteriorActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Common.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Common.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/EncryptDecryptFile.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/EncryptDecryptFile.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/ExteriorPaintPreviewView.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/ExteriorPaintPreviewView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/FramePaintPreviewView.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/FramePaintPreviewView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/FramePaintView.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/FramePaintView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/InteriorPaintPreviewView.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/InteriorPaintPreviewView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/InteriorPaintView.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/InteriorPaintView.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/LoginActivity.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/LoginActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/StartupActivity.java" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/StartupActivity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_check_exterior.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_check_exterior.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_check_interior.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_check_interior.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_report_interior.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_report_interior.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_login.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_login.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_report_integrated.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_report_integrated.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings_intergrated.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings_intergrated.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MOVED" beforePath="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\values\strings_activity_login.xml" afterPath="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings_login.xml" />
     </list>
     <ignored path="DFCarChecker.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -127,7 +170,7 @@
       </breakpoint>
     </breakpoint_any>
     <line_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
-      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java" line="135" class="com.df.dfcarchecker.CarCheckBasicInfoFragment" package="com.df.dfcarchecker">
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckFrameFragment.java" line="196" class="com.df.dfcarchecker.CarCheck.CarCheckFrameFragment" package="com.df.dfcarchecker.CarCheck">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -142,7 +185,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/PopupActivity.java" line="39" class="com.df.dfcarchecker.PopupActivity" package="com.df.dfcarchecker">
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckFrameFragment.java" line="208" class="com.df.dfcarchecker.CarCheck.CarCheckFrameFragment" package="com.df.dfcarchecker.CarCheck">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -157,7 +200,7 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/PopupActivity.java" line="96" class="com.df.dfcarchecker.PopupActivity" package="com.df.dfcarchecker">
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckBasicInfoFragment.java" line="480" class="com.df.dfcarchecker.CarCheck.CarCheckBasicInfoFragment$8" package="com.df.dfcarchecker.CarCheck">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -172,7 +215,922 @@
         <option name="CONDITION" value="" />
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
-      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/PopupActivity.java" line="218" class="com.df.dfcarchecker.PopupActivity" package="com.df.dfcarchecker">
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckBasicInfoFragment.java" line="974" class="com.df.dfcarchecker.CarCheck.CarCheckBasicInfoFragment.GetCarSettingsTask$1" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckExteriorActivity.java" line="301" class="com.df.dfcarchecker.CarCheck.CarCheckExteriorActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarCheckedListActivity.java" line="412" class="com.df.dfcarchecker.CarReport.CarCheckedListActivity.RefreshCheckedCarListTask" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarCheckedListActivity.java" line="408" class="com.df.dfcarchecker.CarReport.CarCheckedListActivity.RefreshCheckedCarListTask" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarCheckedListActivity.java" line="481" class="com.df.dfcarchecker.CarReport.CarCheckedListActivity.GetCarDetailTask" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarCheckedListActivity.java" line="502" class="com.df.dfcarchecker.CarReport.CarCheckedListActivity.GetCarDetailTask" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckBasicInfoFragment.java" line="863" class="com.df.dfcarchecker.CarCheck.CarCheckBasicInfoFragment.GetCarSettingsTask" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckPaintActivity.java" line="171" class="com.df.dfcarchecker.CarCheck.CarCheckPaintActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckPaintActivity.java" line="164" class="com.df.dfcarchecker.CarCheck.CarCheckPaintActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckPaintActivity.java" line="636" class="com.df.dfcarchecker.CarCheck.CarCheckPaintActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckInteriorActivity.java" line="304" class="com.df.dfcarchecker.CarCheck.CarCheckInteriorActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarCheckedListActivity.java" line="586" class="com.df.dfcarchecker.CarReport.CarCheckedListActivity.CheckSellerNameTask" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckExteriorActivity.java" line="317" class="com.df.dfcarchecker.CarCheck.CarCheckExteriorActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportExteriorActivity.java" line="186" class="com.df.dfcarchecker.CarReport.CarReportExteriorActivity" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckBasicInfoFragment.java" line="347" class="com.df.dfcarchecker.CarCheck.CarCheckBasicInfoFragment$5" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportInteriorActivity.java" line="50" class="com.df.dfcarchecker.CarReport.CarReportInteriorActivity" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportInteriorActivity.java" line="173" class="com.df.dfcarchecker.CarReport.CarReportInteriorActivity" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckFrameFragment.java" line="144" class="com.df.dfcarchecker.CarCheck.CarCheckFrameFragment" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportFrameFragment.java" line="290" class="com.df.dfcarchecker.CarReport.CarReportFrameFragment.DownloadImageTask" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarCheckedListActivity.java" line="439" class="com.df.dfcarchecker.CarReport.CarCheckedListActivity.RefreshCheckedCarListTask" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarCheckedListActivity.java" line="394" class="com.df.dfcarchecker.CarReport.CarCheckedListActivity.RefreshCheckedCarListTask" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarCheckedListActivity.java" line="409" class="com.df.dfcarchecker.CarReport.CarCheckedListActivity.RefreshCheckedCarListTask" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarCheckedListActivity.java" line="575" class="com.df.dfcarchecker.CarReport.CarCheckedListActivity.CheckSellerNameTask" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckPaintActivity.java" line="95" class="com.df.dfcarchecker.CarCheck.CarCheckPaintActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckBasicInfoFragment.java" line="923" class="com.df.dfcarchecker.CarCheck.CarCheckBasicInfoFragment.GetCarSettingsTask" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/QueueScanService.java" line="354" class="com.df.service.QueueScanService.CommitDataTask" package="com.df.service">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/QueueScanService.java" line="347" class="com.df.service.QueueScanService.CommitDataTask" package="com.df.service">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarCheckedListActivity.java" line="621" class="com.df.dfcarchecker.CarReport.CarCheckedListActivity.ImportPlatformTask" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarCheckedListActivity.java" line="636" class="com.df.dfcarchecker.CarReport.CarCheckedListActivity.ImportPlatformTask" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/QueueScanService.java" line="147" class="com.df.service.QueueScanService" package="com.df.service">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckExteriorActivity.java" line="455" class="com.df.dfcarchecker.CarCheck.CarCheckExteriorActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckViewPagerActivity.java" line="345" class="com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity$5" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckBasicInfoFragment.java" line="447" class="com.df.dfcarchecker.CarCheck.CarCheckBasicInfoFragment" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/entry/CarSettings.java" line="475" class="com.df.entry.CarSettings" package="com.df.entry">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckViewPagerActivity.java" line="363" class="com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity$5" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportIntegratedFragment.java" line="86" class="com.df.dfcarchecker.CarReport.CarReportIntegratedFragment" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportIntegratedFragment.java" line="105" class="com.df.dfcarchecker.CarReport.CarReportIntegratedFragment" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckExteriorActivity.java" line="517" class="com.df.dfcarchecker.CarCheck.CarCheckExteriorActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckViewPagerActivity.java" line="568" class="com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckViewPagerActivity.java" line="549" class="com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckViewPagerActivity.java" line="315" class="com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckViewPagerActivity.java" line="392" class="com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity$5" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckViewPagerActivity.java" line="164" class="com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/QueueScanService.java" line="414" class="com.df.service.QueueScanService.ModifyDataTask" package="com.df.service">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckViewPagerActivity.java" line="612" class="com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="&#13;&#13;JAVA" />
+        <option name="LOG_MESSAGE" value="&#13;&#13;JAVA" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/LoginActivity.java" line="224" class="com.df.dfcarchecker.LoginActivity.UserLoginTask" package="com.df.dfcarchecker">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckPaintActivity.java" line="270" class="com.df.dfcarchecker.CarCheck.CarCheckPaintActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckExteriorActivity.java" line="371" class="com.df.dfcarchecker.CarCheck.CarCheckExteriorActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckPaintActivity.java" line="601" class="com.df.dfcarchecker.CarCheck.CarCheckPaintActivity" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/StartupActivity.java" line="0" class="StartupActivity.java" package="">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/StartupActivity.java" line="100" class="com.df.dfcarchecker.StartupActivity" package="com.df.dfcarchecker">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/MainActivity.java" line="140" class="com.df.dfcarchecker.MainActivity.LogoutTask" package="com.df.dfcarchecker">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/SoapService.java" line="348" class="com.df.service.SoapService" package="com.df.service">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportIntegratedFragment.java" line="118" class="com.df.dfcarchecker.CarReport.CarReportIntegratedFragment" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportIntegratedFragment.java" line="202" class="com.df.dfcarchecker.CarReport.CarReportIntegratedFragment" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckBasicInfoFragment.java" line="241" class="com.df.dfcarchecker.CarCheck.CarCheckBasicInfoFragment" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckFrameFragment.java" line="461" class="com.df.dfcarchecker.CarCheck.CarCheckFrameFragment" package="com.df.dfcarchecker.CarCheck">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportFrameFragment.java" line="103" class="com.df.dfcarchecker.CarReport.CarReportFrameFragment$1" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportExteriorActivity.java" line="71" class="com.df.dfcarchecker.CarReport.CarReportExteriorActivity$1" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportExteriorActivity.java" line="124" class="com.df.dfcarchecker.CarReport.CarReportExteriorActivity" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportInteriorActivity.java" line="67" class="com.df.dfcarchecker.CarReport.CarReportInteriorActivity$1" package="com.df.dfcarchecker.CarReport">
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportInteriorActivity.java" line="78" class="com.df.dfcarchecker.CarReport.CarReportInteriorActivity$1" package="com.df.dfcarchecker.CarReport">
         <option name="ENABLED" value="true" />
         <option name="LOG_ENABLED" value="false" />
         <option name="LOG_EXPRESSION_ENABLED" value="false" />
@@ -188,6 +1146,25 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </line_breakpoints>
+    <method_breakpoints default_suspend_policy="SuspendAll" default_condition_enabled="true">
+      <breakpoint url="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/SoapService.java" line="333" class="com.df.service.SoapService" package="com.df.service">
+        <option name="WATCH_ENTRY" value="true" />
+        <option name="WATCH_EXIT" value="true" />
+        <option name="ENABLED" value="true" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="REMOVE_AFTER_HIT" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="SUSPEND" value="true" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="true" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </method_breakpoints>
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -197,10 +1174,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="fragment_car_check_basic_info.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_basic_info.xml">
+      <file leaf-file-name="fragment_car_report_integrated.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_report_integrated.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="837" column="0" selection-start="38663" selection-end="38663" vertical-scroll-proportion="-9.321428" vertical-offset="13968" max-vertical-offset="14960">
+            <state line="692" column="39" selection-start="29403" selection-end="29403" vertical-scroll-proportion="51.7" vertical-offset="15391" max-vertical-offset="16260">
               <folding />
             </state>
           </provider>
@@ -209,49 +1186,75 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CarCheckBasicInfoFragment.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java">
+      <file leaf-file-name="AndroidManifest.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/build/manifests/debug/AndroidManifest.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="505" column="0" selection-start="19975" selection-end="19975" vertical-scroll-proportion="0.0" vertical-offset="8585" max-vertical-offset="13039">
+            <state line="24" column="19" selection-start="1825" selection-end="1850" vertical-scroll-proportion="0.0" vertical-offset="285" max-vertical-offset="1220">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CarCheckOutsideActivity.java" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideActivity.java">
+      <file leaf-file-name="CarCheckIntegratedFragment.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckIntegratedFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="150" column="33" selection-start="5219" selection-end="5219" vertical-scroll-proportion="-1.0182291" vertical-offset="2550" max-vertical-offset="3434">
+            <state line="605" column="47" selection-start="26216" selection-end="26216" vertical-scroll-proportion="0.62762237" vertical-offset="11101" max-vertical-offset="12000">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PopupActivity.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/PopupActivity.java">
+      <file leaf-file-name="CarCheckInteriorActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckInteriorActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="233" column="9" selection-start="7039" selection-end="7039" vertical-scroll-proportion="0.0" vertical-offset="3961" max-vertical-offset="4590">
+            <state line="518" column="114" selection-start="18101" selection-end="18101" vertical-scroll-proportion="0.0" vertical-offset="9841" max-vertical-offset="11160">
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CarReportExteriorActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportExteriorActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="116" column="0" selection-start="4241" selection-end="4241" vertical-scroll-proportion="0.0" vertical-offset="1000" max-vertical-offset="4200">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="fragment_car_check_intergrated.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml">
+      <file leaf-file-name="CarReportFrameFragment.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportFrameFragment.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="225" column="43" selection-start="9017" selection-end="9017" vertical-scroll-proportion="0.0" vertical-offset="3757" max-vertical-offset="15844">
+            <state line="43" column="13" selection-start="1228" selection-end="1228" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5180">
               <folding />
             </state>
           </provider>
-          <provider editor-type-id="android-designer">
-            <state />
+        </entry>
+      </file>
+      <file leaf-file-name="CarReportInteriorActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportInteriorActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="113" column="0" selection-start="4155" selection-end="4155" vertical-scroll-proportion="0.0" vertical-offset="1400" max-vertical-offset="4080">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CarCheckExteriorActivity.java" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckExteriorActivity.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="25" column="40" selection-start="755" selection-end="755" vertical-scroll-proportion="-6.5172415" vertical-offset="311" max-vertical-offset="11400">
+              <folding />
+            </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="strings.xml" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="956" column="38" selection-start="30659" selection-end="30659" vertical-scroll-proportion="0.0" vertical-offset="15874" max-vertical-offset="17918">
+            <state line="24" column="19" selection-start="911" selection-end="911" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1900">
               <folding />
             </state>
           </provider>
@@ -624,22 +1627,57 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/InsidePaintView.java" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_main.xml" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckStructureFragment.java" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_check_vin_input.xml" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckVinInputActivity.java" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_procedureinput_ci.xml" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_procedureinput_ct.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings_activity_login.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Helper.java" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_basic_info.xml" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java" />
-        <option value="$PROJECT_DIR$/.idea/workspace.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings_basic_info.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/ISoapService.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckFrameFragment.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_report_basic_info.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportBasicInfoFragment.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_welcome.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckPaintActivity.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/QueueScanService.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_checked_list.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/footer.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/drawable-hdpi/button_custom.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarCheckedListActivity.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/AndroidManifest.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/WelcomeActivity.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/MainActivity.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/ImageUploadQueue.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/SoapService.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckBasicInfoFragment.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/build.gradle" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckViewPagerActivity.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_report_frame.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/picture_popup.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportFrameFragment.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/StartupActivity.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_check_exterior.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_check_interior.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_login.xml" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Common.java" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckIntergratedFragment.java" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/LoginActivity.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_report_interior.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_report_car_accident.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_report.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings_intergrated.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/EncryptDecryptFile.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/InteriorPaintView.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/InteriorPaintPreviewView.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/FramePaintView.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/FramePaintPreviewView.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/ExteriorPaintPreviewView.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_report_interior.xml" />
         <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideActivity.java" />
-        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/PopupActivity.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_report_integrated.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckIntegratedFragment.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportExteriorActivity.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportInteriorActivity.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckExteriorActivity.java" />
+        <option value="$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckInteriorActivity.java" />
       </list>
     </option>
   </component>
@@ -649,8 +1687,8 @@
   <component name="ProjectFrameBounds">
     <option name="x" value="54" />
     <option name="y" value="-8" />
-    <option name="width" value="1320" />
-    <option name="height" value="784" />
+    <option name="width" value="1874" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -694,7 +1732,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -737,18 +1774,625 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value=".idea" />
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values-v14" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values-v11" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values-sw720dp-land" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values-sw600dp" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values-large" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="values" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="menu" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable-xxhdpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable-xhdpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="drawable-mdpi" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="df" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="service" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="df" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="paintview" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="df" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="df" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dfcarchecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="df" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dfcarchecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="util" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="df" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dfcarchecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CarReport" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="java" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="df" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="dfcarchecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="CarCheck" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarCheckerProject" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="DFCarChecker" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="main" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="assets" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHOW_ALL_PROCESSES" value="false" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Android SDK" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="228" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="251" />
@@ -759,7 +2403,7 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="UI_DESIGNER_EDITOR_MODE.PaletteToolWindowManager.WIDTH" value="237" />
-    <property name="last_opened_file_path" value="E:/" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../sign&amp;pack/DFCheckLogin.pfx" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="258" />
     <property name="external.system.task.project.file.to.start" value="$PROJECT_DIR$/build.gradle" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1039" />
@@ -781,19 +2425,21 @@
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
     <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
-    <property name="options.lastSelected" value="editor.preferences.completion" />
+    <property name="options.lastSelected" value="project.propVCSSupport.Confirmation" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="ANDROID_EXTENDED_DEVICE_CHOOSER_SERIALS" value="0499c8a3" />
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
     <property name="options.searchVisible" value="true" />
-    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager2.SHOW" value="false" />
+    <property name="UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager2.SHOW" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.df.dfcarchecker" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\assets" />
+      <recent name="D:\Work\Android\DFCarCheckerProject\DFCarChecker\src\main\res\drawable-hdpi" />
       <recent name="D:\Projects\Android\DFCarCheckerProject\DFCarChecker\src\main\res\layout" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -828,6 +2474,15 @@
       <ConfigurationWrapper RunnerId="AndroidDebugRunner" />
       <method />
     </configuration>
+    <configuration default="true" type="GroovyScriptRunConfiguration" factoryName="Groovy">
+      <module name="" />
+      <setting name="path" value="" />
+      <setting name="vmparams" value="" />
+      <setting name="params" value="" />
+      <setting name="workDir" value="file://$PROJECT_DIR$" />
+      <setting name="debug" value="false" />
+      <method />
+    </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
       <module name="" />
       <option name="TESTING_TYPE" value="0" />
@@ -846,6 +2501,36 @@
       <option name="NETWORK_LATENCY" value="none" />
       <option name="CLEAR_LOGCAT" value="false" />
       <option name="SHOW_LOGCAT_AUTOMATICALLY" value="true" />
+      <method />
+    </configuration>
+    <configuration default="true" type="MavenRunConfiguration" factoryName="Maven">
+      <MavenSettings>
+        <option name="myGeneralSettings" />
+        <option name="myRunnerSettings" />
+        <option name="myRunnerParameters">
+          <MavenRunnerParameters>
+            <option name="profiles">
+              <set />
+            </option>
+            <option name="goals">
+              <list />
+            </option>
+            <option name="profilesMap">
+              <map />
+            </option>
+            <option name="resolveToWorkspace" value="false" />
+            <option name="workingDirPath" value="" />
+          </MavenRunnerParameters>
+        </option>
+      </MavenSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="GriffonRunConfigurationType" factoryName="Griffon">
+      <module name="" />
+      <setting name="vmparams" value="" />
+      <setting name="cmdLine" value="run-app" />
+      <setting name="depsClasspath" value="true" />
+      <setting name="passParentEnv" value="true" />
       <method />
     </configuration>
     <configuration default="true" type="Remote" factoryName="Remote">
@@ -868,6 +2553,19 @@
         </option>
         <option name="vmOptions" />
       </ExternalSystemSettings>
+      <method />
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
@@ -895,19 +2593,6 @@
       <envs />
       <properties />
       <listeners />
-      <method />
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -949,6 +2634,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="MODE" value="default_activity" />
       <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
       <option name="TARGET_SELECTION_MODE" value="EMULATOR" />
       <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
@@ -967,6 +2653,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <option name="MODE" value="default_activity" />
       <option name="DEPLOY" value="true" />
+      <option name="ARTIFACT_NAME" value="" />
       <option name="TARGET_SELECTION_MODE" value="USB_DEVICE" />
       <option name="USE_LAST_SELECTED_DEVICE" value="false" />
       <option name="PREFERRED_AVD" value="" />
@@ -1148,19 +2835,75 @@
       <created>1382359351022</created>
       <updated>1382359351023</updated>
     </task>
-    <task id="LOCAL-00031" summary="20131010_night">
-      <created>1382359359377</created>
-      <updated>1382359359377</updated>
+    <task id="LOCAL-00031" summary="20131101">
+      <created>1383300406066</created>
+      <updated>1383300406066</updated>
     </task>
-    <task id="LOCAL-00032" summary="20131021_night">
-      <created>1382368076684</created>
-      <updated>1382368076684</updated>
+    <task id="LOCAL-00032" summary="20131103">
+      <created>1383471393575</created>
+      <updated>1383471393575</updated>
     </task>
-    <task id="LOCAL-00033" summary="20131021_night">
-      <created>1382368093239</created>
-      <updated>1382368093239</updated>
+    <task id="LOCAL-00033" summary="20131103">
+      <created>1383471502412</created>
+      <updated>1383471502412</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="20131104">
+      <created>1383559270689</created>
+      <updated>1383559270689</updated>
+    </task>
+    <task id="LOCAL-00035" summary="20131105">
+      <created>1383647868893</created>
+      <updated>1383647868893</updated>
+    </task>
+    <task id="LOCAL-00036" summary="20131106">
+      <created>1383732380849</created>
+      <updated>1383732380849</updated>
+    </task>
+    <task id="LOCAL-00037" summary="20131107">
+      <created>1383818515474</created>
+      <updated>1383818515474</updated>
+    </task>
+    <task id="LOCAL-00038" summary="20131107">
+      <created>1383818593389</created>
+      <updated>1383818593389</updated>
+    </task>
+    <task id="LOCAL-00039" summary="20131107">
+      <created>1383818666097</created>
+      <updated>1383818666097</updated>
+    </task>
+    <task id="LOCAL-00040" summary="20131108">
+      <created>1383904521946</created>
+      <updated>1383904521946</updated>
+    </task>
+    <task id="LOCAL-00041" summary="20131109">
+      <created>1383993461775</created>
+      <updated>1383993461775</updated>
+    </task>
+    <task id="LOCAL-00042" summary="20131111">
+      <created>1384164842789</created>
+      <updated>1384164842789</updated>
+    </task>
+    <task id="LOCAL-00043" summary="20131112">
+      <created>1384262558289</created>
+      <updated>1384262558289</updated>
+    </task>
+    <task id="LOCAL-00044" summary="20131101">
+      <created>1384347871780</created>
+      <updated>1384347871780</updated>
+    </task>
+    <task id="LOCAL-00045" summary="20131114">
+      <created>1384429529751</created>
+      <updated>1384429529751</updated>
+    </task>
+    <task id="LOCAL-00046" summary="20131115">
+      <created>1384510234761</created>
+      <updated>1384510234761</updated>
+    </task>
+    <task id="LOCAL-00047" summary="20131118">
+      <created>1384768768026</created>
+      <updated>1384768768026</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -1184,42 +2927,51 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="54" y="-8" width="1320" height="784" extended-state="6" />
-    <editor active="false" />
+    <frame x="54" y="-8" width="1874" height="1096" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Changes" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3184" sideWeight="0.49920383" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.31866953" sideWeight="0.49920383" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26799557" sideWeight="0.6741214" order="4" side_tool="false" content_ui="tabs" x="1101" y="249" width="640" height="627" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905295" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3504" sideWeight="0.49944752" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32" sideWeight="0.5" order="11" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32832617" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32473117" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.6107527" sideWeight="0.4994463" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.22651933" sideWeight="0.42735043" order="1" side_tool="true" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3248" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.22651933" sideWeight="0.42735043" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Android" active="false" anchor="bottom" auto_hide="true" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.3253205" sideWeight="0.5" order="10" side_tool="false" content_ui="combo" x="73" y="322" width="1256" height="203" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="true" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4903226" sideWeight="0.5" order="13" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3248" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26024362" sideWeight="0.34763947" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="12" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32258064" sideWeight="0.49944752" order="11" side_tool="false" content_ui="tabs" />
+      <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3516129" sideWeight="0.5" order="14" side_tool="false" content_ui="combo" x="73" y="322" width="1256" height="203" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32928178" sideWeight="0.79594016" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32747602" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1839779" sideWeight="0.67094016" order="8" side_tool="false" content_ui="tabs" x="1090" y="278" width="452" height="745" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32618025" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.052048728" sideWeight="0.67094016" order="8" side_tool="false" content_ui="tabs" x="1090" y="278" width="452" height="745" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32983425" sideWeight="0.79594016" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3415605" sideWeight="0.80288464" order="3" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.1952" sideWeight="0.49920383" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="true" internal_type="DOCKED" type="FLOATING" visible="false" weight="0.32983425" sideWeight="0.79594016" order="7" side_tool="false" content_ui="tabs" x="836" y="500" width="309" height="80" />
+      <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26024362" sideWeight="0.6523605" order="3" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.35913977" sideWeight="0.49920383" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2683121" sideWeight="0.6741214" order="4" side_tool="false" content_ui="tabs" x="1101" y="249" width="640" height="627" />
-      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852563" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32852563" sideWeight="0.49944752" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
     </layout>
+  </component>
+  <component name="Vcs.Log.UiProperties">
+    <option name="RECENTLY_FILTERED_USERS">
+      <collection />
+    </option>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="false" />
     <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_NEW_TODO" value="false" />
     <option name="myTodoPanelSettings">
       <TodoPanelSettings />
     </option>
@@ -1233,8 +2985,20 @@
     <MESSAGE value="20130927" />
     <MESSAGE value="20131009_night" />
     <MESSAGE value="20131010_night" />
-    <MESSAGE value="20131021_night" />
-    <option name="LAST_COMMIT_MESSAGE" value="20131021_night" />
+    <MESSAGE value="20131103" />
+    <MESSAGE value="20131104" />
+    <MESSAGE value="20131105" />
+    <MESSAGE value="20131106" />
+    <MESSAGE value="20131107" />
+    <MESSAGE value="20131108" />
+    <MESSAGE value="20131109" />
+    <MESSAGE value="20131111" />
+    <MESSAGE value="20131112" />
+    <MESSAGE value="20131101" />
+    <MESSAGE value="20131114" />
+    <MESSAGE value="20131115" />
+    <MESSAGE value="20131118" />
+    <option name="LAST_COMMIT_MESSAGE" value="20131118" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -1244,16 +3008,9 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml">
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_check_interior.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="956" column="38" selection-start="30659" selection-end="30659" vertical-scroll-proportion="0.0" vertical-offset="15874" max-vertical-offset="17918">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="225" column="43" selection-start="9017" selection-end="9017" vertical-scroll-proportion="0.0" vertical-offset="3757" max-vertical-offset="15844">
+        <state line="68" column="43" selection-start="2825" selection-end="2825" vertical-scroll-proportion="17.033333" vertical-offset="1871" max-vertical-offset="2980">
           <folding />
         </state>
       </provider>
@@ -1261,16 +3018,9 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml">
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_login.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="956" column="38" selection-start="30659" selection-end="30659" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="17918">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_main.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="8" column="12" selection-start="343" selection-end="379" vertical-scroll-proportion="0.0" vertical-offset="136" max-vertical-offset="680">
+        <state line="49" column="42" selection-start="2092" selection-end="2092" vertical-scroll-proportion="-9.166667" vertical-offset="705" max-vertical-offset="1680">
           <folding />
         </state>
       </provider>
@@ -1278,25 +3028,278 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_check_vin_input.xml">
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/ci_dialog.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="472">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="869">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/spinner_item.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="29" selection-start="277" selection-end="277" vertical-scroll-proportion="-5.3333335" vertical-offset="0" max-vertical-offset="280">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/StartupActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="17" column="13" selection-start="410" selection-end="410" vertical-scroll-proportion="0.0" vertical-offset="1481" max-vertical-offset="2380">
           <folding>
-            <element signature="e#132#157#0" expanded="false" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckStructureFragment.java">
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/popup.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="85" column="11" selection-start="3052" selection-end="3052" vertical-scroll-proportion="0.0" vertical-offset="765" max-vertical-offset="1717">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="597">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_basic_info.xml">
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/LoginActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="837" column="0" selection-start="38663" selection-end="38663" vertical-scroll-proportion="-9.321428" vertical-offset="13968" max-vertical-offset="14960">
+        <state line="330" column="0" selection-start="10930" selection-end="10930" vertical-scroll-proportion="0.0" vertical-offset="3821" max-vertical-offset="10560">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_checked_list_context.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="597">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_checked_list.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="597">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_check_structure_paint.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="660">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_check_out_side_paint.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="660">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/menu_save_discard.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="597">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/menu_commit_cancle.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="597">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/menu/car_check_frame.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="597">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings_intergrated.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="110" column="0" selection-start="3744" selection-end="3744" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="3200">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings_frame.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="899">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings_basic_info.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="24" selection-start="667" selection-end="667" vertical-scroll-proportion="0.0" vertical-offset="6981" max-vertical-offset="7880">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings_login.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="0" selection-start="726" selection-end="726" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="480">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/dimens.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="899">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/attrs.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="899">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/colors.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="899">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values-large/styles.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="899">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/EncryptDecryptFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="66" column="8" selection-start="2352" selection-end="2352" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2340">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/CustomViewPager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="10" column="13" selection-start="216" selection-end="216" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="840">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Common.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="69" column="42" selection-start="2468" selection-end="2468" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2100">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/InteriorPaintView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="158" column="57" selection-start="4876" selection-end="4876" vertical-scroll-proportion="0.0" vertical-offset="3961" max-vertical-offset="4860">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/InteriorPaintPreviewView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="119" column="5" selection-start="3527" selection-end="3527" vertical-scroll-proportion="0.0" vertical-offset="1361" max-vertical-offset="2260">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/FramePaintPreviewView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="85" column="5" selection-start="2087" selection-end="2087" vertical-scroll-proportion="0.0" vertical-offset="681" max-vertical-offset="1580">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/FramePaintView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="50" column="0" selection-start="1472" selection-end="1472" vertical-scroll-proportion="0.0" vertical-offset="3041" max-vertical-offset="3940">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/ExteriorPaintView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="33" column="13" selection-start="860" selection-end="860" vertical-scroll-proportion="0.0" vertical-offset="1020" max-vertical-offset="5820">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/PaintView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="45" column="56" selection-start="1311" selection-end="1311" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="880">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/paintview/ExteriorPaintPreviewView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="145" column="5" selection-start="4973" selection-end="4973" vertical-scroll-proportion="0.0" vertical-offset="1841" max-vertical-offset="2740">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/entry/Brand.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="13" selection-start="88" selection-end="88" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="860">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/entry/Series.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="13" selection-start="131" selection-end="131" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="900">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/entry/UserInfo.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="13" selection-start="73" selection-end="73" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="580">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/entry/VehicleModel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="13" selection-start="130" selection-end="130" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1160">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/entry/Model.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="6" column="13" selection-start="79" selection-end="79" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="560">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/entry/Manufacturer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="13" selection-start="131" selection-end="131" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="920">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/WelcomeActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="22" column="13" selection-start="619" selection-end="619" vertical-scroll-proportion="0.0" vertical-offset="3661" max-vertical-offset="4560">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/activity_car_report_interior.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="54" column="0" selection-start="2096" selection-end="2096" vertical-scroll-proportion="-6.3" vertical-offset="891" max-vertical-offset="2000">
           <folding />
         </state>
       </provider>
@@ -1304,59 +3307,80 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/service/Common.java">
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="28" column="71" selection-start="1234" selection-end="1234" vertical-scroll-proportion="0.0" vertical-offset="119" max-vertical-offset="969">
+        <state line="650" column="39" selection-start="27011" selection-end="27011" vertical-scroll-proportion="-8.966666" vertical-offset="12731" max-vertical-offset="15440">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_report_integrated.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="692" column="39" selection-start="29403" selection-end="29403" vertical-scroll-proportion="51.7" vertical-offset="15391" max-vertical-offset="16260">
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/build/manifests/debug/AndroidManifest.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="19" selection-start="1825" selection-end="1850" vertical-scroll-proportion="0.0" vertical-offset="285" max-vertical-offset="1220">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportExteriorActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="116" column="0" selection-start="4241" selection-end="4241" vertical-scroll-proportion="0.0" vertical-offset="1000" max-vertical-offset="4200">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportFrameFragment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="43" column="13" selection-start="1228" selection-end="1228" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5180">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarReport/CarReportInteriorActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="113" column="0" selection-start="4155" selection-end="4155" vertical-scroll-proportion="0.0" vertical-offset="1400" max-vertical-offset="4080">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckExteriorActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="25" column="40" selection-start="755" selection-end="755" vertical-scroll-proportion="-6.5172415" vertical-offset="311" max-vertical-offset="11400">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/values/strings.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="956" column="38" selection-start="30659" selection-end="30659" vertical-scroll-proportion="0.0" vertical-offset="15874" max-vertical-offset="17918">
+        <state line="24" column="19" selection-start="911" selection-end="911" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1900">
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/res/layout/fragment_car_check_intergrated.xml">
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckInteriorActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="225" column="43" selection-start="9017" selection-end="9017" vertical-scroll-proportion="0.0" vertical-offset="3757" max-vertical-offset="15844">
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckBasicInfoFragment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="505" column="0" selection-start="19975" selection-end="19975" vertical-scroll-proportion="0.0" vertical-offset="8398" max-vertical-offset="12274">
-          <folding />
+        <state line="518" column="114" selection-start="18101" selection-end="18101" vertical-scroll-proportion="0.0" vertical-offset="9841" max-vertical-offset="11160">
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="jar://$APPLICATION_HOME_DIR$/sdk/platforms/android-17/android.jar!/android/view/View.class">
+    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheck/CarCheckIntegratedFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="19482" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/PopupActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="233" column="9" selection-start="7039" selection-end="7039" vertical-scroll-proportion="0.0" vertical-offset="3772" max-vertical-offset="4318">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="24701">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/DFCarChecker/src/main/java/com/df/dfcarchecker/CarCheckOutsideActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="150" column="33" selection-start="5219" selection-end="5219" vertical-scroll-proportion="-1.0182291" vertical-offset="2550" max-vertical-offset="3434">
+        <state line="605" column="47" selection-start="26216" selection-end="26216" vertical-scroll-proportion="0.62762237" vertical-offset="11101" max-vertical-offset="12000">
           <folding />
         </state>
       </provider>
@@ -1418,7 +3442,6 @@
             <option name="proportions">
               <list>
                 <option value="0.2" />
-                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>
@@ -1438,7 +3461,7 @@
       </state>
       <state key="ProjectLibrariesConfigurable.UI">
         <settings>
-          <last-edited>support-v4-13.0.0</last-edited>
+          <last-edited>android-support-v4</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>

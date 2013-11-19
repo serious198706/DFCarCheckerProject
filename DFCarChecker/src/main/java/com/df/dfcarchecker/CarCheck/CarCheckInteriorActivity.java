@@ -24,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.df.dfcarchecker.MainActivity;
-import com.df.dfcarchecker.PopupActivity;
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
 import com.df.entry.PhotoEntity;
@@ -54,9 +53,6 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     public static List<PosEntity> posEntities = CarCheckIntegratedFragment.interiorPosEntities;
     public static List<PhotoEntity> photoEntities = CarCheckIntegratedFragment.exteriorPhotoEntities;
 
-    private String brokenParts;
-    private String dirtyParts;
-
     private InteriorPaintPreviewView interiorPaintPreviewView;
     private TextView tip;
 
@@ -78,10 +74,6 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_check_interior);
 
-        Button brokenButton = (Button) findViewById(R.id.in_choose_broken_button);
-        brokenButton.setOnClickListener(this);
-        Button dirtyButton = (Button) findViewById(R.id.in_choose_dirty_button);
-        dirtyButton.setOnClickListener(this);
         Button cameraButton = (Button) findViewById(R.id.in_start_camera_button);
         cameraButton.setOnClickListener(this);
 
@@ -172,12 +164,6 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.in_choose_broken_button:
-                ChooseBroken();
-                break;
-            case R.id.in_choose_dirty_button:
-                ChooseDirty();
-                break;
             case R.id.in_start_camera_button:
                 in_start_camera();
                 break;
@@ -187,28 +173,6 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
                 break;
 
         }
-    }
-
-    public void ChooseBroken() {
-        Intent intent = new Intent(this, PopupActivity.class);
-        intent.putExtra("POPUP_TYPE", "IN_BROKEN");
-
-        // 如果该部位已破损，则无需再设置为脏污，所以将脏污及破损部位一起传入
-        intent.putExtra("BROKEN_PARTS", brokenParts);
-        intent.putExtra("DIRTY_PARTS", dirtyParts);
-
-        startActivityForResult(intent, Common.CHOOSE_IN_BROKEN);
-    }
-
-    public void ChooseDirty() {
-        Intent intent = new Intent(this, PopupActivity.class);
-        intent.putExtra("POPUP_TYPE", "IN_DIRTY");
-
-        // 如果该部位已脏污，则无需再设置为破损，所以将脏污及破损部位一起传入
-        intent.putExtra("BROKEN_PARTS", brokenParts);
-        intent.putExtra("DIRTY_PARTS", dirtyParts);
-
-        startActivityForResult(intent, Common.CHOOSE_IN_DIRTY);
     }
 
     public void StartPaint() {
@@ -267,46 +231,6 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         switch (requestCode) {
-            case Common.CHOOSE_IN_BROKEN:
-                // 查找成功
-                if (resultCode == Activity.RESULT_OK) {
-                    try{
-                        Bundle bundle = data.getExtras();
-                        if(bundle != null) {
-                            String brokenParts = bundle.getString(Common.IN_BROKEN_RESULT);
-                            if(brokenParts != null) {
-                                EditText editText = (EditText) findViewById(R.id.in_broken_parts_edit);
-                                editText.setText(brokenParts);
-                            }
-
-                            this.brokenParts = brokenParts;
-                        }
-                    }
-                    catch(NullPointerException ex) {
-
-                    }
-                }
-                break;
-            case Common.CHOOSE_IN_DIRTY:
-                // 查找成功
-                if (resultCode == Activity.RESULT_OK) {
-                    try{
-                        Bundle bundle = data.getExtras();
-                        if(bundle != null) {
-                            String dirtyParts = bundle.getString(Common.IN_DIRTY_RESULT);
-                            if(dirtyParts != null) {
-                                EditText editText = (EditText) findViewById(R.id.in_dirty_parts_edit);
-                                editText.setText(dirtyParts);
-                            }
-
-                            this.dirtyParts = dirtyParts;
-                        }
-                    }
-                    catch(NullPointerException ex) {
-
-                    }
-                }
-                break;
             case Common.PHOTO_FOR_INTERIOR_STANDARD:
                 if(resultCode == Activity.RESULT_OK) {
                     // 组织JsonString
@@ -443,32 +367,6 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     // 只有在保存时才提交照片
     private void addPhotosToQueue() {
         ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
-
-//        // 如果草图队列为空
-//        if(CarCheckPaintActivity.sketchPhotoEntities == null) {
-//            CarCheckPaintActivity.sketchPhotoEntities = new ArrayList<PhotoEntity>();
-//
-//            PhotoEntity photoEntity = getSketchPhotoEntity();
-//            CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
-//        } else {
-//            // 如果有缺陷点，表示内饰草图已经生成，则不需要再添加了
-//            if(posEntities.isEmpty()) {
-//                PhotoEntity photoEntity = getSketchPhotoEntity();
-//                CarCheckPaintActivity.sketchPhotoEntities.add(photoEntity);
-//            }
-//        }
-//
-//        // 将草图队列里所有的草图全部放入照片池
-//        for(int i = 0; i < CarCheckPaintActivity.sketchPhotoEntities.size(); i++) {
-//            imageUploadQueue.addImage(CarCheckPaintActivity.sketchPhotoEntities.get(i));
-//        }
-//
-//        while(!CarCheckPaintActivity.sketchPhotoEntities.isEmpty()) {
-//            CarCheckPaintActivity.sketchPhotoEntities.remove(0);
-//        }
-//
-
-
 
         // 将缺陷点照片加入照片池
         for(int i = 0; i < photoEntities.size(); i++) {
@@ -619,18 +517,6 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
 
             String sealingStrip = conditions.getJSONObject("interior").getString("sealingStrip");
             setSpinnerSelectionWithString(getWindow().getDecorView(), R.id.in_sealingStrip_spinner, sealingStrip);
-
-//            JSONArray fault = interior.getJSONArray("fault");
-//
-//            for(int i = 0; i < fault.length(); i++) {
-//                JSONObject jsonObject = fault.getJSONObject(i);
-//
-//                PosEntity posEntity = new PosEntity(jsonObject.getInt("type"));
-//                posEntity.setStart(jsonObject.getInt("startX"), jsonObject.getInt("startY"));
-//                posEntity.setEnd(jsonObject.getInt("endX"), jsonObject.getInt("endY"));
-//
-//                posEntities.add(posEntity);
-//            }
 
             JSONObject sketch = interior.getJSONObject("sketch");
             String sketchUrl = sketch.getString("photo");

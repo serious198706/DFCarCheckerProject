@@ -15,43 +15,6 @@
     <string name="action_undo">撤销</string>
     <string name="action_redo">恢复</string>
 
-    <string-array name="out_broken_parts">
-        <item>前保险杠</item>
-        <item>后保险杠</item>
-        <item>左前门拉手</item>
-        <item>右前门拉手</item>
-        <item>左后门拉手</item>
-        <item>右后门拉手</item>
-        <item>左反光镜</item>
-        <item>右反光镜</item>
-        <item>左前照灯总成</item>
-        <item>右前照灯总成</item>
-        <item>左前转向灯总成</item>
-        <item>右前转向灯总成</item>
-        <item>左后组合灯</item>
-        <item>右后组合灯</item>
-        <item>左侧边灯总成</item>
-        <item>右侧边灯总成</item>
-        <item>前风挡玻璃</item>
-        <item>后风挡玻璃</item>
-        <item>左前门玻璃</item>
-        <item>右前门玻璃</item>
-        <item>左后门玻璃</item>
-        <item>右后门玻璃</item>
-        <item>后三角窗玻璃总成</item>
-        <item>左前门门锁</item>
-        <item>右前门门锁</item>
-        <item>后备箱销</item>
-        <item>进气格栅</item>
-        <item>车门防护条</item>
-        <item>天线</item>
-        <item>轮毂盖</item>
-        <item>左前雾灯</item>
-        <item>右前雾灯</item>
-        <item>左后雾灯</item>
-        <item>右后雾灯</item>
-    </string-array>
-
     <string name="out_paint">车辆漆面光洁度：</string>
 
     <string-array name="out_paint_level">
@@ -90,66 +53,6 @@
         <item>后排座椅</item>
         <item>副驾座椅</item>
         <item>其他</item>
-    </string-array>
-
-    <string name="in_broken_parts">车内部件破损部位：</string>
-
-    <string-array name="in_broken_parts_item">
-        <item>仪表台</item>
-        <item>方向盘</item>
-        <item>车内后视镜</item>
-        <item>前遮阳板</item>
-        <item>手套箱</item>
-        <item>车顶篷</item>
-        <item>车内地胶（毯）</item>
-        <item>司机座椅</item>
-        <item>副驾座椅</item>
-        <item>后排座椅</item>
-        <item>座椅调整手柄</item>
-        <item>左前门内饰板</item>
-        <item>右前门内饰板</item>
-        <item>左后门内饰板</item>
-        <item>右后门内饰板</item>
-        <item>排档把手柄防护罩</item>
-        <item>排档把手柄</item>
-        <item>扶手箱</item>
-        <item>点烟器</item>
-        <item>A柱饰板</item>
-        <item>B柱饰板</item>
-        <item>C柱饰板</item>
-        <item>左前门扶手</item>
-        <item>左后门扶手</item>
-        <item>右前门扶手</item>
-        <item>右后门扶手</item>
-        <item>左前门扣手</item>
-        <item>左后门扣手</item>
-        <item>右前门扣手</item>
-        <item>右后门扣手</item>
-    </string-array>
-
-    <string name="in_dirty_parts">车内部件脏污部位：</string>
-
-    <string-array name="in_dirty_parts_item">
-        <item>仪表台</item>
-        <item>方向盘</item>
-        <item>车内后视镜</item>
-        <item>前遮阳板</item>
-        <item>手套箱</item>
-        <item>车顶篷</item>
-        <item>车内地胶（毯）</item>
-        <item>司机座椅</item>
-        <item>副驾座椅</item>
-        <item>后排座椅</item>
-        <item>左前门内饰板</item>
-        <item>右前门内饰板</item>
-        <item>左后门内饰板</item>
-        <item>右后门内饰板</item>
-        <item>排档把手柄防护罩</item>
-        <item>排档把手柄</item>
-        <item>扶手箱</item>
-        <item>A柱饰板</item>
-        <item>B柱饰板</item>
-        <item>C柱饰板</item>
     </string-array>
 
     <string name="in_seal">门窗密封条良好无老化、破损：</string>
@@ -219,25 +122,9 @@
     <string name="it_gearAtShiftNoise">各档位切换时无异响：</string>
     <string name="it_gearAtShiftEasy">各档位切换清晰、轻便，无涩滞感：</string>
 
-    <!--string name="it_gear_clear">档位是否清晰、不松晃：</string>
-    <string name="it_gear_push_sound">离合器踩下是否有异响：</string>
-    <string name="it_gear_release_sound">离合器松开是否有异响：</string>
-    <string name="it_gear_oil_leak">变速箱漏油：</string-->
-
     <string name="it_comment">综合检查说明：</string>
     <string name="it_other">其他检查</string>
     <string name="it_other_water">泡水检查</string>
-    <string name="it_other_fire">火烧车检查</string>
-    <string name="it_other_electricity">电控单元检测</string>
-    <string name="it_other_tire">轮胎与表显里程</string>
-    <string name="it_chassis">底盘检查</string>
-    <string name="it_chassis_lf_good">左前减震器完好无漏油：</string>
-    <string name="it_chassis_rf_good">右前减震器完好无漏油：</string>
-    <string name="it_chassis_lr_good">左后减震器完好无漏油：</string>
-    <string name="it_chassis_rr_good">右后减震器完好无漏油：</string>
-    <string name="it_chassis_good">底盘完好，无严重拖底或锈蚀现象：</string>
-    <string name="it_chassis_engine_good">发动机底部无渗漏：</string>
-    <string name="it_chassis_gear_good">变速箱底部无渗漏：</string>
     <string name="it_water">泡水检查</string>
     <string name="it_water_cabin_smoke">点烟器底座无锈迹：</string>
     <string name="it_water_cabin_ashtray">烟灰缸底座无泥沙、水印：</string>
@@ -257,15 +144,6 @@
     <string name="it_water_engine_fuse_new">查看保险盒是否为新换：</string>
     <string name="it_water_engine_fuse">查看保险盒内是否有泥沙或存有清理的痕迹：</string>
     <string name="it_water_engine_clean">发动机舱内是否格外清洁：</string>
-    <string name="title_activity_car_check_tire">表显里程与轮胎</string>
-    <string name="it_tire_run">表显里程：</string>
-    <string name="it_tire_kilo">公里</string>
-    <string name="it_tire_year">轮胎生产年份：</string>
-
-    <string-array name="it_tire_wear_item">
-        <item>正常</item>
-        <item>磨损</item>
-    </string-array>
 
     <string name="score_25">共计：25分</string>
     <string name="score_20">共计：20分</string>

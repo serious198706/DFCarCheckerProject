@@ -2,16 +2,23 @@ package com.df.dfcarchecker.CarReport;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
@@ -34,6 +41,9 @@ public class CarReportExteriorActivity extends Activity {
     private List<PosEntity> posEntities;
     private JSONObject photos;
     private JSONObject conditions;
+    private Dialog mPictureDialog;
+    private View view;
+    private ImageView image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,36 @@ public class CarReportExteriorActivity extends Activity {
         exteriorPaintPreviewView = (ExteriorPaintPreviewView) findViewById(R.id.out_base_image_preview);
         exteriorPaintPreviewView.init(previewViewBitmap, posEntities);
         exteriorPaintPreviewView.setAlpha(0.6f);
+        exteriorPaintPreviewView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        float x = motionEvent.getX();
+                        float y = motionEvent.getY();
+
+                        for(int i = 0; i < posEntities.size(); i++) {
+                            if(inArea(new Point((int)x, (int)y),
+                                    posEntities.get(i).getStartX(),
+                                    posEntities.get(i).getStartY(),
+                                    posEntities.get(i).getEndX(),
+                                    posEntities.get(i).getEndY())) {
+
+                                if(posEntities.get(i).getImageFileName().equals(""))
+                                    Toast.makeText(CarReportExteriorActivity.this, "该缺陷点没有照片！",
+                                            Toast.LENGTH_SHORT).show();
+                                else
+                                    loadPhoto(Common.PICUTRE_ADDRESS + posEntities.get(i)
+                                            .getImageFileName(), 0, 0);
+                            }
+                        }
+
+                        break;
+                }
+
+                return true;
+            }
+        });
 
         Bundle extras = getIntent().getExtras();
 
@@ -64,28 +104,61 @@ public class CarReportExteriorActivity extends Activity {
         final ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        view = getLayoutInflater().inflate(R.layout.picture_popup,
+                (ViewGroup) findViewById(R.id.layout_root));
+
+        image = (ImageView) view.findViewById(R.id.fullimage);
+
+        mPictureDialog = new Dialog(CarReportExteriorActivity.this,
+                android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
+        mPictureDialog.setContentView(view);
+        mPictureDialog.setCancelable(true);
     }
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                return true;
-            case R.id.action_settings:
-                return true;
+    private boolean inArea(Point touch, int startX, int startY, int endX, int endY) {
+        if(endX == 0 && endY == 0) {
+            endX = startX;
+            endY = startY;
         }
-        return super.onOptionsItemSelected(item);
+
+        Point areaStartP = new Point(startX - 40, startY - 40);
+        Point areaEndP = new Point(endX + 60, endY + 60);
+
+        if(touch.x >= areaStartP.x
+                && touch.x <= areaEndP.x
+                && touch.y >= areaStartP.y
+                && touch.y <= areaEndP.y)
+            return true;
+        else
+            return false;
     }
+
+    private void loadPhoto(String url, int width, int height) {
+        mPictureDialog.show();
+        GetBitmapTask getBitmapTask = new GetBitmapTask();
+        getBitmapTask.execute(url);
+    }
+
+    private class GetBitmapTask extends AsyncTask<String, Void, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            Bitmap tempBitmap = null;
+            try {
+                InputStream in = new java.net.URL(url).openStream();
+                tempBitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return tempBitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            image.setImageBitmap(result);
+        }
+    }
+
 
     private void parsJsonData(String jsonData) {
         try {
@@ -111,17 +184,21 @@ public class CarReportExteriorActivity extends Activity {
             String smooth = conditions.getJSONObject("exterior").getString("smooth");
             setTextView(getWindow().getDecorView(), R.id.smooth_text, smooth);
 
-//            JSONArray fault = exterior.getJSONArray("fault");
-//
-//            for(int i = 0; i < fault.length(); i++) {
-//                JSONObject jsonObject = fault.getJSONObject(i);
-//
-//                PosEntity posEntity = new PosEntity(jsonObject.getInt("type"));
-//                posEntity.setStart(jsonObject.getInt("startX"), jsonObject.getInt("startY"));
-//                posEntity.setEnd(jsonObject.getInt("endX"), jsonObject.getInt("endY"));
-//
-//                posEntities.add(posEntity);
-//            }
+            JSONArray fault = exterior.getJSONArray("fault");
+
+            for(int i = 0; i < fault.length(); i++) {
+                JSONObject jsonObject = fault.getJSONObject(i);
+
+                PosEntity posEntity = new PosEntity(jsonObject.getInt("type"));
+                posEntity.setStart(jsonObject.getInt("startX"), jsonObject.getInt("startY"));
+                posEntity.setEnd(jsonObject.getInt("endX"), jsonObject.getInt("endY"));
+                // 要设置max，否则在使用endx endy时会返回零
+                posEntity.setMaxX(jsonObject.getInt("endX"));
+                posEntity.setMaxY(jsonObject.getInt("endY"));
+                posEntity.setImageFileName(jsonObject.getString("photo"));
+
+                posEntities.add(posEntity);
+            }
 
             JSONObject sketch = exterior.getJSONObject("sketch");
             String sketchUrl = sketch.getString("photo");
@@ -154,7 +231,7 @@ public class CarReportExteriorActivity extends Activity {
         protected void onPostExecute(Bitmap result) {
             setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
-            exteriorPaintPreviewView.init(result, posEntities);
+            exteriorPaintPreviewView.init(result, new ArrayList<PosEntity>());
             exteriorPaintPreviewView.invalidate();
             exteriorPaintPreviewView.setAlpha(1.0f);
         }

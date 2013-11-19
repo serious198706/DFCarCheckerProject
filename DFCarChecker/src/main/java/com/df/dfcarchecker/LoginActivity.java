@@ -5,15 +5,19 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -23,6 +27,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.df.service.Common;
 import com.df.service.SoapService;
@@ -32,8 +37,14 @@ import com.df.service.XmlHandler;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 /**
  * Activity which displays a login screen to the user, offering registration as
@@ -58,6 +69,11 @@ public class LoginActivity extends Activity {
 
     // 用户信息：id、key
     public static UserInfo userInfo;
+
+    private CheckUpdateTask mCheckUpdateTask;
+    private DownloadTask mDownloadTask;
+
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,20 +104,15 @@ public class LoginActivity extends Activity {
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                mCheckUpdateTask = new CheckUpdateTask(LoginActivity.this);
+                mCheckUpdateTask.execute();
+                //attemptLogin();
             }
         });
 
         //ImageUploadQueue queue = ImageUploadQueue.getInstance();
     }
 
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.login, menu);
-        return true;
-    }
 
     /**
      * 尝试进行登陆
@@ -317,5 +328,220 @@ public class LoginActivity extends Activity {
     @Override
     public void onBackPressed() {
         Quit(null);
+    }
+
+
+    private class CheckUpdateTask extends AsyncTask<Void, Void, Boolean> {
+        private Context context;
+        private SoapService soapService;
+
+        public CheckUpdateTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mProgressDialog = ProgressDialog.show(context, null, "正在检测最新版本...", false, false);
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            boolean success = true;
+
+            soapService = new SoapService();
+            soapService.setUtils(Common.SERVER_ADDRESS + Common.USER_MANAGE_SERVICE,
+                    "http://cheyipai/IUserManageService/GetAppNewVersionInfo", "GetAppNewVersionInfo");
+
+            success = soapService.checkUpdate(context);
+
+            return success;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean success) {
+            mProgressDialog.dismiss();
+
+            if(success) {
+                try {
+                    // {
+                    //   "VersionNumber":"numberValue",
+                    //   "DownloadAddress":""addressValue",
+                    //   "Description":"descValue"
+                    // }
+
+                    JSONObject jsonObject = new JSONObject(soapService.getResultMessage());
+
+                    final String version = jsonObject.getString("VersionNumber");
+                    final String appAddress = jsonObject.getString("DownloadAddress");
+
+                    PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+
+                    // 版本不同，升级
+                    if(compareVersion(pInfo.versionName, version)) {
+                        AlertDialog dialog = new AlertDialog.Builder(context)
+                                .setTitle(R.string.newUpdate)
+                                .setMessage("检测到新版本，点击确定进行更新")
+                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        mProgressDialog = new ProgressDialog(context);
+                                        mProgressDialog.setMessage("正在下载");
+                                        mProgressDialog.setIndeterminate(true);
+                                        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                                        mProgressDialog.setCancelable(true);
+
+                                        mDownloadTask = new DownloadTask(context);
+                                        mDownloadTask.execute(appAddress);
+                                        mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                                            @Override
+                                            public void onCancel(DialogInterface dialog) {
+                                                mDownloadTask.cancel(true);
+                                            }
+                                        });
+                                        mProgressDialog.setCanceledOnTouchOutside(false);
+
+                                    }
+                                })
+                                .create();
+
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
+                    } else {
+                        attemptLogin();
+                    }
+                } catch (Exception e) {
+
+                }
+            } else {
+                Toast.makeText(context, "获取版本号失败！", Toast.LENGTH_SHORT).show();
+                attemptLogin();
+            }
+        }
+    }
+
+    // 比较版本号
+    private boolean compareVersion(String localVersion, String serverVersion) {
+        if(localVersion.charAt(0) < serverVersion.charAt(0))
+            return true;
+
+        if(localVersion.charAt(2) < serverVersion.charAt(2))
+            return true;
+
+        if(localVersion.charAt(4) < serverVersion.charAt(4))
+            return true;
+
+        return false;
+    }
+
+    // 下载新版本apk
+    private class DownloadTask extends AsyncTask<String, Integer, Boolean> {
+
+        private Context context;
+
+        public DownloadTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressDialog.show();
+        }
+
+        @Override
+        protected Boolean doInBackground(String... sUrl) {
+            // take CPU lock to prevent CPU from going off if the user
+            // presses the power button during download
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                    getClass().getName());
+            wl.acquire();
+
+            try {
+                InputStream input = null;
+                OutputStream output = null;
+                HttpURLConnection connection = null;
+                try {
+                    URL url = new URL(sUrl[0]);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.connect();
+
+                    // expect HTTP 200 OK, so we don't mistakenly save error report
+                    // instead of the file
+                    if (connection.getResponseCode() != HttpURLConnection.HTTP_OK)
+                        return false;
+
+                    // this will be useful to display download percentage
+                    // might be -1: server did not report the length
+                    int fileLength = connection.getContentLength();
+
+                    // download the file
+                    input = connection.getInputStream();
+
+                    File downloadPath = new File(Environment.getExternalStorageDirectory().getPath() +
+                            "/Download");
+
+                    downloadPath.mkdirs();
+
+                    output = new FileOutputStream(downloadPath.getPath() + "/DFCarChecker.apk");
+
+                    byte data[] = new byte[4096];
+                    long total = 0;
+                    int count;
+                    while ((count = input.read(data)) != -1) {
+                        // allow canceling with back button
+                        if (isCancelled())
+                            return false;
+                        total += count;
+                        // publishing the progress....
+                        if (fileLength > 0) // only if total length is known
+                            publishProgress((int) (total * 100 / fileLength));
+                        output.write(data, 0, count);
+                    }
+                } catch (Exception e) {
+                    return false;
+                } finally {
+                    try {
+                        if (output != null)
+                            output.close();
+                        if (input != null)
+                            input.close();
+                    }
+                    catch (IOException ignored) { }
+
+                    if (connection != null)
+                        connection.disconnect();
+                }
+            } finally {
+                wl.release();
+            }
+
+            return true;
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            super.onProgressUpdate(progress);
+            // if we get here, length is known, now set indeterminate to false
+            mProgressDialog.setIndeterminate(false);
+            mProgressDialog.setMax(100);
+            mProgressDialog.setProgress(progress[0]);
+        }
+
+        @Override
+        protected void onPostExecute(Boolean success) {
+            mProgressDialog.dismiss();
+
+            if(success) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setDataAndType(Uri.fromFile(new File(Environment
+                        .getExternalStorageDirectory() + "/Download/" + "DFCarChecker.apk")),
+                        "application/vnd.android.package-archive");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } else {
+                Toast.makeText(context, "下载失败！", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

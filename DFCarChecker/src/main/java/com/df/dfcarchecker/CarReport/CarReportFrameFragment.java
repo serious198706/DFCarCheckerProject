@@ -1,15 +1,24 @@
 package com.df.dfcarchecker.CarReport;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Point;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.df.dfcarchecker.R;
 import com.df.entry.PosEntity;
@@ -25,6 +34,7 @@ import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -46,6 +56,10 @@ public class CarReportFrameFragment extends Fragment {
 
     private Bitmap tempBitmap;
 
+    private Dialog mPictureDialog;
+    private ImageView image;
+    private View view;
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,15 +76,123 @@ public class CarReportFrameFragment extends Fragment {
         previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4_f", options);
         framePaintPreviewViewFront = (FramePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_front);
         framePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
+        framePaintPreviewViewFront.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        float x = motionEvent.getX();
+                        float y = motionEvent.getY();
+
+                        for(int i = 0; i < posEntitiesFront.size(); i++) {
+                            if(inArea(new Point((int)x, (int)y),
+                                    posEntitiesFront.get(i).getStartX(),
+                                    posEntitiesFront.get(i).getStartY(),
+                                    posEntitiesFront.get(i).getStartX(),
+                                    posEntitiesFront.get(i).getStartY())) {
+
+                                if(posEntitiesFront.get(i).getImageFileName().equals(""))
+                                    Toast.makeText(rootView.getContext(), "该缺陷点没有照片！",
+                                            Toast.LENGTH_SHORT).show();
+                                else
+                                    loadPhoto(Common.PICUTRE_ADDRESS + posEntitiesFront.get(i)
+                                            .getImageFileName(), 0, 0);
+                            }
+                        }
+
+                        break;
+                }
+
+                return true;
+            }
+        });
 
         previewBitmapRear = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4_r", options);
         framePaintPreviewViewRear = (FramePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_rear);
         framePaintPreviewViewRear.init(previewBitmapRear, posEntitiesRear);
+        framePaintPreviewViewRear.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                switch (motionEvent.getAction()) {
+                    case MotionEvent.ACTION_UP:
+                        float x = motionEvent.getX();
+                        float y = motionEvent.getY();
+
+                        for(int i = 0; i < posEntitiesRear.size(); i++) {
+                            if(inArea(new Point((int)x, (int)y),
+                                    posEntitiesRear.get(i).getStartX(),
+                                    posEntitiesRear.get(i).getStartY(),
+                                    posEntitiesRear.get(i).getStartX(),
+                                    posEntitiesRear.get(i).getStartY())) {
+
+                                if(posEntitiesRear.get(i).getImageFileName().equals(""))
+                                    Toast.makeText(rootView.getContext(), "该缺陷点没有照片！",
+                                            Toast.LENGTH_SHORT).show();
+                                else
+                                    loadPhoto(Common.PICUTRE_ADDRESS + posEntitiesRear.get(i)
+                                            .getImageFileName(), 0, 0);
+                            }
+                        }
+
+                        break;
+                }
+
+                return true;
+            }
+        });
 
         parsJsonData();
         updateUi();
 
+        view = CarReportFrameFragment.this.inflater.inflate(R.layout.picture_popup,
+                (ViewGroup) rootView.findViewById(R.id.layout_root));
+
+        image = (ImageView) view.findViewById(R.id.fullimage);
+
+        mPictureDialog = new Dialog(rootView.getContext(),
+                android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
+        mPictureDialog.setContentView(view);
+        mPictureDialog.setCancelable(true);
+
         return rootView;
+    }
+
+    private boolean inArea(Point touch, int startX, int startY, int endX, int endY) {
+        Point areaStartP = new Point(startX - 40, startY - 40);
+        Point areaEndP = new Point(endX + 60, endY + 60);
+
+        if(touch.x >= areaStartP.x
+                && touch.x <= areaEndP.x
+                && touch.y >= areaStartP.y
+                && touch.y <= areaEndP.y)
+            return true;
+        else
+            return false;
+    }
+
+    private void loadPhoto(String url, int width, int height) {
+        mPictureDialog.show();
+        GetBitmapTask getBitmapTask = new GetBitmapTask();
+        getBitmapTask.execute(url);
+    }
+
+    private class GetBitmapTask extends AsyncTask<String, Void, Bitmap> {
+        protected Bitmap doInBackground(String... urls) {
+            String url = urls[0];
+            Bitmap tempBitmap = null;
+            try {
+                InputStream in = new java.net.URL(url).openStream();
+                tempBitmap = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return tempBitmap;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            image.setImageBitmap(result);
+        }
     }
 
     public CarReportFrameFragment(String jsonData) {
@@ -90,32 +212,32 @@ public class CarReportFrameFragment extends Fragment {
             JSONObject photos = jsonObject.getJSONObject("photos");
             JSONObject frame = photos.getJSONObject("frame");
 
-//            // 结构缺陷位置 - 前视角
-//            JSONArray frontPosArray = frame.getJSONArray("front");
-//
-//            for(int i = 0; i < frontPosArray.length(); i++) {
-//                JSONObject temp = frontPosArray.getJSONObject(i);
-//
-//                PosEntity posEntity = new PosEntity(Common.COLOR_DIFF);
-//                posEntity.setStart(temp.getInt("x"), temp.getInt("y"));
-//                posEntity.setEnd(0, 0);
-//                // TODO: 处理一下没有图片的情况
-//                posEntity.setImageFileName(temp.getString("photo"));
-//                posEntitiesFront.add(posEntity);
-//            }
-//
-//            // 结构缺陷位置 - 后视角
-//            JSONArray rearPosArray = frame.getJSONArray("rear");
-//
-//            for(int i = 0; i < rearPosArray.length(); i++) {
-//                JSONObject temp = rearPosArray.getJSONObject(i);
-//
-//                PosEntity posEntity = new PosEntity(Common.COLOR_DIFF);
-//                posEntity.setStart(temp.getInt("x"), temp.getInt("y"));
-//                posEntity.setEnd(0, 0);
-//                posEntity.setImageFileName(temp.getString("photo"));
-//                posEntitiesRear.add(posEntity);
-//            }
+            // 结构缺陷位置 - 前视角
+            JSONArray frontPosArray = frame.getJSONArray("front");
+
+            for(int i = 0; i < frontPosArray.length(); i++) {
+                JSONObject temp = frontPosArray.getJSONObject(i);
+
+                PosEntity posEntity = new PosEntity(Common.COLOR_DIFF);
+                posEntity.setStart(temp.getInt("x"), temp.getInt("y"));
+                posEntity.setEnd(0, 0);
+                // TODO: 处理一下没有图片的情况
+                posEntity.setImageFileName(temp.getString("photo"));
+                posEntitiesFront.add(posEntity);
+            }
+
+            // 结构缺陷位置 - 后视角
+            JSONArray rearPosArray = frame.getJSONArray("rear");
+
+            for(int i = 0; i < rearPosArray.length(); i++) {
+                JSONObject temp = rearPosArray.getJSONObject(i);
+
+                PosEntity posEntity = new PosEntity(Common.COLOR_DIFF);
+                posEntity.setStart(temp.getInt("x"), temp.getInt("y"));
+                posEntity.setEnd(0, 0);
+                posEntity.setImageFileName(temp.getString("photo"));
+                posEntitiesRear.add(posEntity);
+            }
 
             // 结构草图 - 前视角
             JSONObject fSketch = frame.getJSONObject("fSketch");

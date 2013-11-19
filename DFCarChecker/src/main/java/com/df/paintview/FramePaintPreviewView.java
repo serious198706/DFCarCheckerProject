@@ -50,16 +50,12 @@ public class FramePaintPreviewView extends ImageView {
         max_x = bitmap.getWidth();
         max_y = bitmap.getHeight();
 
-        //data = new ArrayList<PosEntity>();
-
         colorDiffBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.damage);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        // 因为此处并没有图片缩放，所以不需要进行坐标处理
-        //HandelPosEntitiesDueToDifferentResolution();
         canvas.drawBitmap(bitmap, 0, 0, null);
         paint(canvas);
     }
@@ -87,31 +83,6 @@ public class FramePaintPreviewView extends ImageView {
 
     public void setPosEntities(List<PosEntity> entities) {
         data = entities;
-    }
-
-    private void HandelPosEntitiesDueToDifferentResolution() {
-        data.clear();
-
-        if(CarCheckFrameFragment.posEntitiesFront.isEmpty()) {
-            return;
-        }
-
-        for(PosEntity faultPhotoEntity : CarCheckFrameFragment.posEntitiesFront) {
-            // 因为不能对原entities做修改，所以此处要做些特殊处理，采用值传递方式
-            PosEntity temp = new PosEntity(faultPhotoEntity.getType());
-            temp.setStart(faultPhotoEntity.getStartX(), faultPhotoEntity.getStartY());
-            temp.setEnd(faultPhotoEntity.getEndX(), faultPhotoEntity.getEndY());
-
-            // 这些max要乘以2的原因是，在后面的getStartX()等方法调用时，max是按照大图的max来计算的
-            temp.setMaxX((int)(max_x * 1.5));
-            temp.setMaxY((int)(max_y * 1.5));
-            data.add(temp);
-        }
-
-        for(PosEntity faultPhotoEntity : data) {
-            faultPhotoEntity.setStart((int)(faultPhotoEntity.getStartX() / 1.5), (int)(faultPhotoEntity.getStartY() / 1.5));
-            faultPhotoEntity.setEnd((int)(faultPhotoEntity.getEndX() / 1.5), (int)(faultPhotoEntity.getEndY() / 1.5));
-        }
     }
 }
 
