@@ -22,21 +22,6 @@
                 android:text="@string/out"
                 android:drawableLeft="@drawable/outside_item"
                 android:drawablePadding="10dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/score_25"
-                android:textSize="16sp"/>
-            <TextView
-                android:id="@+id/exteriorScore_text"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:gravity="right"
-                android:textSize="22sp"/>
         </LinearLayout>
 
 
@@ -69,21 +54,6 @@
                 android:text="@string/in"
                 android:drawableLeft="@drawable/inside_item"
                 android:drawablePadding="10dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/score_20"
-                android:textSize="16sp"/>
-            <TextView
-                android:id="@+id/interiorScore_text"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:gravity="right"
-                android:textSize="22sp"/>
         </LinearLayout>
 
         <View
@@ -114,22 +84,6 @@
                 android:text="@string/it_engine"
                 android:drawableLeft="@drawable/engine_item"
                 android:drawablePadding="10dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/score_20"
-                android:textSize="16sp"/>
-            <TextView
-                android:id="@+id/engineScore_text"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:text="得分：15分"
-                android:gravity="right"
-                android:textSize="22sp"/>
         </LinearLayout>
 
         <View
@@ -221,22 +175,6 @@
                 android:text="@string/it_gear"
                 android:drawableLeft="@drawable/gear_item"
                 android:drawablePadding="10dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/score_15"
-                android:textSize="16sp"/>
-            <TextView
-                android:id="@+id/gearboxScore_text"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:text="得分：15分"
-                android:gravity="right"
-                android:textSize="22sp"/>
         </LinearLayout>
 
         <View
@@ -355,22 +293,6 @@
                 android:text="@string/it_function"
                 android:drawableLeft="@drawable/function_item"
                 android:drawablePadding="10dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/score_20"
-                android:textSize="16sp"/>
-            <TextView
-                android:id="@+id/functionScore_text"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:text="得分：15分"
-                android:gravity="right"
-                android:textSize="22sp"/>
         </LinearLayout>
 
         <View
@@ -678,13 +600,6 @@
                 android:text="@string/it_other_water"
                 android:drawableLeft="@drawable/water_item"
                 android:drawablePadding="10dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="@string/score_0"
-                android:textSize="16sp"/>
         </LinearLayout>
 
         <View

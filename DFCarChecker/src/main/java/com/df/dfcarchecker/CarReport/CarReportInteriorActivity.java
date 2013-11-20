@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -38,8 +37,8 @@ public class CarReportInteriorActivity extends Activity {
 
     private InteriorPaintPreviewView interiorPaintPreviewView;
     private List<PosEntity> posEntities;
-    private JSONObject photos;
     private JSONObject conditions;
+    private JSONObject photos;
     private Dialog mPictureDialog;
     private View view;
     private ImageView image;
@@ -60,7 +59,8 @@ public class CarReportInteriorActivity extends Activity {
         Bitmap previewViewBitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4s4", options);
 
         interiorPaintPreviewView = (InteriorPaintPreviewView) findViewById(R.id.in_base_image_preview);
-        interiorPaintPreviewView.init(previewViewBitmap, posEntities);
+        interiorPaintPreviewView.init(previewViewBitmap, new ArrayList<PosEntity>());
+        interiorPaintPreviewView.setAlpha(0.4f);
         interiorPaintPreviewView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -80,7 +80,7 @@ public class CarReportInteriorActivity extends Activity {
                                     Toast.makeText(CarReportInteriorActivity.this, "该缺陷点没有照片！",
                                             Toast.LENGTH_SHORT).show();
                                 else
-                                    loadPhoto(Common.PICUTRE_ADDRESS + posEntities.get(i)
+                                    loadPhoto(Common.PICTURE_ADDRESS + posEntities.get(i)
                                             .getImageFileName(), 0, 0);
                             }
                         }
@@ -110,6 +110,16 @@ public class CarReportInteriorActivity extends Activity {
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
         mPictureDialog.setContentView(view);
         mPictureDialog.setCancelable(true);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -194,9 +204,11 @@ public class CarReportInteriorActivity extends Activity {
             }
 
             JSONObject sketch = interior.getJSONObject("sketch");
-            String sketchUrl = sketch.getString("photo");
 
-            new DownloadImageTask().execute(Common.PICUTRE_ADDRESS + sketchUrl);
+            if(sketch != null) {
+                String sketchUrl = sketch.getString("photo");
+                new DownloadImageTask().execute(Common.PICTURE_ADDRESS + sketchUrl);
+            }
         } catch (JSONException e) {
 
         }
@@ -225,8 +237,8 @@ public class CarReportInteriorActivity extends Activity {
             setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
             interiorPaintPreviewView.init(result, new ArrayList<PosEntity>());
-            interiorPaintPreviewView.invalidate();
             interiorPaintPreviewView.setAlpha(1.0f);
+            interiorPaintPreviewView.invalidate();
         }
     }
 }

@@ -422,22 +422,22 @@ public class CarCheckPaintActivity extends Activity {
 
             switch (PaintType.paintType(currentPaintView)) {
                 case EX_PAINT:
-                    filename = "sketch_o";
+                    filename = "exterior";
                     sketchKey = group = "exterior";
                     part = "sketch";
                     break;
                 case IN_PAINT:
-                    filename = "sketch_i";
+                    filename = "interior";
                     sketchKey = group = "interior";
                     part = "sketch";
                     break;
                 case FRAME_PAINT:
                     if(sight.equals("FRONT")) {
-                        filename = "sketch_sf";
+                        filename = "fSketch";
                         sketchKey = part = "fSketch";
                     }
                     else {
-                        filename = "sketch_sr";
+                        filename = "rSketch";
                         sketchKey = part = "rSketch";
                     }
 

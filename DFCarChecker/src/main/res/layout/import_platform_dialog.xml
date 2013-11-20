@@ -7,7 +7,10 @@
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:text="@string/ip_sellerName"/>
+        android:text="@string/ip_sellerName"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:textSize="18sp"/>
 
     <EditText
         android:id="@+id/sellerName"

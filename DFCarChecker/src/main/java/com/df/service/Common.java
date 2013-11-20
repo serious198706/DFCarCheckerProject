@@ -22,11 +22,6 @@ public class Common {
     public static final int IN_PAINT = 11;
     public static final int STURCTURE_PAINT = 12;
 
-    // 用来获取Activity结果的查询代码
-    public static final String OUT_BROKEN_RESULT = "OUT_BROKEN_RESULT";
-    public static final String IN_BROKEN_RESULT = "IN_BROKEN_RESULT";
-    public static final String IN_DIRTY_RESULT = "IN_DIRTY_RESULT";
-
     // 拍摄组别代码
     public static final int PHOTO_FOR_EXTERIOR_STANDARD = 2;
     public static final int PHOTO_FOR_INTERIOR_STANDARD = 3;
@@ -41,26 +36,28 @@ public class Common {
     public static final int DIRTY = 6;      // 脏污
     public static final int BROKEN = 7;     // 破损
 
-    // 每个组最少拍摄张数
-    public static final int[] photoLeastCount = {1, 1, 1};
+    public static final boolean innerVersion = false;
 
     // 日志的TAG
     public static final String TAG = "DFCarChecker";
 
-    // WebService地址
-    //public static final String SERVER_ADDRESS = "http://192.168.8.33:801/";
-
-    // 外网测试
+    // 外网
+    // 每个组最少拍摄张数
+    public static final int[] photoLeastCount = {3, 3, 5};
     public static final String SERVER_ADDRESS = "http://wcf.268v.com:8008/";
-    public static final String PICUTRE_ADDRESS = "http://i.268v.com/";
+    public static final String PICTURE_ADDRESS = "http://i.268v.com/";
 
-    // 内网测试
+    // 内网
+    // 每个组最少拍摄张数
+//    public static final int[] photoLeastCount = {1, 1, 1};
 //    public static final String SERVER_ADDRESS = "http://192.168.100.6:50/";
-//    public static final String PICUTRE_ADDRESS = "http://192.168.100.6:8006/";
+//    public static final String PICTURE_ADDRESS = "http://192.168.100.6:8006/";
 
+    // 调用地址
     public static final String USER_MANAGE_SERVICE = "userManageService.svc";
     public static final String REPORT_SERVICE = "ReportService.svc";
 
+    // namespace
     public static final String NAMESPACE = "http://cheyipai";
 
     public static final int[][] carSettingsSpinnerMap = {

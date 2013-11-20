@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -30,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.df.service.Common;
+import com.df.service.Helper;
 import com.df.service.SoapService;
 import com.df.entry.UserInfo;
 import com.df.service.XmlHandler;
@@ -64,8 +66,6 @@ public class LoginActivity extends Activity {
     private EditText mUserNameView;
     private EditText mPasswordView;
     private View mLoginFormView;
-    private View mLoginStatusView;
-    private TextView mLoginStatusMessageView;
 
     // 用户信息：id、key
     public static UserInfo userInfo;
@@ -98,19 +98,30 @@ public class LoginActivity extends Activity {
         });
 
         mLoginFormView = findViewById(R.id.login_form);
-        mLoginStatusView = findViewById(R.id.login_status);
-        mLoginStatusMessageView = (TextView) findViewById(R.id.login_status_message);
 
         findViewById(R.id.sign_in_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mCheckUpdateTask = new CheckUpdateTask(LoginActivity.this);
-                mCheckUpdateTask.execute();
-                //attemptLogin();
+                attemptLogin();
             }
         });
 
         //ImageUploadQueue queue = ImageUploadQueue.getInstance();
+
+        TextView appVersionText = (TextView) findViewById(R.id.appVersion_text);
+
+        try {
+            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+            appVersionText.setText("V" + pInfo.versionName);
+        } catch (PackageManager.NameNotFoundException e) {
+            appVersionText.setText("");
+            e.printStackTrace();
+        }
+
+        mCheckUpdateTask = new CheckUpdateTask(LoginActivity.this);
+        mCheckUpdateTask.execute();
+
+        Helper.showView(Common.innerVersion, getWindow().getDecorView(), R.id.innerTestVersion);
     }
 
 
@@ -159,51 +170,8 @@ public class LoginActivity extends Activity {
             // 有错误，让有错误的组件获取焦点
             focusView.requestFocus();
         } else {
-            // 显示一个进度画面，并启动后台任务进行登录
-            mLoginStatusMessageView.setText(R.string.login_progress_signing_in);
-            showProgress(true);
             mAuthTask = new UserLoginTask(this);
             mAuthTask.execute((Void) null);
-        }
-    }
-
-    /**
-     * 显示进度动画，隐藏登录框
-     */
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
-    private void showProgress(final boolean show) {
-        // On Honeycomb MR2 we have the ViewPropertyAnimator APIs, which allow
-        // for very easy animations. If available, use these APIs to fade-in
-        // the progress spinner.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
-
-            mLoginStatusView.setVisibility(View.VISIBLE);
-            mLoginStatusView.animate()
-                    .setDuration(shortAnimTime)
-                    .alpha(show ? 1 : 0)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
-                        }
-                    });
-
-            mLoginFormView.setVisibility(View.VISIBLE);
-            mLoginFormView.animate()
-                    .setDuration(shortAnimTime)
-                    .alpha(show ? 0 : 1)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-                        }
-                    });
-        } else {
-            // The ViewPropertyAnimator APIs are not available, so simply show
-            // and hide the relevant UI components.
-            mLoginStatusView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -216,6 +184,11 @@ public class LoginActivity extends Activity {
 
         private UserLoginTask(Context context) {
             this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            mProgressDialog = ProgressDialog.show(context, null, "正在登录...", false, false);
         }
 
         @Override
@@ -235,7 +208,6 @@ public class LoginActivity extends Activity {
                 serialNumber = (String) get.invoke(c, "ro.serialno");
             } catch (Exception ignored) {
             }
-
 
             try {
                 // 登录
@@ -281,9 +253,9 @@ public class LoginActivity extends Activity {
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-            showProgress(false);
+            mProgressDialog.dismiss();
 
+            mAuthTask = null;
             if (success) {
                 Intent intent = new Intent(context, MainActivity.class);
                 intent.putExtra("UserId", userInfo.getId());
@@ -298,8 +270,8 @@ public class LoginActivity extends Activity {
 
         @Override
         protected void onCancelled() {
+            mProgressDialog.dismiss();
             mAuthTask = null;
-            showProgress(false);
         }
     }
 
@@ -406,15 +378,12 @@ public class LoginActivity extends Activity {
 
                         dialog.setCanceledOnTouchOutside(false);
                         dialog.show();
-                    } else {
-                        attemptLogin();
                     }
                 } catch (Exception e) {
 
                 }
             } else {
                 Toast.makeText(context, "获取版本号失败！", Toast.LENGTH_SHORT).show();
-                attemptLogin();
             }
         }
     }

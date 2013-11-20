@@ -1,13 +1,9 @@
 package com.df.dfcarchecker.CarReport;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -29,14 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 
 import static com.df.service.Helper.setTextView;
@@ -75,7 +64,8 @@ public class CarReportFrameFragment extends Fragment {
         String sdcardPath = Environment.getExternalStorageDirectory().toString();
         previewBitmapFront = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4_f", options);
         framePaintPreviewViewFront = (FramePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_front);
-        framePaintPreviewViewFront.init(previewBitmapFront, posEntitiesFront);
+        framePaintPreviewViewFront.init(previewBitmapFront, new ArrayList<PosEntity>());
+        framePaintPreviewViewFront.setAlpha(0.4f);
         framePaintPreviewViewFront.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -95,7 +85,7 @@ public class CarReportFrameFragment extends Fragment {
                                     Toast.makeText(rootView.getContext(), "该缺陷点没有照片！",
                                             Toast.LENGTH_SHORT).show();
                                 else
-                                    loadPhoto(Common.PICUTRE_ADDRESS + posEntitiesFront.get(i)
+                                    loadPhoto(Common.PICTURE_ADDRESS + posEntitiesFront.get(i)
                                             .getImageFileName(), 0, 0);
                             }
                         }
@@ -109,7 +99,8 @@ public class CarReportFrameFragment extends Fragment {
 
         previewBitmapRear = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/d4_r", options);
         framePaintPreviewViewRear = (FramePaintPreviewView)rootView.findViewById(R.id.structure_base_image_preview_rear);
-        framePaintPreviewViewRear.init(previewBitmapRear, posEntitiesRear);
+        framePaintPreviewViewRear.init(previewBitmapRear, new ArrayList<PosEntity>());
+        framePaintPreviewViewRear.setAlpha(0.4f);
         framePaintPreviewViewRear.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -129,7 +120,7 @@ public class CarReportFrameFragment extends Fragment {
                                     Toast.makeText(rootView.getContext(), "该缺陷点没有照片！",
                                             Toast.LENGTH_SHORT).show();
                                 else
-                                    loadPhoto(Common.PICUTRE_ADDRESS + posEntitiesRear.get(i)
+                                    loadPhoto(Common.PICTURE_ADDRESS + posEntitiesRear.get(i)
                                             .getImageFileName(), 0, 0);
                             }
                         }
@@ -241,15 +232,19 @@ public class CarReportFrameFragment extends Fragment {
 
             // 结构草图 - 前视角
             JSONObject fSketch = frame.getJSONObject("fSketch");
-            String fSketchUrl = fSketch.getString("photo");
 
-            new DownloadImageTask("front").execute(Common.PICUTRE_ADDRESS + fSketchUrl);
+            if(fSketch != null) {
+                String fSketchUrl = fSketch.getString("photo");
+                new DownloadImageTask("front").execute(Common.PICTURE_ADDRESS + fSketchUrl);
+            }
 
             // 结构草图 - 后视角
             JSONObject rSketch = frame.getJSONObject("rSketch");
-            String rSketchUrl = rSketch.getString("photo");
 
-            new DownloadImageTask("rear").execute(Common.PICUTRE_ADDRESS + rSketchUrl);
+            if(fSketch != null) {
+                String rSketchUrl = rSketch.getString("photo");
+                new DownloadImageTask("rear").execute(Common.PICTURE_ADDRESS + rSketchUrl);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -288,10 +283,12 @@ public class CarReportFrameFragment extends Fragment {
             if(result == null)
                 return;
             if(sight.equals("front")) {
-                framePaintPreviewViewFront.init(result, posEntitiesFront);
+                framePaintPreviewViewFront.init(result, new ArrayList<PosEntity>());
+                framePaintPreviewViewFront.setAlpha(1.0f);
                 framePaintPreviewViewFront.invalidate();
             } else {
-                framePaintPreviewViewRear.init(result, posEntitiesRear);
+                framePaintPreviewViewRear.init(result, new ArrayList<PosEntity>());
+                framePaintPreviewViewRear.setAlpha(1.0f);
                 framePaintPreviewViewRear.invalidate();
             }
         }

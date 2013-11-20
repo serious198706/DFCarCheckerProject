@@ -195,6 +195,12 @@ public class Helper {
         }
     }
 
+    public static int getSpinnerSelectedIndex(View view, int spinnerId) {
+        Spinner spinner = (Spinner)view.findViewById(spinnerId);
+
+        return spinner.getSelectedItemPosition();
+    }
+
     public static String getEditText(View view, int editId) {
         EditText editText = (EditText)view.findViewById(editId);
 

@@ -1,8 +1,6 @@
 package com.df.dfcarchecker.CarCheck;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -259,6 +257,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         }
     }
 
+    // 退出提示
     public void quitCarCheck() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -289,6 +288,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         dialog.show();
     }
 
+    // 清空已存在的缺陷点和照片数据
     private void destroyEntities() {
         if(CarCheckFrameFragment.photoEntitiesFront != null) {
             CarCheckFrameFragment.photoEntitiesFront.clear();
@@ -322,7 +322,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         }
     }
 
-
+    // 提交
     public void commit() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
@@ -349,6 +349,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                 mCommitProgressDialog.setIndeterminate(true);
                 mCommitProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 mCommitProgressDialog.setCanceledOnTouchOutside(false);
+                mCommitProgressDialog.setCancelable(false);
 
                 // 修改车辆信息
                 if(!jsonData.equals("")) {
@@ -417,27 +418,24 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                         carCheckFrameFragment.generateSketchPhoto("front");
                     }
 
-                    imageUploadQueue.addImage(sketchPhotoEntities.get("fSketch"));
-
                     if(!sketchPhotoEntities.containsKey("rSketch")) {
                         Log.d(Common.TAG, "正在生成rSketch...");
                         carCheckFrameFragment.generateSketchPhoto("rear");
                     }
 
-                    imageUploadQueue.addImage(sketchPhotoEntities.get("rSketch"));
-
                     if(!sketchPhotoEntities.containsKey("exterior")) {
                         Log.d(Common.TAG, "正在生成外观sketch...");
-                        CarCheckExteriorActivity.getSketchPhotoEntity();
+                        CarCheckExteriorActivity.generateSketchPhotoEntity();
                     }
-
-                    imageUploadQueue.addImage(sketchPhotoEntities.get("exterior"));
 
                     if(!sketchPhotoEntities.containsKey("interior")) {
                         Log.d(Common.TAG, "正在生成内饰sketch...");
                         CarCheckInteriorActivity.generateSketchPhotoEntity();
                     }
 
+                    imageUploadQueue.addImage(sketchPhotoEntities.get("fSketch"));
+                    imageUploadQueue.addImage(sketchPhotoEntities.get("rSketch"));
+                    imageUploadQueue.addImage(sketchPhotoEntities.get("exterior"));
                     imageUploadQueue.addImage(sketchPhotoEntities.get("interior"));
 
                     canCommit = true;
@@ -464,89 +462,84 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
     }
 
 
+    // 广播接收器
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             if(mCommitProgressDialog != null) {
                 mCommitProgressDialog.dismiss();
-                String result = intent.getExtras().getString("result");
+            }
 
-                // 提交成功
-                if(result.equals("0")) {
-                    // 停止服务
-                    Intent serviceIntent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
-                    stopService(serviceIntent);
+            String result = intent.getExtras().getString("result");
 
-                    // 如果为修改
-                    if(!jsonData.equals("")) {
-                        Toast.makeText(CarCheckViewPagerActivity.this, "修改成功！", Toast.LENGTH_LONG).show();
-                        finish();
-                    }
-                    // 如果为提交车辆
-                    else {
-                        Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
-                        String score = intent.getExtras().getString("score");
+            // 提交成功
+            if(result.equals("0")) {
+                // 停止服务
+                Intent serviceIntent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
+                stopService(serviceIntent);
 
-                        // 计算分数
-                        String exterior = "外观检查得分：";
-                        String interior = "内饰检查得分：";
-                        String engine = "发动机检查得分：";
-                        String gearbox = "变速箱检查得分：";
-                        String function = "功能检查得分：";
-                        String total = "总分：";
-
-                        try {
-                            JSONObject jsonObject = new JSONObject(score);
-                            exterior += jsonObject.getString("exterior");
-                            interior += jsonObject.getString("interior");
-                            engine += jsonObject.getString("engine");
-                            gearbox += jsonObject.getString("gearbox");
-                            function += jsonObject.getString("function");
-
-                            Float totalScore = Float.parseFloat(jsonObject.getString("exterior"))
-                                    + Float.parseFloat(jsonObject.getString("interior"))
-                                    + Float.parseFloat(jsonObject.getString("engine"))
-                                    + Float.parseFloat(jsonObject.getString("gearbox"))
-                                    + Float.parseFloat(jsonObject.getString("function"));
-
-                            total += Float.toString(totalScore);
-                        } catch (JSONException e) {
-
-                        }
-
-                        String msg = exterior + "\n" + interior + "\n" + engine + "\n" + gearbox +
-                                "\n" + function + "\n\n" + total;
-
-                        // 显示得分，关闭界面
-                        AlertDialog dialog = new AlertDialog.Builder(CarCheckViewPagerActivity.this)
-                                .setTitle("车辆得分")
-                                //.setView(getLayoutInflater().inflate(R.layout.score_dialog, null))
-                                .setMessage(msg)
-                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        // 进入已检车辆列表界面
-                                        Intent intent1 = new Intent(CarCheckViewPagerActivity.this,
-                                                CarCheckedListActivity.class);
-                                        startActivity(intent1);
-
-                                        finish();
-                                    }
-                                })
-                                .create();
-
-                        dialog.setCanceledOnTouchOutside(false);
-                        dialog.show();
-                    }
-                } else {
-                    String error = intent.getExtras().getString("errorMsg");
-                    Toast.makeText(CarCheckViewPagerActivity.this, "提交失败！" + error,
-                            Toast.LENGTH_LONG).show();
+                // 如果为修改
+                if(!jsonData.equals("")) {
+                    Toast.makeText(CarCheckViewPagerActivity.this, "修改成功！", Toast.LENGTH_LONG).show();
+                    finish();
                 }
+                // 如果为提交车辆
+                else {
+                    Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
+                    String score = intent.getExtras().getString("score");
+
+                    // 计算分数
+                    String total = "总分：";
+
+                    try {
+                        JSONObject jsonObject = new JSONObject(score);
+
+                        Float totalScore = Float.parseFloat(jsonObject.getString("exterior"))
+                                + Float.parseFloat(jsonObject.getString("interior"))
+                                + Float.parseFloat(jsonObject.getString("engine"))
+                                + Float.parseFloat(jsonObject.getString("gearbox"))
+                                + Float.parseFloat(jsonObject.getString("function"));
+
+                        total += Float.toString(totalScore);
+                    } catch (JSONException e) {
+
+                    }
+
+                    String msg = total;
+
+                    // 显示得分，关闭界面
+                    AlertDialog dialog = new AlertDialog.Builder(CarCheckViewPagerActivity.this)
+                            .setTitle("车辆得分")
+                            .setMessage(msg)
+                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    // 进入已检车辆列表界面
+                                    Intent intent1 = new Intent(CarCheckViewPagerActivity.this,
+                                            CarCheckedListActivity.class);
+                                    startActivity(intent1);
+
+                                    finish();
+                                }
+                            })
+                            .create();
+
+                    dialog.setCanceledOnTouchOutside(false);
+                    dialog.show();
+                }
+            } else if(result.equals("-1")) {
+                String error = intent.getExtras().getString("errorMsg");
+                Toast.makeText(CarCheckViewPagerActivity.this, "提交失败！" + error,
+                        Toast.LENGTH_LONG).show();
+            } else if(result.equals("-2")) {
+                Toast.makeText(CarCheckViewPagerActivity.this, "无法连接到服务器，请检查网络！",
+                        Toast.LENGTH_LONG).show();
             }
         }
+
     };
 
+    // 进行检查，查看是否有未填入的数据
     private boolean runOverAllCheck() {
         boolean checkThrough;
 
@@ -575,6 +568,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         return checkThrough;
     }
 
+    // 生成最后的json数据
     private JSONObject generateCommitJsonObject() {
         try {
             // root节点
@@ -638,9 +632,6 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
             // 综合检查 - 功能检查
             conditions.put("function", CarCheckIntegratedFragment.generateFunctionJsonObject());
-
-            // 综合检查 - 底盘检查
-            //conditions.put("chassis", CarCheckIntegratedFragment.generateChassisJsonObject());
 
             // 综合检查 - 泡水检查
             conditions.put("flooded", CarCheckIntegratedFragment.generateFloodedJsonObject());

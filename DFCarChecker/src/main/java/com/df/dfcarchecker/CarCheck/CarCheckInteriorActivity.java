@@ -19,7 +19,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,11 +40,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.df.service.Helper.setEditText;
 import static com.df.service.Helper.setSpinnerSelectionWithString;
+import static com.df.service.Helper.showView;
 
 public class CarCheckInteriorActivity extends Activity implements View.OnClickListener  {
     private int currentShotPart;
@@ -309,6 +308,23 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     }
 
     private void saveResult() {
+        // 如果是修改模式，则直接保存退出
+        if(!jsonData.equals("")) {
+            // 创建结果意图和包括地址
+            Intent intent = new Intent();
+            intent.putExtra("INDEX", Integer.toString(sealSpinner.getSelectedItemPosition()));
+            intent.putExtra("COMMENT", commentEdit.getText().toString());
+            intent.putExtra("PHOTO_COUNT", photoShotCount);
+            intent.putExtra("SAVED", saved);
+            //addPhotosToQueue();
+
+            // 关闭activity
+            setResult(Activity.RESULT_OK, intent);
+            finish();
+
+            return;
+        }
+
         // 如果还未保存，则提示用户
         if(!saved) {
             AlertDialog dialog = new AlertDialog.Builder(this)
@@ -383,12 +399,12 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
         File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
                 ".cheyipai/" + getNameFromFigure(figure));
         File dst = new File(Environment.getExternalStorageDirectory().getPath() +
-                "/Pictures/DFCarChecker/" + "sketch_i");
+                "/Pictures/DFCarChecker/" + "interior");
 
         try {
             copy(file, dst);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(Common.TAG, "拷贝" + getNameFromFigure(figure) + "错误");
         }
 
         Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
@@ -409,11 +425,11 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
             jsonObject.put("UserId", MainActivity.userInfo.getId());
             jsonObject.put("Key", MainActivity.userInfo.getKey());
         } catch (JSONException e) {
-
+            Log.d(Common.TAG, "json组织错误, " + getNameFromFigure(figure));
         }
 
         PhotoEntity photoEntity = new PhotoEntity();
-        photoEntity.setFileName("sketch_i");
+        photoEntity.setFileName("interior");
         photoEntity.setJsonString(jsonObject.toString());
 
         // 将草图放入viewpager的草图队列
@@ -486,8 +502,9 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
     }
 
     private void letsEnterModifyMode() {
-        TableLayout cameraArea = (TableLayout) findViewById(R.id.cameraArea);
-        cameraArea.setVisibility(View.GONE);
+        showView(false, getWindow().getDecorView(), R.id.in_camera_1);
+        showView(false, getWindow().getDecorView(), R.id.in_camera_2);
+        showView(false, getWindow().getDecorView(), R.id.in_camera_3);
 
         interiorPaintPreviewView.setOnClickListener(null);
         tip.setOnClickListener(null);
@@ -521,7 +538,7 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
             JSONObject sketch = interior.getJSONObject("sketch");
             String sketchUrl = sketch.getString("photo");
 
-            new DownloadImageTask().execute(Common.PICUTRE_ADDRESS + sketchUrl);
+            new DownloadImageTask().execute(Common.PICTURE_ADDRESS + sketchUrl);
         } catch (JSONException e) {
 
         }

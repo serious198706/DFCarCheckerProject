@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -361,16 +360,16 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         }
     }
 
-    private PhotoEntity getPhotoEntity(String part, String sketchFileName, String sketchName) {
+    private PhotoEntity getPhotoEntity(String srcFile, String sketchFileName, String sketchName) {
         File file = new File(Environment.getExternalStorageDirectory().getPath() + "/" +
-                ".cheyipai/" + part);
+                ".cheyipai/" + srcFile);
         File dst = new File(Environment.getExternalStorageDirectory().getPath() +
                 "/Pictures/DFCarChecker/" + sketchFileName);
 
         try {
             copy(file, dst);
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d(Common.TAG, "拷贝" + srcFile + "错误");
         }
 
         Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
@@ -391,7 +390,7 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
             jsonObject.put("UserId", MainActivity.userInfo.getId());
             jsonObject.put("Key", MainActivity.userInfo.getKey());
         } catch (JSONException e) {
-
+            Log.d(Common.TAG, "json组织错误, " + sketchFileName);
         }
 
         PhotoEntity photoEntity = new PhotoEntity();
@@ -460,13 +459,13 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
             JSONObject fSketch = frame.getJSONObject("fSketch");
             String fSketchUrl = fSketch.getString("photo");
 
-            new DownloadImageTask("front").execute(Common.PICUTRE_ADDRESS + fSketchUrl);
+            new DownloadImageTask("front").execute(Common.PICTURE_ADDRESS + fSketchUrl);
 
             // 结构草图 - 后视角
             JSONObject rSketch = frame.getJSONObject("rSketch");
             String rSketchUrl = rSketch.getString("photo");
 
-            new DownloadImageTask("rear").execute(Common.PICUTRE_ADDRESS + rSketchUrl);
+            new DownloadImageTask("rear").execute(Common.PICTURE_ADDRESS + rSketchUrl);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -517,13 +516,13 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
 
     public void generateSketchPhoto(String sight) {
         if(sight.equals("front")) {
-            fSketch = getPhotoEntity("d4_f", "sketch_sf", "fSketch");
+            fSketch = getPhotoEntity("d4_f", "fSketch", "fSketch");
             CarCheckViewPagerActivity.sketchPhotoEntities.put("fSketch", fSketch);
             Log.d(Common.TAG, "fSketch生成！");
         }
 
         if(sight.equals("rear")) {
-            rSketch = getPhotoEntity("d4_r", "sketch_sr", "rSketch");
+            rSketch = getPhotoEntity("d4_r", "rSketch", "rSketch");
             CarCheckViewPagerActivity.sketchPhotoEntities.put("rSketch", rSketch);
             Log.d(Common.TAG, "rSketch生成！");
         }

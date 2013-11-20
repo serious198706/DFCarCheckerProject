@@ -79,11 +79,7 @@
                          android:layout_weight="2"
                          android:entries="@array/yes_no"/>
             </TableRow>
-        </TableLayout>
-        <TableLayout android:id="@+id/cameraArea"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
+            <TextView android:id="@+id/in_camera_1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
@@ -92,11 +88,11 @@
                     style="@style/CodeFont"
                     android:text="@string/camera" />
 
-            <View
+            <View android:id="@+id/in_camera_2"
                 android:layout_width="match_parent"
                 android:layout_height="2dp"
                 android:background="#000"/>
-            <TableRow>
+            <TableRow android:id="@+id/in_camera_3">
                 <Button android:id="@+id/in_start_camera_button"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
@@ -108,10 +104,6 @@
                         android:textColor="#FFF"
                         android:background="@drawable/button_custom"/>
             </TableRow>
-        </TableLayout>
-        <TableLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
             <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

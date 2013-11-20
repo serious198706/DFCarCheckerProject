@@ -548,7 +548,7 @@
                           android:layout_weight="2"
                           android:textSize="18sp"/>
             </TableRow>
-            <TableRow android:id="@+id/ci_last_transfer_row">
+            <TableRow android:id="@+id/transferLastDate_row">
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"

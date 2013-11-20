@@ -10,14 +10,12 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.df.dfcarchecker.R;
@@ -62,8 +60,8 @@ public class CarReportExteriorActivity extends Activity {
         Bitmap previewViewBitmap = BitmapFactory.decodeFile(sdcardPath + "/.cheyipai/r3d4", options);
 
         exteriorPaintPreviewView = (ExteriorPaintPreviewView) findViewById(R.id.out_base_image_preview);
-        exteriorPaintPreviewView.init(previewViewBitmap, posEntities);
-        exteriorPaintPreviewView.setAlpha(0.6f);
+        exteriorPaintPreviewView.init(previewViewBitmap, new ArrayList<PosEntity>());
+        exteriorPaintPreviewView.setAlpha(0.4f);
         exteriorPaintPreviewView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -83,7 +81,7 @@ public class CarReportExteriorActivity extends Activity {
                                     Toast.makeText(CarReportExteriorActivity.this, "该缺陷点没有照片！",
                                             Toast.LENGTH_SHORT).show();
                                 else
-                                    loadPhoto(Common.PICUTRE_ADDRESS + posEntities.get(i)
+                                    loadPhoto(Common.PICTURE_ADDRESS + posEntities.get(i)
                                             .getImageFileName(), 0, 0);
                             }
                         }
@@ -113,6 +111,17 @@ public class CarReportExteriorActivity extends Activity {
                 android.R.style.Theme_Holo_Light_Dialog_NoActionBar);
         mPictureDialog.setContentView(view);
         mPictureDialog.setCancelable(true);
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -201,9 +210,12 @@ public class CarReportExteriorActivity extends Activity {
             }
 
             JSONObject sketch = exterior.getJSONObject("sketch");
-            String sketchUrl = sketch.getString("photo");
 
-            new DownloadImageTask().execute(Common.PICUTRE_ADDRESS + sketchUrl);
+            if(sketch != null) {
+                String sketchUrl = sketch.getString("photo");
+                new DownloadImageTask().execute(Common.PICTURE_ADDRESS + sketchUrl);
+            }
+
         } catch (JSONException e) {
 
         }
@@ -232,8 +244,8 @@ public class CarReportExteriorActivity extends Activity {
             setProgressBarIndeterminateVisibility(Boolean.FALSE);
 
             exteriorPaintPreviewView.init(result, new ArrayList<PosEntity>());
-            exteriorPaintPreviewView.invalidate();
             exteriorPaintPreviewView.setAlpha(1.0f);
+            exteriorPaintPreviewView.invalidate();
         }
     }
 }

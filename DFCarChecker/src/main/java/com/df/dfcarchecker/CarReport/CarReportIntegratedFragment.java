@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.df.service.Helper.setTextView;
+import static com.df.service.Helper.showView;
 
 public class CarReportIntegratedFragment extends Fragment implements View.OnClickListener{
     private static View rootView;
@@ -105,25 +106,17 @@ public class CarReportIntegratedFragment extends Fragment implements View.OnClic
         try {
             setTextView(rootView, R.id.comment_edit, comment);
 
-            if(exterior.has("score"))
-                setTextView(rootView, R.id.exteriorScore_text, "得分：" + exterior.getString("score"));
-            if(interior.has("score"))
-                setTextView(rootView, R.id.interiorScore_text, "得分：" + interior.getString("score"));
             setTextView(rootView, R.id.engineStarted_text, engine.getString("started"));
             setTextView(rootView, R.id.engineSteady_text, engine.getString("steady"));
             setTextView(rootView, R.id.engineStrangeNoices_text, engine.getString("strangeNoices"));
             setTextView(rootView, R.id.engineExhaustColor_text, engine.getString("exhaustColor"));
             setTextView(rootView, R.id.engineFluid_text, engine.getString("fluid"));
-            if(engine.has("score"))
-            setTextView(rootView, R.id.engineScore_text, "得分：" + engine.getString("score"));
             setTextView(rootView, R.id.gearMtClutch_text, gearbox.getString("mtClutch"));
             setTextView(rootView, R.id.gearMtShiftEasy_text, gearbox.getString("mtShiftEasy"));
             setTextView(rootView, R.id.gearMtShiftSpace_text, gearbox.getString("mtShiftSpace"));
             setTextView(rootView, R.id.gearAtShiftShock_text, gearbox.getString("atShiftShock"));
             setTextView(rootView, R.id.gearAtShiftNoise_text, gearbox.getString("atShiftNoise"));
             setTextView(rootView, R.id.gearAtShiftEasy_text, gearbox.getString("atShiftEasy"));
-            if(gearbox.has("score"))
-            setTextView(rootView, R.id.gearboxScore_text, "得分：" + gearbox.getString("score"));
             setTextView(rootView, R.id.engineFault_text, function.getString("engineFault"));
             setTextView(rootView, R.id.oilPressure_text, function.getString("oilPressure"));
             setTextView(rootView, R.id.parkingBrake_text, function.getString("parkingBrake"));
@@ -183,16 +176,7 @@ public class CarReportIntegratedFragment extends Fragment implements View.OnClic
                 setTextView(rootView, R.id.parkAssist_text, function.getString("parkAssist"));
             else
                 setTextView(rootView, R.id.parkAssist_text, null);
-            if(function.has("score"))
-                setTextView(rootView, R.id.functionScore_text, "得分：" + function.getString("score"));
-//            setTextView(rootView, R.id.chassisLeftFront_text, chassis.getString("leftFront"));
-//            setTextView(rootView, R.id.chassisRightFront_text, chassis.getString("rightFront"));
-//            setTextView(rootView, R.id.chassisLeftRear_text, chassis.getString("leftRear"));
-//            setTextView(rootView, R.id.chassisRightRear_text, chassis.getString("rightRear"));
-//            setTextView(rootView, R.id.chassisPerfect_text, chassis.getString("perfect"));
-//            setTextView(rootView, R.id.chassisEngineBottom_text, chassis.getString("engineBottom"));
-//            setTextView(rootView, R.id.chassisGearboxBottom_text, chassis.getString("gearboxBottom"));
-//            setTextView(rootView, R.id.chassisScore_text, "得分：" + chassis.getString("score"));
+
             setTextView(rootView, R.id.waterCigarLighter_text, flooded.getString("cigarLighter"));
             setTextView(rootView, R.id.waterAshtray_text, flooded.getString("ashtray"));
             setTextView(rootView, R.id.waterSeatBelts_text, flooded.getString("seatBelts"));
@@ -201,35 +185,26 @@ public class CarReportIntegratedFragment extends Fragment implements View.OnClic
             setTextView(rootView, R.id.waterSpareTireGroove_text, flooded.getString("spareTireGroove"));
 
             if(options.getString("transmission").equals("MT")) {
-                SetViewVisibility(R.id.it_gear_manually_row, View.VISIBLE);
-                SetViewVisibility(R.id.it_gear_manually_row_1, View.VISIBLE);
-                SetViewVisibility(R.id.it_gear_manually_row_2, View.VISIBLE);
-                SetViewVisibility(R.id.it_gear_manually_row_3, View.VISIBLE);
-
-                SetViewVisibility(R.id.it_gear_auto_row, View.GONE);
-                SetViewVisibility(R.id.it_gear_auto_row_1, View.GONE);
-                SetViewVisibility(R.id.it_gear_auto_row_2, View.GONE);
-                SetViewVisibility(R.id.it_gear_auto_row_3, View.GONE);
+                SetViewVisibility(true);
             }
             // 自动档
             else {
-                SetViewVisibility(R.id.it_gear_manually_row, View.GONE);
-                SetViewVisibility(R.id.it_gear_manually_row_1, View.GONE);
-                SetViewVisibility(R.id.it_gear_manually_row_2, View.GONE);
-                SetViewVisibility(R.id.it_gear_manually_row_3, View.GONE);
-
-                SetViewVisibility(R.id.it_gear_auto_row, View.VISIBLE);
-                SetViewVisibility(R.id.it_gear_auto_row_1, View.VISIBLE);
-                SetViewVisibility(R.id.it_gear_auto_row_2, View.VISIBLE);
-                SetViewVisibility(R.id.it_gear_auto_row_3, View.VISIBLE);
+                SetViewVisibility(false);
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
-    private void SetViewVisibility(int viewId, int visibility) {
-        View view  = (View)rootView.findViewById(viewId);
-        view.setVisibility(visibility);
+    private void SetViewVisibility(boolean flag) {
+        showView(flag, rootView, R.id.it_gear_manually_row);
+        showView(flag, rootView, R.id.it_gear_manually_row_1);
+        showView(flag, rootView, R.id.it_gear_manually_row_2);
+        showView(flag, rootView, R.id.it_gear_manually_row_3);
+
+        showView(!flag, rootView, R.id.it_gear_auto_row);
+        showView(!flag, rootView, R.id.it_gear_auto_row_1);
+        showView(!flag, rootView, R.id.it_gear_auto_row_2);
+        showView(!flag, rootView, R.id.it_gear_auto_row_3);
     }
 }

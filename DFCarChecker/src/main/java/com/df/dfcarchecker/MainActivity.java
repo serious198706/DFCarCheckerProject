@@ -12,6 +12,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -20,11 +21,14 @@ import com.df.dfcarchecker.CarCheck.CarCheckViewPagerActivity;
 import com.df.dfcarchecker.CarReport.CarCheckedListActivity;
 import com.df.entry.UserInfo;
 import com.df.service.Common;
+import com.df.service.Helper;
 import com.df.service.ImageUploadQueue;
 import com.df.service.SoapService;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.io.File;
 
 public class MainActivity extends Activity {
     public static UserInfo userInfo;
@@ -46,15 +50,7 @@ public class MainActivity extends Activity {
             userInfo.setKey(bundle.getString("Key"));
         }
 
-        TextView appVersionText = (TextView) findViewById(R.id.appVersion_text);
-
-        try {
-            PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
-            appVersionText.setText("V" + pInfo.versionName);
-        } catch (PackageManager.NameNotFoundException e) {
-            appVersionText.setText("");
-            e.printStackTrace();
-        }
+        Helper.showView(Common.innerVersion, getWindow().getDecorView(), R.id.innerTestVersion);
     }
 
     public void EnterCarCheck(View view) {
@@ -83,12 +79,23 @@ public class MainActivity extends Activity {
                 // 退出
                 mLogoutTask = new LogoutTask(MainActivity.this);
                 mLogoutTask.execute();
+
+                DeleteRecursive(new File(Environment.getExternalStorageDirectory().getPath() +
+                        "/.cheyipai"));
                 finish();
             }
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+
+    void DeleteRecursive(File fileOrDirectory) {
+        if (fileOrDirectory.isDirectory())
+            for (File child : fileOrDirectory.listFiles())
+                DeleteRecursive(child);
+
+        fileOrDirectory.delete();
     }
 
     @Override

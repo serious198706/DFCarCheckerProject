@@ -22,34 +22,39 @@ public class StartupActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        FirstRun();
+//        FirstRun();
+
+        SetDirectory();
+        Intent home = new Intent(StartupActivity.this, LoginActivity.class);
+        startActivity(home);
+        finish();
     }
 
-    private void FirstRun() {
-        SharedPreferences settings = this.getSharedPreferences("DFCarChecker", 0);
-        boolean firstrun = settings.getBoolean("firstrun", true);
-
-        // 如果为第一次运行，则要释放所需要的文件
-        if (firstrun) {
-            Log.d("DFCarChecker", "firstrun");
-
-            SharedPreferences.Editor e = settings.edit();
-            e.putBoolean("firstrun", false);
-            e.commit();
-
-            SetDirectory();
-            Intent home = new Intent(StartupActivity.this, LoginActivity.class);
-            startActivity(home);
-            finish();
-
-        }
-        // 如果不是第一次运行，则直接检查更新
-        else {
-            Intent intent = new Intent(StartupActivity.this, LoginActivity.class);
-            startActivity(intent);
-            finish();
-        }
-    }
+//    private void FirstRun() {
+//        SharedPreferences settings = this.getSharedPreferences("DFCarChecker", 0);
+//        boolean firstrun = settings.getBoolean("firstrun", true);
+//
+//        // 如果为第一次运行，则要释放所需要的文件
+//        if (firstrun) {
+//            Log.d("DFCarChecker", "firstrun");
+//
+//            SharedPreferences.Editor e = settings.edit();
+//            e.putBoolean("firstrun", false);
+//            e.commit();
+//
+//            SetDirectory();
+//            Intent home = new Intent(StartupActivity.this, LoginActivity.class);
+//            startActivity(home);
+//            finish();
+//
+//        }
+//        // 如果不是第一次运行，则直接检查更新
+//        else {
+//            Intent intent = new Intent(StartupActivity.this, LoginActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
+//    }
 
     /**
      * -- Check to see if the sdCard is mounted and create a directory w/in it

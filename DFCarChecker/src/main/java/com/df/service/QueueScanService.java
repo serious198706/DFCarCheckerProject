@@ -32,7 +32,7 @@ public class QueueScanService extends Service {
     // 广播内容
     public static final String BROADCAST_ACTION = "com.df.dfcarchecker.displayevent";
 
-    // handler
+    // mainHandler
     private final Handler handler = new Handler();
 
     // 用来与CarCheckerViewPagerActivity进行通讯
@@ -52,7 +52,7 @@ public class QueueScanService extends Service {
 
     private Context context;
 
-    private int[] waitTime = {500, 1000, 2000, 5000, 10000, 30000};
+    private int[] waitTime = {5000, 10000};
     private int index = 0;
 
     private boolean canStartUpload = true;
@@ -142,6 +142,12 @@ public class QueueScanService extends Service {
             modifyFailed();
         }
     };
+    private Runnable connectServerFail = new Runnable() {
+        @Override
+        public void run() {
+            connectServerFail();
+        }
+    };
 
     //
     private void Committed() {
@@ -167,6 +173,12 @@ public class QueueScanService extends Service {
         sendBroadcast(intent);
     }
 
+    private void connectServerFail() {
+        intent.putExtra("result", "-2");
+        intent.putExtra("errorMsg", soapService.getErrorMessage());
+        sendBroadcast(intent);
+    }
+
 
     // 从线程接收消息的Handler
     private final class ServiceHandler extends Handler {
@@ -180,7 +192,7 @@ public class QueueScanService extends Service {
                     try {
                         // 当照片池中还有照片，并且上传线程没有运行时，开启新的上传线程
                         if((imageUploadQueue.getQueueSize() != 0) && (mUploadPictureTask == null)
-                         && canStartUpload)  {
+                                && canStartUpload)  {
                             canStartUpload = false;
                             mUploadPictureTask = new UploadPictureTask();
                             mUploadPictureTask.execute();
@@ -214,15 +226,6 @@ public class QueueScanService extends Service {
 
     // 上传图片
     private class UploadPictureTask extends AsyncTask<Void, Integer, Boolean> {
-        Context context;
-
-
-
-        @Override
-        protected void onPreExecute()
-        {
-        }
-
         @Override
         protected Boolean doInBackground(Void... params) {
             boolean success = false;
@@ -289,15 +292,11 @@ public class QueueScanService extends Service {
                 index = 0;
             } else {
                 Log.d(Common.TAG, "上传失败：" + soapService.getErrorMessage());
-                Log.d(Common.TAG, "将在" + Integer.toString(waitTime[index]) + "毫秒后重试");
+                Log.d(Common.TAG, "等待重试");
 
-                try {
-                    // 等待时间变长，避免给服务器压力
-                    Thread.sleep(waitTime[index]);
-                    if(index < 5)
-                        index++;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+                if(index < 3) {
+                    index++;
+                    handler.post(connectServerFail);
                 }
             }
 

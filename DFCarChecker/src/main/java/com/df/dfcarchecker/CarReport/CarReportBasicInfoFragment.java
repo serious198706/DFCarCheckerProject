@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.df.dfcarchecker.R;
 import com.df.service.Common;
@@ -196,10 +197,19 @@ public class CarReportBasicInfoFragment extends Fragment {
             setTextView(rootView, R.id.compulsoryInsurance_text, procedures.getString("compulsoryInsurance"));
             setTextView(rootView, R.id.insuranceExpiryDate_text, procedures.getString("insuranceExpiryDate"));
 
-            if(procedures.has("invoice"))
+            if(procedures.has("invoice")) {
                 setTextView(rootView, R.id.invoice_text, procedures.getString("invoice"));
+
+                if(procedures.getString("invoice").equals("无") || procedures.getString("invoice")
+                        .equals("过户票")) {
+                    //showView(false, rootView, R.id.invoicePrice_text);
+                    TextView textView = (TextView)rootView.findViewById(R.id.invoicePrice_text);
+                    textView.setVisibility(View.INVISIBLE);
+                }
+            }
             else
                 setTextView(rootView, R.id.invoice_text, null);
+
             if(procedures.has("invoicePrice"))
                 setTextView(rootView, R.id.invoicePrice_text, procedures.getString("invoicePrice") +
                         "元");
@@ -209,8 +219,13 @@ public class CarReportBasicInfoFragment extends Fragment {
                 setTextView(rootView, R.id.surtax_text, procedures.getString("surtax"));
             else
                 setTextView(rootView, R.id.surtax_text, null);
-            if(procedures.has("transferCount"))
+            if(procedures.has("transferCount")) {
                 setTextView(rootView, R.id.transferCount_text, procedures.getString("transferCount"));
+
+                if(procedures.getString("transferCount").equals("0")) {
+                    showView(false, rootView, R.id.transferLastDate_row);
+                }
+            }
             else
                 setTextView(rootView, R.id.transferCount_text, null);
             if(procedures.has("licensePhotoMatch"))

@@ -66,6 +66,7 @@ import static com.df.service.Helper.SetSpinnerData;
 import static com.df.service.Helper.enableView;
 import static com.df.service.Helper.getDateString;
 import static com.df.service.Helper.getEditText;
+import static com.df.service.Helper.getSpinnerSelectedIndex;
 import static com.df.service.Helper.getSpinnerSelectedText;
 import static com.df.service.Helper.setEditText;
 import static com.df.service.Helper.setEditWeight;
@@ -307,6 +308,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         // 牌照号码
         carNumberEdit = (EditText) rootView.findViewById(R.id.ci_plateNumber_edit);
+        carNumberEdit.setFilters(new InputFilter[] { new InputFilter.AllCaps()});
 
         // 进口车手续
         portedProcedureRow = (TableRow) rootView.findViewById(R.id.ct_ported_procedure);
@@ -693,7 +695,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             procedures.put("vehicleType", getSpinnerSelectedText(rootView, R.id.ci_vehicleType_spinner));
             procedures.put("useCharacter", getSpinnerSelectedText(rootView, R.id.ci_useCharacter_spinner));
 
-            // 数字，单独判断
+            // 公里数
             if(getEditText(rootView, R.id.bi_mileage_edit).equals(""))
                 procedures.put("mileage", 0);
             else
@@ -706,19 +708,33 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             procedures.put("builtDate", getDateString(getSpinnerSelectedText(rootView,
                     R.id.ci_builtYear_spinner), getSpinnerSelectedText(rootView,
                     R.id.ci_builtMonth_spinner)));
+
             procedures.put("invoice", getSpinnerSelectedText(rootView, R.id.ct_invoice_spinner));
 
-            // 数字，单独判断
-            if(getEditText(rootView, R.id.ct_invoice_edit).equals(""))
+            // 无购车发票
+            if(getSpinnerSelectedIndex(rootView, R.id.ct_invoice_spinner) > 1) {
                 procedures.put("invoicePrice", 0);
-            else
-                procedures.put("invoicePrice", getEditText(rootView, R.id.ct_invoice_edit));
+            } else {
+                // 数字，单独判断
+                if(getEditText(rootView, R.id.ct_invoice_edit).equals(""))
+                    procedures.put("invoicePrice", 0);
+                else
+                    procedures.put("invoicePrice", getEditText(rootView, R.id.ct_invoice_edit));
+            }
 
             procedures.put("surtax", getSpinnerSelectedText(rootView, R.id.ct_surtax_spinner));
+
             procedures.put("transferCount", getSpinnerSelectedText(rootView, R.id.ci_transferCount_spinner));
-            procedures.put("transferLastDate", getDateString(getSpinnerSelectedText(rootView,
-                    R.id.ci_transferLastYear_spinner), getSpinnerSelectedText(rootView,
-                    R.id.ci_transferLastMonth_spinner)));
+
+            // 过户次数为0
+            if(getSpinnerSelectedText(rootView, R.id.ci_transferCount_spinner).equals("0")) {
+                procedures.put("transferLastDate", "");
+            } else {
+                procedures.put("transferLastDate", getDateString(getSpinnerSelectedText(rootView,
+                        R.id.ci_transferLastYear_spinner), getSpinnerSelectedText(rootView,
+                        R.id.ci_transferLastMonth_spinner)));
+            }
+
             procedures.put("annualInspection", getDateString(getSpinnerSelectedText(rootView,
                     R.id.ct_annualInspectionYear_spinner), getSpinnerSelectedText(rootView,
                     R.id.ct_annualInspectionMonth_spinner)));
@@ -726,29 +742,36 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                     R.id.ct_compulsoryInsuranceYear_spinner), getSpinnerSelectedText(rootView,
                     R.id.ct_compulsoryInsuranceMonth_spinner)));
             procedures.put("licensePhotoMatch", getEditText(rootView, R.id.ct_licencePhotoMatch_edit));
+
             procedures.put("insurance", getSpinnerSelectedText(rootView, R.id.ct_insurance_spinner));
-            procedures.put("insuranceRegion", getSpinnerSelectedText(rootView, R.id.ct_insuranceRegion_spinner));
 
-            // 数字，单独判断
-            if(getEditText(rootView, R.id.ct_insuranceAmount_edit).equals(""))
+            // 如果无商险
+            if(getSpinnerSelectedText(rootView, R.id.ct_insurance_spinner).equals("无")) {
+                procedures.put("insuranceRegion", "");
                 procedures.put("insuranceAmount", 0);
-            else
-                procedures.put("insuranceAmount", getEditText(rootView, R.id.ct_insuranceAmount_edit));
+                procedures.put("insuranceExpiryDate", "");
+                procedures.put("insuranceCompany", "");
+            } else {
+                procedures.put("insuranceRegion", getSpinnerSelectedText(rootView, R.id.ct_insuranceRegion_spinner));
 
-            procedures.put("insuranceExpiryDate", getDateString(getSpinnerSelectedText(rootView,
-                    R.id.ct_insuranceExpiryYear_spinner), getSpinnerSelectedText(rootView,
-                    R.id.ct_insuranceExpiryMonth_spinner)));
-            procedures.put("insuranceCompany", getSpinnerSelectedText(rootView, R.id.ct_insuranceCompany_spinner));
+                // 商险金额
+                if(getEditText(rootView, R.id.ct_insuranceAmount_edit).equals(""))
+                    procedures.put("insuranceAmount", 0);
+                else
+                    procedures.put("insuranceAmount", getEditText(rootView, R.id.ct_insuranceAmount_edit));
+
+                procedures.put("insuranceExpiryDate", getDateString(getSpinnerSelectedText(rootView,
+                        R.id.ct_insuranceExpiryYear_spinner), getSpinnerSelectedText(rootView,
+                        R.id.ct_insuranceExpiryMonth_spinner)));
+                procedures.put("insuranceCompany", getSpinnerSelectedText(rootView, R.id.ct_insuranceCompany_spinner));
+            }
+
             procedures.put("importProcedures", getSpinnerSelectedText(rootView, R.id.ct_importProcedures_spinner));
             procedures.put("spareTire", getSpinnerSelectedText(rootView, R.id.ct_spareTire_spinner));
             procedures.put("spareKey", getSpinnerSelectedText(rootView, R.id.ct_spareKey_spinner));
             procedures.put("ownerName", getEditText(rootView, R.id.ci_ownerName_edit));
             procedures.put("ownerIdNumber", getEditText(rootView, R.id.ci_ownerIdNumber_edit));
             procedures.put("ownerPhone", getEditText(rootView, R.id.ci_ownerPhone_edit));
-            //procedures.put("transferAgree", getSpinnerSelectedText(rootView,
-            //        R.id.ex_transferAgree_spinner));
-            //procedures.put("transferRequire", getEditText(rootView,
-            //        R.id.ct_transferRequire_edit));
         } catch (JSONException e) {
 
         }
@@ -1653,28 +1676,34 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                                 procedures.getString("surtax"));
                         setSpinnerSelectionWithString(rootView, R.id.ci_transferCount_spinner,
                                 procedures.getString("transferCount"));
-                        setSpinnerSelectionWithString(rootView, R.id.ci_transferLastYear_spinner,
-                                procedures.getString("transferLastDate").substring(0, 4));
-                        setSpinnerSelectionWithString(rootView, R.id.ci_transferLastMonth_spinner,
-                                procedures.getString("transferLastDate").substring(6, 7));
+
+                        // 当过户次数不为0时才设置
+                        if(!procedures.getString("transferCount").equals("0")) {
+                            setSpinnerSelectionWithString(rootView, R.id.ci_transferLastYear_spinner,
+                                    procedures.getString("transferLastDate").substring(0, 4));
+                            setSpinnerSelectionWithString(rootView, R.id.ci_transferLastMonth_spinner,
+                                    procedures.getString("transferLastDate").substring(6, 7));
+                        }
+
                         setEditText(rootView, R.id.ct_licencePhotoMatch_edit, procedures.getString("licensePhotoMatch"));
                         setSpinnerSelectionWithString(rootView, R.id.ct_insurance_spinner, procedures.getString("insurance"));
-                        setSpinnerSelectionWithString(rootView, R.id.ct_insuranceRegion_spinner, procedures.getString("insuranceRegion"));
-                        setEditText(rootView, R.id.ct_insuranceAmount_edit, procedures.getString("insuranceAmount"));
-                        setSpinnerSelectionWithString(rootView, R.id.ct_insuranceCompany_spinner, procedures.getString("insuranceCompany"));
+
+                        // 商业保险不为无时才设置
+                        if(!procedures.getString("insurance").equals("无")) {
+                            setSpinnerSelectionWithString(rootView, R.id.ct_insuranceRegion_spinner, procedures.getString("insuranceRegion"));
+                            setEditText(rootView, R.id.ct_insuranceAmount_edit, procedures.getString("insuranceAmount"));
+                            setSpinnerSelectionWithString(rootView, R.id.ct_insuranceCompany_spinner, procedures.getString("insuranceCompany"));
+                            setSpinnerSelectionWithString(rootView, R.id.ct_insuranceExpiryYear_spinner,
+                                    procedures.getString("insuranceExpiryDate").substring(0, 4));
+                            setSpinnerSelectionWithString(rootView, R.id.ct_insuranceExpiryMonth_spinner, procedures.getString("insuranceExpiryDate").substring(6, 7));
+                        }
+
                         setSpinnerSelectionWithString(rootView, R.id.ct_importProcedures_spinner, procedures.getString("importProcedures"));
                         setSpinnerSelectionWithString(rootView, R.id.ct_spareTire_spinner, procedures.getString("spareTire"));
                         setSpinnerSelectionWithString(rootView, R.id.ct_spareKey_spinner, procedures.getString("spareKey"));
                         setEditText(rootView, R.id.ci_ownerName_edit, procedures.getString("ownerName"));
                         setEditText(rootView, R.id.ci_ownerIdNumber_edit, procedures.getString("ownerIdNumber"));
                         setEditText(rootView, R.id.ci_ownerPhone_edit, procedures.getString("ownerPhone"));
-                        //setSpinnerSelectionWithString(rootView, R.id.ex_transferAgree_spinner,
-                        //        procedures.getString("transferAgree"));
-                        //setEditText(rootView,R.id.ct_transferRequire_edit,
-                        //        procedures.getString("transferRequire"));
-                        setSpinnerSelectionWithString(rootView, R.id.ct_insuranceExpiryYear_spinner,
-                                procedures.getString("insuranceExpiryDate").substring(0, 4));
-                        setSpinnerSelectionWithString(rootView, R.id.ct_insuranceExpiryMonth_spinner, procedures.getString("insuranceExpiryDate").substring(6, 7));
                         setSpinnerSelectionWithString(rootView, R.id.ct_annualInspectionYear_spinner, procedures.getString("annualInspection").substring(0, 4));
                         setSpinnerSelectionWithString(rootView, R.id.ct_annualInspectionMonth_spinner, procedures.getString("annualInspection").substring(6, 7));
                         setSpinnerSelectionWithString(rootView, R.id.ct_compulsoryInsuranceYear_spinner, procedures.getString("compulsoryInsurance").substring(0, 4));
