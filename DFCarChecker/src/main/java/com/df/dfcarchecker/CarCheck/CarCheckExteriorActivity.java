@@ -43,6 +43,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 import static com.df.service.Helper.setEditText;
+import static com.df.service.Helper.setPhotoSize;
 import static com.df.service.Helper.setSpinnerSelectionWithString;
 import static com.df.service.Helper.showView;
 
@@ -288,16 +289,13 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
                     photoEntity.setFileName(Long.toString(currentTimeMillis) + ".jpg");
                     photoEntity.setJsonString(jsonObject.toString());
 
+                    setPhotoSize(currentTimeMillis, 800);
                     // 立刻上传
                     imageUploadQueue.addImage(photoEntity);
 
                     photoShotCount[currentShotPart]++;
 
                     out_start_camera();
-                } else {
-                    Toast.makeText(CarCheckExteriorActivity.this,
-                            "相机打开错误", Toast.LENGTH_SHORT)
-                            .show();
                 }
                 break;
             case Common.EX_PAINT:
@@ -374,7 +372,6 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
             intent.putExtra("PHOTO_COUNT", photoShotCount);
             saved = true;
             intent.putExtra("SAVED", saved);
-            //addPhotosToQueue();
 
             // 关闭activity
             setResult(Activity.RESULT_OK, intent);

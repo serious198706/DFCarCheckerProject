@@ -79,9 +79,6 @@ public class MainActivity extends Activity {
                 // 退出
                 mLogoutTask = new LogoutTask(MainActivity.this);
                 mLogoutTask.execute();
-
-                DeleteRecursive(new File(Environment.getExternalStorageDirectory().getPath() +
-                        "/.cheyipai"));
                 finish();
             }
         });
@@ -120,6 +117,12 @@ public class MainActivity extends Activity {
         @Override
         protected Boolean doInBackground(Void... params) {
             boolean success = false;
+
+            // 删除产生的垃圾文件
+            DeleteRecursive(new File(Environment.getExternalStorageDirectory().getPath() +
+                    "/.cheyipai"));
+            DeleteRecursive(new File(Environment.getExternalStorageDirectory().getPath() +
+                    "/Pictures/DFCarChecker"));
 
             soapService = new SoapService();
 

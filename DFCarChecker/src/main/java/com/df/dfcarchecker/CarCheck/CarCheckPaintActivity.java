@@ -28,6 +28,7 @@ import com.df.paintview.FramePaintView;
 import com.df.paintview.InteriorPaintView;
 import com.df.paintview.PaintView;
 import com.df.service.Common;
+import com.df.service.Helper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -38,6 +39,8 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.df.service.Helper.setPhotoSize;
 
 
 public class CarCheckPaintActivity extends Activity {
@@ -333,48 +336,6 @@ public class CarCheckPaintActivity extends Activity {
         posEntity.setImageFileName(fileName);
     }
 
-    private void setPhotoSize(long currentTimeMillis, int max) {
-        String path = Environment.getExternalStorageDirectory().getPath() +
-                "/Pictures/DFCarChecker/";
-        String fileName = Long.toString(currentTimeMillis) + ".jpg";
-
-        File file = new File(path + fileName);
-        Bitmap bitmap = BitmapFactory.decodeFile(path + fileName);
-
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-
-        Bitmap newBitmap = null;
-
-        float ratio;
-        float newWidth;
-        float newHeight;
-
-        // 如果宽度小于800, 无视
-        if(width > max) {
-            ratio = (float)width / (float)max;
-            newWidth = max;
-            newHeight = height / ratio;
-        } else if(height > max) {
-            ratio = (float)height / (float)max;
-            newWidth = width / ratio;
-            newHeight = max;
-        } else {
-            newWidth = width;
-            newHeight = height;
-        }
-
-        newBitmap = Bitmap.createScaledBitmap(bitmap, (int)newWidth, (int)newHeight, true);
-
-        try {
-            FileOutputStream ostream = new FileOutputStream(file);
-            newBitmap.compress(Bitmap.CompressFormat.JPEG, 90, ostream);
-
-            ostream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     // 保存草图的线程
     public class SaveSketchImageTask extends AsyncTask<Void, Void, Boolean> {
@@ -396,8 +357,7 @@ public class CarCheckPaintActivity extends Activity {
             // 就算是内饰和外观，也应该在最后时刻再上传草图
             // 草图现在比较小，可以最后一次性上传，没关系
             // 草图生成后，加入草图队列，可以放在ViewPagerActivity中
-            // 每一次操作，都应该生成一次草图，无论这次是否有修改，这样可以确保进入PaintActivity就
-            // 能生成草图
+            // 每一次操作，都应该生成一次草图，无论这次是否有修改，这样可以确保进入PaintActivity就能生成草图
             // 如果没有进入相应的Activity，则在最后时刻做一次检查，哪一张没有，就生成哪一张
 
             boolean success = false;
@@ -447,7 +407,7 @@ public class CarCheckPaintActivity extends Activity {
 
             try {
                 FileOutputStream out = new FileOutputStream(path + filename);
-                b.compress(Bitmap.CompressFormat.PNG, 90, out);
+                b.compress(Bitmap.CompressFormat.PNG, 70, out);
                 out.close();
             } catch (Exception e) {
                 e.printStackTrace();

@@ -43,6 +43,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 import static com.df.service.Helper.setEditText;
+import static com.df.service.Helper.setPhotoSize;
 import static com.df.service.Helper.setSpinnerSelectionWithString;
 import static com.df.service.Helper.showView;
 
@@ -279,16 +280,14 @@ public class CarCheckInteriorActivity extends Activity implements View.OnClickLi
                     photoEntity.setFileName(Long.toString(currentTimeMillis) + ".jpg");
                     photoEntity.setJsonString(jsonObject.toString());
 
+                    setPhotoSize(currentTimeMillis, 800);
+
                     // 立刻上传
                     imageUploadQueue.addImage(photoEntity);
 
                     photoShotCount[currentShotPart]++;
 
                     in_start_camera();
-                }  else {
-                    Toast.makeText(CarCheckInteriorActivity.this,
-                            "error occured during opening camera", Toast.LENGTH_SHORT)
-                            .show();
                 }
                 break;
             case Common.IN_PAINT:

@@ -206,6 +206,9 @@ public class CarCheckedListActivity extends Activity {
                         case 3:
                             status = "已参拍";
                             break;
+                        case 4:
+                            status = "已过期";
+                            break;
                         case 0:
                             status = "未完成";
                             break;

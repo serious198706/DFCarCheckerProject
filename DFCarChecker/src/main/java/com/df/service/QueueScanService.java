@@ -149,30 +149,34 @@ public class QueueScanService extends Service {
         }
     };
 
-    //
+    // 提交成功
     private void Committed() {
         intent.putExtra("result", "0");
         intent.putExtra("score", soapService.getResultMessage());
         sendBroadcast(intent);
     }
 
+    // 提交失败
     private void CommitFailed() {
         intent.putExtra("result", "-1");
         intent.putExtra("errorMsg", soapService.getErrorMessage());
         sendBroadcast(intent);
     }
 
+    // 修改成功
     private void modified() {
         intent.putExtra("result", "0");
         sendBroadcast(intent);
     }
 
+    // 修改失败
     private void modifyFailed() {
         intent.putExtra("result", "-1");
         intent.putExtra("errorMsg", soapService.getErrorMessage());
         sendBroadcast(intent);
     }
 
+    // 无法连接到服务器
     private void connectServerFail() {
         intent.putExtra("result", "-2");
         intent.putExtra("errorMsg", soapService.getErrorMessage());
@@ -196,7 +200,6 @@ public class QueueScanService extends Service {
                             canStartUpload = false;
                             mUploadPictureTask = new UploadPictureTask();
                             mUploadPictureTask.execute();
-                            Log.d(Common.TAG, "正在上传...");
                         }
 
                         // 已提交，并且照片池为空
@@ -259,6 +262,7 @@ public class QueueScanService extends Service {
                     if(file != null)
                         bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 
+                    Log.d(Common.TAG, "正在上传...");
                     success = soapService.uploadPicture(bitmap, photoEntity.getJsonString());
                 }
             } else {
@@ -294,9 +298,11 @@ public class QueueScanService extends Service {
                 Log.d(Common.TAG, "上传失败：" + soapService.getErrorMessage());
                 Log.d(Common.TAG, "等待重试");
 
-                if(index < 3) {
-                    index++;
-                    handler.post(connectServerFail);
+                if(!soapService.getErrorMessage().equals("图片为空！")) {
+                    if(index < 3) {
+                        index++;
+                        handler.post(connectServerFail);
+                    }
                 }
             }
 

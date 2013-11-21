@@ -72,6 +72,9 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
     private String jsonData = "";
     private int carId = 0;
 
+    // 提交失败之后，不应该再提交图片，而是只需要提交信息即可
+    private boolean mPictureUploaded = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -135,6 +138,8 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
         serviceIntent.putExtra("carId", carId);
         startService(serviceIntent);
         registerReceiver(broadcastReceiver, new IntentFilter(QueueScanService.BROADCAST_ACTION));
+
+        mPictureUploaded = false;
     }
 
     @Override
@@ -345,7 +350,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
                 // 进度条
                 mCommitProgressDialog = new ProgressDialog(CarCheckViewPagerActivity.this);
-                mCommitProgressDialog.setMessage("正在提交");
+                mCommitProgressDialog.setMessage("正在提交，请稍候");
                 mCommitProgressDialog.setIndeterminate(true);
                 mCommitProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                 mCommitProgressDialog.setCanceledOnTouchOutside(false);
@@ -408,35 +413,38 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                     mSketchProgressDialog = ProgressDialog.show(CarCheckViewPagerActivity.this,
                             null, "正在保存...", false, false);
 
-                    // 将结构检查缺陷照片加入照片池
-                    carCheckFrameFragment.addPhotosToQueue();
+                    // 如果图片已经上传完毕，但提交失败，则不要再提交图片了
+                    if(!mPictureUploaded) {
+                        // 将结构检查缺陷照片加入照片池
+                        carCheckFrameFragment.addPhotosToQueue();
 
-                    ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
+                        ImageUploadQueue imageUploadQueue = ImageUploadQueue.getInstance();
 
-                    if(!sketchPhotoEntities.containsKey("fSketch")) {
-                        Log.d(Common.TAG, "正在生成fSketch...");
-                        carCheckFrameFragment.generateSketchPhoto("front");
+                        if(!sketchPhotoEntities.containsKey("fSketch")) {
+                            Log.d(Common.TAG, "正在生成fSketch...");
+                            carCheckFrameFragment.generateSketchPhoto("front");
+                        }
+
+                        if(!sketchPhotoEntities.containsKey("rSketch")) {
+                            Log.d(Common.TAG, "正在生成rSketch...");
+                            carCheckFrameFragment.generateSketchPhoto("rear");
+                        }
+
+                        if(!sketchPhotoEntities.containsKey("exterior")) {
+                            Log.d(Common.TAG, "正在生成外观sketch...");
+                            CarCheckExteriorActivity.generateSketchPhotoEntity();
+                        }
+
+                        if(!sketchPhotoEntities.containsKey("interior")) {
+                            Log.d(Common.TAG, "正在生成内饰sketch...");
+                            CarCheckInteriorActivity.generateSketchPhotoEntity();
+                        }
+
+                        imageUploadQueue.addImage(sketchPhotoEntities.get("fSketch"));
+                        imageUploadQueue.addImage(sketchPhotoEntities.get("rSketch"));
+                        imageUploadQueue.addImage(sketchPhotoEntities.get("exterior"));
+                        imageUploadQueue.addImage(sketchPhotoEntities.get("interior"));
                     }
-
-                    if(!sketchPhotoEntities.containsKey("rSketch")) {
-                        Log.d(Common.TAG, "正在生成rSketch...");
-                        carCheckFrameFragment.generateSketchPhoto("rear");
-                    }
-
-                    if(!sketchPhotoEntities.containsKey("exterior")) {
-                        Log.d(Common.TAG, "正在生成外观sketch...");
-                        CarCheckExteriorActivity.generateSketchPhotoEntity();
-                    }
-
-                    if(!sketchPhotoEntities.containsKey("interior")) {
-                        Log.d(Common.TAG, "正在生成内饰sketch...");
-                        CarCheckInteriorActivity.generateSketchPhotoEntity();
-                    }
-
-                    imageUploadQueue.addImage(sketchPhotoEntities.get("fSketch"));
-                    imageUploadQueue.addImage(sketchPhotoEntities.get("rSketch"));
-                    imageUploadQueue.addImage(sketchPhotoEntities.get("exterior"));
-                    imageUploadQueue.addImage(sketchPhotoEntities.get("interior"));
 
                     canCommit = true;
 
@@ -466,14 +474,13 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if(mCommitProgressDialog != null) {
-                mCommitProgressDialog.dismiss();
-            }
-
             String result = intent.getExtras().getString("result");
 
             // 提交成功
             if(result.equals("0")) {
+                if(mCommitProgressDialog != null) {
+                    mCommitProgressDialog.dismiss();
+                }
                 // 停止服务
                 Intent serviceIntent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
                 stopService(serviceIntent);
@@ -528,9 +535,15 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                     dialog.show();
                 }
             } else if(result.equals("-1")) {
+                if(mCommitProgressDialog != null) {
+                    mCommitProgressDialog.dismiss();
+                }
+
                 String error = intent.getExtras().getString("errorMsg");
-                Toast.makeText(CarCheckViewPagerActivity.this, "提交失败！" + error,
+                Toast.makeText(CarCheckViewPagerActivity.this, "提交失败，请联系工作人员！" + error,
                         Toast.LENGTH_LONG).show();
+
+                mPictureUploaded = true;
             } else if(result.equals("-2")) {
                 Toast.makeText(CarCheckViewPagerActivity.this, "无法连接到服务器，请检查网络！",
                         Toast.LENGTH_LONG).show();

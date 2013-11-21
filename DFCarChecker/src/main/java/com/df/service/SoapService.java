@@ -37,6 +37,9 @@ public class SoapService implements ISoapService {
         this.methodName = methodName;
     }
 
+    // 设置错误信息
+    public void setErrorMessage(String msg) {errorMessage = msg;}
+
     // 获取错误信息
     public String getErrorMessage() { return errorMessage; }
 
@@ -179,12 +182,12 @@ public class SoapService implements ISoapService {
                     String part = jsonObject.getString("Part");
 
                     if(part.contains("ketch")) {
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 95, stream);
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 70, stream);
                     } else {
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
                     }
                 } else {
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 95, stream);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream);
                 }
             } catch (JSONException e) {
 

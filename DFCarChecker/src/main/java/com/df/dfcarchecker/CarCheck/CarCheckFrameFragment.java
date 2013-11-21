@@ -45,6 +45,7 @@ import java.util.List;
 
 import static com.df.service.Helper.getEditText;
 import static com.df.service.Helper.setEditText;
+import static com.df.service.Helper.setPhotoSize;
 
 /**
  * Created by 岩 on 13-10-8.
@@ -195,7 +196,7 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
 
         // 设定视角
         intent.putExtra("PAINT_SIGHT", frontOrRear);
-        startActivityForResult(intent, Common.STURCTURE_PAINT);
+        startActivityForResult(intent, Common.FRAME_PAINT);
     }
 
     public void structure_start_camera(View v) {
@@ -295,17 +296,15 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
 
                     photoShotCount[currentShotPart]++;
 
+                    setPhotoSize(currentTimeMillis, 800);
+
                     // 拍摄完成后立刻上传
                     imageUploadQueue.addImage(photoEntity);
                     
                     structure_start_camera(null);
-                } else {
-                    Toast.makeText(rootView.getContext(),
-                            "相机打开错误！", Toast.LENGTH_SHORT)
-                            .show();
                 }
                 break;
-            case Common.STURCTURE_PAINT:
+            case Common.FRAME_PAINT:
                 // 前视角
                 // 如果有点，则将图片设为不透明，去掉提示文字
                 if(!posEntitiesFront.isEmpty()) {

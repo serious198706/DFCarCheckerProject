@@ -1,5 +1,6 @@
 package com.df.service;
 
+import android.os.Environment;
 import android.util.SparseArray;
 
 import com.df.dfcarchecker.R;
@@ -20,7 +21,7 @@ public class Common {
     public static final int IT_IN = 7;
     public static final int EX_PAINT = 10;
     public static final int IN_PAINT = 11;
-    public static final int STURCTURE_PAINT = 12;
+    public static final int FRAME_PAINT = 12;
 
     // 拍摄组别代码
     public static final int PHOTO_FOR_EXTERIOR_STANDARD = 2;
@@ -36,19 +37,19 @@ public class Common {
     public static final int DIRTY = 6;      // 脏污
     public static final int BROKEN = 7;     // 破损
 
-    public static final boolean innerVersion = false;
-
     // 日志的TAG
     public static final String TAG = "DFCarChecker";
 
     // 外网
-    // 每个组最少拍摄张数
+    public static final boolean innerVersion = false;
+      // 每个组最少拍摄张数
     public static final int[] photoLeastCount = {3, 3, 5};
     public static final String SERVER_ADDRESS = "http://wcf.268v.com:8008/";
     public static final String PICTURE_ADDRESS = "http://i.268v.com/";
 
     // 内网
-    // 每个组最少拍摄张数
+//    public static final boolean innerVersion = true;
+//      // 每个组最少拍摄张数
 //    public static final int[] photoLeastCount = {1, 1, 1};
 //    public static final String SERVER_ADDRESS = "http://192.168.100.6:50/";
 //    public static final String PICTURE_ADDRESS = "http://192.168.100.6:8006/";
@@ -102,4 +103,9 @@ public class Common {
         put(R.id.csi_parkAssist_spinner, "parkAssist");
         put(R.id.csi_clapboard_spinner, "clapBoard");
     }};
+
+    public static String utilDirectory = Environment.getExternalStorageDirectory().getPath() +
+            "/.cheyipai/";
+    public static String photoDirectory = Environment.getExternalStorageDirectory().getPath() +
+            "/Pictures/DFCarChecker/";
 }

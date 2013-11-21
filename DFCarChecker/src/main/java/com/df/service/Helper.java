@@ -2,6 +2,8 @@ package com.df.service;
 
 import android.app.ActionBar;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
@@ -16,6 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.ContentHandler;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -242,5 +246,48 @@ public class Helper {
         editText.setLayoutParams(new LinearLayout.LayoutParams(0,
                 LinearLayout.LayoutParams.WRAP_CONTENT, weight));
 
+    }
+
+    public static void setPhotoSize(long currentTimeMillis, int max) {
+        String path = Environment.getExternalStorageDirectory().getPath() +
+                "/Pictures/DFCarChecker/";
+        String fileName = Long.toString(currentTimeMillis) + ".jpg";
+
+        File file = new File(path + fileName);
+        Bitmap bitmap = BitmapFactory.decodeFile(path + fileName);
+
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        Bitmap newBitmap = null;
+
+        float ratio;
+        float newWidth;
+        float newHeight;
+
+        // 如果宽度小于800, 无视
+        if(width > max) {
+            ratio = (float)width / (float)max;
+            newWidth = max;
+            newHeight = height / ratio;
+        } else if(height > max) {
+            ratio = (float)height / (float)max;
+            newWidth = width / ratio;
+            newHeight = max;
+        } else {
+            newWidth = width;
+            newHeight = height;
+        }
+
+        newBitmap = Bitmap.createScaledBitmap(bitmap, (int)newWidth, (int)newHeight, true);
+
+        try {
+            FileOutputStream ostream = new FileOutputStream(file);
+            newBitmap.compress(Bitmap.CompressFormat.JPEG, 90, ostream);
+
+            ostream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

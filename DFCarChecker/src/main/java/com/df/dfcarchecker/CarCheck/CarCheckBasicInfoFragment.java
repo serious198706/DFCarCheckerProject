@@ -308,7 +308,8 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
         // 牌照号码
         carNumberEdit = (EditText) rootView.findViewById(R.id.ci_plateNumber_edit);
-        carNumberEdit.setFilters(new InputFilter[] { new InputFilter.AllCaps()});
+        carNumberEdit.setFilters(new InputFilter[] { new InputFilter.AllCaps(),
+                new InputFilter.LengthFilter(10)});
 
         // 进口车手续
         portedProcedureRow = (TableRow) rootView.findViewById(R.id.ct_ported_procedure);
