@@ -193,28 +193,35 @@ public class CarReportExteriorActivity extends Activity {
             String smooth = conditions.getJSONObject("exterior").getString("smooth");
             setTextView(getWindow().getDecorView(), R.id.smooth_text, smooth);
 
-            JSONArray fault = exterior.getJSONArray("fault");
+            // 如果有缺陷点
+            if(!exterior.isNull("fault")) {
+                JSONArray fault = exterior.getJSONArray("fault");
 
-            for(int i = 0; i < fault.length(); i++) {
-                JSONObject jsonObject = fault.getJSONObject(i);
+                for(int i = 0; i < fault.length(); i++) {
+                    JSONObject jsonObject = fault.getJSONObject(i);
 
-                PosEntity posEntity = new PosEntity(jsonObject.getInt("type"));
-                posEntity.setStart(jsonObject.getInt("startX"), jsonObject.getInt("startY"));
-                posEntity.setEnd(jsonObject.getInt("endX"), jsonObject.getInt("endY"));
-                // 要设置max，否则在使用endx endy时会返回零
-                posEntity.setMaxX(jsonObject.getInt("endX"));
-                posEntity.setMaxY(jsonObject.getInt("endY"));
-                posEntity.setImageFileName(jsonObject.getString("photo"));
+                    PosEntity posEntity = new PosEntity(jsonObject.getInt("type"));
+                    posEntity.setStart(jsonObject.getInt("startX"), jsonObject.getInt("startY"));
+                    posEntity.setEnd(jsonObject.getInt("endX"), jsonObject.getInt("endY"));
+                    // 要设置max，否则在使用endx endy时会返回零
+                    posEntity.setMaxX(jsonObject.getInt("endX"));
+                    posEntity.setMaxY(jsonObject.getInt("endY"));
+                    posEntity.setImageFileName(jsonObject.getString("photo"));
 
-                posEntities.add(posEntity);
+                    posEntities.add(posEntity);
+                }
+
+                JSONObject sketch = exterior.getJSONObject("sketch");
+
+                if(sketch != null) {
+                    String sketchUrl = sketch.getString("photo");
+                    new DownloadImageTask().execute(Common.PICTURE_ADDRESS + sketchUrl);
+                }
+            } else {
+                exteriorPaintPreviewView.setAlpha(1.0f);
+                exteriorPaintPreviewView.invalidate();
             }
 
-            JSONObject sketch = exterior.getJSONObject("sketch");
-
-            if(sketch != null) {
-                String sketchUrl = sketch.getString("photo");
-                new DownloadImageTask().execute(Common.PICTURE_ADDRESS + sketchUrl);
-            }
 
         } catch (JSONException e) {
 

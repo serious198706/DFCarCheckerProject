@@ -83,6 +83,8 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
     private int photoShotCount[] = {0, 0, 0, 0};
     private JSONObject frames;
 
+    private boolean isAccidentCar = false;
+
     public CarCheckFrameFragment(String jsonData) {
         this.jsonData = jsonData;
     }
@@ -269,10 +271,10 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
                                 currentPart = "overview";
                                 break;
                             case 1:
-                                currentPart = "front";
+                                currentPart = "left";
                                 break;
                             case 2:
-                                currentPart = "rear";
+                                currentPart = "right";
                                 break;
                             case 3:
                                 currentPart = "other";
@@ -342,6 +344,7 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         // 上传缺陷点图
         for(int i = 0; i < photoEntitiesFront.size(); i++) {
             imageUploadQueue.addImage(photoEntitiesFront.get(i));
+            isAccidentCar = true;
         }
 
         // 加入照片池后，将本身的photoEntities删除，以免重复上传
@@ -351,6 +354,7 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
 
         for(int i = 0; i < photoEntitiesRear.size(); i++) {
             imageUploadQueue.addImage(photoEntitiesRear.get(i));
+            isAccidentCar = true;
         }
 
         // 加入照片池后，将本身的photoEntities删除，以免重复上传
@@ -430,6 +434,10 @@ public class CarCheckFrameFragment extends Fragment implements View.OnClickListe
         }
 
         return true;
+    }
+
+    public boolean isAccidentCar() {
+        return isAccidentCar;
     }
 
     public void letsEnterModifyMode() {

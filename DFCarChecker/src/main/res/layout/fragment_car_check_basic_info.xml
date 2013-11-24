@@ -663,11 +663,25 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"/>
             </TableRow>
-            <TableRow android:id="@+id/ct_available_date_row">
+            <TableRow>
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="@string/ct_available_date"
+                    android:text="@string/ct_compulsoryInsurance"
+                    android:layout_weight="1"
+                    android:textSize="18sp"/>
+                <Spinner android:id="@+id/ct_compulsoryInsurance_spinner"
+                         android:layout_height="wrap_content"
+                         android:layout_width="0dp"
+                         android:layout_weight="2"
+                         android:entries="@array/existornot"/>
+            </TableRow>
+
+            <TableRow android:id="@+id/ct_compulsoryInsurance_table">
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="0dp"
+                    android:text="@string/ct_compulsoryInsurance_date"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
                 <Spinner android:id="@+id/ct_compulsoryInsuranceYear_spinner"

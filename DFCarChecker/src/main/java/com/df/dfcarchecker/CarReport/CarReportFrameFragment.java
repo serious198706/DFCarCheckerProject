@@ -204,31 +204,42 @@ public class CarReportFrameFragment extends Fragment {
             JSONObject frame = photos.getJSONObject("frame");
 
             // 结构缺陷位置 - 前视角
-            JSONArray frontPosArray = frame.getJSONArray("front");
 
-            for(int i = 0; i < frontPosArray.length(); i++) {
-                JSONObject temp = frontPosArray.getJSONObject(i);
+            if(!frame.isNull("front")) {
+                JSONArray frontPosArray = frame.getJSONArray("front");
 
-                PosEntity posEntity = new PosEntity(Common.COLOR_DIFF);
-                posEntity.setStart(temp.getInt("x"), temp.getInt("y"));
-                posEntity.setEnd(0, 0);
-                // TODO: 处理一下没有图片的情况
-                posEntity.setImageFileName(temp.getString("photo"));
-                posEntitiesFront.add(posEntity);
+                for(int i = 0; i < frontPosArray.length(); i++) {
+                    JSONObject temp = frontPosArray.getJSONObject(i);
+
+                    PosEntity posEntity = new PosEntity(Common.COLOR_DIFF);
+                    posEntity.setStart(temp.getInt("x"), temp.getInt("y"));
+                    posEntity.setEnd(0, 0);
+                    posEntity.setImageFileName(temp.getString("photo"));
+                    posEntitiesFront.add(posEntity);
+                }
+            } else {
+                framePaintPreviewViewFront.setAlpha(1.0f);
+                framePaintPreviewViewFront.invalidate();
             }
 
             // 结构缺陷位置 - 后视角
-            JSONArray rearPosArray = frame.getJSONArray("rear");
+            if(!frame.isNull("rear")) {
+                JSONArray rearPosArray = frame.getJSONArray("rear");
 
-            for(int i = 0; i < rearPosArray.length(); i++) {
-                JSONObject temp = rearPosArray.getJSONObject(i);
+                for(int i = 0; i < rearPosArray.length(); i++) {
+                    JSONObject temp = rearPosArray.getJSONObject(i);
 
-                PosEntity posEntity = new PosEntity(Common.COLOR_DIFF);
-                posEntity.setStart(temp.getInt("x"), temp.getInt("y"));
-                posEntity.setEnd(0, 0);
-                posEntity.setImageFileName(temp.getString("photo"));
-                posEntitiesRear.add(posEntity);
+                    PosEntity posEntity = new PosEntity(Common.COLOR_DIFF);
+                    posEntity.setStart(temp.getInt("x"), temp.getInt("y"));
+                    posEntity.setEnd(0, 0);
+                    posEntity.setImageFileName(temp.getString("photo"));
+                    posEntitiesRear.add(posEntity);
+                }
+            } else {
+                framePaintPreviewViewRear.setAlpha(1.0f);
+                framePaintPreviewViewRear.invalidate();
             }
+
 
             // 结构草图 - 前视角
             JSONObject fSketch = frame.getJSONObject("fSketch");

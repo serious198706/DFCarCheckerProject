@@ -110,11 +110,10 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
     private Spinner manufactureYearSpinner;
     private Spinner ticketSpinner;
     private Spinner lastTransferCountSpinner;
+    private Spinner compulsoryInsuranceSpinner;
     private Spinner businessInsuranceSpinner;
     private EditText licencePhotoMatchEdit;
     private TableRow portedProcedureRow;
-
-
 
     public static CarSettings mCarSettings;
 
@@ -153,6 +152,7 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
     // 给ViewPagerActivity的回调方法
     OnHeadlineSelectedListener mCallback;
+
 
     // 修改时使用的构造方法
     public CarCheckBasicInfoFragment(String jsonData) {
@@ -739,9 +739,15 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             procedures.put("annualInspection", getDateString(getSpinnerSelectedText(rootView,
                     R.id.ct_annualInspectionYear_spinner), getSpinnerSelectedText(rootView,
                     R.id.ct_annualInspectionMonth_spinner)));
-            procedures.put("compulsoryInsurance", getDateString(getSpinnerSelectedText(rootView,
-                    R.id.ct_compulsoryInsuranceYear_spinner), getSpinnerSelectedText(rootView,
-                    R.id.ct_compulsoryInsuranceMonth_spinner)));
+
+            if(getSpinnerSelectedIndex(rootView, R.id.ct_compulsoryInsurance_spinner) == 0) {
+                procedures.put("compulsoryInsurance", getDateString(getSpinnerSelectedText(rootView,
+                        R.id.ct_compulsoryInsuranceYear_spinner), getSpinnerSelectedText(rootView,
+                        R.id.ct_compulsoryInsuranceMonth_spinner)));
+            } else {
+                procedures.put("compulsoryInsurance", "无");
+            }
+
             procedures.put("licensePhotoMatch", getEditText(rootView, R.id.ct_licencePhotoMatch_edit));
 
             procedures.put("insurance", getSpinnerSelectedText(rootView, R.id.ct_insurance_spinner));
@@ -1549,6 +1555,25 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
             }
         });
 
+        // 交强险
+        compulsoryInsuranceSpinner = (Spinner) rootView.findViewById(R.id
+                .ct_compulsoryInsurance_spinner);
+        compulsoryInsuranceSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if(i == 0) {
+                    showView(true, rootView, R.id.ct_compulsoryInsurance_table);
+                } else {
+                    showView(false, rootView, R.id.ct_compulsoryInsurance_table);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         // 出厂日期
         manufactureYearSpinner = (Spinner) rootView.findViewById(R.id.ci_builtYear_spinner);
 
@@ -1707,8 +1732,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                         setEditText(rootView, R.id.ci_ownerPhone_edit, procedures.getString("ownerPhone"));
                         setSpinnerSelectionWithString(rootView, R.id.ct_annualInspectionYear_spinner, procedures.getString("annualInspection").substring(0, 4));
                         setSpinnerSelectionWithString(rootView, R.id.ct_annualInspectionMonth_spinner, procedures.getString("annualInspection").substring(6, 7));
-                        setSpinnerSelectionWithString(rootView, R.id.ct_compulsoryInsuranceYear_spinner, procedures.getString("compulsoryInsurance").substring(0, 4));
-                        setSpinnerSelectionWithString(rootView, R.id.ct_compulsoryInsuranceMonth_spinner, procedures.getString("compulsoryInsurance").substring(6, 7));
+
+                        if(procedures.getString("compulsoryInsurance").equals("无")) {
+                            setSpinnerSelectionWithString(rootView, R.id.ct_compulsoryInsurance_spinner, "无");
+                        } else {
+                            setSpinnerSelectionWithString(rootView, R.id.ct_compulsoryInsuranceYear_spinner, procedures.getString("compulsoryInsurance").substring(0, 4));
+                            setSpinnerSelectionWithString(rootView, R.id.ct_compulsoryInsuranceMonth_spinner, procedures.getString("compulsoryInsurance").substring(6, 7));
+                        }
 
                         mProgressDialog.dismiss();
                     } catch (JSONException e) {

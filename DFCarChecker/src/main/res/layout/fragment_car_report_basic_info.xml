@@ -575,10 +575,10 @@
                           android:textSize="18sp"/>
             </TableRow>
             <TableRow android:id="@+id/ct_available_date_row">
-                <TextView
+                <TextView android:id="@+id/ct_compulsoryInsurance_text"
                     android:layout_height="wrap_content"
                     android:layout_width="0dp"
-                    android:text="@string/ct_available_date"
+                    android:text="@string/ct_compulsoryInsurance_date"
                     android:layout_weight="1"
                     android:textSize="18sp"/>
                 <TextView android:id="@+id/compulsoryInsurance_text"

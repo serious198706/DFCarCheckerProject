@@ -23,6 +23,10 @@
         <item>有</item>
         <item>无</item>
     </string-array>
+    <string-array name="existornot_r">
+        <item>无</item>
+        <item>有</item>
+    </string-array>
     <string-array name="yes_no">
         <item>是</item>
         <item>否</item>

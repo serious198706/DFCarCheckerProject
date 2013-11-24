@@ -493,11 +493,15 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                 // 如果为提交车辆
                 else {
                     Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
-                    String score = intent.getExtras().getString("score");
+
+                    // 是否事故车
+                    String acci = "车体结构鉴定结果：";
+                    acci += carCheckFrameFragment.isAccidentCar() ? "事故车\n" : "非事故车\n";
 
                     // 计算分数
-                    String total = "总分：";
+                    String total = "车辆技术状况鉴定得分：";
 
+                    String score = intent.getExtras().getString("score");
                     try {
                         JSONObject jsonObject = new JSONObject(score);
 
@@ -512,7 +516,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
 
                     }
 
-                    String msg = total;
+                    String msg = acci + total;
 
                     // 显示得分，关闭界面
                     AlertDialog dialog = new AlertDialog.Builder(CarCheckViewPagerActivity.this)

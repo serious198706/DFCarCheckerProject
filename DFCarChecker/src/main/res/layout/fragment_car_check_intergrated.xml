@@ -618,7 +618,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:entries="@array/yes_no">
+                android:entries="@array/existornot_r">
             </Spinner>
         </TableRow>
         <TableRow>
@@ -632,7 +632,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:entries="@array/yes_no">
+                android:entries="@array/existornot_r">
             </Spinner>
         </TableRow>
         <TableRow>
@@ -646,7 +646,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:entries="@array/yes_no">
+                android:entries="@array/existornot_r">
             </Spinner>
         </TableRow>
         <TableRow>
@@ -660,7 +660,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:entries="@array/yes_no">
+                android:entries="@array/existornot_r">
             </Spinner>
         </TableRow>
         <TableRow>
@@ -674,7 +674,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:entries="@array/yes_no">
+                android:entries="@array/existornot_r">
             </Spinner>
         </TableRow>
         <TableRow>
@@ -688,7 +688,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:entries="@array/yes_no">
+                android:entries="@array/existornot_r">
             </Spinner>
         </TableRow>
 

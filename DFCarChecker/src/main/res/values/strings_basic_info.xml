@@ -326,7 +326,9 @@
 
     <string name="ct_backup_key">备用钥匙：</string>
     <string name="ct_yearly_check_available_date">年检有效期：</string>
-    <string name="ct_available_date">交强险有效期：</string>
+
+    <string name="ct_compulsoryInsurance">交强险：</string>
+    <string name="ct_compulsoryInsurance_date">交强险有效期：</string>
 
     <string name="ct_business_insurance">商业保险：</string>
     <string-array name="ct_insurance_items">

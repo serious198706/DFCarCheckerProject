@@ -194,6 +194,9 @@ public class CarReportBasicInfoFragment extends Fragment {
             setTextView(rootView, R.id.builtDate_text, procedures.getString("builtDate"));
             setTextView(rootView, R.id.transferLastDate_text, procedures.getString("transferLastDate"));
             setTextView(rootView, R.id.annualInspection_text, procedures.getString("annualInspection"));
+            if(procedures.getString("compulsoryInsurance").equals("无")) {
+                setTextView(rootView, R.id.ct_compulsoryInsurance_text, "交强险：");
+            }
             setTextView(rootView, R.id.compulsoryInsurance_text, procedures.getString("compulsoryInsurance"));
             setTextView(rootView, R.id.insuranceExpiryDate_text, procedures.getString("insuranceExpiryDate"));
 

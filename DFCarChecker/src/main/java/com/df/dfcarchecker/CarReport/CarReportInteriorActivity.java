@@ -189,26 +189,32 @@ public class CarReportInteriorActivity extends Activity {
             String sealingStrip = conditions.getJSONObject("interior").getString("sealingStrip");
             setTextView(getWindow().getDecorView(), R.id.sealingStrip_text, sealingStrip);
 
-            JSONArray fault = interior.getJSONArray("fault");
+            if(!interior.isNull("fault")) {
+                JSONArray fault = interior.getJSONArray("fault");
 
-            for(int i = 0; i < fault.length(); i++) {
-                JSONObject jsonObject = fault.getJSONObject(i);
+                for(int i = 0; i < fault.length(); i++) {
+                    JSONObject jsonObject = fault.getJSONObject(i);
 
-                PosEntity posEntity = new PosEntity(jsonObject.getInt("type"));
-                posEntity.setStart(jsonObject.getInt("startX"), jsonObject.getInt("startY"));
-                posEntity.setEnd(jsonObject.getInt("endX"), jsonObject.getInt("endY"));
-                posEntity.setMaxX(jsonObject.getInt("endX"));
-                posEntity.setMaxY(jsonObject.getInt("endY"));
-                posEntity.setImageFileName(jsonObject.getString("photo"));
-                posEntities.add(posEntity);
+                    PosEntity posEntity = new PosEntity(jsonObject.getInt("type"));
+                    posEntity.setStart(jsonObject.getInt("startX"), jsonObject.getInt("startY"));
+                    posEntity.setEnd(jsonObject.getInt("endX"), jsonObject.getInt("endY"));
+                    posEntity.setMaxX(jsonObject.getInt("endX"));
+                    posEntity.setMaxY(jsonObject.getInt("endY"));
+                    posEntity.setImageFileName(jsonObject.getString("photo"));
+                    posEntities.add(posEntity);
+                }
+
+                JSONObject sketch = interior.getJSONObject("sketch");
+
+                if(sketch != null) {
+                    String sketchUrl = sketch.getString("photo");
+                    new DownloadImageTask().execute(Common.PICTURE_ADDRESS + sketchUrl);
+                }
+            } else {
+                interiorPaintPreviewView.setAlpha(1.0f);
+                interiorPaintPreviewView.invalidate();
             }
 
-            JSONObject sketch = interior.getJSONObject("sketch");
-
-            if(sketch != null) {
-                String sketchUrl = sketch.getString("photo");
-                new DownloadImageTask().execute(Common.PICTURE_ADDRESS + sketchUrl);
-            }
         } catch (JSONException e) {
 
         }

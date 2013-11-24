@@ -7,13 +7,10 @@
 
     <string-array name="structure_camera_cato_item">
         <item>机舱全景</item>
-        <item>前部</item>
-        <item>后部</item>
+        <item>左部</item>
+        <item>右部</item>
         <item>其他</item>
     </string-array>
 
-    <string name="structure_camera_overview">机舱全景</string>
-    <string name="structure_camera_front">前部</string>
-    <string name="structure_camera_rear">后部</string>
     <string name="structure_comment">车体结构检查说明：</string>
 </resources>
