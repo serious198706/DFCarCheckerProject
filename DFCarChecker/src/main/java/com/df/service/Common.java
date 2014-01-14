@@ -37,22 +37,21 @@ public class Common {
     public static final int DIRTY = 6;      // 脏污
     public static final int BROKEN = 7;     // 破损
 
+    // 提交的结果代码
+    public static final int COMMIT_SUCCESS = 1;
+    public static final int COMMIT_FAILED = 2;
+    public static final int PICTURE_SUCCESS = 3;
+    public static final int CONNECTION_ERROR = 4;
+
     // 日志的TAG
     public static final String TAG = "DFCarChecker";
 
-    // 外网
-//    public static final boolean innerVersion = false;
-//      // 每个组最少拍摄张数
-//    public static final int[] photoLeastCount = {3, 3, 5};
-//    public static final String SERVER_ADDRESS = "http://wcf.268v.com:8008/";
-//    public static final String PICTURE_ADDRESS = "http://i.268v.com/";
+    // 正式
+    // 每个组最少拍摄张数
+    public static final int[] photoLeastCount = {3, 3, 5};
+    public static final String SERVER_ADDRESS = "http://wcf.268v.com:8008/";
+    public static final String PICTURE_ADDRESS = "http://i.268v.com/";
 
-    // 内网
-    public static final boolean innerVersion = true;
-      // 每个组最少拍摄张数
-    public static final int[] photoLeastCount = {1, 1, 1};
-    public static final String SERVER_ADDRESS = "http://192.168.100.6:50/";
-    public static final String PICTURE_ADDRESS = "http://192.168.100.6:8006/";
 
     // 调用地址
     public static final String USER_MANAGE_SERVICE = "UserManageService.svc";

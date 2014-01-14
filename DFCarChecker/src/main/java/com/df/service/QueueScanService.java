@@ -62,14 +62,12 @@ public class QueueScanService extends Service {
     public static boolean committed;
     private String jsonString;
 
-
-
     private String action;
     private int carId;
     private ModifyDataTask mModifyDataTask;
 
-    private int total;
-    int complete;
+    private int total = 0;
+    int complete = 0;
 
     @Override
     public void onCreate() {
@@ -119,6 +117,12 @@ public class QueueScanService extends Service {
     }
 
     // 通知主界面进行更新的线程
+    private Runnable pictureUploaded = new Runnable() {
+        @Override
+        public void run() {
+            pictureUploaded();
+        }
+    };
     private Runnable commitToUI = new Runnable() {
         public void run() {
             Committed();
@@ -149,36 +153,42 @@ public class QueueScanService extends Service {
         }
     };
 
+    private void pictureUploaded() {
+        intent.putExtra("result", Common.PICTURE_SUCCESS);
+        sendBroadcast(intent);
+    }
+
+
     // 提交成功
     private void Committed() {
-        intent.putExtra("result", "0");
+        intent.putExtra("result", Common.COMMIT_SUCCESS);
         intent.putExtra("score", soapService.getResultMessage());
         sendBroadcast(intent);
     }
 
     // 提交失败
     private void CommitFailed() {
-        intent.putExtra("result", "-1");
+        intent.putExtra("result", Common.COMMIT_FAILED);
         intent.putExtra("errorMsg", soapService.getErrorMessage());
         sendBroadcast(intent);
     }
 
     // 修改成功
     private void modified() {
-        intent.putExtra("result", "0");
+        intent.putExtra("result", Common.COMMIT_SUCCESS);
         sendBroadcast(intent);
     }
 
     // 修改失败
     private void modifyFailed() {
-        intent.putExtra("result", "-1");
+        intent.putExtra("result", Common.COMMIT_FAILED);
         intent.putExtra("errorMsg", soapService.getErrorMessage());
         sendBroadcast(intent);
     }
 
     // 无法连接到服务器
     private void connectServerFail() {
-        intent.putExtra("result", "-2");
+        intent.putExtra("result", Common.CONNECTION_ERROR);
         intent.putExtra("errorMsg", soapService.getErrorMessage());
         sendBroadcast(intent);
     }
@@ -207,6 +217,7 @@ public class QueueScanService extends Service {
                             if(action.equals("commit") && (imageUploadQueue.getQueueSize() == 0) &&
                                     (mCommitDataTask == null) && canStartCommit) {
                                 canStartCommit = false;
+                                handler.post(pictureUploaded);
                                 mCommitDataTask = new CommitDataTask(context);
                                 mCommitDataTask.execute(jsonString);
                             }
@@ -221,6 +232,8 @@ public class QueueScanService extends Service {
 
                         wait(3000);
                     } catch (Exception e) {
+                        Log.e(Common.TAG, e.getMessage());
+                        handler.post(commitToUIFail);
                     }
                 }
             }
@@ -276,9 +289,9 @@ public class QueueScanService extends Service {
         protected void onProgressUpdate(Integer... progress) {
             super.onProgressUpdate(progress);
             // if we get here, length is known, now set indeterminate to false
-            CarCheckViewPagerActivity.mCommitProgressDialog.setIndeterminate(false);
-            CarCheckViewPagerActivity.mCommitProgressDialog.setMax(total);
-            CarCheckViewPagerActivity.mCommitProgressDialog.setProgress(progress[0]);
+            CarCheckViewPagerActivity.mUploadPictureProgressDialog.setIndeterminate(false);
+            CarCheckViewPagerActivity.mUploadPictureProgressDialog.setMax(total);
+            CarCheckViewPagerActivity.mUploadPictureProgressDialog.setProgress(progress[0]);
         }
 
         @Override
@@ -321,7 +334,6 @@ public class QueueScanService extends Service {
     // 提交检测数据
     public class CommitDataTask extends AsyncTask<String, Void, Boolean> {
         Context context;
-        //private ProgressDialog progressDialog;
 
         private CommitDataTask(Context context) {
             this.context = context;
@@ -342,6 +354,10 @@ public class QueueScanService extends Service {
             JSONObject jsonObject = new JSONObject();
 
             try {
+                jsonObject.put("Id", 0);
+
+                jsonObject.put("Id", 132455);
+
                 jsonObject.put("UniqueId", CarCheckBasicInfoFragment.uniqueId);
                 jsonObject.put("UserId", MainActivity.userInfo.getId());
                 jsonObject.put("Key", MainActivity.userInfo.getKey());

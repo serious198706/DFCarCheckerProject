@@ -58,7 +58,8 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
      */
     CustomViewPager mViewPager;
 
-    public static ProgressDialog mCommitProgressDialog;
+    public static ProgressDialog mUploadPictureProgressDialog;
+    private ProgressDialog mCommitProgressDialog;
     private ProgressDialog mSketchProgressDialog;
 
     private static boolean canCommit = false;
@@ -349,12 +350,12 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 // 进度条
-                mCommitProgressDialog = new ProgressDialog(CarCheckViewPagerActivity.this);
-                mCommitProgressDialog.setMessage("正在提交，请稍候");
-                mCommitProgressDialog.setIndeterminate(true);
-                mCommitProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-                mCommitProgressDialog.setCanceledOnTouchOutside(false);
-                mCommitProgressDialog.setCancelable(false);
+                mUploadPictureProgressDialog = new ProgressDialog(CarCheckViewPagerActivity.this);
+                mUploadPictureProgressDialog.setMessage("正在上传照片，请稍候...");
+                mUploadPictureProgressDialog.setIndeterminate(true);
+                mUploadPictureProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                mUploadPictureProgressDialog.setCanceledOnTouchOutside(false);
+                mUploadPictureProgressDialog.setCancelable(false);
 
                 // 修改车辆信息
                 if(!jsonData.equals("")) {
@@ -402,12 +403,12 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                         e.printStackTrace();
                     }
 
-                    // 修改车辆信息要放入carId
+                    // 修改车辆信息要放入carId4
                     serviceIntent.putExtra("committed", canCommit);
                     serviceIntent.putExtra("action", "modify");
                     serviceIntent.putExtra("carId", carId);
                     serviceIntent.putExtra("JSONObject", finalJsonObject.toString());
-                    mCommitProgressDialog.show();
+                    mUploadPictureProgressDialog.show();
                     startService(serviceIntent);
                 } else {
                     mSketchProgressDialog = ProgressDialog.show(CarCheckViewPagerActivity.this,
@@ -454,7 +455,7 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
                     serviceIntent.putExtra("JSONObject", generateCommitJsonObject().toString());
 
                     mSketchProgressDialog.dismiss();
-                    mCommitProgressDialog.show();
+                    mUploadPictureProgressDialog.show();
                     startService(serviceIntent);
                 }
             }
@@ -474,86 +475,105 @@ public class CarCheckViewPagerActivity extends FragmentActivity implements Actio
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String result = intent.getExtras().getString("result");
+            int result = intent.getExtras().getInt("result");
 
-            // 提交成功
-            if(result.equals("0")) {
-                if(mCommitProgressDialog != null) {
-                    mCommitProgressDialog.dismiss();
-                }
-                // 停止服务
-                Intent serviceIntent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
-                stopService(serviceIntent);
+            switch (result) {
+                // 提交成功
+                case Common.COMMIT_SUCCESS:
+                    if(mCommitProgressDialog != null) {
+                        mCommitProgressDialog.dismiss();
+                    }
+                    // 停止服务
+                    Intent serviceIntent = new Intent(CarCheckViewPagerActivity.this, QueueScanService.class);
+                    stopService(serviceIntent);
 
-                // 如果为修改
-                if(!jsonData.equals("")) {
-                    Toast.makeText(CarCheckViewPagerActivity.this, "修改成功！", Toast.LENGTH_LONG).show();
-                    finish();
-                }
-                // 如果为提交车辆
-                else {
-                    Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
+                    // 如果为修改
+                    if(!jsonData.equals("")) {
+                        Toast.makeText(CarCheckViewPagerActivity.this, "修改成功！", Toast.LENGTH_LONG).show();
+                        finish();
+                    }
+                    // 如果为提交车辆
+                    else {
+                        Toast.makeText(CarCheckViewPagerActivity.this, "提交成功！", Toast.LENGTH_LONG).show();
 
-                    // 是否事故车
-                    String acci = "车体结构鉴定结果：";
-                    acci += carCheckFrameFragment.isAccidentCar() ? "事故车\n" : "非事故车\n";
+                        // 是否事故车
+                        String acci = "车体结构鉴定结果：";
+                        acci += carCheckFrameFragment.isAccidentCar() ? "事故车\n" : "非事故车\n";
 
-                    // 计算分数
-                    String total = "车辆技术状况鉴定得分：";
+                        // 计算分数
+                        String total = "车辆技术状况鉴定得分：";
 
-                    String score = intent.getExtras().getString("score");
-                    try {
-                        JSONObject jsonObject = new JSONObject(score);
+                        String score = intent.getExtras().getString("score");
+                        try {
+                            JSONObject jsonObject = new JSONObject(score);
 
-                        Float totalScore = Float.parseFloat(jsonObject.getString("exterior"))
-                                + Float.parseFloat(jsonObject.getString("interior"))
-                                + Float.parseFloat(jsonObject.getString("engine"))
-                                + Float.parseFloat(jsonObject.getString("gearbox"))
-                                + Float.parseFloat(jsonObject.getString("function"));
+                            Float totalScore = Float.parseFloat(jsonObject.getString("exterior"))
+                                    + Float.parseFloat(jsonObject.getString("interior"))
+                                    + Float.parseFloat(jsonObject.getString("engine"))
+                                    + Float.parseFloat(jsonObject.getString("gearbox"))
+                                    + Float.parseFloat(jsonObject.getString("function"));
 
-                        total += Float.toString(totalScore);
-                    } catch (JSONException e) {
+                            total += Float.toString(totalScore);
+                        } catch (JSONException e) {
 
+                        }
+
+                        String msg = acci + total;
+
+                        // 显示得分，关闭界面
+                        AlertDialog dialog = new AlertDialog.Builder(CarCheckViewPagerActivity.this)
+                                .setTitle("车辆得分")
+                                .setMessage(msg)
+                                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialogInterface, int i) {
+                                        // 进入已检车辆列表界面
+                                        Intent intent1 = new Intent(CarCheckViewPagerActivity.this,
+                                                CarCheckedListActivity.class);
+                                        startActivity(intent1);
+
+                                        finish();
+                                    }
+                                })
+                                .create();
+
+                        dialog.setCanceledOnTouchOutside(false);
+                        dialog.show();
+                    }
+                    break;
+                // 提交失败
+                case Common.COMMIT_FAILED:
+                    if(mCommitProgressDialog != null) {
+                        mCommitProgressDialog.dismiss();
                     }
 
-                    String msg = acci + total;
+                    String error = intent.getExtras().getString("errorMsg");
+                    Toast.makeText(CarCheckViewPagerActivity.this, "提交失败，请联系工作人员！" + error,
+                            Toast.LENGTH_LONG).show();
 
-                    // 显示得分，关闭界面
-                    AlertDialog dialog = new AlertDialog.Builder(CarCheckViewPagerActivity.this)
-                            .setTitle("车辆得分")
-                            .setMessage(msg)
-                            .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    // 进入已检车辆列表界面
-                                    Intent intent1 = new Intent(CarCheckViewPagerActivity.this,
-                                            CarCheckedListActivity.class);
-                                    startActivity(intent1);
+                    mPictureUploaded = true;
+                    break;
+                // 图片上传成功，开始提交信息
+                case Common.PICTURE_SUCCESS:
+                    mPictureUploaded = true;
 
-                                    finish();
-                                }
-                            })
-                            .create();
+                    mUploadPictureProgressDialog.dismiss();
 
-                    dialog.setCanceledOnTouchOutside(false);
-                    dialog.show();
-                }
-            } else if(result.equals("-1")) {
-                if(mCommitProgressDialog != null) {
-                    mCommitProgressDialog.dismiss();
-                }
-
-                String error = intent.getExtras().getString("errorMsg");
-                Toast.makeText(CarCheckViewPagerActivity.this, "提交失败，请联系工作人员！" + error,
-                        Toast.LENGTH_LONG).show();
-
-                mPictureUploaded = true;
-            } else if(result.equals("-2")) {
-                Toast.makeText(CarCheckViewPagerActivity.this, "无法连接到服务器，请检查网络！",
-                        Toast.LENGTH_LONG).show();
+                    mCommitProgressDialog = ProgressDialog.show(CarCheckViewPagerActivity.this, null,
+                            "正在提交...", false,
+                            false);
+                    mCommitProgressDialog.setIndeterminate(true);
+                    mCommitProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                    mCommitProgressDialog.setCancelable(false);
+                    mCommitProgressDialog.setCanceledOnTouchOutside(false);
+                    break;
+                // 无法连接到服务器
+                case Common.CONNECTION_ERROR:
+                    Toast.makeText(CarCheckViewPagerActivity.this, "无法连接到服务器，请检查网络！",
+                            Toast.LENGTH_LONG).show();
+                    break;
             }
         }
-
     };
 
     // 进行检查，查看是否有未填入的数据

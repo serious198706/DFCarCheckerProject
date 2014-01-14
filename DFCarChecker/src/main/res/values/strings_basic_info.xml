@@ -47,9 +47,17 @@
     <string-array name="csi_airbag_number">
         <item>1</item>
         <item>2</item>
+        <item>3</item>
         <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
         <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
         <item>12</item>
+        <item>12个以上</item>
         <item>无</item>
     </string-array>
 
@@ -213,8 +221,8 @@
     <string name="ci_reg_location">注册地：</string>
 
     <string-array name="ci_province">
-        <item>北京</item>
         <item>上海</item>
+        <item>北京</item>
         <item>天津</item>
         <item>重庆</item>
         <item>河北</item>
@@ -246,8 +254,8 @@
         <item>新疆</item>
     </string-array>
     <string-array name="ci_province_abbreviation">
-        <item>京</item>
         <item>沪</item>
+        <item>京</item>
         <item>津</item>
         <item>渝</item>
         <item>冀</item>
@@ -294,7 +302,7 @@
     <string name="ci_attention">注意！</string>
     <string name="ci_attention_content">常见实车与行驶本照片不符现象包含：</string>
     <string name="ci_attention_content1">1. 主要是外观不符：中网改装、前杠改装、私改天窗、轮毂改装为赛车、私改车身颜色；</string>
-    <string name="ci_attention_content2">2. 常见车型：奥拓、菱帅</string>
+    <string name="ci_attention_content2">2. 常见车型：翼神</string>
     <string name="ci_attention_content3">以上信息请运营人员仔细核查</string>
     <string name="ci_attention_content4">实车与行驶本照片：</string>
     <string name="ci_attention_match">相符</string>

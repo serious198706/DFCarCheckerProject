@@ -42,6 +42,8 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     public static List<PosEntity> interiorPosEntities;
     public static List<PhotoEntity> interiorPhotoEntities;
 
+    private static String gearType;
+
     // 用于修改
     private final String jsonData;
     private String paintIndex;
@@ -154,6 +156,8 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
     }
 
     public static void setGearType(String gearType) {
+        CarCheckIntegratedFragment.gearType = gearType;
+
         // 手动档
         if(gearType.equals("MT")) {
             setGearRowVisibility(true);
@@ -366,18 +370,21 @@ public class CarCheckIntegratedFragment extends Fragment implements View.OnClick
         JSONObject gearbox = new JSONObject();
 
         try {
-            gearbox.put("mtClutch", getSpinnerSelectedText(rootView,
-                    R.id.it_gearMtClutch_spinner));
-            gearbox.put("mtShiftEasy", getSpinnerSelectedText(rootView,
-                    R.id.it_gearMtShiftEasy_spinner));
-            gearbox.put("mtShiftSpace", getSpinnerSelectedText(rootView,
-                    R.id.it_gearMtShiftSpace_spinner));
-            gearbox.put("atShiftShock", getSpinnerSelectedText(rootView,
-                    R.id.it_gearAtShiftShock_spinner));
-            gearbox.put("atShiftNoise", getSpinnerSelectedText(rootView,
-                    R.id.it_gearAtShiftNoise_spinner));
-            gearbox.put("atShiftEasy", getSpinnerSelectedText(rootView,
-                    R.id.it_gearAtShiftEasy_spinner));
+            if(gearType.equals("MT")) {
+                gearbox.put("mtClutch", getSpinnerSelectedText(rootView,
+                        R.id.it_gearMtClutch_spinner));
+                gearbox.put("mtShiftEasy", getSpinnerSelectedText(rootView,
+                        R.id.it_gearMtShiftEasy_spinner));
+                gearbox.put("mtShiftSpace", getSpinnerSelectedText(rootView,
+                        R.id.it_gearMtShiftSpace_spinner));
+            } else {
+                gearbox.put("atShiftShock", getSpinnerSelectedText(rootView,
+                        R.id.it_gearAtShiftShock_spinner));
+                gearbox.put("atShiftNoise", getSpinnerSelectedText(rootView,
+                        R.id.it_gearAtShiftNoise_spinner));
+                gearbox.put("atShiftEasy", getSpinnerSelectedText(rootView,
+                        R.id.it_gearAtShiftEasy_spinner));
+            }
         } catch (JSONException e) {
 
         }

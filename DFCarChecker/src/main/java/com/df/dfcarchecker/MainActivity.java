@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
             userInfo.setKey(bundle.getString("Key"));
         }
 
-        Helper.showView(Common.innerVersion, getWindow().getDecorView(), R.id.innerTestVersion);
+        Helper.showView(false, getWindow().getDecorView(), R.id.innerTestVersion);
     }
 
     public void EnterCarCheck(View view) {

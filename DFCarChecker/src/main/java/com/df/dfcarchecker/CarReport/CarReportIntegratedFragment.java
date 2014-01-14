@@ -111,12 +111,6 @@ public class CarReportIntegratedFragment extends Fragment implements View.OnClic
             setTextView(rootView, R.id.engineStrangeNoices_text, engine.getString("strangeNoices"));
             setTextView(rootView, R.id.engineExhaustColor_text, engine.getString("exhaustColor"));
             setTextView(rootView, R.id.engineFluid_text, engine.getString("fluid"));
-            setTextView(rootView, R.id.gearMtClutch_text, gearbox.getString("mtClutch"));
-            setTextView(rootView, R.id.gearMtShiftEasy_text, gearbox.getString("mtShiftEasy"));
-            setTextView(rootView, R.id.gearMtShiftSpace_text, gearbox.getString("mtShiftSpace"));
-            setTextView(rootView, R.id.gearAtShiftShock_text, gearbox.getString("atShiftShock"));
-            setTextView(rootView, R.id.gearAtShiftNoise_text, gearbox.getString("atShiftNoise"));
-            setTextView(rootView, R.id.gearAtShiftEasy_text, gearbox.getString("atShiftEasy"));
             setTextView(rootView, R.id.engineFault_text, function.getString("engineFault"));
             setTextView(rootView, R.id.oilPressure_text, function.getString("oilPressure"));
             setTextView(rootView, R.id.parkingBrake_text, function.getString("parkingBrake"));
@@ -186,10 +180,18 @@ public class CarReportIntegratedFragment extends Fragment implements View.OnClic
 
             if(options.getString("transmission").equals("MT")) {
                 SetViewVisibility(true);
+
+                setTextView(rootView, R.id.gearMtClutch_text, gearbox.getString("mtClutch"));
+                setTextView(rootView, R.id.gearMtShiftEasy_text, gearbox.getString("mtShiftEasy"));
+                setTextView(rootView, R.id.gearMtShiftSpace_text, gearbox.getString("mtShiftSpace"));
             }
             // 自动档
             else {
                 SetViewVisibility(false);
+
+                setTextView(rootView, R.id.gearAtShiftShock_text, gearbox.getString("atShiftShock"));
+                setTextView(rootView, R.id.gearAtShiftNoise_text, gearbox.getString("atShiftNoise"));
+                setTextView(rootView, R.id.gearAtShiftEasy_text, gearbox.getString("atShiftEasy"));
             }
         } catch (JSONException e) {
             e.printStackTrace();

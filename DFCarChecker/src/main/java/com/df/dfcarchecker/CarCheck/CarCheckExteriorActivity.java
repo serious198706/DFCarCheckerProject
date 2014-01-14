@@ -554,6 +554,13 @@ public class CarCheckExteriorActivity extends Activity implements View.OnClickLi
         }
     }
 
+    private Bitmap blurPhoto(Bitmap src) {
+        Bitmap des = null;
+
+        return des;
+    }
+
+
     // 下载图片
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         protected Bitmap doInBackground(String... urls) {

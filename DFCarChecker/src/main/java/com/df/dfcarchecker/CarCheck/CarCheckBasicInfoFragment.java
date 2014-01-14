@@ -61,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.UUID;
 
 import static com.df.service.Helper.SetSpinnerData;
 import static com.df.service.Helper.enableView;
@@ -183,10 +184,14 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                             Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
+//        Random r=new Random();
+//        int uniqueNumber =(r.nextInt(999) + 100);
+//        uniqueId = Integer.toString(uniqueNumber);
+
         // 根据产生uniqueId（对应一次检测）
-        Random r=new Random();
-        int uniqueNumber =(r.nextInt(999) + 100);
-        uniqueId = Integer.toString(uniqueNumber);
+        UUID uuid = UUID.randomUUID();
+        uniqueId = uuid.toString();
 
         this.inflater = inflater;
         rootView = inflater.inflate(R.layout.fragment_car_check_basic_info, container, false);
@@ -1420,16 +1425,13 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
                 // 最后过户时间不能早于登记日期
                 SetSpinnerData(R.id.ci_transferLastYear_spinner, temp.subList(i, temp.size()), rootView);
 
-                // 年检有效期、交强险有效期不能早于登记日期
+                // 年检有效期、交强险有效期、商险有效期不能早于登记日期
                 int from = Integer.parseInt(temp.get(i));
                 int to = Calendar.getInstance().get(Calendar.YEAR) + 2;
 
                 SetSpinnerData(R.id.ct_annualInspectionYear_spinner, Helper.GetNumbersList(from, to), rootView);
                 SetSpinnerData(R.id.ct_compulsoryInsuranceYear_spinner, Helper.GetNumbersList(from, to), rootView);
                 SetSpinnerData(R.id.ct_insuranceExpiryYear_spinner, Helper.GetNumbersList(from, to), rootView);
-
-                // 商险有效期不能早于登记日期
-                SetSpinnerData(R.id.ct_insuranceExpiryYear_spinner, temp.subList(i, temp.size()), rootView);
             }
 
             @Override
@@ -1437,20 +1439,6 @@ public class CarCheckBasicInfoFragment extends Fragment implements View.OnClickL
 
             }
         });
-//
-//        firstLogMonthSpinner = (Spinner) rootView.findViewById(R.id.ci_regMonth_spinner);
-//        firstLogMonthSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//            @Override
-//            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                List<String> temp = Helper.GetMonthList();
-//                SetSpinnerData(R.id.ci_builtMonth_spinner, temp.subList(0, i + 1), rootView);
-//            }
-//
-//            @Override
-//            public void onNothingSelected(AdapterView<?> adapterView) {
-//
-//            }
-//        });
     }
 
     // 出厂日期

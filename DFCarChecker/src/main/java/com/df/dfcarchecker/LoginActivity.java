@@ -121,7 +121,7 @@ public class LoginActivity extends Activity {
         mCheckUpdateTask = new CheckUpdateTask(LoginActivity.this);
         mCheckUpdateTask.execute();
 
-        Helper.showView(Common.innerVersion, getWindow().getDecorView(), R.id.innerTestVersion);
+        Helper.showView(false, getWindow().getDecorView(), R.id.innerTestVersion);
     }
 
 
